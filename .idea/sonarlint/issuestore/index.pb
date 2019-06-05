@@ -1,0 +1,25 @@
+
+7
+pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
+O
+src/main/webapp/WEB-INF/web.xml,2/e/2e22b6edd746fa3dc40ad7276c87c8d87d72a392
+I
+src/main/webapp/index.jsp,8/e/8e6d3b70c9f5b02570779b0441540d45eceb0ded
+t
+Dsrc/main/java/by/platonov/music/controller/HelloWorldController.java,4/5/457e74f526ba666c5c3719ec016096a4064cf942
+a
+1src/main/java/by/platonov/music/entity/Track.java,e/3/e37d33ec159c45724baf44e0c7ada35982b9e332
+`
+0src/main/java/by/platonov/music/entity/User.java,6/8/68212393834dfbcb9bd104e45a215ce32bf35136
+a
+1src/main/java/by/platonov/music/entity/Genre.java,3/a/3ad9c34ac8298e845bb21a1181e9205f0e106338
+d
+4src/main/java/by/platonov/music/entity/Playlist.java,0/2/02d8d6cbbfe78e62c623a2a100819a897eb0670f
+d
+4src/main/java/by/platonov/music/entity/Musician.java,e/3/e39f4dfe8cc63b1fbcbacf20946dd9b06e39f374
+a
+1src/main/java/by/platonov/music/entity/Guest.java,7/d/7dfc974fce29858babb4b33a3d89403323cf203d
+b
+2src/main/java/by/platonov/music/entity/Gender.java,c/6/c6ade296c3eefbb6d1094771fd944e08908811d4
+a
+1src/main/java/by/platonov/music/entity/Media.java,2/7/279b3d76197872776124824ec410965433bce3a4
