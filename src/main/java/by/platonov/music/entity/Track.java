@@ -1,5 +1,6 @@
 package by.platonov.music.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.List;
  * @version 0.0.1
  */
 @Data
+@Builder
 public class Track extends Media {
 
     private String name;

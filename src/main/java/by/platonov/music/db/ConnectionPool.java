@@ -31,7 +31,6 @@ public class ConnectionPool {
             try {
                 if (instance == null) {
                     instance = init();
-                    log.debug("pool size after init " + instance.connections.size());
                     create.set(true);
                 }
             } finally {
@@ -56,7 +55,7 @@ public class ConnectionPool {
                     configuration.getPassword()));
             log.debug("Connection created");
         } catch (SQLException e) {
-            log.fatal("Can't initialize database connection", e);
+            log.fatal("Can't create database connection", e);
             throw new RuntimeException("Database connection failed", e);
         } catch (InterruptedException e) {
             log.warn("Interrupted", e);
@@ -73,12 +72,8 @@ public class ConnectionPool {
         return connections.take();
     }
 
-    public void releaseConnection(Connection connection) throws InterruptedException {
-        try {
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            log.error("Can't set autocommit" + e);
-        }
+    public void releaseConnection(Connection connection) throws InterruptedException, SQLException {
+        connection.setAutoCommit(true);
         log.debug("Connection released");
         connections.put(connection);
     }

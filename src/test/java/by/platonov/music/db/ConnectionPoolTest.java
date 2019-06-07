@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ class ConnectionPoolTest {
     }
 
     @AfterEach
-    void tearDown() throws InterruptedException {
+    void tearDown() throws InterruptedException, SQLException {
         //since ConnectionPool is singleton we need to release connections
         for (Connection c : usedConnections) {
             pool.releaseConnection(c);
@@ -48,7 +49,7 @@ class ConnectionPoolTest {
     }
 
     @Test
-    void shouldReleaseAndRetakeTheSameConnectionWhenAllAreTaken() throws InterruptedException {
+    void shouldReleaseAndRetakeTheSameConnectionWhenAllAreTaken() throws InterruptedException, SQLException {
         //when all connections are taken
         int poolSize = DatabaseConfiguration.getInstance().getPoolSize();
         for (int i = 0; i < poolSize; i++) {

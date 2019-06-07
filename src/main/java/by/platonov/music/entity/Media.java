@@ -7,7 +7,7 @@ import lombok.Data;
  * @version 0.0.1
  */
 @Data
-public abstract class Media extends Entity {
+public class Media extends Entity {
 
     private long id;
     private String path;

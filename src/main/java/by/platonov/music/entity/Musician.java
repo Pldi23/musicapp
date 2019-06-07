@@ -1,5 +1,6 @@
 package by.platonov.music.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * @version 0.0.1
  */
 @Data
+@Builder
 public class Musician extends Entity {
 
     private long id;
