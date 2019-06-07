@@ -1,34 +1,63 @@
 package by.platonov.music.db;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */
-@Getter
+@Data
+@AllArgsConstructor
 @Log4j2
 public class DatabaseConfiguration {
 
     private static final String DATABASE_PROPERTIES_PATH = "database";
 
-    private String jdbcUrl;
+    private static DatabaseConfiguration instance;
+
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean create = new AtomicBoolean(false);
+
+    private String host;
     private String user;
     private String password;
     private int poolSize;
+    private int port;
+    private String dbName;
 
-    static DatabaseConfiguration getDatabaseConfiguration() {
-        DatabaseConfiguration configuration = new DatabaseConfiguration();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(DATABASE_PROPERTIES_PATH);
-        configuration.jdbcUrl = resourceBundle.getString("db.url");
-        configuration.user = resourceBundle.getString("db.user");
-        configuration.password = resourceBundle.getString("db.password");
-        configuration.poolSize = Integer.parseInt(resourceBundle.getString("db.poolsize"));
-        log.debug("configuration setted");
-        return configuration;
+    public static DatabaseConfiguration getInstance() {
+        if (!create.get()) {
+            lock.lock();
+            try {
+                if (instance == null) {
+                    instance = init();
+                    create.set(true);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+        return instance;
     }
 
+    private static DatabaseConfiguration init() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(DATABASE_PROPERTIES_PATH);
+        String host = resourceBundle.getString("db.host");
+        String user = resourceBundle.getString("db.user");
+        String password = resourceBundle.getString("db.password");
+        int poolSize = Integer.parseInt(resourceBundle.getString("db.poolsize"));
+        int port = Integer.parseInt(resourceBundle.getString("db.port"));
+        String dbName = resourceBundle.getString("db.name");
+        return new DatabaseConfiguration(host, user, password, poolSize, port, dbName);
+    }
+
+    public String getJdbcUrl() {
+        return "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
+    }
 }

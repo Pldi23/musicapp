@@ -30,7 +30,7 @@ public class ConnectionPool {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = init();
+                    instance = init(DatabaseConfiguration.getInstance());
                     create.set(true);
                 }
             } finally {
@@ -40,9 +40,9 @@ public class ConnectionPool {
         return instance;
     }
 
-    private static ConnectionPool init(){
+    public static ConnectionPool init(DatabaseConfiguration databaseConfiguration){
         ConnectionPool connectionPool = new ConnectionPool();
-        DatabaseConfiguration configuration = DatabaseConfiguration.getDatabaseConfiguration();
+        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
         BlockingQueue<Connection> queue = new ArrayBlockingQueue<>(configuration.getPoolSize());
         for (int i = 0; i < configuration.getPoolSize(); i++) {
             try {
