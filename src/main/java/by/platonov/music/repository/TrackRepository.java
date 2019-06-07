@@ -20,12 +20,19 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public boolean add(Track entity) {
         Connection connection = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         boolean result = false;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement statementTrack = null;
+        PreparedStatement statementSinger = null;
+        PreparedStatement statementAuthor = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
-            @Language("SQL")
+
             String insertTrackTable = String
                     .format("insert into track (name, genre_id, release_date, length) values (%s, %d, %s, %d)",
                             entity.getName(), entity.getGenre().getId(), entity.getReleaseDate(), entity.getLength());
@@ -34,17 +41,32 @@ public class TrackRepository implements Repository<Track> {
                             entity.getSingers().stream()
                                     .map(s -> String.format("(%s, %s)", entity.getId(), s.getId()))
                                     .collect(Collectors.joining(",")));
+            String insertAuthorTrackTable = String
+                    .format("insert into author_track (track_id, author_id) values %s",
+                            entity.getAuthors().stream()
+                                    .map(s -> String.format("(%s, %s)", entity.getId(), s.getId()))
+                                    .collect(Collectors.joining(",")));
 
-            preparedStatement = connection.prepareStatement(insertTrackTable);
+            statementTrack = connection.prepareStatement(insertTrackTable);
+            statementSinger = connection.prepareStatement(insertSingerTrackTable);
+            statementAuthor = connection.prepareStatement(insertAuthorTrackTable);
+            statementTrack.execute();
+            statementSinger.execute();
+            statementAuthor.execute();
+            connection.commit();
             ConnectionPool.getInstance().releaseConnection(connection);
-            result = preparedStatement.execute();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                preparedStatement.close();
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }  finally {
+            try {
+                statementTrack.close();
+                statementSinger.close();
+                statementAuthor.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

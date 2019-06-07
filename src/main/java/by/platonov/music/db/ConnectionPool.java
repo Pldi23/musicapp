@@ -30,7 +30,8 @@ public class ConnectionPool {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = init(DatabaseConfiguration.getInstance());
+                    instance = init();
+                    log.debug("pool size after init " + instance.connections.size());
                     create.set(true);
                 }
             } finally {
@@ -40,31 +41,45 @@ public class ConnectionPool {
         return instance;
     }
 
-    public static ConnectionPool init(DatabaseConfiguration databaseConfiguration){
+    private static ConnectionPool init() {
         ConnectionPool connectionPool = new ConnectionPool();
-        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
-        BlockingQueue<Connection> queue = new ArrayBlockingQueue<>(configuration.getPoolSize());
-        for (int i = 0; i < configuration.getPoolSize(); i++) {
-            try {
-                queue.put(DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
-                        configuration.getPassword()));
-            } catch (SQLException e) {
-                log.fatal("Can't initialize database connection", e);
-                throw new RuntimeException("Database connection failed", e);
-            } catch (InterruptedException e) {
-                log.error("Interrupted");
-            }
-        }
+        BlockingQueue<Connection> queue = new ArrayBlockingQueue<>(DatabaseConfiguration.getInstance().getPoolSize());
         connectionPool.connections = queue;
         log.debug("Connection pool initialized with " + queue.size() + " connections");
         return connectionPool;
     }
 
+    private void createConnection() {
+        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
+        try {
+            connections.put(DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
+                    configuration.getPassword()));
+            log.debug("Connection created");
+        } catch (SQLException e) {
+            log.fatal("Can't initialize database connection", e);
+            throw new RuntimeException("Database connection failed", e);
+        } catch (InterruptedException e) {
+            log.warn("Interrupted", e);
+            Thread.currentThread().interrupt();
+        }
+    }
+
+
     public Connection getConnection() throws InterruptedException {
+        if (connections.isEmpty()) {
+            createConnection();
+        }
+        log.debug("Connection taken");
         return connections.take();
     }
 
     public void releaseConnection(Connection connection) throws InterruptedException {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            log.error("Can't set autocommit" + e);
+        }
+        log.debug("Connection released");
         connections.put(connection);
     }
 }
