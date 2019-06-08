@@ -1,9 +1,9 @@
 package by.platonov.music.repository;
 
+import by.platonov.music.DataBaseInitializationTest;
 import by.platonov.music.db.ConnectionPool;
 import by.platonov.music.db.DatabaseConfiguration;
 import by.platonov.music.entity.Genre;
-import by.platonov.music.entity.Media;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 import org.intellij.lang.annotations.Language;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrackRepositoryTest {
 
     private TrackRepository repository = new TrackRepository();
-    private DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
+    DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
 
     @Rule
     private PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
@@ -38,7 +38,7 @@ class TrackRepositoryTest {
             .withUsername(dbConfig.getUser())
             .withPassword(dbConfig.getPassword());
 
-    private ConnectionPool pool;
+    ConnectionPool pool;
 
     @BeforeEach
     void setUp() {
@@ -47,6 +47,7 @@ class TrackRepositoryTest {
         DatabaseConfiguration.getInstance().setPort(postgresContainer.getMappedPort(5432));
         pool = ConnectionPool.getInstance();
     }
+
 
     @AfterEach
     void tearDown() {

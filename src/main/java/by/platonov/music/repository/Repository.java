@@ -1,5 +1,7 @@
 package by.platonov.music.repository;
 
+import by.platonov.exception.RepositoryException;
+
 import java.util.List;
 
 /**
@@ -7,9 +9,9 @@ import java.util.List;
  * @version 0.0.1
  */
 public interface Repository<T> {
-    boolean add(T entity);
-    boolean remove(T entity);
-    boolean update(T entity);
+    boolean add(T entity) throws RepositoryException;
+    boolean remove(T entity) throws RepositoryException;
+    boolean update(T entity) throws RepositoryException;
 
-    List<T> query(Specification<T> specification);
+    List<T> query(SqlSpecification<T> specification);
 }

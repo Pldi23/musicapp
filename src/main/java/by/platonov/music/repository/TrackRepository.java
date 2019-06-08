@@ -1,5 +1,6 @@
 package by.platonov.music.repository;
 
+import by.platonov.exception.RepositoryException;
 import by.platonov.music.db.ConnectionPool;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
@@ -11,14 +12,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author dzmitryplatonov on 2019-06-07.
  * @version 0.0.1
  */
 @Log4j2
-public class TrackRepository implements Repository<Track>, AutoCloseable {
+public class TrackRepository implements Repository<Track> {
 
     @Override
     public boolean add(Track entity) {
@@ -75,9 +75,7 @@ public class TrackRepository implements Repository<Track>, AutoCloseable {
                 log.debug("Statement to author-track table ready to execute " + statementAuthor);
                 statementAuthor.execute();
             }
-
             connection.commit();
-            ConnectionPool.getInstance().releaseConnection(connection);
             result = true;
         } catch (InterruptedException | SQLException e) {
             log.error("Transaction failed");
@@ -105,9 +103,7 @@ public class TrackRepository implements Repository<Track>, AutoCloseable {
             }
             try {
                 ConnectionPool.getInstance().releaseConnection(connection);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
+            }catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -115,7 +111,7 @@ public class TrackRepository implements Repository<Track>, AutoCloseable {
     }
 
     @Override
-    public boolean remove(Track entity) {
+    public boolean remove(Track entity) throws RepositoryException {
         return false;
     }
 
@@ -125,12 +121,8 @@ public class TrackRepository implements Repository<Track>, AutoCloseable {
     }
 
     @Override
-    public List<Track> query(Specification<Track> specification) {
+    public List<Track> query(SqlSpecification<Track> specification) {
         return null;
     }
 
-    @Override
-    public void close() throws Exception {
-
-    }
 }

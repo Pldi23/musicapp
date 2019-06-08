@@ -84,18 +84,17 @@ CREATE TABLE public.playlist_track
 );
 
 --init user table
-CREATE TABLE public."user"
+CREATE TABLE public.application_user
 (
-    id serial,
     login character varying(200) COLLATE pg_catalog."default",
     password character varying(200) COLLATE pg_catalog."default",
     is_admin boolean,
     first_name character varying(200) COLLATE pg_catalog."default",
     last_name character varying(200) COLLATE pg_catalog."default",
-    "e-mail" character varying(200) COLLATE pg_catalog."default",
+    "e_mail" character varying(200) COLLATE pg_catalog."default",
     gender boolean,
     date_of_birth date,
-    CONSTRAINT user_pkey1 PRIMARY KEY (id),
+    CONSTRAINT application_user_pkey1 PRIMARY KEY (login),
     CONSTRAINT unic_login UNIQUE (login)
 
 );
@@ -103,19 +102,19 @@ CREATE TABLE public."user"
 --init user_playlist table
 CREATE TABLE public.user_playlist
 (
-    user_id integer,
+    user_login character varying(200),
     playlist_id integer,
     CONSTRAINT foreign_key_playlist_id FOREIGN KEY (playlist_id)
         REFERENCES public.playlist (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT foreign_key_user_id FOREIGN KEY (user_id)
-        REFERENCES public."user" (id) MATCH SIMPLE
+    CONSTRAINT foreign_key_user_login FOREIGN KEY (user_login)
+        REFERENCES public.application_user (login) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
 
-INSERT into "user" ("login", "password", is_admin, first_name, last_name, "e-mail", date_of_birth, gender)
+INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender)
 values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true),
     ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false),
     ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true),
@@ -123,7 +122,7 @@ values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02'
     ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true);
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
-insert into user_playlist (user_id, playlist_id) values (1, 2), (5, 1), (4, 3), (3, 4), (3, 1), (2, 5);
+insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
 insert into genre ("name") values ('pop'), ('rock'), ('rap'), ('jazz'), ('funk'), ('retro'), ('chanson');
 insert into track ("name", genre_id, release_date, "length")
 values ('Tim', 1, '2019-01-01', 180),

@@ -5,6 +5,5 @@ package by.platonov.music.repository;
  * @version 0.0.1
  */
 public interface Specification<T> {
-
-
+    boolean specify(T t);
 }

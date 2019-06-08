@@ -1,6 +1,6 @@
 package by.platonov.music.db;
 
-import by.platonov.music.BaseTest;
+import by.platonov.music.DataBaseInitializationTest;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class ConnectionPoolTest {
 
-    private DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
+    private List<Connection> usedConnections = new ArrayList<>();
+    DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
 
     @Rule
     private PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
@@ -29,9 +30,7 @@ class ConnectionPoolTest {
             .withUsername(dbConfig.getUser())
             .withPassword(dbConfig.getPassword());
 
-    private ConnectionPool pool;
-
-    private List<Connection> usedConnections = new ArrayList<>();
+    ConnectionPool pool;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +41,7 @@ class ConnectionPoolTest {
     }
 
     @AfterEach
-    void tearDown() throws InterruptedException, SQLException {
+    void tearDown() throws SQLException {
         //since ConnectionPool is singleton we need to release connections
         for (Connection c : usedConnections) {
             pool.releaseConnection(c);
