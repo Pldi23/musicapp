@@ -16,6 +16,6 @@ public class SelectUserLogin implements SqlSpecification<User> {
 
     @Override
     public String toSqlClauses() {
-        return String.format("login = %s", login);
+        return String.format("login = '%s'", login);
     }
 }

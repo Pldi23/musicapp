@@ -27,7 +27,7 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String UPDATE_USER = "update application_user set password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, date_of_birth = ? where login = ?;";
     @Language("SQL")
-    private static final String QUERY = "select login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth from application_user where ?;";
+    private static final String QUERY = "select login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth from application_user where ";
 
     @Override
     public boolean add(User entity) throws RepositoryException {
@@ -163,8 +163,7 @@ public class UserRepository implements Repository<User> {
         PreparedStatement statement = null;
         try {
             connection = pool.getConnection();
-            statement = connection.prepareStatement(QUERY);
-            statement.setString(1, specification.toSqlClauses());
+            statement = connection.prepareStatement(QUERY + specification.toSqlClauses());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = User.builder()
