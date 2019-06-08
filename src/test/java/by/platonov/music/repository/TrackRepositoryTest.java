@@ -59,6 +59,7 @@ class TrackRepositoryTest {
         Track track = Track.builder().name("noname").genre(pop).singers(Arrays.asList(singer))
                 .authors(Arrays.asList(singer)).releaseDate(LocalDate.EPOCH).length(200).build();
         track.setId(6);
+        assertTrue(repository.add(track));
         Connection connection = pool.getConnection();
         @Language("SQL")
         String count = "select count(*) from track where id > 0";
@@ -66,7 +67,6 @@ class TrackRepositoryTest {
         ResultSet resultSet = statement.executeQuery(count);
         resultSet.next();
         int expectedSize = resultSet.getInt(1);
-        assertTrue(repository.add(track));
         assertEquals(6, expectedSize);
     }
 }

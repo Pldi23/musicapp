@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,6 +22,7 @@ public class ConnectionPool {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
     private BlockingQueue<Connection> connections;
+    private int createdConnectionCounter = 0;
 
     private ConnectionPool() {
     }
@@ -48,33 +50,47 @@ public class ConnectionPool {
         return connectionPool;
     }
 
-    private void createConnection() {
+//    private void createConnection() {
+
+    //        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
+//        try {
+//            connections.add(DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
+//                    configuration.getPassword()));
+//            log.debug("Connection created");
+//        } catch (SQLException e) {
+//            log.fatal("Can't create database connection", e);
+//            throw new RuntimeException("Database connection failed", e);
+//        }
+//    }
+    private Connection createConnection() {
         DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
         try {
-            connections.put(DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
-                    configuration.getPassword()));
             log.debug("Connection created");
+            return DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
+                    configuration.getPassword());
         } catch (SQLException e) {
             log.fatal("Can't create database connection", e);
             throw new RuntimeException("Database connection failed", e);
-        } catch (InterruptedException e) {
-            log.warn("Interrupted", e);
-            Thread.currentThread().interrupt();
         }
     }
 
 
     public Connection getConnection() throws InterruptedException {
-        if (connections.isEmpty()) {
-            createConnection();
+
+        if(connections.isEmpty() && createdConnectionCounter != DatabaseConfiguration.getInstance().getPoolSize()){
+            connections.add(createConnection());
+            createdConnectionCounter++;
+            log.debug("connection polled");
+            return connections.poll();
+        } else {
+            log.debug("connection taken");
+            return connections.take();
         }
-        log.debug("Connection taken");
-        return connections.take();
     }
 
     public void releaseConnection(Connection connection) throws InterruptedException, SQLException {
         connection.setAutoCommit(true);
-        log.debug("Connection released");
-        connections.put(connection);
+        connections.add(connection);
+        log.debug("Connection released, free connections: " + connections.size());
     }
 }

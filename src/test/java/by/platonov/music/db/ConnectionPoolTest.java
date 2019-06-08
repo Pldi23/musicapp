@@ -1,5 +1,6 @@
 package by.platonov.music.db;
 
+import by.platonov.music.BaseTest;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
