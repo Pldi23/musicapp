@@ -1,10 +1,10 @@
 package by.platonov.music.db;
 
-import by.platonov.music.DataBaseInitializationTest;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.Connection;
@@ -18,39 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */
+@ExtendWith(DatabaseSetupExtension.class)
 class ConnectionPoolTest {
 
     private List<Connection> usedConnections = new ArrayList<>();
-    DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
-
-    @Rule
-    private PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
-            .withInitScript("init.sql")
-            .withDatabaseName(dbConfig.getDbName())
-            .withUsername(dbConfig.getUser())
-            .withPassword(dbConfig.getPassword());
-
-    ConnectionPool pool;
-
-    @BeforeEach
-    void setUp() {
-        postgresContainer.start();
-        DatabaseConfiguration.getInstance().setHost(postgresContainer.getContainerIpAddress());
-        DatabaseConfiguration.getInstance().setPort(postgresContainer.getMappedPort(5432));
-        pool = ConnectionPool.getInstance();
-    }
-
-    @AfterEach
-    void tearDown() throws SQLException {
-        //since ConnectionPool is singleton we need to release connections
-        for (Connection c : usedConnections) {
-            pool.releaseConnection(c);
-        }
-    }
 
     @Test
     void shouldReleaseAndRetakeTheSameConnectionWhenAllAreTaken() throws InterruptedException, SQLException {
         //when all connections are taken
+        ConnectionPool pool = ConnectionPool.getInstance();
         int poolSize = DatabaseConfiguration.getInstance().getPoolSize();
         for (int i = 0; i < poolSize; i++) {
             usedConnections.add(pool.getConnection());

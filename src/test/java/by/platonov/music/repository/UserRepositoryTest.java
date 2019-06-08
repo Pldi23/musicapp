@@ -3,6 +3,7 @@ package by.platonov.music.repository;
 import by.platonov.exception.RepositoryException;
 import by.platonov.music.db.ConnectionPool;
 import by.platonov.music.db.DatabaseConfiguration;
+import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import org.intellij.lang.annotations.Language;
@@ -10,6 +11,7 @@ import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.*;
@@ -23,32 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author dzmitryplatonov on 2019-06-08.
  * @version 0.0.1
  */
+@ExtendWith(DatabaseSetupExtension.class)
 class UserRepositoryTest {
 
     UserRepository repository = new UserRepository();
-    DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
-
-    @Rule
-    private PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
-            .withInitScript("init.sql")
-            .withDatabaseName(dbConfig.getDbName())
-            .withUsername(dbConfig.getUser())
-            .withPassword(dbConfig.getPassword());
-
-    ConnectionPool pool;
-
-    @BeforeEach
-    void setUp() {
-        postgresContainer.start();
-        DatabaseConfiguration.getInstance().setHost(postgresContainer.getContainerIpAddress());
-        DatabaseConfiguration.getInstance().setPort(postgresContainer.getMappedPort(5432));
-        pool = ConnectionPool.getInstance();
-    }
-
-
-    @AfterEach
-    void tearDown() {
-    }
 
     int countSize() throws SQLException, InterruptedException {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -64,6 +44,7 @@ class UserRepositoryTest {
     }
 
     User select(String login) throws SQLException, InterruptedException {
+        ConnectionPool pool = ConnectionPool.getInstance();
         @Language("SQL")
         String select = "select login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth from application_user where login = ?";
         Connection connectionSelect = pool.getConnection();

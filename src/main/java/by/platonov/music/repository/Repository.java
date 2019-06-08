@@ -13,5 +13,5 @@ public interface Repository<T> {
     boolean remove(T entity) throws RepositoryException;
     boolean update(T entity) throws RepositoryException;
 
-    List<T> query(SqlSpecification<T> specification);
+    List<T> query(SqlSpecification<T> specification) throws RepositoryException;
 }

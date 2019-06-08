@@ -19,15 +19,18 @@ import java.util.List;
 public class UserRepository implements Repository<User> {
 
     @Language("SQL")
-    private static final String INSERT_USER = "insert into application_user(login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth) values (?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_USER = "insert into application_user(login, password, is_admin, first_name," +
+            " last_name, e_mail, gender, date_of_birth) values (?, ?, ?, ?, ?, ?, ?, ?);";
     @Language("SQL")
     private static final String DELETE_USER = "delete from application_user where login = ?;";
     @Language("SQL")
     private static final String DELETE_USER_PLAYLIST_LINK = "delete from user_playlist where user_login = ?;";
     @Language("SQL")
-    private static final String UPDATE_USER = "update application_user set password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, date_of_birth = ? where login = ?;";
+    private static final String UPDATE_USER = "update application_user set password = ?, is_admin = ?, first_name = ?," +
+            " last_name = ?, e_mail = ?, gender = ?, date_of_birth = ? where login = ?;";
     @Language("SQL")
-    private static final String QUERY = "select login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth from application_user where ";
+    private static final String QUERY = "select login, password, is_admin, first_name, last_name, e_mail, gender," +
+            " date_of_birth from application_user where ";
 
     @Override
     public boolean add(User entity) throws RepositoryException {
@@ -156,7 +159,7 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public List<User> query(SqlSpecification<User> specification) {
+    public List<User> query(SqlSpecification<User> specification) throws RepositoryException {
         List<User> users = new ArrayList<>();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = null;
@@ -179,17 +182,19 @@ public class UserRepository implements Repository<User> {
                 users.add(user);
             }
         } catch (SQLException | InterruptedException e) {
-            e.printStackTrace();
+            log.error("Connection failed", e);
+            Thread.currentThread().interrupt();
+            throw new RepositoryException(e);
         } finally {
             try {
                 statement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("Connection failed in finally", e);
             }
             try {
                 pool.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("Connection failed in finally", e);
             }
         }
         return users;

@@ -42,12 +42,11 @@ public class ConnectionPool {
 
     private static ConnectionPool init() {
         ConnectionPool connectionPool = new ConnectionPool();
-        BlockingQueue<Connection> queue = new ArrayBlockingQueue<>(DatabaseConfiguration.getInstance().getPoolSize());
+        connectionPool.connections = new ArrayBlockingQueue<>(DatabaseConfiguration.getInstance().getPoolSize());
         for (int i = 0; i < DatabaseConfiguration.getInstance().getPoolSize(); i++) {
-            queue.add(createConnection());
+            connectionPool.connections.add(createConnection());
         }
-        connectionPool.connections = queue;
-        log.debug("Connection pool initialized with " + queue.size() + " connections");
+        log.debug("Connection pool initialized with " + connectionPool.connections.size() + " connections");
         return connectionPool;
     }
 
@@ -72,5 +71,21 @@ public class ConnectionPool {
         connection.setAutoCommit(true);
         connections.add(connection);
         log.debug("Connection released, free connections: " + connections.size());
+    }
+
+    public void tierDown() throws SQLException {
+        if (create.get()) {
+            lock.lock();
+            try {
+                for (Connection connection : connections) {
+                    connection.close();
+                }
+                instance = null;
+                create.set(false);
+            } finally {
+                lock.unlock();
+            }
+        }
+        log.debug("Connection pool tier down");
     }
 }
