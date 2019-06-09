@@ -1,4 +1,4 @@
-package by.platonov.music.repository;
+package by.platonov.music.repository.specification;
 
 /**
  * @author dzmitryplatonov on 2019-06-06.

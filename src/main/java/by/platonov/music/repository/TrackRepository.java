@@ -1,9 +1,10 @@
 package by.platonov.music.repository;
 
-import by.platonov.exception.RepositoryException;
+import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.ConnectionPool;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
+import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
 
@@ -30,21 +31,6 @@ public class TrackRepository implements Repository<Track> {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
-
-
-//            String insertTrackTable = String
-//                    .format("insert into track (name, genre_id, release_date, length) values (%s, %d, %s, %d);",
-//                            entity.getName(), entity.getGenre().getId(), entity.getReleaseDate(), entity.getLength());
-//            String insertSingerTrackTable = String
-//                    .format("insert into singer_track (track_id, singer_id) values %s;",
-//                            entity.getSingers().stream()
-//                                    .map(s -> String.format("(%s, %s)", entity.getId(), s.getId()))
-//                                    .collect(Collectors.joining(",")));
-//            String insertAuthorTrackTable = String
-//                    .format("insert into author_track (track_id, author_id) values %s;",
-//                            entity.getAuthors().stream()
-//                                    .map(s -> String.format("(%s, %s)", entity.getId(), s.getId()))
-//                                    .collect(Collectors.joining(",")));
 
             @Language("SQL")
             String insertTrackTable = "insert into track (name, genre_id, release_date, length) values (?, ?, ?, ?);";
@@ -101,11 +87,8 @@ public class TrackRepository implements Repository<Track> {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            try {
-                ConnectionPool.getInstance().releaseConnection(connection);
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionPool.getInstance().releaseConnection(connection);
+
         }
         return result;
     }

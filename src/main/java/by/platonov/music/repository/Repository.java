@@ -1,6 +1,7 @@
 package by.platonov.music.repository;
 
-import by.platonov.exception.RepositoryException;
+import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.repository.specification.SqlSpecification;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package by.platonov.music.repository;
+package by.platonov.music.repository.specification;
 
 import by.platonov.music.entity.User;
 

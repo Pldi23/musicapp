@@ -1,4 +1,4 @@
-package by.platonov.exception;
+package by.platonov.music.exception;
 
 /**
  * @author dzmitryplatonov on 2019-06-08.

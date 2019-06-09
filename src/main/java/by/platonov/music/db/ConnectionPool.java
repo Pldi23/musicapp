@@ -67,10 +67,9 @@ public class ConnectionPool {
         return connections.take();
     }
 
-    public void releaseConnection(Connection connection) throws SQLException {
-        connection.setAutoCommit(true);
+    public void releaseConnection(Connection connection) {
         connections.add(connection);
-        log.debug("Connection released, free connections: " + connections.size());
+        log.debug("Connection released, available connections: " + connections.size());
     }
 
     public void tierDown() throws SQLException {

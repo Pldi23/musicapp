@@ -1,4 +1,4 @@
-package by.platonov.music.repository;
+package by.platonov.music.repository.specification;
 
 import by.platonov.music.entity.User;
 
@@ -6,11 +6,11 @@ import by.platonov.music.entity.User;
  * @author dzmitryplatonov on 2019-06-08.
  * @version 0.0.1
  */
-public class SelectUserLogin implements SqlSpecification<User> {
+public class SelectUserLoginSpecification implements SqlSpecification<User> {
 
     private String login;
 
-    public SelectUserLogin(String login) {
+    public SelectUserLoginSpecification(String login) {
         this.login = login;
     }
 
