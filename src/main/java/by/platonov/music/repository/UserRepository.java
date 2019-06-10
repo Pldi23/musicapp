@@ -84,7 +84,7 @@ public class UserRepository implements Repository<User> {
             });
             result = true;
         } else {
-            log.debug("User: " + entity.getLogin() + " not found");
+            log.debug(entity.getLogin() + " not found");
         }
         return result;
     }

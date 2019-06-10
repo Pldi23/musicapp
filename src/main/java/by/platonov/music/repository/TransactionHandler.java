@@ -17,7 +17,7 @@ class TransactionHandler {
     private TransactionHandler() {
     }
 
-    public static void runInTransaction(Transaction transaction) throws RepositoryException {
+    static void runInTransaction(Transaction transaction) throws RepositoryException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection;
         try {
