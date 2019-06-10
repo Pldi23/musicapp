@@ -41,7 +41,7 @@ class UserRepositoryTest {
     @Test
     void addShouldIncreaseSize() throws RepositoryException {
         repository.add(newUser);
-        int actualSize = repository.size();
+        int actualSize = repository.count(() -> "login is not null");
         int expectedSize = 6;
         assertEquals(expectedSize, actualSize);
     }
@@ -49,7 +49,7 @@ class UserRepositoryTest {
     @Test
     void addSelectedUserShouldBeEqualToAddedUser() throws RepositoryException{
         repository.add(newUser);
-        User actual = repository.select(newUser.getLogin()).get();
+        User actual = repository.findOne(new SelectUserLoginSpecification(newUser.getLogin())).get();
         User expected = newUser;
         assertEquals(expected, actual);
     }
@@ -62,7 +62,7 @@ class UserRepositoryTest {
     @Test
     void addExistingUserShouldNotIncreaseSize() throws RepositoryException {
         repository.add(updatedUser);
-        int actualSize = repository.size();
+        int actualSize = repository.count(() -> "login is not null");
         int expectedSize = 5;
         assertEquals(expectedSize, actualSize);
     }
@@ -80,7 +80,7 @@ class UserRepositoryTest {
     @Test
     void removeShouldDecreaseSize() throws RepositoryException {
         repository.remove(selectedUser);
-        int actual = repository.size();
+        int actual = repository.count(() -> "login is not null");
         int expected = 4;
         assertEquals(expected, actual);
     }
@@ -88,7 +88,7 @@ class UserRepositoryTest {
     @Test
     void update() throws RepositoryException{
         repository.update(updatedUser);
-        User actualUser = repository.select("pldi4").get();
+        User actualUser = repository.findOne(() -> "login = 'pldi4'").get();
         User expectedUser = updatedUser;
         assertEquals(expectedUser, actualUser);
     }
@@ -96,7 +96,7 @@ class UserRepositoryTest {
     @Test
     void query() throws RepositoryException {
         //given
-        SqlSpecification<User> sqlSpecification = new SelectUserLoginSpecification("pldi3");
+        SqlSpecification sqlSpecification = new SelectUserLoginSpecification("pldi3");
         User user = selectedUser;
 
         //when
@@ -108,21 +108,21 @@ class UserRepositoryTest {
     }
 
     @Test
-    void size() throws RepositoryException {
+    void count() throws RepositoryException {
         int expected = 5;
-        assertEquals(expected, repository.size());
+        assertEquals(expected, repository.count(() -> "login is not null"));
     }
 
     @Test
-    void selectExistingUser() throws RepositoryException {
-        Optional<User> actual = repository.select("pldi3");
+    void findOneExistingUser() throws RepositoryException {
+        Optional<User> actual = repository.findOne(() -> "login = 'pldi3'");
         Optional<User> expected = Optional.of(selectedUser);
         assertEquals(expected, actual);
     }
 
     @Test
-    void selectNonExistingUser() throws RepositoryException {
-        Optional<User> actual = repository.select("pldi11");
+    void findOneNonExistingUser() throws RepositoryException {
+        Optional<User> actual = repository.findOne(() -> "login = 'pldi11'");
         Optional<User> expected = Optional.empty();
         assertEquals(expected, actual);
     }

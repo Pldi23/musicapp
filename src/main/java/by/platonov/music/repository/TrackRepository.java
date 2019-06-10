@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author dzmitryplatonov on 2019-06-07.
@@ -104,8 +105,18 @@ public class TrackRepository implements Repository<Track> {
     }
 
     @Override
-    public List<Track> query(SqlSpecification<Track> specification) {
+    public List<Track> query(SqlSpecification specification) throws RepositoryException {
         return null;
+    }
+
+    @Override
+    public Optional<Track> findOne(SqlSpecification sqlSpecification) throws RepositoryException {
+        return Optional.empty();
+    }
+
+    @Override
+    public int count(SqlSpecification sqlSpecification) throws RepositoryException {
+        return 0;
     }
 
 }

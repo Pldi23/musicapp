@@ -6,7 +6,7 @@ import by.platonov.music.entity.User;
  * @author dzmitryplatonov on 2019-06-08.
  * @version 0.0.1
  */
-public class SelectAllUserSpecification implements Specification<User>, SqlSpecification<User> {
+public class SelectLoginIsNotNullSpecification implements Specification<User>, SqlSpecification {
     @Override
     public boolean specify(User user) {
         return true;
@@ -14,6 +14,6 @@ public class SelectAllUserSpecification implements Specification<User>, SqlSpeci
 
     @Override
     public String toSqlClauses() {
-        return "login is not null";
+        return "login is not null;";
     }
 }

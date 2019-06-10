@@ -10,6 +10,9 @@ import java.sql.SQLException;
 /**
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
+ *
+ * execute-around method pattern
+ * @link https://www.voxxed.com/2015/02/transactions-using-execute-around-methodpattern-and-lambdas/
  */
 @Log4j2
 class TransactionHandler {
@@ -17,7 +20,7 @@ class TransactionHandler {
     private TransactionHandler() {
     }
 
-    static void runInTransaction(Transaction transaction) throws RepositoryException {
+    static <T> T transactional(Transaction<T> transaction) throws RepositoryException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection;
         try {
@@ -29,8 +32,9 @@ class TransactionHandler {
         }
         try {
             connection.setAutoCommit(false);
-            transaction.execute(connection);
+            T result = transaction.execute(connection);
             connection.commit();
+            return result;
         } catch (SQLException e) {
             try {
                 connection.rollback();
