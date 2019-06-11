@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -44,8 +45,8 @@ class TrackRepositoryTest {
             .build();
     Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
-            .singers(Set.of(Musician.builder().id(1).name("Newbie").singer(true).author(true).build()))
-            .authors(Set.of(Musician.builder().id(1).name("Newbie").singer(true).author(true).build()))
+            .singers(Set.of(Musician.builder().id(4).name("Saluki").singer(true).author(false).build()))
+            .authors(Set.of(Musician.builder().id(6).name("Bethowen").singer(false).author(true).build()))
             .build();
 
     @Test
@@ -136,6 +137,13 @@ class TrackRepositoryTest {
         Track actual = repository.findOne(new SelectIdSpecification(newTrackWithOldMusician.getId())).get();
         Track expected = newTrackWithOldMusician;
 
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void query() throws RepositoryException {
+        List<Track> actual = repository.query(() -> "where track.id = 1 or track.id = 6;");
+        List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }
 }

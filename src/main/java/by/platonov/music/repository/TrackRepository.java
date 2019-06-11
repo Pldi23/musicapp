@@ -10,10 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * @author dzmitryplatonov on 2019-06-07.
@@ -32,9 +30,10 @@ public class TrackRepository implements Repository<Track> {
                     "join singer_track on track.id = singer_track.track_id " +
                     "join author_track on track.id = author_track.track_id " +
                     "join musician singer on singer_track.singer_id = singer.id " +
-                    "join musician author on author_track.author_id = author.id " +
-                    "where track.";
+                    "join musician author on author_track.author_id = author.id ";
 
+    @Language("SQL")
+    private static final String SQL_SELECT_TRACK_SPECIFY = SQL_SELECT_TRACK + "where track.";
     @Language("SQL")
     private static final String SQL_COUNT_TRACK = "SELECT COUNT(*) FROM track WHERE ";
     @Language("SQL")
@@ -58,9 +57,6 @@ public class TrackRepository implements Repository<Track> {
     private static final String SQL_UPDATE_TRACK_SINGER_LINK = "UPDATE singer_track SET singer_id = ? WHERE track_id = ?;";
     @Language("SQL")
     private static final String SQL_UPDATE_TRACK_AUTHOR_LINK = "UPDATE author_track SET author_id = ? WHERE track_id = ?;";
-//    @Language("SQL")
-//    private static final String SQL_UPDATE_PLAYLIST_TRACK_LINK = "UPDATE playlist_track SET playlist_id, track_id = ? WHERE track_id = ?;";
-
 
     @Override
     public boolean add(Track track) throws RepositoryException {
@@ -77,24 +73,16 @@ public class TrackRepository implements Repository<Track> {
                     ResultSet resultSet = statementTrack.executeQuery();
                     resultSet.next();
                     long trackId = resultSet.getLong(1);
-                    track.getSingers().forEach(s -> {
-                        try {
-                            statementSingerLink.setLong(1, trackId);
-                            statementSingerLink.setLong(2, s.getId());
-                            statementSingerLink.execute();
-                        } catch (SQLException e) {
-                            log.error(e);
-                        }
-                    });
-                    track.getAuthors().forEach(a -> {
-                        try {
-                            statementAuthorLink.setLong(1, trackId);
-                            statementAuthorLink.setLong(2, a.getId());
-                            statementAuthorLink.execute();
-                        } catch (SQLException e) {
-                            log.error(e);
-                        }
-                    });
+                    for (Musician singer : track.getSingers()) {
+                        statementSingerLink.setLong(1, trackId);
+                        statementSingerLink.setLong(2, singer.getId());
+                        statementSingerLink.execute();
+                    }
+                    for (Musician author : track.getAuthors()) {
+                        statementAuthorLink.setLong(1, trackId);
+                        statementAuthorLink.setLong(2, author.getId());
+                        statementAuthorLink.execute();
+                    }
                     log.debug("Track: " + trackId + " added");
                     return true;
                 } catch (SQLException e) {
@@ -112,10 +100,10 @@ public class TrackRepository implements Repository<Track> {
         return TransactionHandler.transactional(connection -> {
             Optional<Track> optionalTrack = findOneNonTransactional(connection, new SelectIdSpecification(track.getId()));
             if (optionalTrack.isPresent()) {
-                try(PreparedStatement statementTrack = connection.prepareStatement(SQL_DELETE_TRACK);
-                    PreparedStatement statementSingerLink = connection.prepareStatement(SQL_DELETE_SINGER_LINK);
-                    PreparedStatement statementAuthorLink = connection.prepareStatement(SQL_DELETE_AUTHOR_LINK);
-                    PreparedStatement statementPlaylistLink = connection.prepareStatement(SQL_DELETE_PLAYLIST_LINK)) {
+                try (PreparedStatement statementTrack = connection.prepareStatement(SQL_DELETE_TRACK);
+                     PreparedStatement statementSingerLink = connection.prepareStatement(SQL_DELETE_SINGER_LINK);
+                     PreparedStatement statementAuthorLink = connection.prepareStatement(SQL_DELETE_AUTHOR_LINK);
+                     PreparedStatement statementPlaylistLink = connection.prepareStatement(SQL_DELETE_PLAYLIST_LINK)) {
                     statementTrack.setLong(1, track.getId());
                     statementSingerLink.setLong(1, track.getId());
                     statementAuthorLink.setLong(1, track.getId());
@@ -141,37 +129,29 @@ public class TrackRepository implements Repository<Track> {
         return TransactionHandler.transactional(connection -> {
             Optional<Track> optionalTrack = findOneNonTransactional(connection, new SelectIdSpecification(track.getId()));
             if (optionalTrack.isPresent()) {
-                try(PreparedStatement statementUpdateTrack = connection.prepareStatement(SQL_UPDATE_TRACK);
-                    PreparedStatement statementUpdateSingerLink = connection.prepareStatement(SQL_UPDATE_TRACK_SINGER_LINK);
-                    PreparedStatement statementUpdateAuthorLink = connection.prepareStatement(SQL_UPDATE_TRACK_AUTHOR_LINK)) {
+                try (PreparedStatement statementUpdateTrack = connection.prepareStatement(SQL_UPDATE_TRACK);
+                     PreparedStatement statementUpdateSingerLink = connection.prepareStatement(SQL_UPDATE_TRACK_SINGER_LINK);
+                     PreparedStatement statementUpdateAuthorLink = connection.prepareStatement(SQL_UPDATE_TRACK_AUTHOR_LINK)) {
                     statementUpdateTrack.setString(1, track.getName());
                     statementUpdateTrack.setLong(2, track.getGenre().getId());
                     statementUpdateTrack.setLong(3, track.getLength());
                     statementUpdateTrack.setDate(4, Date.valueOf(track.getReleaseDate()));
                     statementUpdateTrack.setLong(5, track.getId());
-                    track.getSingers().forEach(s -> {
-                        try {
-                            statementUpdateSingerLink.setLong(1, s.getId());
-                            statementUpdateSingerLink.setLong(2, track.getId());
-                            statementUpdateSingerLink.executeUpdate();
-                        } catch (SQLException e) {
-                            log.error(e);
-                        }
-                    });
-                    track.getAuthors().forEach(a -> {
-                        try {
-                            statementUpdateAuthorLink.setLong(1, a.getId());
-                            statementUpdateAuthorLink.setLong(2, track.getId());
-                            statementUpdateAuthorLink.executeUpdate();
-                        } catch (SQLException e) {
-                            log.error(e);
-                        }
-                    });
+                    for (Musician musician : track.getSingers()) {
+                        statementUpdateSingerLink.setLong(1, musician.getId());
+                        statementUpdateSingerLink.setLong(2, track.getId());
+                        statementUpdateSingerLink.executeUpdate();
+                    }
+                    for (Musician musician : track.getAuthors()) {
+                        statementUpdateAuthorLink.setLong(1, musician.getId());
+                        statementUpdateAuthorLink.setLong(2, track.getId());
+                        statementUpdateAuthorLink.executeUpdate();
+                    }
                     statementUpdateTrack.executeUpdate();
                     log.debug(track + " updated");
                     return true;
                 } catch (SQLException e) {
-                   throw new RepositoryException(e);
+                    throw new RepositoryException(e);
                 }
             } else {
                 log.debug("Track number: " + track.getId() + " was not found");
@@ -182,7 +162,44 @@ public class TrackRepository implements Repository<Track> {
 
     @Override
     public List<Track> query(SqlSpecification specification) throws RepositoryException {
-        return null;
+        return TransactionHandler.transactional(connection -> {
+            List<Track> tracks = new ArrayList<>();
+            try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK + specification.toSqlClauses());
+                 ResultSet resultSet = statement.executeQuery()) {
+                Set<Musician> singers = new HashSet<>();
+                Set<Musician> authors = new HashSet<>();
+                while (resultSet.next()) {
+                    singers.add(Musician.builder()
+                            .id(resultSet.getLong("singerid"))
+                            .name(resultSet.getString("singername"))
+                            .singer(resultSet.getBoolean("singer_is_singer"))
+                            .author(resultSet.getBoolean("singer_is_author"))
+                            .build());
+                    authors.add(Musician.builder()
+                            .id(resultSet.getLong("authorid"))
+                            .name(resultSet.getString("authorname"))
+                            .singer(resultSet.getBoolean("author_is_singer"))
+                            .author(resultSet.getBoolean("author_is_author"))
+                            .build());
+                    Track track = Track.builder()
+                            .id(resultSet.getLong("id"))
+                            .name(resultSet.getString("trackname"))
+                            .genre(Genre.builder()
+                                    .id(resultSet.getLong("genreid"))
+                                    .title(resultSet.getString("genre"))
+                                    .build())
+                            .length(resultSet.getLong("length"))
+                            .releaseDate(resultSet.getDate("release_date").toLocalDate())
+                            .singers(singers)
+                            .authors(authors)
+                            .build();
+                    tracks.add(track);
+                }
+            } catch (SQLException e) {
+                throw new RepositoryException(e);
+            }
+            return tracks;
+        });
     }
 
     @Override
@@ -204,7 +221,7 @@ public class TrackRepository implements Repository<Track> {
     }
 
     private Optional<Track> findOneNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK + specification.toSqlClauses());
+        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK_SPECIFY + specification.toSqlClauses());
              ResultSet resultSet = statement.executeQuery()) {
             Track track = null;
             if (resultSet.next()) {
