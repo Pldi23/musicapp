@@ -129,7 +129,8 @@ values ('Tim', 1, '2019-01-01', 180),
     ('i_Suss', 7, '2019-02-02', 195),
     ('Властелин калек', 1, '2018-12-01', 200),
     ('Зацепила', 1, '2019-03-11', 185),
-    ('Numb', 2, '2005-05-06', 211);
+    ('Numb', 2, '2005-05-06', 211),
+    ('Duet', 3, '2019-01-06', 201);
 insert into playlist_track (playlist_id, track_id) values (1, 4), (5, 1), (5, 2), (5, 3), (5, 4);
 insert into musician ("name", is_singer, is_author)
 values ('Avici', true, false),
@@ -139,5 +140,5 @@ values ('Avici', true, false),
        ('Linkin Park', true, true),
        ('Bethowen', false, true),
        ('Филипп Киркоров', true, true);
-insert into singer_track (track_id, singer_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5);
-insert into author_track (track_id, author_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5);
+insert into singer_track (track_id, singer_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 3), (6, 7);
+insert into author_track (track_id, author_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 7), (6, 6);

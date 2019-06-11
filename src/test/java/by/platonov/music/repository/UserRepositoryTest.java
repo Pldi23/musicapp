@@ -101,7 +101,7 @@ class UserRepositoryTest {
 
         //when
         List<User> actual = repository.query(sqlSpecification);
-        List<User> expected = Arrays.asList(user);
+        List<User> expected = List.of(user);
 
         //then
         assertEquals(expected, actual);

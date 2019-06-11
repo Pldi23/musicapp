@@ -1,8 +1,9 @@
 package by.platonov.music.repository;
 
-import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
+import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
+import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.SelectIdIsNotNullSpecification;
 import by.platonov.music.repository.specification.SelectIdSpecification;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,36 +16,33 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author dzmitryplatonov on 2019-06-09.
+ * @author dzmitryplatonov on 2019-06-11.
  * @version 0.0.1
  */
 @ExtendWith(DatabaseSetupExtension.class)
-class MusicianRepositoryTest {
+class GenreRepositoryTest {
 
-    MusicianRepository repository = MusicianRepository.getInstance();
-    Musician newMusician = Musician.builder().name("Bah").singer(false).author(true).build();
-    Musician existsMusician = Musician.builder().name("Linkin Park").singer(true).author(true).build();
-    Musician updatedMusician = Musician.builder().name("Linkin Park").singer(false).author(false).build();
+    GenreRepository repository = GenreRepository.getInstance();
+    Genre newGenre = Genre.builder().title("unknown").build();
+    Genre existsGenre = Genre.builder().id(1).title("pop").build();
+    Genre updatedGenre = Genre.builder().id(1).title("new").build();
 
-    @BeforeEach
-    void setUp() {
-        existsMusician.setId(5);
-    }
+
 
     @Test
     void addShouldBeTrue() throws RepositoryException {
-        assertTrue(repository.add(newMusician));
+        assertTrue(repository.add(newGenre));
     }
 
     @Test
     void addShouldBeFalse() throws RepositoryException {
-        assertFalse(repository.add(existsMusician));
+        assertFalse(repository.add(existsGenre));
     }
 
     @Test
     void addShouldIncreaseSize() throws RepositoryException {
         //when
-        repository.add(newMusician);
+        repository.add(newGenre);
 
         //then
         int actual = repository.count(new SelectIdIsNotNullSpecification());
@@ -55,7 +53,7 @@ class MusicianRepositoryTest {
     @Test
     void addShouldNotIncreaseSize() throws RepositoryException {
         //when
-        repository.add(existsMusician);
+        repository.add(existsGenre);
 
         //then
         int actual = repository.count(new SelectIdIsNotNullSpecification());
@@ -67,30 +65,30 @@ class MusicianRepositoryTest {
     void addSelectedMusicianShouldBeEqualAddedMusician() throws RepositoryException{
         //given
         long id = 8;
-        newMusician.setId(id);
+        newGenre.setId(id);
 
         //when
-        repository.add(newMusician);
-        Musician selectedMusician = repository.findOne(new SelectIdSpecification(id)).get();
+        repository.add(newGenre);
+        Genre selectedGenre = repository.findOne(new SelectIdSpecification(id)).get();
 
         //then
-        assertEquals(newMusician, selectedMusician);
+        assertEquals(newGenre, selectedGenre);
     }
 
     @Test
     void removeShouldBeTrue() throws RepositoryException {
-        assertTrue(repository.remove(existsMusician));
+        assertTrue(repository.remove(existsGenre));
     }
 
     @Test
     void removeShouldBeFalse() throws RepositoryException {
-        assertFalse(repository.remove(newMusician));
+        assertFalse(repository.remove(newGenre));
     }
 
     @Test
     void removeShouldDecreaseSize() throws RepositoryException {
         //when
-        repository.remove(existsMusician);
+        repository.remove(existsGenre);
 
         //then
         int actual = repository.count(new SelectIdIsNotNullSpecification());
@@ -101,7 +99,7 @@ class MusicianRepositoryTest {
     @Test
     void removeShouldNotDecreaseSize() throws RepositoryException {
         //when
-        repository.remove(newMusician);
+        repository.remove(newGenre);
 
         //then
         int actual = repository.count(new SelectIdIsNotNullSpecification());
@@ -111,22 +109,22 @@ class MusicianRepositoryTest {
 
     @Test
     void update() throws RepositoryException {
-        updatedMusician.setId(5);
-        repository.update(updatedMusician);
-        Musician actual = repository.findOne(new SelectIdSpecification(5)).get();
-        Musician expected = updatedMusician;
+        updatedGenre.setId(5);
+        repository.update(updatedGenre);
+        Genre actual = repository.findOne(new SelectIdSpecification(5)).get();
+        Genre expected = updatedGenre;
         assertEquals(expected, actual);
     }
 
     @Test
     void query() throws RepositoryException {
         //given
-        Musician musicianKirkorov = Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build();
-        Musician musicianBethowen = Musician.builder().id(6).name("Bethowen").singer(false).author(true).build();
+        Genre genreRetro = Genre.builder().id(6).title("retro").build();
+        Genre genreChanson = Genre.builder().id(7).title("chanson").build();
 
         //when
-        List<Musician> actual = repository.query(()-> " id > 5");
-        List<Musician> expected = Arrays.asList(musicianBethowen, musicianKirkorov);
+        List<Genre> actual = repository.query(()-> " id > 5");
+        List<Genre> expected = Arrays.asList(genreRetro, genreChanson);
 
         //then
         assertEquals(expected, actual);
@@ -135,7 +133,7 @@ class MusicianRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(() -> " id is not null");
         int expected = 7;
         assertEquals(expected, actual);
     }

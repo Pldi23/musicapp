@@ -1,25 +1,18 @@
 package by.platonov.music.repository;
 
-import by.platonov.music.db.ConnectionPool;
-import by.platonov.music.db.DatabaseConfiguration;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
-import org.intellij.lang.annotations.Language;
-import org.junit.Rule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.repository.specification.SelectIdIsNotNullSpecification;
+import by.platonov.music.repository.specification.SelectIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,23 +24,118 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrackRepositoryTest {
 
     private TrackRepository repository = new TrackRepository();
+    Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
+            .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
+            .singers(Set.of(Musician.builder().id(1).name("Avici").singer(true).author(false).build()))
+            .authors(Set.of(Musician.builder().id(1).name("Avici").singer(true).author(false).build())).build();
+
+    Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
+            .releaseDate(LocalDate.of(2019, 1,6))
+            .length(201)
+            .singers(Set.of(Musician.builder().id(3).name("Артур Пирожков").singer(true).author(false).build(),
+                    Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build()))
+            .authors(Set.of(Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build(),
+                    Musician.builder().id(6).name("Bethowen").singer(false).author(true).build()))
+            .build();
+    Track newTrackWitnNewMusician = Track.builder().id(10).name("Newcommer").genre(Genre.builder().id(1).title("pop").build())
+            .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
+            .singers(Set.of(Musician.builder().id(10).name("Newbie").singer(true).author(true).build()))
+            .authors(Set.of(Musician.builder().id(10).name("Newbie").singer(true).author(true).build()))
+            .build();
+    Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
+            .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
+            .singers(Set.of(Musician.builder().id(1).name("Newbie").singer(true).author(true).build()))
+            .authors(Set.of(Musician.builder().id(1).name("Newbie").singer(true).author(true).build()))
+            .build();
 
     @Test
-    void add() throws InterruptedException, SQLException {
-        Genre pop = Genre.builder().id(1).title("pop").build();
-        Musician singer = Musician.builder().id(5).name("Linkin Park").singer(true).author(true).build();
-        Track track = Track.builder().name("noname").genre(pop).singers(Arrays.asList(singer))
-                .authors(Arrays.asList(singer)).releaseDate(LocalDate.EPOCH).length(200).build();
-        track.setId(6);
-        assertTrue(repository.add(track));
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        @Language("SQL")
-        String count = "select count(*) from track where id > 0";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(count);
-        resultSet.next();
-        int expectedSize = resultSet.getInt(1);
-        assertEquals(6, expectedSize);
+    void addShouldBeTrue() throws RepositoryException {
+        assertTrue(repository.add(newTrackWithOldMusician));
+    }
+
+    @Test
+    void addShouldBeFalse() throws RepositoryException {
+        assertFalse(repository.add(trackTim));
+    }
+
+    @Test
+    void addShouldIncreaseSize() throws RepositoryException {
+        repository.add(newTrackWithOldMusician);
+        assertEquals(7, repository.count(new SelectIdIsNotNullSpecification()));
+    }
+
+    @Test
+    void addShouldNotIncreaseSize() throws RepositoryException {
+        repository.add(trackTim);
+        assertEquals(6, repository.count(new SelectIdIsNotNullSpecification()));
+    }
+
+    @Test
+    void addTrackAndCheckEqual() throws RepositoryException {
+        repository.add(trackDuet);
+        Track actual = repository.findOne(new SelectIdSpecification(trackDuet.getId())).get();
+        Track expected = trackDuet;
+    }
+
+    @Test
+    void findOne() throws RepositoryException {
+        Track track = repository.findOne(new SelectIdSpecification(1)).get();
+        assertEquals(trackTim, track);
+    }
+
+    @Test
+    void findOneFindTrackWithTwoAuthorsAndTwoSingers() throws RepositoryException {
+        Track track = repository.findOne(new SelectIdSpecification(6)).get();
+        assertEquals(trackDuet, track);
+    }
+
+    @Test
+    void findOneEmpty() throws RepositoryException{
+        Optional<Track> track = repository.findOne(new SelectIdSpecification(10));
+        assertEquals(Optional.empty(), track);
+    }
+
+    @Test
+    void count() throws RepositoryException{
+        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int expected = 6;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void removeShouldBeTrue() throws RepositoryException {
+        assertTrue(repository.remove(trackTim));
+    }
+
+    @Test
+    void removeShouldBeFalse() throws RepositoryException {
+        assertFalse(repository.remove(newTrackWithOldMusician));
+    }
+
+    @Test
+    void removeShouldDecreaseSize() throws RepositoryException {
+        repository.remove(trackTim);
+        assertEquals(5, repository.count(new SelectIdIsNotNullSpecification()));
+    }
+
+    @Test
+    void removeShouldNotDecreaseSize() throws RepositoryException {
+        repository.remove(newTrackWithOldMusician);
+        assertEquals(6, repository.count(new SelectIdIsNotNullSpecification()));
+    }
+
+    @Test
+    void update() throws RepositoryException {
+        //given
+        newTrackWithOldMusician.setId(1);
+
+        //when
+        repository.update(newTrackWithOldMusician);
+
+        //then
+        Track actual = repository.findOne(new SelectIdSpecification(newTrackWithOldMusician.getId())).get();
+        Track expected = newTrackWithOldMusician;
+
+        assertEquals(expected, actual);
     }
 }

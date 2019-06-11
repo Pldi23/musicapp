@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author dzmitryplatonov on 2019-06-09.
@@ -42,6 +44,28 @@ public class MusicianRepository implements Repository<Musician> {
     private static final String SQL_COUNT_MUSICIAN = "select count(*) from musician where ";
     @Language("SQL")
     private static final String SQL_SELECT_ONE = "SELECT id, name, is_singer, is_author FROM musician WHERE ";
+
+    private static MusicianRepository instance;
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean create = new AtomicBoolean(false);
+
+    private MusicianRepository() {
+    }
+
+    public static MusicianRepository getInstance() {
+        if (!create.get()) {
+            lock.lock();
+            try {
+                if (instance == null) {
+                    instance = new MusicianRepository();
+                    create.set(true);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+        return instance;
+    }
 
     @Override
     public boolean add(Musician musician) throws RepositoryException {

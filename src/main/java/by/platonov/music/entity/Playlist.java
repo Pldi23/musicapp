@@ -2,7 +2,7 @@ package by.platonov.music.entity;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author dzmitryplatonov on 2019-06-04.
@@ -13,6 +13,6 @@ public class Playlist extends Entity {
 
     private long id;
     private String name;
-    private List<Track> tracks;
+    private Set<Track> tracks;
 
 }

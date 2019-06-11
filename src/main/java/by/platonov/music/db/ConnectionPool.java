@@ -53,7 +53,7 @@ public class ConnectionPool {
     private static Connection createConnection() {
         DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
         try {
-            log.debug("Connection created");
+            log.trace("Connection created");
             return DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),
                     configuration.getPassword());
         } catch (SQLException e) {

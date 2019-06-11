@@ -1,5 +1,6 @@
 package by.platonov.music.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,9 +8,10 @@ import lombok.Data;
  * @version 0.0.1
  */
 @Data
+@AllArgsConstructor
 public class Media extends Entity {
 
     private long id;
-    private String path;
+//    private String path;
 
 }

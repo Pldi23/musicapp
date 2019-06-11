@@ -31,7 +31,7 @@
       "root": {
         "LevelRangeFilter": {
           "minLevel": "fatal",
-          "maxLevel": "trace",
+          "maxLevel": "debug",
           "onMatch": "ACCEPT",
           "onMismatch": "DENY"
         },
