@@ -21,5 +21,6 @@ public class User extends Guest{
     private Gender gender;
     private LocalDate birthDate;
     private String email;
+    //private Set<Playlist> playlists;
 
 }

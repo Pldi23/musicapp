@@ -22,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class MusicianRepositoryTest {
 
     MusicianRepository repository = MusicianRepository.getInstance();
-    Musician newMusician = Musician.builder().name("Bah").singer(false).author(true).build();
-    Musician existsMusician = Musician.builder().name("Linkin Park").singer(true).author(true).build();
-    Musician updatedMusician = Musician.builder().name("Linkin Park").singer(false).author(false).build();
+    Musician newMusician = Musician.builder().name("Bah").build();
+    Musician existsMusician = Musician.builder().name("Linkin Park").build();
+    Musician updatedMusician = Musician.builder().name("Linkin Park").build();
 
     @BeforeEach
     void setUp() {
@@ -121,8 +121,8 @@ class MusicianRepositoryTest {
     @Test
     void query() throws RepositoryException {
         //given
-        Musician musicianKirkorov = Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build();
-        Musician musicianBethowen = Musician.builder().id(6).name("Bethowen").singer(false).author(true).build();
+        Musician musicianKirkorov = Musician.builder().id(7).name("Филипп Киркоров").build();
+        Musician musicianBethowen = Musician.builder().id(6).name("Bethowen").build();
 
         //when
         List<Musician> actual = repository.query(()-> " id > 5");

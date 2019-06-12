@@ -13,7 +13,5 @@ public class Musician extends Entity {
 
     private long id;
     private String name;
-    private boolean singer;
-    private boolean author;
 
 }

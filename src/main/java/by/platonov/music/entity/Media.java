@@ -12,6 +12,7 @@ import lombok.Data;
 public class Media extends Entity {
 
     private long id;
+
 //    private String path;
 
 }

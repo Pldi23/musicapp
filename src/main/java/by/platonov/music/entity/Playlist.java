@@ -1,5 +1,6 @@
 package by.platonov.music.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
  * @version 0.0.1
  */
 @Data
+@Builder
 public class Playlist extends Entity {
 
     private long id;

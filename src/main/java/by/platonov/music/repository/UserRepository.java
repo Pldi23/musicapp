@@ -37,14 +37,7 @@ public class UserRepository implements Repository<User> {
                     "SET password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, date_of_birth = ? " +
                     "WHERE login = ?;";
     @Language("SQL")
-    private static final String SQL_QUERY =
-                    "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth " +
-                    "FROM application_user " +
-                    "WHERE ";
-    @Language("SQL")
-    private static final String SQL_COUNT = "SELECT count(*) " +
-                                            "FROM application_user " +
-                                            "WHERE ";
+    private static final String SQL_COUNT = "SELECT count(*) FROM application_user WHERE ";
     @Language("SQL")
     private static final String SQL_SELECT =
                     "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth " +
@@ -136,19 +129,10 @@ public class UserRepository implements Repository<User> {
     public List<User> query(SqlSpecification specification) throws RepositoryException {
         return TransactionHandler.transactional(connection -> {
             List<User> users = new ArrayList<>();
-            try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY + specification.toSqlClauses());
+            try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    User user = User.builder()
-                            .login(resultSet.getString("login"))
-                            .password(resultSet.getString("password"))
-                            .admin(resultSet.getBoolean("is_admin"))
-                            .firstname(resultSet.getString("first_name"))
-                            .lastname(resultSet.getString("last_name"))
-                            .email(resultSet.getString("e_mail"))
-                            .birthDate(resultSet.getDate("date_of_birth").toLocalDate())
-                            .gender(resultSet.getBoolean("gender") ? Gender.MALE : Gender.FEMALE)
-                            .build();
+                    User user = buildUser(resultSet);
                     log.trace(user + " added to query list");
                     users.add(user);
                 }
@@ -181,23 +165,22 @@ public class UserRepository implements Repository<User> {
     private Optional<User> findOneNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT + specification.toSqlClauses());
              ResultSet resultSetUser = statement.executeQuery()) {
-            if (resultSetUser.next()) {
-                User user = User.builder()
-                        .login(resultSetUser.getString(1))
-                        .password(resultSetUser.getString(2))
-                        .admin(resultSetUser.getBoolean(3))
-                        .firstname(resultSetUser.getString(4))
-                        .lastname(resultSetUser.getString(5))
-                        .email(resultSetUser.getString(6))
-                        .gender(resultSetUser.getBoolean(7) ? Gender.MALE : Gender.FEMALE)
-                        .birthDate(resultSetUser.getDate(8).toLocalDate())
-                        .build();
-                return Optional.of(user);
-            } else {
-                return Optional.empty();
-            }
+            return resultSetUser.next() ? Optional.of(buildUser(resultSetUser)) : Optional.empty();
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }
+    }
+
+    private User buildUser(ResultSet resultSet) throws SQLException {
+        return User.builder()
+                .login(resultSet.getString("login"))
+                .password(resultSet.getString("password"))
+                .admin(resultSet.getBoolean("is_admin"))
+                .firstname(resultSet.getString("first_name"))
+                .lastname(resultSet.getString("last_name"))
+                .email(resultSet.getString("e_mail"))
+                .birthDate(resultSet.getDate("date_of_birth").toLocalDate())
+                .gender(resultSet.getBoolean("gender") ? Gender.MALE : Gender.FEMALE)
+                .build();
     }
 }

@@ -2,6 +2,7 @@ package by.platonov.music.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
  * @version 0.0.1
  */
 @Data
-public class Track extends Media {
+public class Track extends Media implements Comparable<Track> {
 
     private String name;
     private Set<Musician> authors;
@@ -29,5 +30,10 @@ public class Track extends Media {
         this.genre = genre;
         this.releaseDate = releaseDate;
         this.length = length;
+    }
+
+    @Override
+    public int compareTo(@NotNull Track o) {
+        return Long.compare(this.getId(), o.getId());
     }
 }

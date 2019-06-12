@@ -25,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MusicianRepository implements Repository<Musician> {
 
     @Language("SQL")
-    private static final String SQL_INSERT_MUSICIAN = "insert into musician (name, is_singer, is_author) values (?, ?, ?);";
+    private static final String SQL_INSERT_MUSICIAN = "INSERT INTO musician (name) VALUES (?);";
     @Language("SQL")
     private static final String SQL_DELETE_MUSICIAN = "DELETE FROM musician WHERE id = ?";
     @Language("SQL")
@@ -34,16 +34,14 @@ public class MusicianRepository implements Repository<Musician> {
     private static final String SQL_DELETE_SINGER_LINK = "DELETE FROM singer_track WHERE singer_id = ?";
     @Language("SQL")
     private static final String SQL_UPDATE_MUSICIAN = "UPDATE musician " +
-                                                        "SET name = ?, is_singer = ?, is_author = ? " +
+                                                        "SET name = ? " +
                                                         "WHERE id = ?;";
     @Language("SQL")
-    private static final String SQL_QUERY_MUSICIAN = "SELECT id, name, is_singer, is_author " +
+    private static final String SQL_QUERY_MUSICIAN = "SELECT id, name " +
                                                         "FROM musician " +
                                                         "WHERE ";
     @Language("SQL")
-    private static final String SQL_COUNT_MUSICIAN = "select count(*) from musician where ";
-    @Language("SQL")
-    private static final String SQL_SELECT_ONE = "SELECT id, name, is_singer, is_author FROM musician WHERE ";
+    private static final String SQL_COUNT_MUSICIAN = "SELECT count(*) FROM musician WHERE ";
 
     private static MusicianRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -75,8 +73,6 @@ public class MusicianRepository implements Repository<Musician> {
             if (optionalMusician.isEmpty()) {
                 try (PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MUSICIAN)) {
                     statement.setString(1, musician.getName());
-                    statement.setBoolean(2, musician.isSinger());
-                    statement.setBoolean(3, musician.isAuthor());
                     statement.execute();
                     log.debug(musician + " has been added");
                     return true;
@@ -125,9 +121,7 @@ public class MusicianRepository implements Repository<Musician> {
             if (optionalMusician.isPresent()) {
                 try(PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_MUSICIAN)) {
                     statement.setString(1, musician.getName());
-                    statement.setBoolean(2, musician.isSinger());
-                    statement.setBoolean(3, musician.isAuthor());
-                    statement.setLong(4, musician.getId());
+                    statement.setLong(2, musician.getId());
                     statement.execute();
                     log.debug(musician + " has been updated");
                     return true;
@@ -148,12 +142,7 @@ public class MusicianRepository implements Repository<Musician> {
             try(PreparedStatement statement = connection.prepareStatement(SQL_QUERY_MUSICIAN + specification.toSqlClauses());
                 ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Musician musician = Musician.builder()
-                            .id(resultSet.getLong("id"))
-                            .name(resultSet.getString("name"))
-                            .singer(resultSet.getBoolean("is_singer"))
-                            .author(resultSet.getBoolean("is_author"))
-                            .build();
+                    Musician musician = buildMusician(resultSet);
                     musicians.add(musician);
                     log.debug(musician + " added to query list");
                 }
@@ -184,20 +173,18 @@ public class MusicianRepository implements Repository<Musician> {
     }
 
     private Optional<Musician> findOneNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        try(PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ONE + specification.toSqlClauses());
+        try(PreparedStatement statement = connection.prepareStatement(SQL_QUERY_MUSICIAN + specification.toSqlClauses());
             ResultSet resultSet = statement.executeQuery()) {
-            if (resultSet.next()) {
-                return Optional.of(Musician.builder()
-                        .id(resultSet.getLong("id"))
-                        .name(resultSet.getString("name"))
-                        .singer(resultSet.getBoolean("is_singer"))
-                        .author(resultSet.getBoolean("is_author"))
-                        .build());
-            } else {
-                return Optional.empty();
-            }
+            return resultSet.next() ? Optional.of(buildMusician(resultSet)) : Optional.empty();
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }
+    }
+
+    private Musician buildMusician(ResultSet resultSet) throws SQLException {
+        return Musician.builder()
+                .id(resultSet.getLong("id"))
+                .name(resultSet.getString("name"))
+                .build();
     }
 }

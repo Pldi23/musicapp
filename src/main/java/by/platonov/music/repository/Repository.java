@@ -1,5 +1,6 @@
 package by.platonov.music.repository;
 
+import by.platonov.music.entity.Entity;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.SqlSpecification;
 

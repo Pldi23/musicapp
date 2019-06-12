@@ -27,26 +27,26 @@ class TrackRepositoryTest {
     private TrackRepository repository = new TrackRepository();
     Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
-            .singers(Set.of(Musician.builder().id(1).name("Avici").singer(true).author(false).build()))
-            .authors(Set.of(Musician.builder().id(1).name("Avici").singer(true).author(false).build())).build();
+            .singers(Set.of(Musician.builder().id(1).name("Avici").build()))
+            .authors(Set.of(Musician.builder().id(1).name("Avici").build())).build();
 
     Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
             .releaseDate(LocalDate.of(2019, 1,6))
             .length(201)
-            .singers(Set.of(Musician.builder().id(3).name("Артур Пирожков").singer(true).author(false).build(),
-                    Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build()))
-            .authors(Set.of(Musician.builder().id(7).name("Филипп Киркоров").singer(true).author(true).build(),
-                    Musician.builder().id(6).name("Bethowen").singer(false).author(true).build()))
+            .singers(Set.of(Musician.builder().id(3).name("Артур Пирожков").build(),
+                    Musician.builder().id(7).name("Филипп Киркоров").build()))
+            .authors(Set.of(Musician.builder().id(7).name("Филипп Киркоров").build(),
+                    Musician.builder().id(6).name("Bethowen").build()))
             .build();
     Track newTrackWitnNewMusician = Track.builder().id(10).name("Newcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
-            .singers(Set.of(Musician.builder().id(10).name("Newbie").singer(true).author(true).build()))
-            .authors(Set.of(Musician.builder().id(10).name("Newbie").singer(true).author(true).build()))
+            .singers(Set.of(Musician.builder().id(10).name("Newbie").build()))
+            .authors(Set.of(Musician.builder().id(10).name("Newbie").build()))
             .build();
     Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
-            .singers(Set.of(Musician.builder().id(4).name("Saluki").singer(true).author(false).build()))
-            .authors(Set.of(Musician.builder().id(6).name("Bethowen").singer(false).author(true).build()))
+            .singers(Set.of(Musician.builder().id(4).name("Saluki").build()))
+            .authors(Set.of(Musician.builder().id(6).name("Bethowen").build()))
             .build();
 
     @Test
@@ -142,7 +142,7 @@ class TrackRepositoryTest {
 
     @Test
     void query() throws RepositoryException {
-        List<Track> actual = repository.query(() -> "where track.id = 1 or track.id = 6;");
+        List<Track> actual = repository.query(() -> "track.id = 1 or track.id = 6;");
         List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }

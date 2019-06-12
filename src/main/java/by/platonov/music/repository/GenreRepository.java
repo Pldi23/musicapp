@@ -36,8 +36,6 @@ public class GenreRepository implements Repository<Genre> {
     private static final String SQL_QUERY_GENRE = "SELECT id, name FROM genre WHERE ";
     @Language("SQL")
     private static final String SQL_COUNT = "SELECT COUNT(*) FROM genre WHERE ";
-    @Language("SQL")
-    private static final String SQL_SELECT_ONE = "SELECT id, name FROM genre WHERE ";
 
     private static GenreRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -130,10 +128,7 @@ public class GenreRepository implements Repository<Genre> {
             try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GENRE + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Genre genre = Genre.builder()
-                            .id(resultSet.getLong("id"))
-                            .title(resultSet.getString("name"))
-                            .build();
+                    Genre genre = buildGenre(resultSet);
                     log.debug(genre + " has been added to query list");
                     genres.add(genre);
                 }
@@ -164,18 +159,18 @@ public class GenreRepository implements Repository<Genre> {
     }
 
     private Optional<Genre> findOneNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ONE + specification.toSqlClauses());
+        try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GENRE + specification.toSqlClauses());
              ResultSet resultSet = statement.executeQuery()) {
-            if (resultSet.next()) {
-                return Optional.of(Genre.builder()
-                        .id(resultSet.getLong("id"))
-                        .title(resultSet.getString("name"))
-                        .build());
-            } else {
-                return Optional.empty();
-            }
+            return resultSet.next() ? Optional.of(buildGenre(resultSet)) : Optional.empty();
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }
+    }
+
+    private Genre buildGenre(ResultSet resultSet) throws SQLException {
+        return Genre.builder()
+                .id(resultSet.getLong("id"))
+                .title(resultSet.getString("name"))
+                .build();
     }
 }

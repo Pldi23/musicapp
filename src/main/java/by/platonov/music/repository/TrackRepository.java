@@ -23,17 +23,17 @@ public class TrackRepository implements Repository<Track> {
     @Language("SQL")
     private static final String SQL_SELECT_TRACK =
             "select track.id, track.name as trackName, genre.id as genreId, genre.name as genre, track.length, track.release_date, " +
-                    "singer.id singerId, singer.name singerName, singer.is_singer singer_is_singer, singer.is_author singer_is_author, " +
-                    "author.id authorId, author.name authorName, author.is_singer author_is_singer, author.is_author author_is_author " +
+                    "singer.id singerId, singer.name singerName, " +
+                    "author.id authorId, author.name authorName " +
                     "from track " +
                     "join genre on track.genre_id = genre.id " +
                     "join singer_track on track.id = singer_track.track_id " +
                     "join author_track on track.id = author_track.track_id " +
                     "join musician singer on singer_track.singer_id = singer.id " +
-                    "join musician author on author_track.author_id = author.id ";
+                    "join musician author on author_track.author_id = author.id WHERE ";
 
     @Language("SQL")
-    private static final String SQL_SELECT_TRACK_SPECIFY = SQL_SELECT_TRACK + "where track.";
+    private static final String SQL_SELECT_TRACK_SPECIFY = SQL_SELECT_TRACK + "track.";
     @Language("SQL")
     private static final String SQL_COUNT_TRACK = "SELECT COUNT(*) FROM track WHERE ";
     @Language("SQL")
@@ -166,35 +166,20 @@ public class TrackRepository implements Repository<Track> {
             List<Track> tracks = new ArrayList<>();
             try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
-                Set<Musician> singers = new HashSet<>();
-                Set<Musician> authors = new HashSet<>();
+                Map<Long, Track> table = new HashMap<>();
                 while (resultSet.next()) {
-                    singers.add(Musician.builder()
-                            .id(resultSet.getLong("singerid"))
-                            .name(resultSet.getString("singername"))
-                            .singer(resultSet.getBoolean("singer_is_singer"))
-                            .author(resultSet.getBoolean("singer_is_author"))
-                            .build());
-                    authors.add(Musician.builder()
-                            .id(resultSet.getLong("authorid"))
-                            .name(resultSet.getString("authorname"))
-                            .singer(resultSet.getBoolean("author_is_singer"))
-                            .author(resultSet.getBoolean("author_is_author"))
-                            .build());
-                    Track track = Track.builder()
-                            .id(resultSet.getLong("id"))
-                            .name(resultSet.getString("trackname"))
-                            .genre(Genre.builder()
-                                    .id(resultSet.getLong("genreid"))
-                                    .title(resultSet.getString("genre"))
-                                    .build())
-                            .length(resultSet.getLong("length"))
-                            .releaseDate(resultSet.getDate("release_date").toLocalDate())
-                            .singers(singers)
-                            .authors(authors)
-                            .build();
-                    tracks.add(track);
+                    if (!table.containsKey(resultSet.getLong("id"))) {
+                        Track track = buildTrack(resultSet);
+                        table.put(track.getId(), track);
+                    } else {
+                        Musician singer = buildSinger(resultSet);
+                        Musician author = buildAuthor(resultSet);
+                        table.get(resultSet.getLong("id")).getSingers().add(singer);
+                        table.get(resultSet.getLong("id")).getAuthors().add(author);
+                    }
                 }
+                table.forEach((id, track) -> tracks.add(track));
+
             } catch (SQLException e) {
                 throw new RepositoryException(e);
             }
@@ -225,35 +210,13 @@ public class TrackRepository implements Repository<Track> {
              ResultSet resultSet = statement.executeQuery()) {
             Track track = null;
             if (resultSet.next()) {
-                Set<Musician> singers = new HashSet<>();
-                Set<Musician> authors = new HashSet<>();
-                do {
-                    singers.add(Musician.builder()
-                            .id(resultSet.getLong("singerid"))
-                            .name(resultSet.getString("singername"))
-                            .singer(resultSet.getBoolean("singer_is_singer"))
-                            .author(resultSet.getBoolean("singer_is_author"))
-                            .build());
-                    authors.add(Musician.builder()
-                            .id(resultSet.getLong("authorid"))
-                            .name(resultSet.getString("authorname"))
-                            .singer(resultSet.getBoolean("author_is_singer"))
-                            .author(resultSet.getBoolean("author_is_author"))
-                            .build());
-                    track = Track.builder()
-                            .id(resultSet.getLong("id"))
-                            .name(resultSet.getString("trackname"))
-                            .genre(Genre.builder()
-                                    .id(resultSet.getLong("genreid"))
-                                    .title(resultSet.getString("genre"))
-                                    .build())
-                            .length(resultSet.getLong("length"))
-                            .releaseDate(resultSet.getDate("release_date").toLocalDate())
-                            .singers(singers)
-                            .authors(authors)
-                            .build();
+                track = buildTrack(resultSet);
+                while (resultSet.next()) {
+                    Musician singer = buildSinger(resultSet);
+                    Musician author = buildAuthor(resultSet);
+                    track.getSingers().add(singer);
+                    track.getAuthors().add(author);
                 }
-                while (resultSet.next());
             }
             return Optional.ofNullable(track);
         } catch (SQLException e) {
@@ -261,4 +224,39 @@ public class TrackRepository implements Repository<Track> {
         }
     }
 
+    private Track buildTrack(ResultSet resultSet) throws SQLException {
+        Set<Musician> singers = new HashSet<>();
+        Set<Musician> authors = new HashSet<>();
+        Track track = Track.builder()
+                .id(resultSet.getLong("id"))
+                .name(resultSet.getString("trackname"))
+                .genre(Genre.builder()
+                        .id(resultSet.getLong("genreid"))
+                        .title(resultSet.getString("genre"))
+                        .build())
+                .length(resultSet.getLong("length"))
+                .releaseDate(resultSet.getDate("release_date").toLocalDate())
+                .singers(singers)
+                .authors(authors)
+                .build();
+        Musician singer = buildSinger(resultSet);
+        singers.add(singer);
+        Musician author = buildAuthor(resultSet);
+        authors.add(author);
+        return track;
+    }
+
+    private Musician buildSinger(ResultSet resultSet) throws SQLException {
+        return Musician.builder()
+                .id(resultSet.getLong("singerid"))
+                .name(resultSet.getString("singername"))
+                .build();
+    }
+
+    private Musician buildAuthor(ResultSet resultSet) throws SQLException {
+        return Musician.builder()
+                .id(resultSet.getLong("authorid"))
+                .name(resultSet.getString("authorname"))
+                .build();
+    }
 }
