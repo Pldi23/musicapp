@@ -1,6 +1,5 @@
 package by.platonov.music.repository;
 
-import by.platonov.music.entity.Entity;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.SqlSpecification;
 
@@ -18,6 +17,5 @@ public interface Repository<T> {
 
     List<T> query(SqlSpecification specification) throws RepositoryException;
 
-    Optional<T> findOne(SqlSpecification specification) throws RepositoryException;
     int count(SqlSpecification specification) throws RepositoryException;
 }

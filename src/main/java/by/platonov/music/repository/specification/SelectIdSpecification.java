@@ -7,13 +7,15 @@ package by.platonov.music.repository.specification;
 public class SelectIdSpecification implements SqlSpecification {
 
     private long id;
+    private String table;
 
-    public SelectIdSpecification(long id) {
+    public SelectIdSpecification(long id, String table) {
         this.id = id;
+        this.table = table;
     }
 
     @Override
     public String toSqlClauses() {
-        return String.format("id = %d", id);
+        return String.format("where %s.id = %d", table, id);
     }
 }

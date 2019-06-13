@@ -2,11 +2,9 @@ package by.platonov.music.repository;
 
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Genre;
-import by.platonov.music.entity.Musician;
 import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.repository.specification.SelectIdIsNotNullSpecification;
-import by.platonov.music.repository.specification.SelectIdSpecification;
-import org.junit.jupiter.api.BeforeEach;
+import by.platonov.music.repository.specification.GenreIdSpecification;
+import by.platonov.music.repository.specification.IdIsNotNullSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -45,7 +43,7 @@ class GenreRepositoryTest {
         repository.add(newGenre);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 8;
         assertEquals(expected, actual);
     }
@@ -56,7 +54,7 @@ class GenreRepositoryTest {
         repository.add(existsGenre);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 7;
         assertEquals(expected, actual);
     }
@@ -69,7 +67,7 @@ class GenreRepositoryTest {
 
         //when
         repository.add(newGenre);
-        Genre selectedGenre = repository.findOne(new SelectIdSpecification(id)).get();
+        Genre selectedGenre = repository.query(new GenreIdSpecification(newGenre.getId())).get(0);
 
         //then
         assertEquals(newGenre, selectedGenre);
@@ -91,7 +89,7 @@ class GenreRepositoryTest {
         repository.remove(existsGenre);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 6;
         assertEquals(expected, actual);
     }
@@ -102,7 +100,7 @@ class GenreRepositoryTest {
         repository.remove(newGenre);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 7;
         assertEquals(expected, actual);
     }
@@ -111,7 +109,7 @@ class GenreRepositoryTest {
     void update() throws RepositoryException {
         updatedGenre.setId(5);
         repository.update(updatedGenre);
-        Genre actual = repository.findOne(new SelectIdSpecification(5)).get();
+        Genre actual = repository.query(new GenreIdSpecification(updatedGenre.getId())).get(0);
         Genre expected = updatedGenre;
         assertEquals(expected, actual);
     }
@@ -123,7 +121,7 @@ class GenreRepositoryTest {
         Genre genreChanson = Genre.builder().id(7).title("chanson").build();
 
         //when
-        List<Genre> actual = repository.query(()-> " id > 5");
+        List<Genre> actual = repository.query(()-> "where id > 5");
         List<Genre> expected = Arrays.asList(genreRetro, genreChanson);
 
         //then
@@ -133,7 +131,7 @@ class GenreRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        int actual = repository.count(() -> " id is not null");
+        int actual = repository.count(() -> "where id is not null");
         int expected = 7;
         assertEquals(expected, actual);
     }

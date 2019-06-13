@@ -2,7 +2,9 @@ package by.platonov.music.repository;
 
 import by.platonov.music.entity.Genre;
 import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.repository.specification.SelectIdSpecification;
+import by.platonov.music.repository.mapper.AbstractRowMapper;
+import by.platonov.music.repository.mapper.GenreRowMapper;
+import by.platonov.music.repository.specification.GenreIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
@@ -13,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -33,9 +34,9 @@ public class GenreRepository implements Repository<Genre> {
     @Language("SQL")
     private static final String SQL_UPDATE_GENRE = "UPDATE genre SET name = ? WHERE id = ?;";
     @Language("SQL")
-    private static final String SQL_QUERY_GENRE = "SELECT id, name FROM genre WHERE ";
+    private static final String SQL_QUERY_GENRE = "SELECT id genreid, name genre FROM genre ";
     @Language("SQL")
-    private static final String SQL_COUNT = "SELECT COUNT(*) FROM genre WHERE ";
+    private static final String SQL_COUNT = "SELECT COUNT(*) FROM genre ";
 
     private static GenreRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -61,9 +62,8 @@ public class GenreRepository implements Repository<Genre> {
 
     @Override
     public boolean add(Genre genre) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> {
-            Optional<Genre> optionalGenre = findOneNonTransactional(connection, new SelectIdSpecification(genre.getId()));
-            if (optionalGenre.isEmpty()) {
+        return TransactionHandler.getInstance().transactional(connection -> {
+            if (queryNonTransactional(connection, new GenreIdSpecification(genre.getId())).isEmpty()) {
                 try (PreparedStatement statement = connection.prepareStatement(SQL_INSERT_GENRE)) {
                     statement.setString(1, genre.getTitle());
                     statement.execute();
@@ -81,9 +81,8 @@ public class GenreRepository implements Repository<Genre> {
 
     @Override
     public boolean remove(Genre genre) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> {
-            Optional<Genre> optionalGenre = findOneNonTransactional(connection, new SelectIdSpecification(genre.getId()));
-            if (optionalGenre.isPresent()) {
+        return TransactionHandler.getInstance().transactional(connection -> {
+            if (!queryNonTransactional(connection, new GenreIdSpecification(genre.getId())).isEmpty()) {
                 try (PreparedStatement statementGenre = connection.prepareStatement(SQL_DELETE_GENRE);
                     PreparedStatement statementLink = connection.prepareStatement(SQL_DELETE_LINK)) {
                     statementGenre.setLong(1, genre.getId());
@@ -103,9 +102,8 @@ public class GenreRepository implements Repository<Genre> {
 
     @Override
     public boolean update(Genre genre) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> {
-            Optional<Genre> optionalGenre = findOneNonTransactional(connection, new SelectIdSpecification(genre.getId()));
-            if (optionalGenre.isPresent()) {
+        return TransactionHandler.getInstance().transactional(connection -> {
+            if (!queryNonTransactional(connection, new GenreIdSpecification(genre.getId())).isEmpty()) {
                 try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_GENRE)) {
                     statement.setString(1, genre.getTitle());
                     statement.setLong(2, genre.getId());
@@ -123,26 +121,29 @@ public class GenreRepository implements Repository<Genre> {
 
     @Override
     public List<Genre> query(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> {
-            List<Genre> genres = new ArrayList<>();
-            try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GENRE + specification.toSqlClauses());
-                 ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Genre genre = buildGenre(resultSet);
-                    log.debug(genre + " has been added to query list");
-                    genres.add(genre);
-                }
-            } catch (SQLException e) {
-                throw new RepositoryException(e);
+        return TransactionHandler.getInstance().transactional(connection -> queryNonTransactional(connection, specification));
+    }
+
+    private List<Genre> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
+        List<Genre> genres = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GENRE + specification.toSqlClauses());
+             ResultSet resultSet = statement.executeQuery()) {
+            AbstractRowMapper<Genre> mapper = new GenreRowMapper();
+            while (resultSet.next()) {
+                Genre genre = mapper.map(resultSet);
+                log.debug(genre + " has been added to query list");
+                genres.add(genre);
             }
-            log.debug(genres.size() + " genres selected");
-            return genres;
-        });
+        } catch (SQLException e) {
+            throw new RepositoryException(e);
+        }
+        log.debug(genres.size() + " genres selected");
+        return genres;
     }
 
     @Override
     public int count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> {
+        return TransactionHandler.getInstance().transactional(connection -> {
             try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -151,26 +152,5 @@ public class GenreRepository implements Repository<Genre> {
                 throw new RepositoryException(e);
             }
         });
-    }
-
-    @Override
-    public Optional<Genre> findOne(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.transactional(connection -> findOneNonTransactional(connection, specification));
-    }
-
-    private Optional<Genre> findOneNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GENRE + specification.toSqlClauses());
-             ResultSet resultSet = statement.executeQuery()) {
-            return resultSet.next() ? Optional.of(buildGenre(resultSet)) : Optional.empty();
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
-    private Genre buildGenre(ResultSet resultSet) throws SQLException {
-        return Genre.builder()
-                .id(resultSet.getLong("id"))
-                .title(resultSet.getString("name"))
-                .build();
     }
 }

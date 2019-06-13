@@ -3,8 +3,8 @@ package by.platonov.music.repository;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Musician;
-import by.platonov.music.repository.specification.SelectIdIsNotNullSpecification;
-import by.platonov.music.repository.specification.SelectIdSpecification;
+import by.platonov.music.repository.specification.MusicianIdSpecification;
+import by.platonov.music.repository.specification.IdIsNotNullSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +47,7 @@ class MusicianRepositoryTest {
         repository.add(newMusician);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 8;
         assertEquals(expected, actual);
     }
@@ -58,7 +58,7 @@ class MusicianRepositoryTest {
         repository.add(existsMusician);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 7;
         assertEquals(expected, actual);
     }
@@ -71,7 +71,7 @@ class MusicianRepositoryTest {
 
         //when
         repository.add(newMusician);
-        Musician selectedMusician = repository.findOne(new SelectIdSpecification(id)).get();
+        Musician selectedMusician = repository.query(new MusicianIdSpecification(newMusician.getId())).get(0);
 
         //then
         assertEquals(newMusician, selectedMusician);
@@ -93,7 +93,7 @@ class MusicianRepositoryTest {
         repository.remove(existsMusician);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 6;
         assertEquals(expected, actual);
     }
@@ -104,7 +104,7 @@ class MusicianRepositoryTest {
         repository.remove(newMusician);
 
         //then
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 7;
         assertEquals(expected, actual);
     }
@@ -113,7 +113,7 @@ class MusicianRepositoryTest {
     void update() throws RepositoryException {
         updatedMusician.setId(5);
         repository.update(updatedMusician);
-        Musician actual = repository.findOne(new SelectIdSpecification(5)).get();
+        Musician actual = repository.query(new MusicianIdSpecification(updatedMusician.getId())).get(0);
         Musician expected = updatedMusician;
         assertEquals(expected, actual);
     }
@@ -125,7 +125,7 @@ class MusicianRepositoryTest {
         Musician musicianBethowen = Musician.builder().id(6).name("Bethowen").build();
 
         //when
-        List<Musician> actual = repository.query(()-> " id > 5");
+        List<Musician> actual = repository.query(()-> "where id > 5");
         List<Musician> expected = Arrays.asList(musicianBethowen, musicianKirkorov);
 
         //then
@@ -135,7 +135,7 @@ class MusicianRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        int actual = repository.count(new SelectIdIsNotNullSpecification());
+        int actual = repository.count(new IdIsNotNullSpecification());
         int expected = 7;
         assertEquals(expected, actual);
     }

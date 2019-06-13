@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author dzmitryplatonov on 2019-06-04.
@@ -21,6 +22,6 @@ public class User extends Guest{
     private Gender gender;
     private LocalDate birthDate;
     private String email;
-    //private Set<Playlist> playlists;
+    private Set<Playlist> playlists;
 
 }
