@@ -3,17 +3,17 @@ package by.platonov.music.repository;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
+import by.platonov.music.repository.jdbchelper.JdbcHelper;
+import by.platonov.music.repository.mapper.preparedStatement.PreparedStatementMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistFieldsMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistIdMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistUpdateMapper;
 import by.platonov.music.repository.mapper.resultSet.PlaylistRowMapper;
 import by.platonov.music.repository.specification.PlaylistIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,7 +47,12 @@ public class PlaylistRepository implements Repository<Playlist> {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
 
-    private PlaylistRepository() {
+    private TransactionHandler transactionHandler;
+    private JdbcHelper jdbcHelper;
+
+    private PlaylistRepository(TransactionHandler transactionHandler, JdbcHelper jdbcHelper) {
+        this.transactionHandler = transactionHandler;
+        this.jdbcHelper = jdbcHelper;
     }
 
     public static PlaylistRepository getInstance() {
@@ -55,7 +60,7 @@ public class PlaylistRepository implements Repository<Playlist> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new PlaylistRepository();
+                    instance = new PlaylistRepository(TransactionHandler.getInstance(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -67,10 +72,18 @@ public class PlaylistRepository implements Repository<Playlist> {
 
     @Override
     public boolean add(Playlist playlist) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (queryNonTransactional(connection, new PlaylistIdSpecification(playlist.getId())).isEmpty()) {
-               long playlistId = addPlaylistNonTransactional(connection, playlist);
-               addLinkNonTransactional(connection, playlist, playlistId);
+        return transactionHandler.transactional(connection -> {
+            if (jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+                    new PlaylistRowMapper()).isEmpty()) {
+                long playlistId = jdbcHelper.insert(connection, SQL_INSERT_PLAYLIST, playlist, new SetPlaylistFieldsMapper());
+                playlist.setId(playlistId);
+                for (Track track : playlist.getTracks()) {
+                    jdbcHelper.execute(connection, SQL_INSERT_TRACK_PLAYLIST_LINK, playlist.getId(), ((preparedStatement, entity) -> {
+                        preparedStatement.setLong(1, playlist.getId());
+                        preparedStatement.setLong(2, track.getId());
+                    }));
+                }
+                log.debug(playlist + " added successfully");
                return true;
             } else {
                 log.debug("Track id: " + playlist.getId() + " is already exists");
@@ -79,40 +92,17 @@ public class PlaylistRepository implements Repository<Playlist> {
         });
     }
 
-    private long addPlaylistNonTransactional(Connection connection, Playlist playlist) throws RepositoryException {
-        try (PreparedStatement statementPlaylist = connection.prepareStatement(SQL_INSERT_PLAYLIST)) {
-            statementPlaylist.setString(1, playlist.getName());
-            try(ResultSet resultSet = statementPlaylist.executeQuery()) {
-                resultSet.next();
-                long playlistId = resultSet.getLong(1);
-                log.debug("Track: " + playlistId + " added");
-                return playlistId;
-            }
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
-    private void addLinkNonTransactional(Connection connection, Playlist playlist, long playlistId) throws RepositoryException {
-        try (PreparedStatement statementDeletePlaylistLink = connection.prepareStatement(SQL_INSERT_TRACK_PLAYLIST_LINK)) {
-            for (Track track : playlist.getTracks()) {
-                statementDeletePlaylistLink.setLong(1, playlistId);
-                statementDeletePlaylistLink.setLong(2, track.getId());
-                statementDeletePlaylistLink.execute();
-                log.debug("Playlist link to track added");
-            }
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
     @Override
     public boolean remove(Playlist playlist) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new PlaylistIdSpecification(playlist.getId())).isEmpty()) {
-                removePlaylistTrackLinkNonTransactional(connection, playlist);
-                removeUserPlaylistLinkNonTransactional(connection, playlist);
-                return removePlaylistNonTransactional(connection, playlist);
+        return transactionHandler.transactional(connection -> {
+            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+                    new PlaylistRowMapper()).isEmpty()) {
+                PreparedStatementMapper<Playlist> mapper = new SetPlaylistIdMapper();
+                jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, mapper);
+                jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_USER_LINK, playlist, mapper);
+                jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST, playlist, mapper);
+                log.debug(playlist + " removed");
+                return true;
             } else {
                 log.debug("Track: " + playlist.getId() + " was not found");
                 return false;
@@ -120,44 +110,21 @@ public class PlaylistRepository implements Repository<Playlist> {
         });
     }
 
-    private boolean removePlaylistNonTransactional(Connection connection, Playlist playlist) throws RepositoryException {
-        try (PreparedStatement statementPlaylist = connection.prepareStatement(SQL_DELETE_PLAYLIST)) {
-            statementPlaylist.setLong(1, playlist.getId());
-            statementPlaylist.execute();
-            log.debug(playlist + " was removed");
-            return true;
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
-    private void removePlaylistTrackLinkNonTransactional(Connection connection, Playlist playlist) throws RepositoryException {
-        try (PreparedStatement statementPlaylistTrackLink = connection.prepareStatement(SQL_DELETE_PLAYLIST_TRACK_LINK)) {
-            statementPlaylistTrackLink.setLong(1, playlist.getId());
-            statementPlaylistTrackLink.execute();
-            log.debug(playlist + "links was removed");
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
-    private void removeUserPlaylistLinkNonTransactional(Connection connection, Playlist playlist) throws RepositoryException {
-        try (PreparedStatement statementPlaylistUserLink = connection.prepareStatement(SQL_DELETE_PLAYLIST_USER_LINK)) {
-            statementPlaylistUserLink.setLong(1, playlist.getId());
-            statementPlaylistUserLink.execute();
-            log.debug(playlist + "links was removed");
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
     @Override
     public boolean update(Playlist playlist) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new PlaylistIdSpecification(playlist.getId())).isEmpty()) {
-                removePlaylistTrackLinkNonTransactional(connection, playlist);
-                addLinkNonTransactional(connection, playlist, playlist.getId());
-                return updatePlaylistNonTransactional(connection, playlist);
+        return transactionHandler.transactional(connection -> {
+            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+                    new PlaylistRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, new SetPlaylistIdMapper());
+                for (Track track : playlist.getTracks()) {
+                    jdbcHelper.execute(connection, SQL_INSERT_TRACK_PLAYLIST_LINK, playlist.getId(), ((preparedStatement, entity) -> {
+                        preparedStatement.setLong(1, playlist.getId());
+                        preparedStatement.setLong(2, track.getId());
+                    }));
+                }
+                jdbcHelper.execute(connection, SQL_UPDATE_PLAYLIST, playlist, new SetPlaylistUpdateMapper());
+                log.debug(playlist + " updated");
+                return true;
             } else {
                 log.debug("Track number: " + playlist.getId() + " was not found");
                 return false;
@@ -165,56 +132,15 @@ public class PlaylistRepository implements Repository<Playlist> {
         });
     }
 
-    private boolean updatePlaylistNonTransactional(Connection connection, Playlist playlist) throws RepositoryException {
-        try (PreparedStatement statementUpdatePlaylist = connection.prepareStatement(SQL_UPDATE_PLAYLIST)) {
-            statementUpdatePlaylist.setString(1, playlist.getName());
-            statementUpdatePlaylist.setLong(2, playlist.getId());
-            log.debug(playlist + " updated");
-            return statementUpdatePlaylist.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
     @Override
     public List<Playlist> query(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> queryNonTransactional(connection, specification));
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + specification.toSqlClauses(), new PlaylistRowMapper()));
     }
-
-    private List<Playlist> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_PLAYLIST + specification.toSqlClauses());
-             ResultSet resultSet = statement.executeQuery()) {
-            List<Playlist> result = new ArrayList<>();
-            Map<Long, Playlist> table = new HashMap<>();
-            AbstractRowMapper<Playlist> mapper = new PlaylistRowMapper();
-            while (resultSet.next()) {
-                if (!table.containsKey(resultSet.getLong("id"))) {
-                    Playlist playlist = mapper.map(resultSet);
-                    table.put(playlist.getId(), playlist);
-                }
-//                    else {
-//                        Track track = mapper.mapTrack(resultSet);
-//                        table.get(resultSet.getLong("playlistid")).getTracks().add(track);
-//                    }
-            }
-            table.forEach((l, p) -> result.add(p));
-            return result;
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-    }
-
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT + specification.toSqlClauses());
-                 ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getLong(1);
-            } catch (SQLException e) {
-                throw new RepositoryException(e);
-            }
-        });
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.count(connection, SQL_COUNT + specification.toSqlClauses()));
     }
 }

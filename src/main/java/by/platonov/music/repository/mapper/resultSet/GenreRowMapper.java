@@ -17,4 +17,9 @@ public class GenreRowMapper implements AbstractRowMapper<Genre> {
                 .title(resultSet.getString("genre"))
                 .build();
     }
+
+    @Override
+    public String getKey() {
+        return "genreid";
+    }
 }

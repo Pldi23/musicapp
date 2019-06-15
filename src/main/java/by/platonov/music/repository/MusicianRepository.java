@@ -2,18 +2,17 @@ package by.platonov.music.repository;
 
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.entity.Musician;
-import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
+import by.platonov.music.repository.jdbchelper.JdbcHelper;
+import by.platonov.music.repository.mapper.preparedStatement.PreparedStatementMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetMusicianIdMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetMusicianNameMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetMusicianUpdateMapper;
 import by.platonov.music.repository.mapper.resultSet.MusicianRowMapper;
 import by.platonov.music.repository.specification.MusicianIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,11 +34,11 @@ public class MusicianRepository implements Repository<Musician> {
     private static final String SQL_DELETE_SINGER_LINK = "DELETE FROM singer_track WHERE singer_id = ?";
     @Language("SQL")
     private static final String SQL_UPDATE_MUSICIAN = "UPDATE musician " +
-                                                        "SET name = ? " +
-                                                        "WHERE id = ?;";
+            "SET name = ? " +
+            "WHERE id = ?;";
     @Language("SQL")
     private static final String SQL_QUERY_MUSICIAN = "SELECT id, name " +
-                                                        "FROM musician ";
+            "FROM musician ";
     @Language("SQL")
     private static final String SQL_COUNT_MUSICIAN = "SELECT count(*) FROM musician ";
 
@@ -47,7 +46,12 @@ public class MusicianRepository implements Repository<Musician> {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
 
-    private MusicianRepository() {
+    private TransactionHandler transactionHandler;
+    private JdbcHelper jdbcHelper;
+
+    private MusicianRepository(TransactionHandler transactionHandler, JdbcHelper jdbcHelper) {
+        this.transactionHandler = transactionHandler;
+        this.jdbcHelper = jdbcHelper;
     }
 
     public static MusicianRepository getInstance() {
@@ -55,7 +59,7 @@ public class MusicianRepository implements Repository<Musician> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new MusicianRepository();
+                    instance = new MusicianRepository(TransactionHandler.getInstance(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -67,16 +71,12 @@ public class MusicianRepository implements Repository<Musician> {
 
     @Override
     public boolean add(Musician musician) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (queryNonTransactional(connection, new MusicianIdSpecification(musician.getId())).isEmpty()) {
-                try (PreparedStatement statement = connection.prepareStatement(SQL_INSERT_MUSICIAN)) {
-                    statement.setString(1, musician.getName());
-                    statement.execute();
-                    log.debug(musician + " has been added");
-                    return true;
-                } catch (SQLException e) {
-                    throw new RepositoryException(e);
-                }
+        return transactionHandler.transactional(connection -> {
+            if (jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
+                    .toSqlClauses(), new MusicianRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_INSERT_MUSICIAN, musician, new SetMusicianNameMapper());
+                log.debug(musician + " has been added");
+                return true;
             } else {
                 log.info("Musician with id: " + musician.getId() + " already exists");
                 return false;
@@ -87,21 +87,14 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public boolean remove(Musician musician) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new MusicianIdSpecification(musician.getId())).isEmpty()) {
-                try(PreparedStatement statementMusician = connection.prepareStatement(SQL_DELETE_MUSICIAN);
-                    PreparedStatement statementAuthorLink = connection.prepareStatement(SQL_DELETE_AUTHOR_LINK);
-                    PreparedStatement statementSingerLink = connection.prepareStatement(SQL_DELETE_SINGER_LINK)) {
-                    statementMusician.setLong(1, musician.getId());
-                    statementSingerLink.setLong(1, musician.getId());
-                    statementAuthorLink.setLong(1, musician.getId());
-                    statementSingerLink.execute();
-                    statementAuthorLink.execute();
-                    statementMusician.execute();
-                    log.debug(musician + " successfully removed");
-                    return true;
-                } catch (SQLException e) {
-                    throw new RepositoryException(e);
-                }
+            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
+                    .toSqlClauses(), new MusicianRowMapper()).isEmpty()) {
+                PreparedStatementMapper<Musician> mapper = new SetMusicianIdMapper();
+                jdbcHelper.execute(connection, SQL_DELETE_SINGER_LINK, musician, mapper);
+                jdbcHelper.execute(connection, SQL_DELETE_AUTHOR_LINK, musician, mapper);
+                jdbcHelper.execute(connection, SQL_DELETE_MUSICIAN, musician, mapper);
+                log.debug(musician + " successfully removed");
+                return true;
             } else {
                 log.info("Musician: " + musician.getId() + " no found");
                 return false;
@@ -112,16 +105,11 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public boolean update(Musician musician) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new MusicianIdSpecification(musician.getId())).isEmpty()) {
-                try(PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_MUSICIAN)) {
-                    statement.setString(1, musician.getName());
-                    statement.setLong(2, musician.getId());
-                    statement.execute();
-                    log.debug(musician + " has been updated");
-                    return true;
-                } catch (SQLException e) {
-                    throw new RepositoryException(e);
-                }
+            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
+                    .toSqlClauses(), new MusicianRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_UPDATE_MUSICIAN, musician, new SetMusicianUpdateMapper());
+                log.debug(musician + " has been updated");
+                return true;
             } else {
                 log.debug("Musician: " + musician.getId() + " not found");
                 return false;
@@ -131,36 +119,12 @@ public class MusicianRepository implements Repository<Musician> {
 
     @Override
     public List<Musician> query(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> queryNonTransactional(connection, specification));
-    }
-
-    private List<Musician> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        List<Musician> musicians = new ArrayList<>();
-        try(PreparedStatement statement = connection.prepareStatement(SQL_QUERY_MUSICIAN + specification.toSqlClauses());
-            ResultSet resultSet = statement.executeQuery()) {
-            AbstractRowMapper<Musician> mapper = new MusicianRowMapper();
-            while (resultSet.next()) {
-                Musician musician = mapper.map(resultSet);
-                musicians.add(musician);
-                log.debug(musician + " added to query list");
-            }
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-        log.debug(musicians.size() + " musicians selected");
-        return musicians;
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + specification.toSqlClauses(), new MusicianRowMapper()));
     }
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            try(PreparedStatement statement = connection.prepareStatement(SQL_COUNT_MUSICIAN + specification.toSqlClauses());
-                ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getLong(1);
-            } catch (SQLException e) {
-                throw new RepositoryException(e);
-            }
-        });
+        return transactionHandler.transactional(connection -> jdbcHelper.count(connection, SQL_COUNT_MUSICIAN));
     }
 }

@@ -17,4 +17,9 @@ public class MusicianRowMapper implements AbstractRowMapper<Musician> {
                 .name(resultSet.getString("name"))
                 .build();
     }
+
+    @Override
+    public String getKey() {
+        return "id";
+    }
 }

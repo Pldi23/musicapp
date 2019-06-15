@@ -5,6 +5,10 @@ import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseConfiguration;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
+import by.platonov.music.repository.jdbchelper.JdbcHelper;
+import by.platonov.music.repository.mapper.preparedStatement.SetUserFieldsMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetUserIdMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetUserUpdateMapper;
 import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
 import by.platonov.music.repository.mapper.resultSet.UserRowMapper;
 import by.platonov.music.repository.specification.UserLoginSpecification;
@@ -55,7 +59,12 @@ public class UserRepository implements Repository<User> {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
 
-    private UserRepository() {
+    private TransactionHandler transactionHandler;
+    private JdbcHelper jdbcHelper;
+
+    private UserRepository(TransactionHandler transactionHandler, JdbcHelper jdbcHelper) {
+        this.transactionHandler = transactionHandler;
+        this.jdbcHelper = jdbcHelper;
     }
 
     public static UserRepository getInstance() {
@@ -63,7 +72,7 @@ public class UserRepository implements Repository<User> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new UserRepository();
+                    instance = new UserRepository(TransactionHandler.getInstance(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -77,9 +86,19 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean add(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (queryNonTransactional(connection, new UserLoginSpecification(user.getLogin())).isEmpty()) {
-                addUserPlaylistLinkNonTransactional(connection, user);
-                return addUserNonTransactional(connection, user);
+            if (jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(),
+                    new UserRowMapper()).isEmpty()) {
+                for (Playlist playlist : user.getPlaylists()) {
+                    jdbcHelper.execute(connection, SQL_INSERT_USER_PLAYLIST_LINK, user, ((preparedStatement, entity) -> {
+                        preparedStatement.setString(1, user.getLogin());
+                        preparedStatement.setLong(2, playlist.getId());
+                    }));
+                }
+                jdbcHelper.execute(connection, SQL_INSERT_USER, user, new SetUserFieldsMapper());
+//                addUserPlaylistLinkNonTransactional(connection, user);
+//                return addUserNonTransactional(connection, user);
+                log.debug(user + " added successfully");
+                return true;
             } else {
                 log.warn("User: " + user.getLogin() + " already exists");
                 return false;
@@ -121,15 +140,19 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean remove(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new UserLoginSpecification(user.getLogin())).isEmpty()) {
-                removeUserPlaylistLinkNonTransactional(connection, user);
-                return removeUserNonTransactional(connection, user);
+            if (!jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(), new UserRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
+//                removeUserPlaylistLinkNonTransactional(connection, user);
+//                return removeUserNonTransactional(connection, user);
+                log.debug(user + " removed");
+                return false;
             } else {
                 log.warn(user + " was not found");
                 return false;
             }
         });
     }
+
     private void removeUserPlaylistLinkNonTransactional(Connection connection, User user) throws RepositoryException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_USER_PLAYLIST_LINK)) {
             statement.setString(1, user.getLogin());
@@ -154,10 +177,21 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean update(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new UserLoginSpecification(user.getLogin())).isEmpty()) {
-                removeUserPlaylistLinkNonTransactional(connection, user);
-                addUserPlaylistLinkNonTransactional(connection, user);
-                return updateUserNonTransactional(connection, user);
+            if (!jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(), new UserRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
+                for (Playlist playlist : user.getPlaylists()) {
+                    jdbcHelper.execute(connection, SQL_INSERT_USER_PLAYLIST_LINK, user, ((preparedStatement, entity) -> {
+                        preparedStatement.setString(1, user.getLogin());
+                        preparedStatement.setLong(2, playlist.getId());
+                    }));
+                }
+                jdbcHelper.execute(connection, SQL_UPDATE_USER, user, new SetUserUpdateMapper());
+                log.debug(user + " updated");
+//                removeUserPlaylistLinkNonTransactional(connection, user);
+//                addUserPlaylistLinkNonTransactional(connection, user);
+//                return updateUserNonTransactional(connection, user);
+
+                return true;
             } else {
                 log.warn(user + " was not found");
                 return false;
@@ -182,38 +216,33 @@ public class UserRepository implements Repository<User> {
             throw new RepositoryException(e);
         }
     }
+
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_USER + specification.toSqlClauses());
-                 ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getLong(1);
-            } catch (SQLException e) {
-                throw new RepositoryException(e);
-            }
-        });
+        return TransactionHandler.getInstance().transactional(connection ->
+                jdbcHelper.count(connection, SQL_COUNT_USER + specification.toSqlClauses()));
     }
 
     @Override
     public List<User> query(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> queryNonTransactional(connection, specification));
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.query(connection, SQL_SELECT_USER + specification.toSqlClauses(), new UserRowMapper()));
     }
 
-    private List<User> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        List<User> users = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER + specification.toSqlClauses());
-             ResultSet resultSet = statement.executeQuery()) {
-            AbstractRowMapper<User> mapper = new UserRowMapper();
-            while (resultSet.next()) {
-                User user = mapper.map(resultSet);
-                log.trace(user + " added to query list");
-                users.add(user);
-            }
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-        log.debug(users.size() + " users found");
-        return users;
-    }
+//    private List<User> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
+//        List<User> users = new ArrayList<>();
+//        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER + specification.toSqlClauses());
+//             ResultSet resultSet = statement.executeQuery()) {
+//            AbstractRowMapper<User> mapper = new UserRowMapper();
+//            while (resultSet.next()) {
+//                User user = mapper.map(resultSet);
+//                log.trace(user + " added to query list");
+//                users.add(user);
+//            }
+//        } catch (SQLException e) {
+//            throw new RepositoryException(e);
+//        }
+//        log.debug(users.size() + " users found");
+//        return users;
+//    }
 }

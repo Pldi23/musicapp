@@ -19,4 +19,9 @@ public class PlaylistRowMapper implements AbstractRowMapper<Playlist> {
                 .tracks(new HashSet<>())
                 .build();
     }
+
+    @Override
+    public String getKey() {
+        return "id";
+    }
 }

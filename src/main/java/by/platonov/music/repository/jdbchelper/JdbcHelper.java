@@ -36,18 +36,20 @@ public class JdbcHelper {
             List<T> entities = new ArrayList<>();
             Map<Long, T> table = new HashMap<>();
             while (resultSet.next()) {
-                if (!table.containsKey(resultSet.getLong("id"))) {
-                    T entity = rowMapper.map(resultSet);
-                    table.put(resultSet.getLong("id"), entity);
-                }
+                
+            }
+//                if (!table.containsKey(resultSet.getLong(rowMapper.getKey()))) {
+//                    T entity = rowMapper.map(resultSet);
+//                    table.put(resultSet.getLong(rowMapper.getKey()), entity);
+//                }
 //                    else {
 //                        Musician singer = mapper.mapSinger(resultSet);
 //                        Musician author = mapper.mapAuthor(resultSet);
 //                        table.get(resultSet.getLong("id")).getSingers().add(singer);
 //                        table.get(resultSet.getLong("id")).getAuthors().add(author);
 //                    }
-            }
-            table.forEach((id, entity) -> entities.add(entity));
+//            }
+//            table.forEach((id, entity) -> entities.add(entity));
             return entities;
 
 //            List<T> result = new ArrayList<>();

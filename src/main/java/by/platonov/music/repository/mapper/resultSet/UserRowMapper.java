@@ -13,6 +13,7 @@ import java.util.HashSet;
  * @version 0.0.1
  */
 public class UserRowMapper implements AbstractRowMapper<User> {
+
     @Override
     public User map(ResultSet resultSet) throws SQLException {
         return User.builder()
@@ -26,5 +27,10 @@ public class UserRowMapper implements AbstractRowMapper<User> {
                 .gender(resultSet.getBoolean("gender") ? Gender.MALE : Gender.FEMALE)
                 .playlists(new HashSet<>())
                 .build();
+    }
+
+    @Override
+    public String getKey() {
+        return "login";
     }
 }

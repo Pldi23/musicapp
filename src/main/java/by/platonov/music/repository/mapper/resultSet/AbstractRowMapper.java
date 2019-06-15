@@ -10,4 +10,5 @@ import java.sql.SQLException;
 public interface AbstractRowMapper<T> {
 
     T map(ResultSet resultSet) throws SQLException;
+    String getKey();
 }
