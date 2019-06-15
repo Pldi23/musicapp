@@ -4,11 +4,11 @@ import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.jdbchelper.JdbcHelper;
-import by.platonov.music.repository.mapper.preparedStatement.PreparedStatementMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistFieldsMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistIdMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetPlaylistUpdateMapper;
-import by.platonov.music.repository.mapper.resultSet.PlaylistRowMapper;
+import by.platonov.music.repository.mapper.PreparedStatementMapper;
+import by.platonov.music.repository.mapper.SetPlaylistFieldsMapper;
+import by.platonov.music.repository.mapper.SetPlaylistIdMapper;
+import by.platonov.music.repository.mapper.SetPlaylistUpdateMapper;
+import by.platonov.music.repository.extractor.PlaylistResultSetExtractor;
 import by.platonov.music.repository.specification.PlaylistIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
@@ -74,7 +74,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     public boolean add(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
-                    new PlaylistRowMapper()).isEmpty()) {
+                    new PlaylistResultSetExtractor()).isEmpty()) {
                 long playlistId = jdbcHelper.insert(connection, SQL_INSERT_PLAYLIST, playlist, new SetPlaylistFieldsMapper());
                 playlist.setId(playlistId);
                 for (Track track : playlist.getTracks()) {
@@ -96,7 +96,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     public boolean remove(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
-                    new PlaylistRowMapper()).isEmpty()) {
+                    new PlaylistResultSetExtractor()).isEmpty()) {
                 PreparedStatementMapper<Playlist> mapper = new SetPlaylistIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, mapper);
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_USER_LINK, playlist, mapper);
@@ -114,7 +114,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     public boolean update(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
-                    new PlaylistRowMapper()).isEmpty()) {
+                    new PlaylistResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, new SetPlaylistIdMapper());
                 for (Track track : playlist.getTracks()) {
                     jdbcHelper.execute(connection, SQL_INSERT_TRACK_PLAYLIST_LINK, playlist.getId(), ((preparedStatement, entity) -> {
@@ -135,7 +135,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Override
     public List<Playlist> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + specification.toSqlClauses(), new PlaylistRowMapper()));
+                jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + specification.toSqlClauses(), new PlaylistResultSetExtractor()));
     }
 
     @Override

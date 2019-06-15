@@ -3,18 +3,16 @@ package by.platonov.music.repository;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.jdbchelper.JdbcHelper;
-import by.platonov.music.repository.mapper.preparedStatement.PreparedStatementMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetGenreFieldsMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetGenreIdMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetGenreUpdateMapper;
-import by.platonov.music.repository.mapper.resultSet.GenreRowMapper;
+import by.platonov.music.repository.mapper.PreparedStatementMapper;
+import by.platonov.music.repository.mapper.SetGenreFieldsMapper;
+import by.platonov.music.repository.mapper.SetGenreIdMapper;
+import by.platonov.music.repository.mapper.SetGenreUpdateMapper;
+import by.platonov.music.repository.extractor.GenreResultSetExtractor;
 import by.platonov.music.repository.specification.GenreIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.intellij.lang.annotations.Language;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -70,7 +68,7 @@ public class GenreRepository implements Repository<Genre> {
     public boolean add(Genre genre) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (jdbcHelper.query(connection, SQL_QUERY_GENRE + new GenreIdSpecification(genre.getId()).toSqlClauses(),
-                    new GenreRowMapper()).isEmpty()) {
+                    new GenreResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_INSERT_GENRE, genre, new SetGenreFieldsMapper());
                 return true;
             } else {
@@ -84,7 +82,7 @@ public class GenreRepository implements Repository<Genre> {
     public boolean remove(Genre genre) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_QUERY_GENRE + new GenreIdSpecification(genre.getId()).toSqlClauses(),
-                    new GenreRowMapper()).isEmpty()) {
+                    new GenreResultSetExtractor()).isEmpty()) {
                 PreparedStatementMapper<Genre> mapper = new SetGenreIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_LINK, genre, mapper);
                 jdbcHelper.execute(connection, SQL_DELETE_GENRE, genre, mapper);
@@ -100,7 +98,7 @@ public class GenreRepository implements Repository<Genre> {
     public boolean update(Genre genre) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_QUERY_GENRE + new GenreIdSpecification(genre.getId()).toSqlClauses(),
-                    new GenreRowMapper()).isEmpty()) {
+                    new GenreResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_UPDATE_GENRE, genre, new SetGenreUpdateMapper());
                 return true;
             } else {
@@ -113,7 +111,7 @@ public class GenreRepository implements Repository<Genre> {
     @Override
     public List<Genre> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_QUERY_GENRE + specification.toSqlClauses(), new GenreRowMapper()));
+                jdbcHelper.query(connection, SQL_QUERY_GENRE + specification.toSqlClauses(), new GenreResultSetExtractor()));
     }
 
     @Override

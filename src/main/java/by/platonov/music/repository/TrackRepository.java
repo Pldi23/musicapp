@@ -4,10 +4,10 @@ import by.platonov.music.entity.Musician;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.entity.Track;
 import by.platonov.music.repository.jdbchelper.JdbcHelper;
-import by.platonov.music.repository.mapper.preparedStatement.SetTrackFieldsMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetTrackIdMapper;
-import by.platonov.music.repository.mapper.preparedStatement.SetTrackUpdateMapper;
-import by.platonov.music.repository.mapper.resultSet.TrackRowMapper;
+import by.platonov.music.repository.mapper.SetTrackFieldsMapper;
+import by.platonov.music.repository.mapper.SetTrackIdMapper;
+import by.platonov.music.repository.mapper.SetTrackUpdateMapper;
+import by.platonov.music.repository.extractor.TrackResultSetExtractor;
 import by.platonov.music.repository.specification.SqlSpecification;
 import by.platonov.music.repository.specification.TrackIdSpecification;
 import lombok.extern.log4j.Log4j2;
@@ -80,7 +80,7 @@ public class TrackRepository implements Repository<Track> {
     public boolean add(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
-                    new TrackRowMapper()).isEmpty()) {
+                    new TrackResultSetExtractor()).isEmpty()) {
                 long trackId = jdbcHelper.insert(connection, SQL_INSERT_TRACK, track, new SetTrackFieldsMapper());
                 track.setId(trackId);
                 for (Musician singer : track.getSingers()) {
@@ -109,7 +109,7 @@ public class TrackRepository implements Repository<Track> {
     public boolean remove(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
-                    new TrackRowMapper()).isEmpty()) {
+                    new TrackResultSetExtractor()).isEmpty()) {
                 SetTrackIdMapper setTrackIdMapper = new SetTrackIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_LINK, track, setTrackIdMapper);
                 jdbcHelper.execute(connection, SQL_DELETE_AUTHOR_LINK, track, setTrackIdMapper);
@@ -128,7 +128,7 @@ public class TrackRepository implements Repository<Track> {
     public boolean update(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
-                    new TrackRowMapper()).isEmpty()) {
+                    new TrackResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_SINGER_LINK, track, new SetTrackIdMapper());
                 for (Musician singer : track.getSingers()) {
                     jdbcHelper.execute(connection, SQL_INSERT_SINGER_LINK, track, (preparedStatement, e) -> {
@@ -156,7 +156,7 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public List<Track> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_SELECT_TRACK + specification.toSqlClauses(), new TrackRowMapper()));
+                jdbcHelper.query(connection, SQL_SELECT_TRACK + specification.toSqlClauses(), new TrackResultSetExtractor()));
     }
 
     @Override

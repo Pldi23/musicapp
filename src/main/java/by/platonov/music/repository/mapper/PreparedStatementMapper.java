@@ -1,4 +1,4 @@
-package by.platonov.music.repository.mapper.preparedStatement;
+package by.platonov.music.repository.mapper;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
