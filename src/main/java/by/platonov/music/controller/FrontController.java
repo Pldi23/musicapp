@@ -30,10 +30,10 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        String commandString = req.getParameter("command");
-        RequestContent content = new RequestContent();
+//        String login = req.getParameter("login");
+//        String password = req.getParameter("password");
+//        String commandString = req.getParameter("command");
+//        RequestContent content = new RequestContent();
 
 //        CommandFactory commandFactory = CommandFactory.getInstance();
 //        Command command = commandFactory.getCommand(content);
