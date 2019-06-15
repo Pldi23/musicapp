@@ -25,8 +25,8 @@ class TracksInPlaylistSpecificationTest {
         specification = new TracksInPlaylistSpecification(playlistId);
 
         //then
-        int actual = repository.count(specification);
-        int expected = 4;
+        long actual = repository.count(specification);
+        long expected = 4;
 
         //when
         assertEquals(expected, actual);

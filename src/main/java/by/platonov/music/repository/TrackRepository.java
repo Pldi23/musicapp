@@ -3,8 +3,11 @@ package by.platonov.music.repository;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.entity.Track;
-import by.platonov.music.repository.mapper.AbstractRowMapper;
-import by.platonov.music.repository.mapper.TrackRowMapper;
+import by.platonov.music.repository.jdbchelper.JdbcHelper;
+import by.platonov.music.repository.mapper.preparedStatement.PreparedStatementMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetTrackFieldsMapper;
+import by.platonov.music.repository.mapper.preparedStatement.SetTrackIdMapper;
+import by.platonov.music.repository.mapper.resultSet.TrackRowMapper;
 import by.platonov.music.repository.specification.SqlSpecification;
 import by.platonov.music.repository.specification.TrackIdSpecification;
 import lombok.extern.log4j.Log4j2;
@@ -52,7 +55,12 @@ public class TrackRepository implements Repository<Track> {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
 
-    private TrackRepository() {
+    private TransactionHandler transactionHandler;
+    private JdbcHelper jdbcHelper;
+
+    private TrackRepository(TransactionHandler transactionHandler, JdbcHelper jdbcHelper) {
+        this.transactionHandler = transactionHandler;
+        this.jdbcHelper = jdbcHelper;
     }
 
     public static TrackRepository getInstance() {
@@ -60,7 +68,7 @@ public class TrackRepository implements Repository<Track> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new TrackRepository();
+                    instance = new TrackRepository(TransactionHandler.getInstance(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -72,8 +80,9 @@ public class TrackRepository implements Repository<Track> {
 
     @Override
     public boolean add(Track track) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (queryNonTransactional(connection, new TrackIdSpecification(track.getId())).isEmpty()) {
+        return transactionHandler.transactional(connection -> {
+            if (jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+                    new TrackRowMapper()).isEmpty()) {
                 long trackId = addTrackNonTransactional(connection, track);
                 addSingerLinkNonTransactional(connection, track, trackId);
                 addAuthorLinkNonTransactional(connection, track, trackId);
@@ -87,10 +96,12 @@ public class TrackRepository implements Repository<Track> {
 
     private long addTrackNonTransactional(Connection connection, Track track) throws RepositoryException {
         try (PreparedStatement statementTrack = connection.prepareStatement(SQL_INSERT_TRACK)) {
-            statementTrack.setString(1, track.getName());
-            statementTrack.setLong(2, track.getGenre().getId());
-            statementTrack.setLong(3, track.getLength());
-            statementTrack.setDate(4, Date.valueOf(track.getReleaseDate()));
+            PreparedStatementMapper<Track> mapper = new SetTrackFieldsMapper();
+            mapper.map(statementTrack, track);
+//            statementTrack.setString(1, track.getName());
+//            statementTrack.setLong(2, track.getGenre().getId());
+//            statementTrack.setLong(3, track.getLength());
+//            statementTrack.setDate(4, Date.valueOf(track.getReleaseDate()));
             try(ResultSet resultSet = statementTrack.executeQuery()) {
                 resultSet.next();
                 long trackId = resultSet.getLong(1);
@@ -130,8 +141,9 @@ public class TrackRepository implements Repository<Track> {
 
     @Override
     public boolean remove(Track track) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new TrackIdSpecification(track.getId())).isEmpty()) {
+        return transactionHandler.transactional(connection -> {
+            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+                    new TrackRowMapper()).isEmpty()) {
                 deletePlaylistLinkNonTransactional(connection, track);
                 deleteAuthorLinkNonTransactional(connection, track);
                 deleteSingerLinkNonTransactional(connection, track);
@@ -186,19 +198,45 @@ public class TrackRepository implements Repository<Track> {
 
     @Override
     public boolean update(Track track) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            if (!queryNonTransactional(connection, new TrackIdSpecification(track.getId())).isEmpty()) {
-                deleteSingerLinkNonTransactional(connection, track);
-                addSingerLinkNonTransactional(connection, track, track.getId());
-                deleteAuthorLinkNonTransactional(connection, track);
-                addAuthorLinkNonTransactional(connection, track, track.getId());
-                return updateTrackNonTransactional(connection, track);
+        return transactionHandler.transactional(connection -> {
+            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+                    new TrackRowMapper()).isEmpty()) {
+                jdbcHelper.execute(connection, SQL_DELETE_SINGER_LINK, track, new SetTrackIdMapper());
+                for (Musician singer : track.getSingers()) {
+                    jdbcHelper.execute(connection, SQL_INSERT_SINGER_LINK, track, (preparedStatement, e) -> {
+                            preparedStatement.setLong(1, track.getId());
+                            preparedStatement.setLong(2, singer.getId());
+                    });
+                }
+                
+                return true;
+//                deleteSingerLinkNonTransactional(connection, track);
+//                addSingerLinkNonTransactional(connection, track, track.getId());
+//                deleteAuthorLinkNonTransactional(connection, track);
+//                addAuthorLinkNonTransactional(connection, track, track.getId());
+//                return updateTrackNonTransactional(connection, track);
             } else {
                 log.debug("Track number: " + track.getId() + " was not found");
                 return false;
             }
         });
     }
+
+//    @Override
+//    public boolean update(Track track) throws RepositoryException {
+//        return transactionHandler.transactional(connection -> {
+//            if (!queryNonTransactional(connection, new TrackIdSpecification(track.getId())).isEmpty()) {
+//                deleteSingerLinkNonTransactional(connection, track);
+//                addSingerLinkNonTransactional(connection, track, track.getId());
+//                deleteAuthorLinkNonTransactional(connection, track);
+//                addAuthorLinkNonTransactional(connection, track, track.getId());
+//                return updateTrackNonTransactional(connection, track);
+//            } else {
+//                log.debug("Track number: " + track.getId() + " was not found");
+//                return false;
+//            }
+//        });
+//    }
 
     private boolean updateTrackNonTransactional(Connection connection, Track track) throws RepositoryException {
         try (PreparedStatement statementUpdateTrack = connection.prepareStatement(SQL_UPDATE_TRACK)) {
@@ -215,46 +253,40 @@ public class TrackRepository implements Repository<Track> {
     }
     @Override
     public List<Track> query(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> queryNonTransactional(connection, specification));
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.query(connection, SQL_SELECT_TRACK + specification.toSqlClauses(), new TrackRowMapper()));
     }
 
-    private List<Track> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
-        List<Track> tracks = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK + specification.toSqlClauses());
-             ResultSet resultSet = statement.executeQuery()) {
-            Map<Long, Track> table = new HashMap<>();
-            AbstractRowMapper<Track> mapper = new TrackRowMapper();
-            while (resultSet.next()) {
-                if (!table.containsKey(resultSet.getLong("id"))) {
-                    Track track = mapper.map(resultSet);
-                    table.put(track.getId(), track);
-                }
-//                    else {
-//                        Musician singer = mapper.mapSinger(resultSet);
-//                        Musician author = mapper.mapAuthor(resultSet);
-//                        table.get(resultSet.getLong("id")).getSingers().add(singer);
-//                        table.get(resultSet.getLong("id")).getAuthors().add(author);
-//                    }
-            }
-            table.forEach((id, track) -> tracks.add(track));
-
-        } catch (SQLException e) {
-            throw new RepositoryException(e);
-        }
-        return tracks;
-    }
+//    private List<Track> queryNonTransactional(Connection connection, SqlSpecification specification) throws RepositoryException {
+//        List<Track> tracks = new ArrayList<>();
+//        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_TRACK + specification.toSqlClauses());
+//             ResultSet resultSet = statement.executeQuery()) {
+//            Map<Long, Track> table = new HashMap<>();
+//            AbstractRowMapper<Track> mapper = new TrackRowMapper();
+//            while (resultSet.next()) {
+//                if (!table.containsKey(resultSet.getLong("id"))) {
+//                    Track track = mapper.map(resultSet);
+//                    table.put(track.getId(), track);
+//                }
+////                    else {
+////                        Musician singer = mapper.mapSinger(resultSet);
+////                        Musician author = mapper.mapAuthor(resultSet);
+////                        table.get(resultSet.getLong("id")).getSingers().add(singer);
+////                        table.get(resultSet.getLong("id")).getAuthors().add(author);
+////                    }
+//            }
+//            table.forEach((id, track) -> tracks.add(track));
+//
+//        } catch (SQLException e) {
+//            throw new RepositoryException(e);
+//        }
+//        return tracks;
+//    }
 
 
     @Override
-    public int count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_TRACK + specification.toSqlClauses());
-                 ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getInt(1);
-            } catch (SQLException e) {
-                throw new RepositoryException(e);
-            }
-        });
+    public long count(SqlSpecification specification) throws RepositoryException {
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.count(connection, SQL_COUNT_TRACK +  specification.toSqlClauses()));
     }
 }

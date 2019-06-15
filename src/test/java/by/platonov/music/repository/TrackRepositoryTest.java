@@ -77,7 +77,7 @@ class TrackRepositoryTest {
 
     @Test
     void count() throws RepositoryException{
-        int actual = repository.count(new IdIsNotNullSpecification());
+        long actual = repository.count(new IdIsNotNullSpecification());
         int expected = 6;
         assertEquals(expected, actual);
     }

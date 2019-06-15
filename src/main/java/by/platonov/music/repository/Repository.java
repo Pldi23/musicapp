@@ -16,5 +16,5 @@ public interface Repository<T> {
 
     List<T> query(SqlSpecification specification) throws RepositoryException;
 
-    int count(SqlSpecification specification) throws RepositoryException;
+    long count(SqlSpecification specification) throws RepositoryException;
 }

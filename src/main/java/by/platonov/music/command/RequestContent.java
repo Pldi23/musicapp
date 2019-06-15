@@ -5,4 +5,6 @@ package by.platonov.music.command;
  * @version 0.0.1
  */
 public class RequestContent {
+
+
 }

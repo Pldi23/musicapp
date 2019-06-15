@@ -1,4 +1,4 @@
-package by.platonov.music.repository.mapper;
+package by.platonov.music.repository.mapper.resultSet;
 
 import by.platonov.music.entity.Genre;
 

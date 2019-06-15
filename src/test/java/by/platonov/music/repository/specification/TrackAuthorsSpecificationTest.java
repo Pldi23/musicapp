@@ -22,8 +22,8 @@ class TrackAuthorsSpecificationTest {
         Repository<Musician> repository = MusicianRepository.getInstance();
 
         //When
-        int actual = repository.count(specification);
-        int expected = 2;
+        long actual = repository.count(specification);
+        long expected = 2;
 
         //Then
         assertEquals(expected, actual);

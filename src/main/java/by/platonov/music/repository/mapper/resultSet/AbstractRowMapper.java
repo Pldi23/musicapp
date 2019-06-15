@@ -1,4 +1,4 @@
-package by.platonov.music.repository.mapper;
+package by.platonov.music.repository.mapper.resultSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

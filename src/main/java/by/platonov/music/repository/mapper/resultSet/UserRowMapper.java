@@ -1,7 +1,8 @@
-package by.platonov.music.repository.mapper;
+package by.platonov.music.repository.mapper.resultSet;
 
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
+import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

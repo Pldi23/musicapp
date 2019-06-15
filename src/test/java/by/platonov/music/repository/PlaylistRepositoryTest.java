@@ -114,8 +114,8 @@ class PlaylistRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        int actual = repository.count(() -> "where id is not null;");
-        int expected = 5;
+        long actual = repository.count(() -> "where id is not null;");
+        long expected = 5;
         assertEquals(expected, actual);
     }
 

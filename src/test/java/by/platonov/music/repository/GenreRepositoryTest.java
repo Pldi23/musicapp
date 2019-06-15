@@ -43,8 +43,8 @@ class GenreRepositoryTest {
         repository.add(newGenre);
 
         //then
-        int actual = repository.count(new IdIsNotNullSpecification());
-        int expected = 8;
+        long actual = repository.count(new IdIsNotNullSpecification());
+        long expected = 8;
         assertEquals(expected, actual);
     }
 
@@ -54,8 +54,8 @@ class GenreRepositoryTest {
         repository.add(existsGenre);
 
         //then
-        int actual = repository.count(new IdIsNotNullSpecification());
-        int expected = 7;
+        long actual = repository.count(new IdIsNotNullSpecification());
+        long expected = 7;
         assertEquals(expected, actual);
     }
 
@@ -89,8 +89,8 @@ class GenreRepositoryTest {
         repository.remove(existsGenre);
 
         //then
-        int actual = repository.count(new IdIsNotNullSpecification());
-        int expected = 6;
+        long actual = repository.count(new IdIsNotNullSpecification());
+        long expected = 6;
         assertEquals(expected, actual);
     }
 
@@ -100,8 +100,8 @@ class GenreRepositoryTest {
         repository.remove(newGenre);
 
         //then
-        int actual = repository.count(new IdIsNotNullSpecification());
-        int expected = 7;
+        long actual = repository.count(new IdIsNotNullSpecification());
+        long expected = 7;
         assertEquals(expected, actual);
     }
 
@@ -131,8 +131,8 @@ class GenreRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        int actual = repository.count(() -> "where id is not null");
-        int expected = 7;
+        long actual = repository.count(() -> "where id is not null");
+        long expected = 7;
         assertEquals(expected, actual);
     }
 }

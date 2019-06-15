@@ -1,8 +1,11 @@
 package by.platonov.music.controller;
 
 import by.platonov.music.command.Command;
+import by.platonov.music.command.CommandFactory;
 import by.platonov.music.command.CommandResult;
+import by.platonov.music.command.RequestContent;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,12 +32,23 @@ public class FrontController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        String command = req.getParameter("command");
+        String commandString = req.getParameter("command");
+        RequestContent content = new RequestContent();
 
+//        CommandFactory commandFactory = CommandFactory.getInstance();
+//        Command command = commandFactory.getCommand(content);
+//        CommandResult commandResult = command.execute(content);
+//        String page = commandResult.getPage();
 
+//        if(page != null && commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
+//            RequestDispatcher requestDispatcher = req.getRequestDispatcher(page);
+//            requestDispatcher.forward(req, resp);
+//        } else {
+//            resp.sendRedirect("index.jsp");
+//        }
 
-//        resp.setContentType("text/html");
-//        resp.getWriter().print("This is " + this.getClass().getName()
-//                + ", using the POST method");
+        resp.setContentType("text/html");
+        resp.getWriter().print("This is " + this.getClass().getName()
+                + ", using the POST method");
     }
 }

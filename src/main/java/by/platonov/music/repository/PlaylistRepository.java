@@ -3,8 +3,8 @@ package by.platonov.music.repository;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.repository.mapper.AbstractRowMapper;
-import by.platonov.music.repository.mapper.PlaylistRowMapper;
+import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
+import by.platonov.music.repository.mapper.resultSet.PlaylistRowMapper;
 import by.platonov.music.repository.specification.PlaylistIdSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
@@ -206,12 +206,12 @@ public class PlaylistRepository implements Repository<Playlist> {
 
 
     @Override
-    public int count(SqlSpecification specification) throws RepositoryException {
+    public long count(SqlSpecification specification) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
             try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return resultSet.getInt(1);
+                return resultSet.getLong(1);
             } catch (SQLException e) {
                 throw new RepositoryException(e);
             }

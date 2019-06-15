@@ -1,8 +1,10 @@
 package by.platonov.music.repository;
 
+
 import by.platonov.music.exception.RepositoryException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * @author dzmitryplatonov on 2019-06-09.
@@ -12,5 +14,5 @@ import java.sql.Connection;
  * @link https://www.voxxed.com/2015/02/transactions-using-execute-around-methodpattern-and-lambdas/
  */
 interface Transaction<T> {
-    T execute(Connection connection) throws RepositoryException;
+    T execute(Connection connection) throws SQLException, RepositoryException;
 }

@@ -41,7 +41,7 @@ class UserRepositoryTest {
     @Test
     void addShouldIncreaseSize() throws RepositoryException {
         repository.add(newUser);
-        int actualSize = repository.count(() -> "where login is not null");
+        long actualSize = repository.count(() -> "where login is not null");
         int expectedSize = 6;
         assertEquals(expectedSize, actualSize);
     }
@@ -62,7 +62,7 @@ class UserRepositoryTest {
     @Test
     void addExistingUserShouldNotIncreaseSize() throws RepositoryException {
         repository.add(updatedUser);
-        int actualSize = repository.count(() -> "where login is not null");
+        long actualSize = repository.count(() -> "where login is not null");
         int expectedSize = 5;
         assertEquals(expectedSize, actualSize);
     }
@@ -80,7 +80,7 @@ class UserRepositoryTest {
     @Test
     void removeShouldDecreaseSize() throws RepositoryException {
         repository.remove(selectedUser);
-        int actual = repository.count(() -> "where login is not null");
+        long actual = repository.count(() -> "where login is not null");
         int expected = 4;
         assertEquals(expected, actual);
     }

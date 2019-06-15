@@ -5,8 +5,8 @@ import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseConfiguration;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
-import by.platonov.music.repository.mapper.AbstractRowMapper;
-import by.platonov.music.repository.mapper.UserRowMapper;
+import by.platonov.music.repository.mapper.resultSet.AbstractRowMapper;
+import by.platonov.music.repository.mapper.resultSet.UserRowMapper;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
@@ -183,12 +183,12 @@ public class UserRepository implements Repository<User> {
         }
     }
     @Override
-    public int count(SqlSpecification specification) throws RepositoryException {
+    public long count(SqlSpecification specification) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
             try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_USER + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return resultSet.getInt(1);
+                return resultSet.getLong(1);
             } catch (SQLException e) {
                 throw new RepositoryException(e);
             }
