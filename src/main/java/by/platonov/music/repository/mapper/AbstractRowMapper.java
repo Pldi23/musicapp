@@ -7,7 +7,7 @@ import java.sql.SQLException;
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */
-public interface AbstractRowMapper<Entity> {
+public interface AbstractRowMapper<T> {
 
-    Entity map(ResultSet resultSet) throws SQLException;
+    T map(ResultSet resultSet) throws SQLException;
 }

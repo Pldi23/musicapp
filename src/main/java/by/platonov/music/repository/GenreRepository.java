@@ -36,7 +36,7 @@ public class GenreRepository implements Repository<Genre> {
     @Language("SQL")
     private static final String SQL_QUERY_GENRE = "SELECT id genreid, name genre FROM genre ";
     @Language("SQL")
-    private static final String SQL_COUNT = "SELECT COUNT(*) FROM genre ";
+    private static final String SQL_COUNT_GENRE = "SELECT COUNT(*) FROM genre ";
 
     private static GenreRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -144,7 +144,7 @@ public class GenreRepository implements Repository<Genre> {
     @Override
     public int count(SqlSpecification specification) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT + specification.toSqlClauses());
+            try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_GENRE + specification.toSqlClauses());
                  ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getInt(1);

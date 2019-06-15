@@ -4,7 +4,6 @@ import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.SqlSpecification;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author dzmitryplatonov on 2019-06-06.
