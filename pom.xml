@@ -107,12 +107,6 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.5</version>
     </dependency>
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
-      <version>7.0</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -165,8 +159,11 @@
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>2.2</version>
           <configuration>
-            <port>9090</port>
-            <path>/</path>
+            <url>http://localhost:8080/manager/text</url>
+<!--            <server>local-tomcat</server>-->
+            <path>/music-app</path>
+            <username>tomcat</username>
+            <password>s3cret</password>
           </configuration>
         </plugin>
       </plugins>

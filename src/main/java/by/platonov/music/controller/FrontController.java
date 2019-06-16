@@ -19,7 +19,7 @@ import java.io.IOException;
  * @version 0.0.1
  */
 @Log4j2
-@WebServlet(urlPatterns = "/controller")
+@WebServlet(urlPatterns = "controller")
 public class FrontController extends HttpServlet {
 
     @Override
