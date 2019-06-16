@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class MusicianResultSetExtractor implements AbstractResultSetExtractor<Musician> {
     @Override
-    public List<Musician> map(ResultSet resultSet) throws SQLException {
+    public List<Musician> extract(ResultSet resultSet) throws SQLException {
         List<Musician> result = new ArrayList<>();
         while (resultSet.next()) {
             Musician musician = Musician.builder()

@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class PlaylistResultSetExtractor implements AbstractResultSetExtractor<Playlist> {
     @Override
-    public List<Playlist> map(ResultSet resultSet) throws SQLException {
+    public List<Playlist> extract(ResultSet resultSet) throws SQLException {
         List<Playlist> playlists = new ArrayList<>();
         Map<Long, Playlist> table = new HashMap<>();
         while (resultSet.next()) {

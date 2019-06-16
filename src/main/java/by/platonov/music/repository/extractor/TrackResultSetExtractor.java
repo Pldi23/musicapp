@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track> {
     @Override
-    public List<Track> map(ResultSet resultSet) throws SQLException {
+    public List<Track> extract(ResultSet resultSet) throws SQLException {
         List<Track> tracks = new ArrayList<>();
         Map<Long, Track> table = new HashMap<>();
         while (resultSet.next()) {

@@ -70,6 +70,7 @@ public class GenreRepository implements Repository<Genre> {
             if (jdbcHelper.query(connection, SQL_QUERY_GENRE + new GenreIdSpecification(genre.getId()).toSqlClauses(),
                     new GenreResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_INSERT_GENRE, genre, new SetGenreFieldsMapper());
+                log.debug(genre + " added");
                 return true;
             } else {
                 log.debug(genre + " already exists");
@@ -86,6 +87,7 @@ public class GenreRepository implements Repository<Genre> {
                 PreparedStatementMapper<Genre> mapper = new SetGenreIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_LINK, genre, mapper);
                 jdbcHelper.execute(connection, SQL_DELETE_GENRE, genre, mapper);
+                log.debug(genre + " removed");
                 return true;
             } else {
                 log.debug("Genre: " + genre.getId() + " was not found");
@@ -100,6 +102,7 @@ public class GenreRepository implements Repository<Genre> {
             if (!jdbcHelper.query(connection, SQL_QUERY_GENRE + new GenreIdSpecification(genre.getId()).toSqlClauses(),
                     new GenreResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_UPDATE_GENRE, genre, new SetGenreUpdateMapper());
+                log.debug(genre + " updated");
                 return true;
             } else {
                 log.debug("Genre: " + genre.getId() + " was not found");

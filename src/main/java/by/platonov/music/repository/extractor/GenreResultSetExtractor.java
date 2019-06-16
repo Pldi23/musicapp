@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GenreResultSetExtractor implements AbstractResultSetExtractor<Genre> {
     @Override
-    public List<Genre> map(ResultSet resultSet) throws SQLException {
+    public List<Genre> extract(ResultSet resultSet) throws SQLException {
         List<Genre> result = new ArrayList<>();
             while (resultSet.next()) {
                 Genre genre = Genre.builder()

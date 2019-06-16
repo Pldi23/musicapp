@@ -14,7 +14,7 @@ import java.util.*;
 public class UserResultSetExtractor implements AbstractResultSetExtractor<User> {
 
     @Override
-    public List<User> map(ResultSet resultSet) throws SQLException {
+    public List<User> extract(ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
         Map<String, User> table = new HashMap<>();
         while (resultSet.next()) {

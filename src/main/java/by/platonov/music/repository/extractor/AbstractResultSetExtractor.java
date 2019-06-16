@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface AbstractResultSetExtractor<T> {
 
-    List<T> map(ResultSet resultSet) throws SQLException;
+    List<T> extract(ResultSet resultSet) throws SQLException;
 }

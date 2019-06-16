@@ -125,6 +125,6 @@ public class MusicianRepository implements Repository<Musician> {
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return transactionHandler.transactional(connection -> jdbcHelper.count(connection, SQL_COUNT_MUSICIAN));
+        return transactionHandler.transactional(connection -> jdbcHelper.count(connection, SQL_COUNT_MUSICIAN + specification.toSqlClauses()));
     }
 }

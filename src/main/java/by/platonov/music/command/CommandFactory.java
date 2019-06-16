@@ -16,9 +16,9 @@ public final class CommandFactory {
         return instance;
     }
 
-//    public Command getCommand(HttpServletRequest request) {
-//        String command = request.getParameter("command");
-//        CommandType type = CommandType.valueOf(command);
-//        return type.getCommand();
-//    }
+    public Command getCommand(HttpServletRequest request) {
+        String command = request.getParameter("command");
+        CommandType type = CommandType.valueOf(command.toUpperCase());
+        return type.getCommand();
+    }
 }
