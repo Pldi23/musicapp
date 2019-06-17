@@ -30,6 +30,7 @@ public class DatabaseConfiguration {
     private int poolSize;
     private int port;
     private String dbName;
+    private String dbDriver;
 
     public static DatabaseConfiguration getInstance() {
         if (!create.get()) {
@@ -54,7 +55,9 @@ public class DatabaseConfiguration {
         int poolSize = Integer.parseInt(resourceBundle.getString("db.poolsize"));
         int port = Integer.parseInt(resourceBundle.getString("db.port"));
         String dbName = resourceBundle.getString("db.name");
-        return new DatabaseConfiguration(host, user, password, poolSize, port, dbName);
+        String dbDriver = resourceBundle.getString("db.driver");
+
+        return new DatabaseConfiguration(host, user, password, poolSize, port, dbName, dbDriver);
     }
 
     public String getJdbcUrl() {

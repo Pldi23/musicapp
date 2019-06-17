@@ -42,8 +42,15 @@ public class ConnectionPool {
 
     private static ConnectionPool init() {
         ConnectionPool connectionPool = new ConnectionPool();
-        connectionPool.connections = new ArrayBlockingQueue<>(DatabaseConfiguration.getInstance().getPoolSize());
-        for (int i = 0; i < DatabaseConfiguration.getInstance().getPoolSize(); i++) {
+        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
+        try {
+            Class.forName(configuration.getDbDriver());
+        } catch (ClassNotFoundException e) {
+            log.fatal("Driver registration error", e);
+            throw new RuntimeException("Database driver connection failed", e);
+        }
+        connectionPool.connections = new ArrayBlockingQueue<>(configuration.getPoolSize());
+        for (int i = 0; i < configuration.getPoolSize(); i++) {
             connectionPool.connections.add(createConnection());
         }
         log.debug("Connection pool initialized with " + connectionPool.connections.size() + " connections");
