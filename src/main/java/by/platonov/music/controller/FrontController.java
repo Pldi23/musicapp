@@ -3,6 +3,7 @@ package by.platonov.music.controller;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandFactory;
 import by.platonov.music.command.CommandResult;
+import by.platonov.music.command.RequestContent;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
@@ -24,42 +25,20 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
-//        resp.setContentType("text/html");
-//        resp.getWriter().print("This is " + this.getClass().getName()
-//                + ", using the GET method");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("inside do post");
         processRequest(req, resp);
-//        String login = req.getParameter("login");
-//        String password = req.getParameter("password");
-//        String commandString = req.getParameter("command");
-//        RequestContent content = new RequestContent();
-
-//        CommandFactory commandFactory = CommandFactory.getInstance();
-//        Command command = commandFactory.getCommand(content);
-//        CommandResult commandResult = command.execute(content);
-//        String page = commandResult.getPage();
-
-//        if(page != null && commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
-//            RequestDispatcher requestDispatcher = req.getRequestDispatcher(page);
-//            requestDispatcher.forward(req, resp);
-//        } else {
-//            resp.sendRedirect("index.jsp");
-//        }
-
-//        resp.setContentType("text/html");
-//        resp.getWriter().print("This is " + this.getClass().getName()
-//                + ", using the POST method");
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("inside request");
+        RequestContent content = new RequestContent(request);
         CommandFactory commandFactory = CommandFactory.getInstance();
-        Command command = commandFactory.getCommand(request);
-        CommandResult commandResult = command.execute(request);
+        Command command = commandFactory.getCommand(content);
+        CommandResult commandResult = command.execute(content);
+
+        commandResult.getAttributes().forEach(request::setAttribute);
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());

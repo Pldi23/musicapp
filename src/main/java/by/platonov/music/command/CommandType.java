@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.service.CommonService;
+import by.platonov.music.service.UserService;
 
 /**
  * @author dzmitryplatonov on 2019-06-15.
@@ -8,10 +8,10 @@ import by.platonov.music.service.CommonService;
  */
 public enum CommandType {
 
-    LOGIN(CommonService.getInstance()::login),
-    LOGOUT(CommonService.getInstance()::logout),
-    REGISTER(CommonService.getInstance()::register),
-    TOREGISTR(CommonService.getInstance()::toRegistr);
+    LOGIN(new LoginCommand(new UserService())),
+    LOGOUT(new LogoutCommand()),
+    REGISTER(new RegistrationCommand(new UserService())),
+    TOREGISTR(new ToRegistrationCommand());
 
     private Command command;
 

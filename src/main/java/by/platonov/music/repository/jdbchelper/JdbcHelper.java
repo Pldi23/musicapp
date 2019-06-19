@@ -14,6 +14,7 @@ import java.util.List;
  * @version 0.0.1
  */
 public class JdbcHelper {
+
     public long count(Connection connection, String sql) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
