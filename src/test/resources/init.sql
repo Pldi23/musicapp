@@ -25,8 +25,6 @@ CREATE TABLE public.musician
 (
     id serial,
     name character varying(200) COLLATE pg_catalog."default",
-    is_singer boolean,
-    is_author boolean,
     CONSTRAINT musician_pkey PRIMARY KEY (id)
 );
 
@@ -98,6 +96,9 @@ CREATE TABLE public.application_user
     CONSTRAINT unic_login UNIQUE (login)
 
 );
+ALTER TABLE application_user ADD COLUMN created_at TIMESTAMP DEFAULT NOW();
+ALTER TABLE application_user ADD COLUMN active_status boolean DEFAULT false;
+ALTER TABLE application_user ADD COLUMN verification_hash character varying(200);
 
 --init user_playlist table
 CREATE TABLE public.user_playlist
@@ -114,12 +115,12 @@ CREATE TABLE public.user_playlist
         ON DELETE NO ACTION
 );
 
-INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender)
-values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true),
-    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false),
-    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true),
-    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'zidane@gmail.com', '1975-10-10', true),
-    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true);
+INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_hash)
+values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null),
+    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null),
+    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null),
+    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'zidane@gmail.com', '1975-10-10', true, false, null),
+    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1');
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
@@ -132,13 +133,13 @@ values ('Tim', 1, '2019-01-01', 180),
     ('Numb', 2, '2005-05-06', 211),
     ('Duet', 3, '2019-01-06', 201);
 insert into playlist_track (playlist_id, track_id) values (1, 4), (5, 1), (5, 2), (5, 3), (5, 4);
-insert into musician ("name", is_singer, is_author)
-values ('Avici', true, false),
-       ('Ленинград', true, false),
-       ('Артур Пирожков', true, false),
-       ('Saluki', true, false),
-       ('Linkin Park', true, true),
-       ('Bethowen', false, true),
-       ('Филипп Киркоров', true, true);
+insert into musician ("name")
+values ('Avici'),
+       ('Ленинград'),
+       ('Артур Пирожков'),
+       ('Saluki'),
+       ('Linkin Park'),
+       ('Bethowen'),
+       ('Филипп Киркоров');
 insert into singer_track (track_id, singer_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 3), (6, 7);
 insert into author_track (track_id, author_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 7), (6, 6);

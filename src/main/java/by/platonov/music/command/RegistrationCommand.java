@@ -1,10 +1,14 @@
 package by.platonov.music.command;
 
 import by.platonov.music.command.validator.*;
+import by.platonov.music.controller.page.PageConstant;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
+import by.platonov.music.exception.ActivationMailException;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
+import by.platonov.music.util.HashGenerator;
+import by.platonov.music.util.mail.Mailer;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
@@ -36,6 +40,7 @@ public class RegistrationCommand implements Command {
                                         new FirstnameValidator(
                                                 new LastnameValidator(
                                                         new EmailValidator(null)))))).apply(content);
+
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(RequestConstant.LOGIN)[0];
             String password = content.getRequestParameter(RequestConstant.PASSWORD)[0];
@@ -44,6 +49,9 @@ public class RegistrationCommand implements Command {
             String birthdate = content.getRequestParameter(RequestConstant.BIRTHDATE)[0];
             String email = content.getRequestParameter(RequestConstant.EMAIL)[0];
             String gender = content.getRequestParameter(RequestConstant.GENDER)[0];
+
+            HashGenerator generator = new HashGenerator();
+            String hash = generator.generateHash();
 
             User user = User.builder()
                     .login(login)
@@ -55,6 +63,8 @@ public class RegistrationCommand implements Command {
                     .birthDate(LocalDate.parse(birthdate))
                     .gender(Gender.valueOf(gender.toUpperCase()))
                     .playlists(new HashSet<>())
+                    .active(false)
+                    .hash(hash)
                     .build();
 
             boolean result;
@@ -62,14 +72,25 @@ public class RegistrationCommand implements Command {
                 result = userService.register(user);
             } catch (RepositoryException e) {
                 log.error("Broken repository", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, "error.jsp");
+                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
-            commandResult = result ? new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/main.jsp",
-                    Map.of("user", user.getFirstname())) :
-                    new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/registration.jsp",
-                            Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
+
+            if (result) {
+                Mailer mailer = new Mailer(email, hash);
+                try {
+                    mailer.sendMail();
+                    commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
+                            Map.of("email", user.getEmail()));
+                } catch (ActivationMailException e) {
+                    log.error("Mail activation failed", e);
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                }
+            } else {
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
+                        Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
+            }
         } else {
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/registration.jsp",
+            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                     Map.of("errorRegistrationFormMessage", violations));
         }
         return commandResult;

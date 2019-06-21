@@ -25,13 +25,22 @@ class UserRepositoryTest {
     UserRepository repository = UserRepository.getInstance();
     User newUser = User.builder().login("pldi6").password("pldi6").admin(true).firstname("Dima").lastname("Plat")
             .gender(Gender.MALE).email("pl@pl.ru").birthDate(LocalDate.of(1986, 7, 2))
-            .playlists(new HashSet<>()).build();
+            .playlists(new HashSet<>()).registrationDate(LocalDate.now())
+            .active(false)
+            .hash(null)
+            .build();
     User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
             .lastname("Ronaldo").email("Ronaldo@gmail.com").gender(Gender.MALE)
-            .birthDate(LocalDate.of(1985, 6,1)).playlists(new HashSet<>()).build();
+            .registrationDate(LocalDate.now())
+            .birthDate(LocalDate.of(1985, 6, 1)).playlists(new HashSet<>())
+            .active(false)
+            .hash(null).build();
     User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
             .lastname("Zidane").email("zidane@gmail.com").gender(Gender.MALE)
-            .birthDate(LocalDate.of(1975, 10,10)).playlists(new HashSet<>()).build();
+            .registrationDate(LocalDate.now())
+            .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
+            .active(false)
+            .hash(null).build();
 
     @Test
     void addShouldBeTrue() throws RepositoryException {
@@ -47,7 +56,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void addSelectedUserShouldBeEqualToAddedUser() throws RepositoryException{
+    void addSelectedUserShouldBeEqualToAddedUser() throws RepositoryException {
         repository.add(newUser);
         User actual = repository.query(new UserLoginSpecification(newUser.getLogin())).get(0);
         User expected = newUser;
@@ -86,7 +95,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void update() throws RepositoryException{
+    void update() throws RepositoryException {
         repository.update(updatedUser);
         User actualUser = repository.query(() -> "where login = 'pldi4'").get(0);
         User expectedUser = updatedUser;

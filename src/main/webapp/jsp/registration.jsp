@@ -1,9 +1,9 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <body>
-<h2>Please, submit registration form</h2>
+<h2>Please, submit registration form. Заполните анкету на русском</h2>
 ${errorRegistrationFormMessage}
-<form action = "controller" method = "post">
+<form action = "controller" method = "post" >
     <input type="hidden" name="command" value="register"/>
     <label>
         Your login * :

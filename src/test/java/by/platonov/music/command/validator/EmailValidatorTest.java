@@ -21,7 +21,7 @@ class EmailValidatorTest {
     RequestContent content = mock(RequestContent.class);
 
     @ParameterizedTest
-    @ValueSource(strings = {"pldi@mail.ru", "1@icloud.com", "pl_DI@gmail.com", "32@bk.ru", "!@c.c", "5674*&^%@c.com"})
+    @ValueSource(strings = {"pldi@mail.ru", "1@icloud.com", "pl_DI@gmail.com", "32@bk.ru", "5674*&^%@c.com"})
     void applyPositive(String input) {
 
         when(content.getRequestParameter(RequestConstant.EMAIL)).thenReturn(new String[]{input});

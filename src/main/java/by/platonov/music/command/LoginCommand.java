@@ -1,6 +1,7 @@
 package by.platonov.music.command;
 
 import by.platonov.music.command.validator.*;
+import by.platonov.music.controller.page.PageConstant;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
@@ -36,21 +37,27 @@ public class LoginCommand implements Command {
                 users = userService.login(login);
             } catch (RepositoryException e) {
                 log.error("Broken repository", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, "error.jsp");
+                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
-            if (!users.isEmpty() && SCryptUtil.check(password, users.get(0).getPassword()) && !users.get(0).isAdmin()) {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/main.jsp",
+            if (!users.isEmpty()
+                    && SCryptUtil.check(password, users.get(0).getPassword())
+                    && users.get(0).isActive()
+                    && !users.get(0).isAdmin()) {
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.MAIN_PAGE,
                         Map.of("user", users.get(0).getFirstname()));
-            } else if (!users.isEmpty() && SCryptUtil.check(password, users.get(0).getPassword()) && users.get(0).isAdmin()) {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/admin-main.jsp",
+            } else if (!users.isEmpty()
+                    && SCryptUtil.check(password, users.get(0).getPassword())
+                    && users.get(0).isActive()
+                    && users.get(0).isAdmin()) {
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                         Map.of("adminName", users.get(0).getFirstname()));
             } else {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/login.jsp",
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE,
                         Map.of("errorLoginPassMessage", "Incorrect login or password"));
             }
             return commandResult;
         } else {
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/login.jsp",
+            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE,
                     Map.of("validatorMessage", violations));
         }
         return commandResult;

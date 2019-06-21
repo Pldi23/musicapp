@@ -22,7 +22,9 @@ public class User extends Guest{
     private Gender gender;
     private LocalDate birthDate;
     private String email;
-//    private LocalDate registrationDate;
+    private LocalDate registrationDate;
     private Set<Playlist> playlists;
+    private boolean active;
+    private String hash;
 
 }

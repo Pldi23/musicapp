@@ -11,7 +11,8 @@ public enum CommandType {
     LOGIN(new LoginCommand(new UserService())),
     LOGOUT(new LogoutCommand()),
     REGISTER(new RegistrationCommand(new UserService())),
-    TOREGISTR(new ToRegistrationCommand());
+    TOREGISTR(new ToRegistrationCommand()),
+    ACTIVATION(new ActivationCommand(new UserService()));
 
     private Command command;
 

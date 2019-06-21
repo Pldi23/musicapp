@@ -21,6 +21,8 @@ public class SetUserUpdateMapper implements PreparedStatementMapper<User> {
         preparedStatement.setString(5, user.getEmail());
         preparedStatement.setBoolean(6, user.getGender() == Gender.MALE);
         preparedStatement.setDate(7, Date.valueOf(user.getBirthDate()));
-        preparedStatement.setString(8, user.getLogin());
+        preparedStatement.setBoolean(8, user.isActive());
+        preparedStatement.setString(9, user.getHash());
+        preparedStatement.setString(10, user.getLogin());
     }
 }

@@ -26,8 +26,9 @@ public class UserRepository implements Repository<User> {
 
     @Language("SQL")
     private static final String SQL_INSERT_USER =
-            "INSERT INTO application_user(login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            "INSERT INTO application_user(login, password, is_admin, first_name, last_name, e_mail, gender, " +
+                    "date_of_birth, active_status, verification_hash) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     @Language("SQL")
     private static final String SQL_INSERT_USER_PLAYLIST_LINK =
             "INSERT INTO user_playlist(user_login, playlist_id) VALUES (?, ?);";
@@ -40,14 +41,16 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String SQL_UPDATE_USER =
             "UPDATE application_user " +
-                    "SET password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, date_of_birth = ? " +
+                    "SET password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, " +
+                    "date_of_birth = ?, active_status = ?, verification_hash = ? " +
                     "WHERE login = ?;";
     @Language("SQL")
     private static final String SQL_COUNT_USER =
             "SELECT count(*) FROM application_user ";
     @Language("SQL")
     private static final String SQL_SELECT_USER =
-            "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth " +
+            "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth, created_at, " +
+                    "active_status, verification_hash " +
                     "FROM application_user ";
 
     private static UserRepository instance;

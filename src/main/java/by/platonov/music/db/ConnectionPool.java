@@ -79,7 +79,7 @@ public class ConnectionPool {
         log.debug("Connection released, available connections: " + connections.size());
     }
 
-    public void tierDown() throws SQLException {
+    public  void tierDown() throws SQLException {
         if (create.get()) {
             lock.lock();
             try {

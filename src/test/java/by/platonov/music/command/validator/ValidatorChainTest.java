@@ -3,8 +3,6 @@ package by.platonov.music.command.validator;
 import by.platonov.music.command.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Set;
 
@@ -25,8 +23,8 @@ public class ValidatorChainTest {
         String login = "pldi";
         String password = "Password1!";
         String birthdate = "1986-02-07";
-        String firstname = "Dima";
-        String lastname = "Platonov";
+        String firstname = "Дима";
+        String lastname = "Платонов";
         String email = "p@mail.ru";
 
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[]{login});

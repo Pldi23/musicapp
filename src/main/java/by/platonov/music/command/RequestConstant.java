@@ -9,6 +9,7 @@ public class RequestConstant {
     private RequestConstant() {
     }
 
+    public static final String COMMAND = "command";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
     public static final String FIRSTNAME = "firstname";
@@ -16,4 +17,6 @@ public class RequestConstant {
     public static final String EMAIL = "email";
     public static final String BIRTHDATE = "birthdate";
     public static final String GENDER = "gender";
+    public static final String HASH = "hash";
+
 }

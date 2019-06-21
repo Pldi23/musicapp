@@ -20,7 +20,7 @@ class ConnectionPoolTest {
     private List<Connection> usedConnections = new ArrayList<>();
 
     @Test
-    void shouldReleaseAndRetakeTheSameConnectionWhenAllAreTaken() throws InterruptedException, SQLException {
+    void shouldReleaseAndRetakeTheSameConnectionWhenAllAreTaken() throws InterruptedException {
         //when all connections are taken
         ConnectionPool pool = ConnectionPool.getInstance();
         int poolSize = DatabaseConfiguration.getInstance().getPoolSize();

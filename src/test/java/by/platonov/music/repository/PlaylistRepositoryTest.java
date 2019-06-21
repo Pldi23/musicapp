@@ -20,26 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlaylistRepositoryTest {
 
     PlaylistRepository repository = PlaylistRepository.getInstance();
-//    Genre pop = Genre.builder().id(1).title("pop").build();
-//    Genre chanson = Genre.builder().id(7).title("chanson").build();
-//
-//
-//    Track zacepila = Track.builder().id(4).name("Зацепила").genre(pop)
-//            .releaseDate(LocalDate.of(2019, 3, 11)).length(185)
-//            .singers(new HashSet<>())
-//            .authors(new HashSet<>()).build();
-//    Track tim = Track.builder().id(1).name("Tim").genre(pop)
-//            .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
-//            .singers(new HashSet<>())
-//            .authors(new HashSet<>()).build();
-//    Track isuss = Track.builder().id(2).name("i_Suss").genre(chanson)
-//            .releaseDate(LocalDate.of(2019, 2, 2)).length(195)
-//            .singers(new HashSet<>())
-//            .authors(new HashSet<>()).build();
-//    Track vlastelin = Track.builder().id(3).name("Властелин калек").genre(pop)
-//            .releaseDate(LocalDate.of(2018, 12, 1)).length(200)
-//            .singers(new HashSet<>())
-//            .authors(new HashSet<>()).build();
 
     Playlist spring2019 = Playlist.builder().id(1).name("spring2019").tracks(new HashSet<>()).build();
     Playlist newyearMix = Playlist.builder().id(5).name("new year party mix").tracks(new HashSet<>()).build();

@@ -4,6 +4,7 @@ import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.UserRepository;
 import by.platonov.music.repository.specification.SqlSpecification;
+import by.platonov.music.repository.specification.UserEmailHashSpecification;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 
 import java.util.List;
@@ -23,5 +24,18 @@ public class UserService {
 
     public boolean register(User user) throws RepositoryException {
         return repository.add(user);
+    }
+
+    public boolean activate(String email, String hash) throws RepositoryException {
+        boolean result = false;
+        SqlSpecification specification = new UserEmailHashSpecification(email, hash);
+        List<User> users = repository.query(specification);
+        if (!users.isEmpty()) {
+            User user = users.get(0);
+            user.setActive(true);
+            user.setHash(null);
+            result = repository.update(user);
+        }
+        return result;
     }
 }

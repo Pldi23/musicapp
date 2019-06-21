@@ -28,7 +28,10 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
                         .email(resultSet.getString("e_mail"))
                         .birthDate(resultSet.getDate("date_of_birth").toLocalDate())
                         .gender(resultSet.getBoolean("gender") ? Gender.MALE : Gender.FEMALE)
+                        .registrationDate(resultSet.getTimestamp("created_at").toLocalDateTime().toLocalDate())
                         .playlists(new HashSet<>())
+                        .active(resultSet.getBoolean("active_status"))
+                        .hash(resultSet.getString("verification_hash"))
                         .build();
                 table.put(user.getLogin(), user);
             }
