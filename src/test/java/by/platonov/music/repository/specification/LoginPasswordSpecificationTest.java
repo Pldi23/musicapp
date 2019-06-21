@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class LoginPasswordSpecificationTest {
 
-    Repository<User> repository;
-    SqlSpecification specification;
 
     @Test
     void toSqlClauses() throws RepositoryException {
         //given
+        Repository<User> repository;
+        SqlSpecification specification;
         String login = "pldi";
         String password = "qwerty";
         specification = new LoginPasswordSpecification(login, password);

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class LoginCommandTest {
 
-    LoginCommand command;
+    private LoginCommand command;
 
     @Test
     void execute() {

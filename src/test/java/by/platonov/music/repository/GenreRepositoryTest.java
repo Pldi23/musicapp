@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class GenreRepositoryTest {
 
-    GenreRepository repository = GenreRepository.getInstance();
-    Genre newGenre = Genre.builder().title("unknown").build();
-    Genre existsGenre = Genre.builder().id(1).title("pop").build();
-    Genre updatedGenre = Genre.builder().id(1).title("new").build();
+    private GenreRepository repository = GenreRepository.getInstance();
+    private Genre newGenre = Genre.builder().title("unknown").build();
+    private Genre existsGenre = Genre.builder().id(1).title("pop").build();
+    private Genre updatedGenre = Genre.builder().id(1).title("new").build();
 
 
 

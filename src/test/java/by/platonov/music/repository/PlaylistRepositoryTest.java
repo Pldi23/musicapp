@@ -19,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class PlaylistRepositoryTest {
 
-    PlaylistRepository repository = PlaylistRepository.getInstance();
+    private PlaylistRepository repository = PlaylistRepository.getInstance();
 
-    Playlist spring2019 = Playlist.builder().id(1).name("spring2019").tracks(new HashSet<>()).build();
-    Playlist newyearMix = Playlist.builder().id(5).name("new year party mix").tracks(new HashSet<>()).build();
-    Playlist newPlaylist = Playlist.builder().id(6).name("new playlist").tracks(new HashSet<>()).build();
+    private Playlist spring2019 = Playlist.builder().id(1).name("spring2019").tracks(new HashSet<>()).build();
+    private Playlist newyearMix = Playlist.builder().id(5).name("new year party mix").tracks(new HashSet<>()).build();
+    private Playlist newPlaylist = Playlist.builder().id(6).name("new playlist").tracks(new HashSet<>()).build();
 
     @Test
     void addShouldBeTrue() throws RepositoryException {

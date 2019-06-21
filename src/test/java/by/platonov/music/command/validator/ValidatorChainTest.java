@@ -14,9 +14,9 @@ import static org.mockito.Mockito.when;
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */
-public class ValidatorChainTest {
+class ValidatorChainTest {
 
-    RequestContent content = mock(RequestContent.class);
+    private RequestContent content = mock(RequestContent.class);
 
     @Test
     void testApplyPositive() {

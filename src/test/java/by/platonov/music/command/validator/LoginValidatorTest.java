@@ -15,8 +15,8 @@ import static org.mockito.Mockito.*;
  */
 class LoginValidatorTest {
 
-    LoginValidator validator = new LoginValidator(null);
-    RequestContent content = mock(RequestContent.class);
+    private LoginValidator validator = new LoginValidator(null);
+    private RequestContent content = mock(RequestContent.class);
 
     @ParameterizedTest
     @ValueSource(strings = {"pldi", "pldi32", "pldi-32", "pldi_32", "____", "Pldi", "PLDI", "1234"})

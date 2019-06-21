@@ -14,7 +14,7 @@ public class DatabaseSetupExtension implements BeforeEachCallback, AfterEachCall
     private PostgreSQLContainer postgreSQLContainer;
 
     @Override
-    public void beforeEach(ExtensionContext extensionContext) throws Exception {
+    public void beforeEach(ExtensionContext extensionContext) {
         DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
         postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer()
                 .withInitScript("init.sql")

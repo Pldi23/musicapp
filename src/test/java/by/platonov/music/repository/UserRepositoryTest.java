@@ -22,20 +22,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class UserRepositoryTest {
 
-    UserRepository repository = UserRepository.getInstance();
-    User newUser = User.builder().login("pldi6").password("pldi6").admin(true).firstname("Dima").lastname("Plat")
+    private UserRepository repository = UserRepository.getInstance();
+    private User newUser = User.builder().login("pldi6").password("pldi6").admin(true).firstname("Dima").lastname("Plat")
             .gender(Gender.MALE).email("pl@pl.ru").birthDate(LocalDate.of(1986, 7, 2))
             .playlists(new HashSet<>()).registrationDate(LocalDate.now())
             .active(false)
             .hash(null)
             .build();
-    User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
+    private User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
             .lastname("Ronaldo").email("Ronaldo@gmail.com").gender(Gender.MALE)
             .registrationDate(LocalDate.now())
             .birthDate(LocalDate.of(1985, 6, 1)).playlists(new HashSet<>())
             .active(false)
             .hash(null).build();
-    User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
+    private User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
             .lastname("Zidane").email("zidane@gmail.com").gender(Gender.MALE)
             .registrationDate(LocalDate.now())
             .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
@@ -121,18 +121,4 @@ class UserRepositoryTest {
         int expected = 5;
         assertEquals(expected, repository.count(() -> "where login is not null"));
     }
-//
-//    @Test
-//    void findOneExistingUser() throws RepositoryException {
-//        Optional<User> actual = repository.findOne(() -> "where login = 'pldi3'");
-//        Optional<User> expected = Optional.of(selectedUser);
-//        assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    void findOneNonExistingUser() throws RepositoryException {
-//        Optional<User> actual = repository.findOne(() -> "where login = 'pldi11'");
-//        Optional<User> expected = Optional.empty();
-//        assertEquals(expected, actual);
-//    }
 }

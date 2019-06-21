@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class MusicianRepositoryTest {
 
-    MusicianRepository repository = MusicianRepository.getInstance();
-    Musician newMusician = Musician.builder().name("Bah").build();
-    Musician existsMusician = Musician.builder().name("Linkin Park").build();
-    Musician updatedMusician = Musician.builder().name("Linkin Park").build();
+    private MusicianRepository repository = MusicianRepository.getInstance();
+    private Musician newMusician = Musician.builder().name("Bah").build();
+    private Musician existsMusician = Musician.builder().name("Linkin Park").build();
+    private Musician updatedMusician = Musician.builder().name("Linkin Park").build();
 
     @BeforeEach
     void setUp() {

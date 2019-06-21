@@ -24,12 +24,6 @@ public class PlaylistResultSetExtractor implements AbstractResultSetExtractor<Pl
                         .build();
                 table.put(playlist.getId(), playlist);
             }
-//            else {
-//                Musician singer = mapper.mapSinger(resultSet);
-//                Musician author = mapper.mapAuthor(resultSet);
-//                table.get(resultSet.getLong("id")).getSingers().add(singer);
-//                table.get(resultSet.getLong("id")).getAuthors().add(author);
-//            }
         }
         table.forEach((id, entity) -> playlists.add(entity));
         return playlists;

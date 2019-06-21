@@ -6,6 +6,9 @@ package by.platonov.music.controller.page;
  */
 public class PageConstant {
 
+    private PageConstant() {
+    }
+
     public static final String LOGIN_PAGE = "/jsp/login.jsp";
     public static final String ERROR_REDIRECT_PAGE = "error.jsp";
     public static final String MAIN_PAGE = "/jsp/main.jsp";

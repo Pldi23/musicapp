@@ -17,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class PlaylistUserSpecificationTest {
 
-    SqlSpecification specification;
-    Repository<Playlist> repository;
+
     @Test
     void toSqlClauses() throws RepositoryException {
         //given
+        SqlSpecification specification;
+        Repository<Playlist> repository;
         String login = "pldi1";
         specification = new PlaylistUserSpecification(login);
         repository = PlaylistRepository.getInstance();

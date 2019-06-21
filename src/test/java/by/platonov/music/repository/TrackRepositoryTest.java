@@ -23,23 +23,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrackRepositoryTest {
 
     private TrackRepository repository = TrackRepository.getInstance();
-    Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
+    private Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
             .singers(new HashSet<>())
             .authors(new HashSet<>()).build();
 
-    Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
+    private Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
             .releaseDate(LocalDate.of(2019, 1,6))
             .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
             .build();
-    Track newTrackWitnNewMusician = Track.builder().id(10).name("Newcommer").genre(Genre.builder().id(1).title("pop").build())
-            .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
-            .singers(new HashSet<>())
-            .authors(new HashSet<>())
-            .build();
-    Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
+
+    private Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
             .singers(new HashSet<>())
             .authors(new HashSet<>())

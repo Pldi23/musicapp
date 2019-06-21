@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
  */
 class FirstnameValidatorTest {
 
-    FirstnameValidator validator = new FirstnameValidator(null);
-    RequestContent content = mock(RequestContent.class);
+    private FirstnameValidator validator = new FirstnameValidator(null);
+    private RequestContent content = mock(RequestContent.class);
 
     @ParameterizedTest
     @ValueSource(strings = {"Дима", "Dima", "dima", "дима", "ДИМА", "ДИ МА", "чу", "Ди-ма",

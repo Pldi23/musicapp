@@ -17,16 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class UserEmailHashSpecificationTest {
 
-    Repository<User> repository;
-    SqlSpecification specification;
-
     @Test
     void toSqlClauses() throws RepositoryException {
         //given
         String email = "messi@gmail.com";
         String hash = "1";
-        specification = new UserEmailHashSpecification(email, hash);
-        repository = UserRepository.getInstance();
+        SqlSpecification specification = new UserEmailHashSpecification(email, hash);
+        Repository<User> repository = UserRepository.getInstance();
 
         //then
         int actual = repository.query(specification).size();

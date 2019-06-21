@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class UserServiceTest {
 
-    UserService service;
+    private UserService service;
 
     @Test
     void activatePositive() throws RepositoryException {

@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
  */
 class EmailValidatorTest {
 
-    EmailValidator validator = new EmailValidator(null);
-    RequestContent content = mock(RequestContent.class);
+    private EmailValidator validator = new EmailValidator(null);
+    private RequestContent content = mock(RequestContent.class);
 
     @ParameterizedTest
     @ValueSource(strings = {"pldi@mail.ru", "1@icloud.com", "pl_DI@gmail.com", "32@bk.ru", "5674*&^%@c.com"})

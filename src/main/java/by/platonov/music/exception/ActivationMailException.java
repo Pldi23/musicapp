@@ -6,17 +6,6 @@ package by.platonov.music.exception;
  */
 public class ActivationMailException extends Exception {
 
-    public ActivationMailException() {
-    }
-
-    public ActivationMailException(String message) {
-        super(message);
-    }
-
-    public ActivationMailException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public ActivationMailException(Throwable cause) {
         super(cause);
     }

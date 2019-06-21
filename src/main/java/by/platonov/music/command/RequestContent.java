@@ -1,7 +1,5 @@
 package by.platonov.music.command;
 
-import lombok.extern.log4j.Log4j2;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;

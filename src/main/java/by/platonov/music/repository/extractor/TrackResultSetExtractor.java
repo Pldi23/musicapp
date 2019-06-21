@@ -32,12 +32,6 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
                         .build();
                 table.put(track.getId(), track);
             }
-//            else {
-//                Musician singer = mapper.mapSinger(resultSet);
-//                Musician author = mapper.mapAuthor(resultSet);
-//                table.get(resultSet.getLong("id")).getSingers().add(singer);
-//                table.get(resultSet.getLong("id")).getAuthors().add(author);
-//            }
         }
         table.forEach((id, entity) -> tracks.add(entity));
         return tracks;

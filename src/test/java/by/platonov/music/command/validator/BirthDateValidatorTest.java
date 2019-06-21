@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
  */
 class BirthDateValidatorTest {
 
-    BirthDateValidator validator = new BirthDateValidator(null);
-    RequestContent content = mock(RequestContent.class);
+    private BirthDateValidator validator = new BirthDateValidator(null);
+    private RequestContent content = mock(RequestContent.class);
 
     @ParameterizedTest
     @ValueSource(strings = {"1986-02-07", "2013-06-15"})

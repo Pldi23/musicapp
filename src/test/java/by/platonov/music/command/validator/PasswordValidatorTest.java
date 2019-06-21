@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
  */
 class PasswordValidatorTest {
 
-    PasswordValidator validator = new PasswordValidator(null);
-    RequestContent content = mock(RequestContent.class);
+    private PasswordValidator validator = new PasswordValidator(null);
+    private RequestContent content = mock(RequestContent.class);
 
 
     @ParameterizedTest

@@ -15,14 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DatabaseSetupExtension.class)
 class TracksInPlaylistSpecificationTest {
 
-    SqlSpecification specification;
-    TrackRepository repository = TrackRepository.getInstance();
+    private TrackRepository repository = TrackRepository.getInstance();
 
     @Test
     void toSqlClauses() throws RepositoryException {
         //given
         long playlistId = 5;
-        specification = new TracksInPlaylistSpecification(playlistId);
+        SqlSpecification specification = new TracksInPlaylistSpecification(playlistId);
 
         //then
         long actual = repository.count(specification);
