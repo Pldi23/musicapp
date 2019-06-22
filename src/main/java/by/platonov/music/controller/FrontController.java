@@ -1,9 +1,6 @@
 package by.platonov.music.controller;
 
-import by.platonov.music.command.Command;
-import by.platonov.music.command.CommandFactory;
-import by.platonov.music.command.CommandResult;
-import by.platonov.music.command.RequestContent;
+import by.platonov.music.command.*;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
@@ -39,6 +36,11 @@ public class FrontController extends HttpServlet {
         CommandResult commandResult = command.execute(content);
 
         commandResult.getAttributes().forEach(request::setAttribute);
+        commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
+
+        if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
+            request.getSession().invalidate();
+        }
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());

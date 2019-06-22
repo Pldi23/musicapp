@@ -42,8 +42,8 @@ public class VerificationMailSender extends Thread {
         String username;
         try {
             properties.load(VerificationMailSender.class.getResourceAsStream(MAIL_PROPERTIES_PATH));
-            mailAddress = properties.getProperty("mail.smtps.user");
-            password = properties.getProperty("mail.smtps.password");
+            mailAddress = properties.getProperty("mail.smtp.user");
+            password = properties.getProperty("mail.smtp.password");
 
             Session session = Session.getDefaultInstance(properties, new Authenticator() {
                 @Override
@@ -59,7 +59,7 @@ public class VerificationMailSender extends Thread {
             message.setText(MAIL_MESSAGE);
             message.setText(String.format(LINK_MESSAGE, userEmail, hash));
 
-            username = properties.getProperty("mail.smtps.username");
+            username = properties.getProperty("mail.smtp.username");
             Transport transport = session.getTransport();
             transport.connect(username, password);
             transport.sendMessage(message, message.getAllRecipients());

@@ -1,14 +1,13 @@
 package by.platonov.music.command;
 
 import by.platonov.music.command.validator.*;
-import by.platonov.music.controller.page.PageConstant;
+import by.platonov.music.command.page.PageConstant;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,14 +44,13 @@ public class LoginCommand implements Command {
                     && users.get(0).isActive()
                     && !users.get(0).isAdmin()) {
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.MAIN_PAGE,
-                        Map.of("user", users.get(0).getFirstname()));
+                        Map.of("user", users.get(0).getFirstname()), Map.of("role", "user"));
             } else if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())
                     && users.get(0).isActive()
                     && users.get(0).isAdmin()) {
-//                HttpSession session = content.getSessionAttributes();
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                        Map.of("adminName", users.get(0).getFirstname()));
+                        Map.of("adminName", users.get(0).getFirstname()), Map.of("role", "admin"));
             } else {
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE,
                         Map.of("errorLoginPassMessage", "Incorrect login or password"));

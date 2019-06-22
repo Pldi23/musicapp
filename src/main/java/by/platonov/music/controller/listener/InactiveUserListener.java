@@ -13,14 +13,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Listener using for removing user that not confirmed email address
  * @author dzmitryplatonov on 2019-06-22.
  * @version 0.0.1
  */
 @Log4j2
 @WebListener
-public class NotActiveUserListener implements ServletContextListener {
+public class InactiveUserListener implements ServletContextListener {
 
-    ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -31,7 +32,7 @@ public class NotActiveUserListener implements ServletContextListener {
             try {
                 service.removeNotActiveUser();
             } catch (RepositoryException e) {
-                log.error("Could not remove inactive users");
+                log.error("Could not remove inactive users", e);
             }
         }, Integer.parseInt(interval), TimeUnit.MINUTES);
     }

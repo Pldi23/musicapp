@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.controller.page.PageConstant;
+import by.platonov.music.command.page.PageConstant;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.
@@ -9,6 +9,7 @@ import by.platonov.music.controller.page.PageConstant;
 public class LogoutCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
+
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE);
     }
 }

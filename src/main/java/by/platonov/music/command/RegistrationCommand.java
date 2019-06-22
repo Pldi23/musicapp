@@ -1,7 +1,7 @@
 package by.platonov.music.command;
 
 import by.platonov.music.command.validator.*;
-import by.platonov.music.controller.page.PageConstant;
+import by.platonov.music.command.page.PageConstant;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;

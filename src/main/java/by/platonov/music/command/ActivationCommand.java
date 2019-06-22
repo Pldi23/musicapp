@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.controller.page.PageConstant;
+import by.platonov.music.command.page.PageConstant;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
 import lombok.extern.log4j.Log4j2;

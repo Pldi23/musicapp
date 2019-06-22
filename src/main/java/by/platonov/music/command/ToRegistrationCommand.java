@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.controller.page.PageConstant;
+import by.platonov.music.command.page.PageConstant;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.

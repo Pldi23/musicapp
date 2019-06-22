@@ -1,4 +1,4 @@
-package by.platonov.music.controller.page;
+package by.platonov.music.command.page;
 
 /**
  * @author dzmitryplatonov on 2019-06-21.

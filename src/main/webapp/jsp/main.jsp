@@ -4,6 +4,7 @@
 <h3>Welcome</h3>
 <hr/>
 ${user}, hello!
+your role: ${role}
 <hr/>
 <a href="controller?command=logout">Logout</a>
 </body></html>
