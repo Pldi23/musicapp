@@ -1,6 +1,5 @@
-package by.platonov.music.util.mail;
+package by.platonov.music.util;
 
-import by.platonov.music.exception.ActivationMailException;
 import lombok.extern.log4j.Log4j2;
 
 import javax.mail.*;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @version 0.0.1
  */
 @Log4j2
-public class Mailer {
+public class VerificationMailSender extends Thread {
 
     private static final String MAIL_PROPERTIES_PATH = "/mail.properties";
 
@@ -26,18 +25,23 @@ public class Mailer {
     private String userEmail;
     private String hash;
 
-    public Mailer(String userEmail, String hash) {
+    public VerificationMailSender(String userEmail, String hash) {
         this.userEmail = userEmail;
         this.hash = hash;
     }
 
-    public void sendMail() throws ActivationMailException {
+    @Override
+    public void run() {
+        sendMail();
+    }
+
+    public void sendMail() {
         Properties properties = new Properties();
         String mailAddress;
         String password;
         String username;
         try {
-            properties.load(Mailer.class.getResourceAsStream(MAIL_PROPERTIES_PATH));
+            properties.load(VerificationMailSender.class.getResourceAsStream(MAIL_PROPERTIES_PATH));
             mailAddress = properties.getProperty("mail.smtps.user");
             password = properties.getProperty("mail.smtps.password");
 
@@ -62,8 +66,7 @@ public class Mailer {
             transport.close();
             log.debug("Activation link was successfully sent");
         } catch (IOException | MessagingException e) {
-            log.error("E-mail with activation link was not sent");
-            throw new ActivationMailException(e);
+            log.error("Could not sent e-mail with activation link");
         }
 
     }

@@ -8,6 +8,7 @@ import by.platonov.music.service.UserService;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,6 +50,7 @@ public class LoginCommand implements Command {
                     && SCryptUtil.check(password, users.get(0).getPassword())
                     && users.get(0).isActive()
                     && users.get(0).isAdmin()) {
+//                HttpSession session = content.getSessionAttributes();
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                         Map.of("adminName", users.get(0).getFirstname()));
             } else {

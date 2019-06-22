@@ -3,6 +3,7 @@ package by.platonov.music.service;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.UserRepository;
+import by.platonov.music.repository.specification.NotConfirmedRegistrationUserSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import by.platonov.music.repository.specification.UserEmailHashSpecification;
 import by.platonov.music.repository.specification.UserLoginSpecification;
@@ -37,5 +38,15 @@ public class UserService {
             result = repository.update(user);
         }
         return result;
+    }
+
+    public void removeNotActiveUser() throws RepositoryException {
+        SqlSpecification specification = new NotConfirmedRegistrationUserSpecification();
+        List<User> users = repository.query(specification);
+        if (!users.isEmpty()) {
+            for (User user : users) {
+                repository.remove(user);
+            }
+        }
     }
 }

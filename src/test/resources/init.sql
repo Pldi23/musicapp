@@ -119,7 +119,7 @@ INSERT into application_user ("login", "password", is_admin, first_name, last_na
 values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null),
     ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null),
     ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null),
-    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'zidane@gmail.com', '1975-10-10', true, false, null),
+    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'pldi@mail.ru', '1975-10-10', true, false, '1'),
     ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1');
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
