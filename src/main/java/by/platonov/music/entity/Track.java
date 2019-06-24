@@ -12,7 +12,7 @@ import java.util.Set;
  * @version 0.0.1
  */
 @Data
-public class Track extends Media implements Comparable<Track> {
+public class Track extends Media {
 
     private String name;
     private Set<Musician> authors;
@@ -32,8 +32,4 @@ public class Track extends Media implements Comparable<Track> {
         this.length = length;
     }
 
-    @Override
-    public int compareTo(@NotNull Track o) {
-        return Long.compare(this.getId(), o.getId());
-    }
 }

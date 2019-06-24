@@ -36,11 +36,11 @@ class UserRepositoryTest {
             .active(false)
             .hash(null).build();
     private User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
-            .lastname("Zidane").email("zidane@gmail.com").gender(Gender.MALE)
+            .lastname("Zidane").email("pldi@mail.ru").gender(Gender.MALE)
             .registrationDate(LocalDate.now())
             .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
             .active(false)
-            .hash(null).build();
+            .hash("1").build();
 
     @Test
     void addShouldBeTrue() throws RepositoryException {

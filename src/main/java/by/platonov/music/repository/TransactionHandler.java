@@ -12,12 +12,12 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
- *
+ * <p>
  * execute-around method pattern
  * @link https://www.voxxed.com/2015/02/transactions-using-execute-around-methodpattern-and-lambdas/
  */
 @Log4j2
-public class TransactionHandler {
+class TransactionHandler {
 
     private static TransactionHandler instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -26,7 +26,7 @@ public class TransactionHandler {
     private TransactionHandler() {
     }
 
-    public static TransactionHandler getInstance() {
+    static TransactionHandler getInstance() {
         if (!create.get()) {
             lock.lock();
             try {

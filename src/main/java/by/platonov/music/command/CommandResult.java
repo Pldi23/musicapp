@@ -17,7 +17,6 @@ public class CommandResult {
     private String page;
     private Map<String, Object> attributes;
     private Map<String, Object> sessionAttributes;
-    private boolean invalidated;
 
     public CommandResult(ResponseType responseType, String page, Map<String, Object> attributes, Map<String, Object> sessionAttributes) {
         this.responseType = responseType;

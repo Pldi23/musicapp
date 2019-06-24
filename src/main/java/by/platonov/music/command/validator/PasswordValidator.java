@@ -27,7 +27,10 @@ public class PasswordValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameter(RequestConstant.PASSWORD)[0].matches(PASSWORD_REGEX_PATTERN)) {
+        if (!content.getRequestParameters().containsKey(RequestConstant.PASSWORD)) {
+            log.warn("Invalid content parameter: no password parameter in request");
+            result.add(new Violation(INCORRECT_PASS_MESSAGE));
+        } else if (!content.getRequestParameter(RequestConstant.PASSWORD)[0].matches(PASSWORD_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.PASSWORD)[0]);
             result.add(new Violation(INCORRECT_PASS_MESSAGE));
         }

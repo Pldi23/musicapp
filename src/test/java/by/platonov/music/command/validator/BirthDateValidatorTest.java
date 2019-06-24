@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ class BirthDateValidatorTest {
     @ValueSource(strings = {"1986-02-07", "2013-06-15"})
     void applyPositive(String input) {
 
+        when(content.getRequestParameters()).thenReturn(Map.of("birthdate", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
@@ -37,6 +39,7 @@ class BirthDateValidatorTest {
     void applyNegative(String input) {
         String message = "User of the application must be older then 6 years";
 
+        when(content.getRequestParameters()).thenReturn(Map.of("birthdate", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);

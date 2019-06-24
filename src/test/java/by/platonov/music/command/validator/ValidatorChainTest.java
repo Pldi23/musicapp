@@ -4,6 +4,7 @@ import by.platonov.music.command.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,13 @@ class ValidatorChainTest {
         String lastname = "Платонов";
         String email = "p@mail.ru";
 
+        when(content.getRequestParameters()).thenReturn(Map.of(
+                "login", new String[]{login},
+                "password", new String[]{password},
+                "birthdate", new String[]{birthdate},
+                "firstname", new String[]{firstname},
+                "lastname", new String[]{lastname},
+                "email", new String[]{email}));
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[]{login});
         when(content.getRequestParameter(RequestConstant.PASSWORD)).thenReturn(new String[]{password});
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{birthdate});
@@ -61,6 +69,13 @@ class ValidatorChainTest {
         String lastnameMessage = "Last name must contain minimum 2 and maximum 30 letters";
         String emailMessage = "E-mail example johndoe@domainsample.com";
 
+        when(content.getRequestParameters()).thenReturn(Map.of(
+                "login", new String[]{login},
+                "password", new String[]{password},
+                "birthdate", new String[]{birthdate},
+                "firstname", new String[]{firstname},
+                "lastname", new String[]{lastname},
+                "email", new String[]{email}));
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[]{login});
         when(content.getRequestParameter(RequestConstant.PASSWORD)).thenReturn(new String[]{password});
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{birthdate});

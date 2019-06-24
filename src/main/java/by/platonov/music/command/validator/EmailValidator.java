@@ -26,7 +26,10 @@ public class EmailValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
+        if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
+            log.warn("Invalid content parameter: no email parameter in request");
+            result.add(new Violation(EMAIL_INCORRECT_MESSAGE));
+        } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
             result.add(new Violation(EMAIL_INCORRECT_MESSAGE));
         }

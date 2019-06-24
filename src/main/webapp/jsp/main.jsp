@@ -3,7 +3,7 @@
 <body>
 <h3>Welcome</h3>
 <hr/>
-${user}, hello!
+${userFirstName}, hello!
 your role: ${role}
 <hr/>
 <a href="controller?command=logout">Logout</a>

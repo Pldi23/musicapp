@@ -3,8 +3,10 @@ package by.platonov.music.db;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,6 +22,7 @@ public class ConnectionPool {
     private static ConnectionPool instance;
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
+    private static DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
     private BlockingQueue<Connection> connections;
 
     private ConnectionPool() {
@@ -42,7 +45,6 @@ public class ConnectionPool {
 
     private static ConnectionPool init() {
         ConnectionPool connectionPool = new ConnectionPool();
-        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
         try {
             Class.forName(configuration.getDbDriver());
         } catch (ClassNotFoundException e) {
@@ -58,7 +60,6 @@ public class ConnectionPool {
     }
 
     private static Connection createConnection() {
-        DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
         try {
             log.trace("Connection created");
             return DriverManager.getConnection(configuration.getJdbcUrl(), configuration.getUser(),

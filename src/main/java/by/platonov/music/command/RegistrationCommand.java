@@ -30,7 +30,7 @@ public class RegistrationCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(RequestContent content) {
+    public CommandResult execute(RequestContent content) throws RepositoryException {
         CommandResult commandResult;
         Set<Violation> violations =
                 new LoginValidator(
@@ -66,15 +66,7 @@ public class RegistrationCommand implements Command {
                     .hash(hash)
                     .build();
 
-            boolean result;
-            try {
-                result = userService.register(user);
-            } catch (RepositoryException e) {
-                log.error("Broken repository", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-            }
-
-            if (result) {
+            if (userService.register(user)) {
                 Thread mailSender = new VerificationMailSender(email, hash);
                 mailSender.start();
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,

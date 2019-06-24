@@ -27,10 +27,15 @@ public class BirthDateValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        Period period = Period.between(LocalDate.parse(content.getRequestParameter(RequestConstant.BIRTHDATE)[0]), LocalDate.now());
-        if (period.getYears() < MINIMUM_AGE_ALLOWED_BY_APPLICATION) {
-            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.BIRTHDATE)[0]);
+        if (!content.getRequestParameters().containsKey(RequestConstant.BIRTHDATE)) {
+            log.warn("Invalid content parameter: no birthdate parameter in request");
             result.add(new Violation(USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE));
+        } else {
+            Period period = Period.between(LocalDate.parse(content.getRequestParameter(RequestConstant.BIRTHDATE)[0]), LocalDate.now());
+            if (period.getYears() < MINIMUM_AGE_ALLOWED_BY_APPLICATION) {
+                log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.BIRTHDATE)[0]);
+                result.add(new Violation(USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE));
+            }
         }
         if (next != null) {
             result.addAll(next.apply(content));

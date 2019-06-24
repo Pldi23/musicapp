@@ -8,6 +8,7 @@ import by.platonov.music.service.UserService;
  */
 public enum CommandType {
 
+
     LOGIN(new LoginCommand(new UserService())),
     LOGOUT(new LogoutCommand()),
     REGISTER(new RegistrationCommand(new UserService())),

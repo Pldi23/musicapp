@@ -19,20 +19,14 @@ public class ActivationCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(RequestContent content) {
-        CommandResult commandResult;
+    public CommandResult execute(RequestContent content) throws RepositoryException {
         String email = content.getRequestParameter(RequestConstant.EMAIL)[0];
         String hash = content.getRequestParameter(RequestConstant.HASH)[0];
 
         service = new UserService();
-        try {
-            commandResult = service.activate(email, hash) ?
-                    new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE) :
-                    new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-        } catch (RepositoryException e) {
-            log.error("Broken repository", e);
-            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-        }
-        return commandResult;
+
+        return service.activate(email, hash) ?
+                new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE) :
+                new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
     }
 }

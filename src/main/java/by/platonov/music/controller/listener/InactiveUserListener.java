@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Listener using for removing user that not confirmed email address
+ * Listener using for removing users with unconfirmed email address
  * @author dzmitryplatonov on 2019-06-22.
  * @version 0.0.1
  */

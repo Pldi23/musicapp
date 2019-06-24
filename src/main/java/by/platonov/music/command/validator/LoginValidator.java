@@ -25,7 +25,10 @@ public class LoginValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameter(RequestConstant.LOGIN)[0].matches(LOGIN_REGEX_PATTERN)) {
+        if (!content.getRequestParameters().containsKey(RequestConstant.LOGIN)) {
+            log.warn("Invalid content parameter: no login parameter in request");
+            result.add(new Violation(LOGIN_INCORRECT_MESSAGE));
+        } else if (!content.getRequestParameter(RequestConstant.LOGIN)[0].matches(LOGIN_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LOGIN)[0]);
             result.add(new Violation(LOGIN_INCORRECT_MESSAGE));
         }

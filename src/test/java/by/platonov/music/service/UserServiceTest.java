@@ -45,7 +45,7 @@ class UserServiceTest {
         User actual = result.get(0);
         User expected = User.builder().login("pldi4").password("qwerty").admin(false).firstname("Leo")
                 .lastname("Messi").email("messi@gmail.com").gender(Gender.MALE)
-                .registrationDate(LocalDate.of(2019, 6, 21))
+                .registrationDate(LocalDate.now())
                 .birthDate(LocalDate.of(1987, 1, 1)).playlists(new HashSet<>())
                 .active(true)
                 .hash(null).build();

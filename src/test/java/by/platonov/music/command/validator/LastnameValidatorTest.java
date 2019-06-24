@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +26,7 @@ class LastnameValidatorTest {
             "plat onov", "Van Persie", "Дунин-Мицкевич", "fdulttpbrkvyjghcneawxioqwertyu", "Van-P-persie"})
     void applyPositive(String input) {
 
+        when(content.getRequestParameters()).thenReturn(Map.of("lastname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.LASTNAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
@@ -39,6 +41,7 @@ class LastnameValidatorTest {
     void applyNegative(String input) {
         String message = "Last name must contain minimum 2 and maximum 30 letters";
 
+        when(content.getRequestParameters()).thenReturn(Map.of("lastname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.LASTNAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);

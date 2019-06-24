@@ -24,7 +24,10 @@ public class LastnameValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
+        if (!content.getRequestParameters().containsKey(RequestConstant.LASTNAME)) {
+            log.warn("Invalid content parameter: no lastname parameter in request");
+            result.add(new Violation(LASTNAME_INCORRECT_MESSAGE));
+        } else if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LASTNAME)[0]);
             result.add(new Violation(LASTNAME_INCORRECT_MESSAGE));
         }

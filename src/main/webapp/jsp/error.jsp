@@ -8,4 +8,5 @@ Servlet name or type: ${pageContext.errorData.servletName}
 Status code: ${pageContext.errorData.statusCode}
 <br/>
 Exception: ${pageContext.errorData.throwable}
+Another Exception ${exception}
 </body></html>
