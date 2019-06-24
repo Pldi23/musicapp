@@ -1,13 +1,12 @@
 package by.platonov.music.controller.filter;
 
-import by.platonov.music.command.page.PageConstant;
+import by.platonov.music.command.PageConstant;
 import by.platonov.music.entity.User;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,7 +39,7 @@ public class RoleFilter implements Filter {
 
         if (!checkAccess(request, user)) {
             request.getSession().setAttribute("wrongAction", "Please authorise as admin");
-            request.getRequestDispatcher(PageConstant.LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher(targetPagePath).forward(request, response);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

@@ -15,6 +15,7 @@ public class CommandFactory {
     }
 
     public Command getCommand(RequestContent content) {
+        //todo
         String command = content.getRequestParameter(RequestConstant.COMMAND)[0];
         CommandType type = CommandType.valueOf(command.toUpperCase());
         return type.getCommand();

@@ -53,7 +53,7 @@ class TransactionHandler {
         }
         try {
             connection.setAutoCommit(false);
-            T result = transaction.execute(connection);
+            T result = transaction.execute(connection); 
             connection.commit();
             return result;
         } catch (SQLException e) {

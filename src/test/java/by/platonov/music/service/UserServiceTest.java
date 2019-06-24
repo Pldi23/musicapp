@@ -4,6 +4,7 @@ import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.Repository;
 import by.platonov.music.repository.UserRepository;
 import by.platonov.music.repository.specification.UserLoginSpecification;
@@ -26,7 +27,7 @@ class UserServiceTest {
     private UserService service;
 
     @Test
-    void activatePositive() throws RepositoryException {
+    void activatePositive() throws ServiceException {
         service = new UserService();
         String email = "messi@gmail.com";
         String hash = "1";
@@ -35,7 +36,7 @@ class UserServiceTest {
     }
 
     @Test
-    void activatePositiveUserShouldBeActive() throws RepositoryException {
+    void activatePositiveUserShouldBeActive() throws RepositoryException, ServiceException {
         Repository<User> repository = UserRepository.getInstance();
         service = new UserService();
         String email = "messi@gmail.com";
@@ -53,7 +54,7 @@ class UserServiceTest {
     }
 
     @Test
-    void activateNegative() throws RepositoryException {
+    void activateNegative() throws ServiceException {
         service = new UserService();
         String email = "messi@gmail.com";
         String hash = "0";

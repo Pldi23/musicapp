@@ -1,6 +1,7 @@
 package by.platonov.music.controller.listener;
 
 import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
 import lombok.extern.log4j.Log4j2;
 
@@ -31,7 +32,7 @@ public class InactiveUserListener implements ServletContextListener {
             UserService service = new UserService();
             try {
                 service.removeNotActiveUser();
-            } catch (RepositoryException e) {
+            } catch (ServiceException e) {
                 log.error("Could not remove inactive users", e);
             }
         }, Integer.parseInt(interval), TimeUnit.MINUTES);

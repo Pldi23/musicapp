@@ -2,6 +2,7 @@ package by.platonov.music.service;
 
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.UserRepository;
 import by.platonov.music.repository.specification.NotConfirmedRegistrationUserSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
@@ -18,35 +19,53 @@ public class UserService {
 
     private UserRepository repository = UserRepository.getInstance();
 
-    public List<User> login(String login) throws RepositoryException {
+    public List<User> login(String login) throws ServiceException {
         SqlSpecification specification = new UserLoginSpecification(login);
-        return repository.query(specification);
+        try {
+            return repository.query(specification);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Repository provide an exception for user service", e);
+        }
     }
 
-    public boolean register(User user) throws RepositoryException {
-        return repository.add(user);
+    public boolean register(User user) throws ServiceException {
+        try {
+            return repository.add(user);
+        } catch (RepositoryException e) {
+            throw new ServiceException("Repository provide an exception for user service", e);
+        }
     }
 
-    public boolean activate(String email, String hash) throws RepositoryException {
+    public boolean activate(String email, String hash) throws ServiceException {
         boolean result = false;
         SqlSpecification specification = new UserEmailHashSpecification(email, hash);
-        List<User> users = repository.query(specification);
-        if (!users.isEmpty()) {
-            User user = users.get(0);
-            user.setActive(true);
-            user.setHash(null);
-            result = repository.update(user);
+        List<User> users;
+        try {
+            users = repository.query(specification);
+            if (!users.isEmpty()) {
+                User user = users.get(0);
+                user.setActive(true);
+                user.setHash(null);
+                result = repository.update(user);
+            }
+        } catch (RepositoryException e) {
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
         return result;
     }
 
-    public void removeNotActiveUser() throws RepositoryException {
+    public void removeNotActiveUser() throws ServiceException {
         SqlSpecification specification = new NotConfirmedRegistrationUserSpecification();
-        List<User> users = repository.query(specification);
-        if (!users.isEmpty()) {
-            for (User user : users) {
-                repository.remove(user);
+        List<User> users;
+        try {
+            users = repository.query(specification);
+            if (!users.isEmpty()) {
+                for (User user : users) {
+                    repository.remove(user);
+                }
             }
+        } catch (RepositoryException e) {
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 }

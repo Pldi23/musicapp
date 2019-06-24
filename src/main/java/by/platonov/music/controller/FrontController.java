@@ -1,8 +1,6 @@
 package by.platonov.music.controller;
 
 import by.platonov.music.command.*;
-import by.platonov.music.command.page.PageConstant;
-import by.platonov.music.exception.RepositoryException;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author dzmitryplatonov on 2019-06-06.
@@ -37,20 +34,19 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestContent content = new RequestContent(request);
         Command command = commandFactory.getCommand(content);
-        CommandResult commandResult;
-        try {
-            commandResult = command.execute(content);
-        } catch (RepositoryException e) {
-            log.error("Broken repository", e);
-            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE,
-                    Map.of("pageContext.errorData.throwable", e));
-        }
+        CommandResult commandResult = command.execute(content);
 
         commandResult.getAttributes().forEach(request::setAttribute);
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
+            log.info("inside logout");
             request.getSession().invalidate();
+        }
+
+        if (command.getClass().isAssignableFrom(LoginCommand.class)) {
+            log.info("inside login");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         }
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {

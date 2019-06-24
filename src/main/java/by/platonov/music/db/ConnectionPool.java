@@ -89,6 +89,7 @@ public class ConnectionPool {
                 }
                 instance = null;
                 create.set(false);
+
             } finally {
                 lock.unlock();
             }

@@ -21,6 +21,8 @@ ${validatorMessage}
     <br/>
     ${wrongAction}
     <br/>
+    ${serviceException}
+    <br/>
     ${nullPage}
     <br/>
 </form>

@@ -1,10 +1,9 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.validator.*;
-import by.platonov.music.command.page.PageConstant;
+import by.platonov.music.exception.ServiceException;
+import by.platonov.music.validator.*;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
-import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
 import by.platonov.music.util.HashGenerator;
 import by.platonov.music.util.VerificationMailSender;
@@ -30,7 +29,7 @@ public class RegistrationCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(RequestContent content) throws RepositoryException {
+    public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
         Set<Violation> violations =
                 new LoginValidator(
@@ -66,15 +65,21 @@ public class RegistrationCommand implements Command {
                     .hash(hash)
                     .build();
 
-            if (userService.register(user)) {
-                Thread mailSender = new VerificationMailSender(email, hash);
-                mailSender.start();
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
-                        Map.of(RequestConstant.HASH, user.getHash(), RequestConstant.EMAIL, user.getEmail()));
+            try {
+                if (userService.register(user)) {
+                    Thread mailSender = new VerificationMailSender(email, hash);
+                    mailSender.start();
+                    commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
+                            Map.of(RequestConstant.HASH, user.getHash(), RequestConstant.EMAIL, user.getEmail()));
 
-            } else {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                        Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
+                } else {
+                    commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
+                            Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
+                }
+            } catch (ServiceException e) {
+                log.error("Service provide an exception for registration command ", e);
+                commandResult =  new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
+                        Map.of("process", "registration"));
             }
         } else {
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,

@@ -2,7 +2,6 @@ package by.platonov.music.repository;
 
 import by.platonov.music.entity.Genre;
 import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.repository.jdbchelper.JdbcHelper;
 import by.platonov.music.repository.mapper.PreparedStatementMapper;
 import by.platonov.music.repository.mapper.SetGenreFieldsMapper;
 import by.platonov.music.repository.mapper.SetGenreIdMapper;

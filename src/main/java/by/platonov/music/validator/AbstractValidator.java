@@ -1,4 +1,4 @@
-package by.platonov.music.command.validator;
+package by.platonov.music.validator;
 
 /**
  * @author dzmitryplatonov on 2019-06-18.

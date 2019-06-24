@@ -3,6 +3,7 @@
 <body>
 <h2>Please, submit registration form. Заполните анкету на русском</h2>
 ${errorRegistrationFormMessage}
+${serviceException}
 <form action = "controller" method = "post" >
     <input type="hidden" name="command" value="register"/>
     <label>

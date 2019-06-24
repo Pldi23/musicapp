@@ -1,7 +1,5 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.page.PageConstant;
-
 import java.util.Map;
 
 /**
@@ -11,6 +9,10 @@ import java.util.Map;
 public class ErrorCommand implements Command {
 
     private Exception exception;
+
+    public ErrorCommand(Exception exception) {
+        this.exception = exception;
+    }
 
     @Override
     public CommandResult execute(RequestContent content) {

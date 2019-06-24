@@ -1,4 +1,4 @@
-package by.platonov.music.command.validator;
+package by.platonov.music.validator;
 
 import lombok.Value;
 

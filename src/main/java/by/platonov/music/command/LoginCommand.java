@@ -1,9 +1,8 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.validator.*;
-import by.platonov.music.command.page.PageConstant;
+import by.platonov.music.exception.ServiceException;
+import by.platonov.music.validator.*;
 import by.platonov.music.entity.User;
-import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.service.UserService;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
@@ -26,13 +25,20 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(RequestContent content) throws RepositoryException {
+    public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
         Set<Violation> violations = new LoginValidator(new PasswordValidator(null)).apply(content);
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(RequestConstant.LOGIN)[0];
             String password = content.getRequestParameter(RequestConstant.PASSWORD)[0];
-            List<User> users = userService.login(login);
+            List<User> users;
+            try {
+                users = userService.login(login);
+            } catch (ServiceException e) {
+                log.error("Service provide an exception for login command ", e);
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
+                        Map.of("process", "login operation"));
+            }
 
             if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())

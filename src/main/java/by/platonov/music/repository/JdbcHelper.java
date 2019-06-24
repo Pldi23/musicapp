@@ -1,4 +1,4 @@
-package by.platonov.music.repository.jdbchelper;
+package by.platonov.music.repository;
 
 import by.platonov.music.repository.mapper.PreparedStatementMapper;
 import by.platonov.music.repository.extractor.AbstractResultSetExtractor;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class JdbcHelper {
 
-    public long count(Connection connection, String sql) throws SQLException {
+    long count(Connection connection, String sql) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             resultSet.next();
@@ -23,14 +23,14 @@ public class JdbcHelper {
         }
     }
 
-    public <T> List<T> query(Connection connection, String sql, AbstractResultSetExtractor<T> rowMapper) throws SQLException {
+    <T> List<T> query(Connection connection, String sql, AbstractResultSetExtractor<T> rowMapper) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             return rowMapper.extract(resultSet);
         }
     }
 
-    public <T> boolean execute(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
+    <T> boolean execute(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             preparedStatementMapper.map(statement, entity);
             statement.execute();
@@ -38,7 +38,7 @@ public class JdbcHelper {
         return true;
     }
 
-    public <T> long insert(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
+    <T> long insert(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             preparedStatementMapper.map(statement, entity);
             try (ResultSet resultSet = statement.executeQuery()) {
