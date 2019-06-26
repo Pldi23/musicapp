@@ -10,10 +10,18 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>300</session-timeout>
     </session-config>
     <context-param>
         <param-name>interval</param-name>
-        <param-value>1</param-value> <!-- minutes -->
+        <param-value>10</param-value> <!-- minutes -->
     </context-param>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.RuntimeException</exception-type>
+        <location>/jsp/error.jsp</location>
+    </error-page>
 </web-app>

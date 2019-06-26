@@ -3,6 +3,7 @@ package by.platonov.music.repository;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Musician;
+import by.platonov.music.repository.specification.IdMoreThanSpecification;
 import by.platonov.music.repository.specification.MusicianIdSpecification;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
 import org.junit.jupiter.api.BeforeEach;
@@ -125,7 +126,7 @@ class MusicianRepositoryTest {
         Musician musicianBethowen = Musician.builder().id(6).name("Bethowen").build();
 
         //when
-        List<Musician> actual = repository.query(()-> "where id > 5");
+        List<Musician> actual = repository.query(new IdMoreThanSpecification(5));
         List<Musician> expected = Arrays.asList(musicianBethowen, musicianKirkorov);
 
         //then

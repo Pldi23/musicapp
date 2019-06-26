@@ -2,6 +2,7 @@ package by.platonov.music.repository;
 
 import by.platonov.music.repository.mapper.PreparedStatementMapper;
 import by.platonov.music.repository.extractor.AbstractResultSetExtractor;
+import by.platonov.music.repository.specification.SqlSpecification;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */
-public class JdbcHelper {
+class JdbcHelper {
 
     long count(Connection connection, String sql) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -23,10 +24,25 @@ public class JdbcHelper {
         }
     }
 
-    <T> List<T> query(Connection connection, String sql, AbstractResultSetExtractor<T> rowMapper) throws SQLException {
+    long count(Connection connection, String sql, SqlSpecification specification) throws SQLException {
+        try(PreparedStatement statement = specification.toPreparedStatement(connection, sql);
+            ResultSet resultSet = statement.executeQuery()) {
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
+    <T> List<T> query(Connection connection, String sql, AbstractResultSetExtractor<T> resultSetExtractor) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
-            return rowMapper.extract(resultSet);
+            return resultSetExtractor.extract(resultSet);
+        }
+    }
+
+    <T> List<T> query(Connection connection, String sql, SqlSpecification specification, AbstractResultSetExtractor<T> resultSetExtractor) throws SQLException {
+        try (PreparedStatement statement = specification.toPreparedStatement(connection, sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            return resultSetExtractor.extract(resultSet);
         }
     }
 

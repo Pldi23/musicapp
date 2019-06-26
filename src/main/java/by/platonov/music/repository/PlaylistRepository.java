@@ -134,12 +134,12 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Override
     public List<Playlist> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + specification.toSqlClauses(), new PlaylistResultSetExtractor()));
+                jdbcHelper.query(connection, SQL_SELECT_PLAYLIST, specification, new PlaylistResultSetExtractor()));
     }
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.count(connection, SQL_COUNT + specification.toSqlClauses()));
+                jdbcHelper.count(connection, SQL_COUNT, specification));
     }
 }

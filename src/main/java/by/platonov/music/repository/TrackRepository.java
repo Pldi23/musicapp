@@ -25,7 +25,7 @@ public class TrackRepository implements Repository<Track> {
 
     @Language("SQL")
     private static final String SQL_SELECT_TRACK =
-            "SELECT track.id , track.name, genre.id as genreId, genre.name as genre, track.length, track.release_date " +
+            "SELECT track.id as id , name as name, genre.id as genreId, genre.genre_name as genre, track.length, track.release_date " +
                     "FROM track " +
                     "JOIN genre on genre.id = track.genre_id ";
     @Language("SQL")
@@ -155,12 +155,12 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public List<Track> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_SELECT_TRACK + specification.toSqlClauses(), new TrackResultSetExtractor()));
+                jdbcHelper.query(connection, SQL_SELECT_TRACK, specification, new TrackResultSetExtractor()));
     }
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.count(connection, SQL_COUNT_TRACK +  specification.toSqlClauses()));
+                jdbcHelper.count(connection, SQL_COUNT_TRACK, specification));
     }
 }

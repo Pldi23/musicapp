@@ -40,12 +40,10 @@ public class FrontController extends HttpServlet {
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
-            log.info("inside logout");
             request.getSession().invalidate();
         }
 
         if (command.getClass().isAssignableFrom(LoginCommand.class)) {
-            log.info("inside login");
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         }
 

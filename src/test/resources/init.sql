@@ -1,7 +1,7 @@
 --init genre table
 CREATE TABLE public.genre (
     id serial,
-    name character varying COLLATE pg_catalog."default",
+    genre_name character varying COLLATE pg_catalog."default",
     CONSTRAINT genre_pkey1 PRIMARY KEY (id)
 );
 
@@ -124,7 +124,7 @@ values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02'
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
-insert into genre ("name") values ('pop'), ('rock'), ('rap'), ('jazz'), ('funk'), ('retro'), ('chanson');
+insert into genre (genre_name)values ('pop'),('rock'),('rap'),('jazz'),('funk'),('retro'),('chanson');
 insert into track ("name", genre_id, release_date, "length")
 values ('Tim', 1, '2019-01-01', 180),
     ('i_Suss', 7, '2019-02-02', 195),

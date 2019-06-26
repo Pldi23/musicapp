@@ -1,10 +1,15 @@
 package by.platonov.music.command;
 
+import static by.platonov.music.command.constant.RequestConstant.*;
+import static by.platonov.music.command.constant.PageConstant.*;
+
+import by.platonov.music.command.constant.CommandMessage;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
 import by.platonov.music.entity.User;
 import by.platonov.music.service.UserService;
 import com.lambdaworks.crypto.SCryptUtil;
+import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -16,6 +21,7 @@ import java.util.Set;
  * @version 0.0.1
  */
 @Log4j2
+@EqualsAndHashCode
 public class LoginCommand implements Command {
 
     private UserService userService;
@@ -29,39 +35,44 @@ public class LoginCommand implements Command {
         CommandResult commandResult;
         Set<Violation> violations = new LoginValidator(new PasswordValidator(null)).apply(content);
         if (violations.isEmpty()) {
-            String login = content.getRequestParameter(RequestConstant.LOGIN)[0];
-            String password = content.getRequestParameter(RequestConstant.PASSWORD)[0];
+            String login = content.getRequestParameter(LOGIN)[0];
+            String password = content.getRequestParameter(PASSWORD)[0];
             List<User> users;
             try {
                 users = userService.login(login);
             } catch (ServiceException e) {
                 log.error("Service provide an exception for login command ", e);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                        Map.of("process", "login operation"));
+                return new CommandResult(CommandResult.ResponseType.FORWARD, INFORMATION_PAGE,
+                        Map.of(PROCESS, CommandMessage.LOGIN_OPERATION_MESSAGE));
             }
 
             if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())
                     && users.get(0).isActive()
                     && !users.get(0).isAdmin()) {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.MAIN_PAGE,
-                        Map.of("userFirstName", users.get(0).getFirstname()),
-                        Map.of("user", users.get(0), "role", "user"));
+                log.debug(users.get(0) + " logged in as user");
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, MAIN_PAGE,
+                        Map.of(),
+                        Map.of(USER, users.get(0), ROLE, USER, USER_FIRST_NAME_ATTRIBUTE, users.get(0).getFirstname()));
             } else if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())
                     && users.get(0).isActive()
                     && users.get(0).isAdmin()) {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                        Map.of("adminFirstName", users.get(0).getFirstname()),
-                        Map.of("user", users.get(0), "role", "admin"));
+                log.debug(users.get(0) + " logged in as admin");
+
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, ADMIN_PAGE,
+                        Map.of(),
+                        Map.of(USER, users.get(0), ROLE, ADMIN, ADMIN_FIRST_NAME_ATTRIBUTE, users.get(0).getFirstname()));
             } else {
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE,
-                        Map.of("errorLoginPassMessage", "Incorrect login or password"));
+                log.debug("login not successful");
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,
+                        Map.of(ERROR_LOGIN_PASS_ATTRIBUTE, CommandMessage.ERROR_LOGIN_PASS_MESSAGE));
             }
             return commandResult;
         } else {
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE,
-                    Map.of("validatorMessage", violations));
+            log.debug("login not successful");
+            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,
+                    Map.of(VALIDATOR_MESSAGE_ATTRIBUTE, violations));
         }
         return commandResult;
     }

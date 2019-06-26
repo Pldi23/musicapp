@@ -1,6 +1,5 @@
 package by.platonov.music.controller.listener;
 
-import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +39,11 @@ public class InactiveUserListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        scheduledExecutorService.shutdown();
+        try {
+            scheduledExecutorService.awaitTermination(10, TimeUnit.MICROSECONDS);
+        } catch (InterruptedException e) {
+            log.error("could not interrupt listener");
+            Thread.currentThread().interrupt();
+        }
     }
 }

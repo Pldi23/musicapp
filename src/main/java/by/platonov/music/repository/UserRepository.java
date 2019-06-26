@@ -52,6 +52,7 @@ public class UserRepository implements Repository<User> {
                     "active_status, verification_hash " +
                     "FROM application_user ";
 
+
     private static UserRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean create = new AtomicBoolean(false);
@@ -140,12 +141,12 @@ public class UserRepository implements Repository<User> {
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection ->
-                jdbcHelper.count(connection, SQL_COUNT_USER + specification.toSqlClauses()));
+                jdbcHelper.count(connection, SQL_COUNT_USER, specification));
     }
 
     @Override
     public List<User> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_SELECT_USER + specification.toSqlClauses(), new UserResultSetExtractor()));
+                jdbcHelper.query(connection, SQL_SELECT_USER, specification, new UserResultSetExtractor()));
     }
 }

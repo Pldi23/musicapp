@@ -3,6 +3,7 @@ package by.platonov.music.repository;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.exception.RepositoryException;
+import by.platonov.music.repository.specification.IdOrClauseSpecification;
 import by.platonov.music.repository.specification.PlaylistIdSpecification;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
 import org.junit.jupiter.api.Test;
@@ -94,14 +95,14 @@ class PlaylistRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        long actual = repository.count(() -> "where id is not null;");
+        long actual = repository.count(new IdIsNotNullSpecification());
         long expected = 5;
         assertEquals(expected, actual);
     }
 
     @Test
     void query() throws RepositoryException {
-        List<Playlist> actual = repository.query(() -> "where playlist.id = 1 or playlist.id = 5");
+        List<Playlist> actual = repository.query(new IdOrClauseSpecification(1, 5));
         List<Playlist> expected = List.of(spring2019, newyearMix);
         assertEquals(expected, actual);
     }

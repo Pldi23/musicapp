@@ -5,6 +5,7 @@ import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
+import by.platonov.music.repository.specification.SearchSpecification;
 import by.platonov.music.repository.specification.TrackIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -117,7 +118,7 @@ class TrackRepositoryTest {
 
     @Test
     void query() throws RepositoryException {
-        List<Track> actual = repository.query(() -> "where track.id = 1 or track.id = 6;");
+        List<Track> actual = repository.query(new SearchSpecification("T"));
         List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }

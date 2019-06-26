@@ -1,6 +1,9 @@
 <%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html><head><title>Error Page</title></head>
 <body>
+<br/>
+Message: ${commandFactoryMessage}
+<br/>
 Request from ${pageContext.errorData.requestURI} is failed
 <br/>
 Servlet name or type: ${pageContext.errorData.servletName}
@@ -8,5 +11,10 @@ Servlet name or type: ${pageContext.errorData.servletName}
 Status code: ${pageContext.errorData.statusCode}
 <br/>
 Exception: ${pageContext.errorData.throwable}
-Another Exception ${exception}
+<br/>
+Message from exception: ${pageContext.exception.message}
+<br/>
+<a href="${pageContext.request.contextPath}">
+    Back
+</a>
 </body></html>

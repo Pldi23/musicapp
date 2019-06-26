@@ -24,15 +24,15 @@ import java.util.concurrent.locks.ReentrantLock;
 public class GenreRepository implements Repository<Genre> {
 
     @Language("SQL")
-    private static final String SQL_INSERT_GENRE = "INSERT INTO genre (name) VALUES (?);";
+    private static final String SQL_INSERT_GENRE = "INSERT INTO genre (genre_name) VALUES (?);";
     @Language("SQL")
     private static final String SQL_DELETE_GENRE = "DELETE FROM genre WHERE id = ?;";
     @Language("SQL")
     private static final String SQL_DELETE_LINK = "UPDATE track SET genre_id = null WHERE genre_id = ?";
     @Language("SQL")
-    private static final String SQL_UPDATE_GENRE = "UPDATE genre SET name = ? WHERE id = ?;";
+    private static final String SQL_UPDATE_GENRE = "UPDATE genre SET genre_name = ? WHERE id = ?;";
     @Language("SQL")
-    private static final String SQL_QUERY_GENRE = "SELECT id genreid, name genre FROM genre ";
+    private static final String SQL_QUERY_GENRE = "SELECT id genreid, genre_name genre FROM genre ";
     @Language("SQL")
     private static final String SQL_COUNT_GENRE = "SELECT COUNT(*) FROM genre ";
 
@@ -113,12 +113,12 @@ public class GenreRepository implements Repository<Genre> {
     @Override
     public List<Genre> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_QUERY_GENRE + specification.toSqlClauses(), new GenreResultSetExtractor()));
+                jdbcHelper.query(connection, SQL_QUERY_GENRE, specification, new GenreResultSetExtractor()));
     }
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.count(connection, SQL_COUNT_GENRE + specification.toSqlClauses()));
+                jdbcHelper.count(connection, SQL_COUNT_GENRE, specification));
     }
 }

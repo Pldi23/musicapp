@@ -1,6 +1,6 @@
 package by.platonov.music.validator;
 
-import by.platonov.music.command.RequestConstant;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
 

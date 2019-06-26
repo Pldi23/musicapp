@@ -1,5 +1,8 @@
 package by.platonov.music.command;
 
+import static by.platonov.music.command.constant.RequestConstant.*;
+
+import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
 import by.platonov.music.entity.Gender;
@@ -40,13 +43,13 @@ public class RegistrationCommand implements Command {
                                                         new EmailValidator(null)))))).apply(content);
 
         if (violations.isEmpty()) {
-            String login = content.getRequestParameter(RequestConstant.LOGIN)[0];
-            String password = content.getRequestParameter(RequestConstant.PASSWORD)[0];
-            String firstname = content.getRequestParameter(RequestConstant.FIRSTNAME)[0];
-            String lastname = content.getRequestParameter(RequestConstant.LASTNAME)[0];
-            String birthdate = content.getRequestParameter(RequestConstant.BIRTHDATE)[0];
-            String email = content.getRequestParameter(RequestConstant.EMAIL)[0];
-            String gender = content.getRequestParameter(RequestConstant.GENDER)[0];
+            String login = content.getRequestParameter(LOGIN)[0];
+            String password = content.getRequestParameter(PASSWORD)[0];
+            String firstname = content.getRequestParameter(FIRSTNAME)[0];
+            String lastname = content.getRequestParameter(LASTNAME)[0];
+            String birthdate = content.getRequestParameter(BIRTHDATE)[0];
+            String email = content.getRequestParameter(EMAIL)[0];
+            String gender = content.getRequestParameter(GENDER)[0];
 
             HashGenerator generator = new HashGenerator();
             String hash = generator.generateHash();
@@ -70,7 +73,7 @@ public class RegistrationCommand implements Command {
                     Thread mailSender = new VerificationMailSender(email, hash);
                     mailSender.start();
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
-                            Map.of(RequestConstant.HASH, user.getHash(), RequestConstant.EMAIL, user.getEmail()));
+                            Map.of(HASH, user.getHash(), EMAIL, user.getEmail()));
 
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
@@ -79,7 +82,7 @@ public class RegistrationCommand implements Command {
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
                 commandResult =  new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                        Map.of("process", "registration"));
+                        Map.of(PROCESS, "registration"));
             }
         } else {
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,

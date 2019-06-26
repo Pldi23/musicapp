@@ -60,7 +60,7 @@ public class DatabaseConfiguration {
         return new DatabaseConfiguration(host, user, password, poolSize, port, dbName, dbDriver);
     }
 
-    String getJdbcUrl() {
+    public String getJdbcUrl() {
         return "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
     }
 }

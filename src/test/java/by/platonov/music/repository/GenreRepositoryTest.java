@@ -5,6 +5,7 @@ import by.platonov.music.entity.Genre;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.GenreIdSpecification;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
+import by.platonov.music.repository.specification.IdMoreThanSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -121,7 +122,7 @@ class GenreRepositoryTest {
         Genre genreChanson = Genre.builder().id(7).title("chanson").build();
 
         //when
-        List<Genre> actual = repository.query(()-> "where id > 5");
+        List<Genre> actual = repository.query(new IdMoreThanSpecification(5));
         List<Genre> expected = Arrays.asList(genreRetro, genreChanson);
 
         //then
@@ -131,7 +132,7 @@ class GenreRepositoryTest {
 
     @Test
     void count() throws RepositoryException {
-        long actual = repository.count(() -> "where id is not null");
+        long actual = repository.count(new IdIsNotNullSpecification());
         long expected = 7;
         assertEquals(expected, actual);
     }

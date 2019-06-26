@@ -1,8 +1,11 @@
 package by.platonov.music.command;
 
+import by.platonov.music.command.constant.CommandMessage;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
 import lombok.extern.log4j.Log4j2;
+import static by.platonov.music.command.constant.RequestConstant.*;
+import static by.platonov.music.command.constant.PageConstant.*;
 
 import java.util.Map;
 
@@ -21,19 +24,19 @@ public class ActivationCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        String email = content.getRequestParameter(RequestConstant.EMAIL)[0];
-        String hash = content.getRequestParameter(RequestConstant.HASH)[0];
+        String email = content.getRequestParameter(EMAIL)[0];
+        String hash = content.getRequestParameter(HASH)[0];
 
         service = new UserService();
 
         try {
             return service.activate(email, hash) ?
-                    new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE) :
-                    new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                    new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE) :
+                    new CommandResult(CommandResult.ResponseType.REDIRECT, ERROR_REDIRECT_PAGE);
         } catch (ServiceException e) {
             log.error("Service provide an exception for activation command ", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                    Map.of("process", "account activation"));
+            return new CommandResult(CommandResult.ResponseType.FORWARD, INFORMATION_PAGE,
+                    Map.of(PROCESS, CommandMessage.ACCOUNT_ACTIVATION_MESSAGE));
         }
     }
 }

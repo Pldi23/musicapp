@@ -80,7 +80,7 @@ public class ConnectionPool {
         log.debug("Connection released, available connections: " + connections.size());
     }
 
-    public void tierDown() throws SQLException {
+    public void tierDown() {
         if (create.get()) {
             lock.lock();
             try {
@@ -90,6 +90,8 @@ public class ConnectionPool {
                 instance = null;
                 create.set(false);
 
+            } catch (SQLException e) {
+                e.printStackTrace();
             } finally {
                 lock.unlock();
             }

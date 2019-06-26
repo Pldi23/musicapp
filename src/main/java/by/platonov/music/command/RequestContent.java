@@ -17,9 +17,11 @@ public class RequestContent {
     private Map<String, Object> sessionAttributes;
 
     public RequestContent(HttpServletRequest request) {
-        requestParameters = request.getParameterMap();
+        requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
         requestAttributes = new HashMap<>();
+
+        requestParameters.putAll(request.getParameterMap());
 
         Enumeration<String> requestAttributeNames = request.getAttributeNames();
         while (requestAttributeNames.hasMoreElements()) {

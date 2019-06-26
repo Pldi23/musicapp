@@ -4,7 +4,7 @@
 Sorry! We could not complete your ${process} because of technical issues, please re-try your attempt in 15 minutes
 
 <br>
-<a href="${pageContext.request.contextPath}${returningPage}">
+<a href="${pageContext.request.contextPath}">
     Back
 </a>
 <hr/>

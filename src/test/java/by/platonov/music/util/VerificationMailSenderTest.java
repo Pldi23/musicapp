@@ -1,4 +1,4 @@
-package by.platonov.music.util.mail;
+package by.platonov.music.util;
 
 import by.platonov.music.util.HashGenerator;
 import by.platonov.music.util.VerificationMailSender;

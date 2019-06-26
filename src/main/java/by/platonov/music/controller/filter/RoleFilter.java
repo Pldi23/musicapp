@@ -1,6 +1,6 @@
 package by.platonov.music.controller.filter;
 
-import by.platonov.music.command.PageConstant;
+import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.User;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,9 +28,8 @@ public class RoleFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-        log.debug("role filter");
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;

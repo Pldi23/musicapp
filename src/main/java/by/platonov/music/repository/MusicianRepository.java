@@ -119,11 +119,12 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public List<Musician> query(SqlSpecification specification) throws RepositoryException {
         return transactionHandler.transactional(connection ->
-                jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + specification.toSqlClauses(), new MusicianResultSetExtractor()));
+                jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, specification, new MusicianResultSetExtractor()));
     }
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return transactionHandler.transactional(connection -> jdbcHelper.count(connection, SQL_COUNT_MUSICIAN + specification.toSqlClauses()));
+        return transactionHandler.transactional(connection ->
+                jdbcHelper.count(connection, SQL_COUNT_MUSICIAN, specification));
     }
 }

@@ -4,6 +4,7 @@ import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
+import by.platonov.music.repository.specification.LoginIsNotNullSpecification;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class UserRepositoryTest {
     @Test
     void addShouldIncreaseSize() throws RepositoryException {
         repository.add(newUser);
-        long actualSize = repository.count(() -> "where login is not null");
+        long actualSize = repository.count(new LoginIsNotNullSpecification());
         int expectedSize = 6;
         assertEquals(expectedSize, actualSize);
     }
@@ -71,7 +72,7 @@ class UserRepositoryTest {
     @Test
     void addExistingUserShouldNotIncreaseSize() throws RepositoryException {
         repository.add(updatedUser);
-        long actualSize = repository.count(() -> "where login is not null");
+        long actualSize = repository.count(new LoginIsNotNullSpecification());
         int expectedSize = 5;
         assertEquals(expectedSize, actualSize);
     }
@@ -89,7 +90,7 @@ class UserRepositoryTest {
     @Test
     void removeShouldDecreaseSize() throws RepositoryException {
         repository.remove(selectedUser);
-        long actual = repository.count(() -> "where login is not null");
+        long actual = repository.count(new LoginIsNotNullSpecification());
         int expected = 4;
         assertEquals(expected, actual);
     }
@@ -97,7 +98,7 @@ class UserRepositoryTest {
     @Test
     void update() throws RepositoryException {
         repository.update(updatedUser);
-        User actualUser = repository.query(() -> "where login = 'pldi4'").get(0);
+        User actualUser = repository.query(new UserLoginSpecification("pldi4")).get(0);
         User expectedUser = updatedUser;
         assertEquals(expectedUser, actualUser);
     }
@@ -119,6 +120,6 @@ class UserRepositoryTest {
     @Test
     void count() throws RepositoryException {
         int expected = 5;
-        assertEquals(expected, repository.count(() -> "where login is not null"));
+        assertEquals(expected, repository.count(new LoginIsNotNullSpecification()));
     }
 }
