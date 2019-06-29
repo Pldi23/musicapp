@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class UserEmailHashSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "where e_mail = ? and verification_hash = ?;";
+    private static final String SPECIFICATION = "where e_mail = ? and verification_uuid = ?;";
 
     private String email;
     private String hash;
@@ -18,11 +18,6 @@ public class UserEmailHashSpecification implements SqlSpecification {
     public UserEmailHashSpecification(String email, String hash) {
         this.email = email;
         this.hash = hash;
-    }
-
-    @Override
-    public String toSqlClauses() {
-        return String.format("where e_mail = '%s' and verification_hash = '%s';", email, hash);
     }
 
     @Override

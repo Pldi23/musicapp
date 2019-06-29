@@ -5,24 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * @author dzmitryplatonov on 2019-06-14.
+ * music-app
+ *
+ * @author Dzmitry Platonov on 2019-06-28.
  * @version 0.0.1
  */
-public class PlaylistUserSpecification implements SqlSpecification {
+public class MusicianNameSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION =
-            "join user_playlist on user_playlist.playlist_id = playlist.id where user_playlist.user_login = ?;";
+    private static final String SPECIFICATION = "where name = ?;";
 
-    private String login;
+    private String name;
 
-    public PlaylistUserSpecification(String login) {
-        this.login = login;
+    public MusicianNameSpecification(String name) {
+        this.name = name;
     }
 
     @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(parentSql + SPECIFICATION);
-        statement.setString(1, login);
+        statement.setString(1, name);
         return statement;
     }
 }

@@ -11,6 +11,7 @@ import by.platonov.music.repository.specification.UserLoginSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +50,9 @@ class UserServiceTest {
                 .registrationDate(LocalDate.now())
                 .birthDate(LocalDate.of(1987, 1, 1)).playlists(new HashSet<>())
                 .active(true)
-                .hash(null).build();
+                .verificationUuid(null)
+                .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+                .build();
         assertEquals(expected, actual);
     }
 

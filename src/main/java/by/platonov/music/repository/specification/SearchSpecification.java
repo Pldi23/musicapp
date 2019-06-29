@@ -21,11 +21,6 @@ public class SearchSpecification implements SqlSpecification {
     }
 
     @Override
-    public String toSqlClauses() {
-        return String.format("WHERE LOWER(name) LIKE LOWER('%%%s%%');", searchRequest);
-    }
-
-    @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(parentSql + SPECIFICATION);
         statement.setString(1, "%" + searchRequest + "%");

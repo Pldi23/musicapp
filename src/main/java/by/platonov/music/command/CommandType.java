@@ -1,9 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.service.MusicianService;
-import by.platonov.music.service.PlaylistService;
-import by.platonov.music.service.TrackService;
-import by.platonov.music.service.UserService;
+import by.platonov.music.service.*;
 
 /**
  * @author dzmitryplatonov on 2019-06-15.

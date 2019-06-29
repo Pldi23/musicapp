@@ -72,7 +72,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Override
     public boolean add(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+            if (jdbcHelper.query(connection, SQL_SELECT_PLAYLIST, new PlaylistIdSpecification(playlist.getId()),
                     new PlaylistResultSetExtractor()).isEmpty()) {
                 long playlistId = jdbcHelper.insert(connection, SQL_INSERT_PLAYLIST, playlist, new SetPlaylistFieldsMapper());
                 playlist.setId(playlistId);
@@ -94,7 +94,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Override
     public boolean remove(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST, new PlaylistIdSpecification(playlist.getId()),
                     new PlaylistResultSetExtractor()).isEmpty()) {
                 PreparedStatementMapper<Playlist> mapper = new SetPlaylistIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, mapper);
@@ -112,7 +112,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Override
     public boolean update(Playlist playlist) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST + new PlaylistIdSpecification(playlist.getId()).toSqlClauses(),
+            if (!jdbcHelper.query(connection, SQL_SELECT_PLAYLIST, new PlaylistIdSpecification(playlist.getId()),
                     new PlaylistResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_TRACK_LINK, playlist, new SetPlaylistIdMapper());
                 for (Track track : playlist.getTracks()) {

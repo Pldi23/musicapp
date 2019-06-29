@@ -71,8 +71,8 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public boolean add(Musician musician) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
-                    .toSqlClauses(), new MusicianResultSetExtractor()).isEmpty()) {
+            if (jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, new MusicianIdSpecification(musician.getId()),
+                    new MusicianResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_INSERT_MUSICIAN, musician, new SetMusicianNameMapper());
                 log.debug(musician + " has been added");
                 return true;
@@ -86,8 +86,8 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public boolean remove(Musician musician) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
-                    .toSqlClauses(), new MusicianResultSetExtractor()).isEmpty()) {
+            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, new MusicianIdSpecification(musician.getId()),
+                    new MusicianResultSetExtractor()).isEmpty()) {
                 PreparedStatementMapper<Musician> mapper = new SetMusicianIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_SINGER_LINK, musician, mapper);
                 jdbcHelper.execute(connection, SQL_DELETE_AUTHOR_LINK, musician, mapper);
@@ -104,8 +104,8 @@ public class MusicianRepository implements Repository<Musician> {
     @Override
     public boolean update(Musician musician) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN + new MusicianIdSpecification(musician.getId())
-                    .toSqlClauses(), new MusicianResultSetExtractor()).isEmpty()) {
+            if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, new MusicianIdSpecification(musician.getId()),
+                    new MusicianResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_UPDATE_MUSICIAN, musician, new SetMusicianUpdateMapper());
                 log.debug(musician + " has been updated");
                 return true;

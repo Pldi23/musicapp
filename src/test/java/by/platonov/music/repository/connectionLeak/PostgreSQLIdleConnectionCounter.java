@@ -23,13 +23,12 @@ public class PostgreSQLIdleConnectionCounter implements IdleConnectionCounter {
 
     @Override
     public int count(Connection connection) {
-        try ( Statement statement = connection.createStatement() ) {
-            try ( ResultSet resultSet = statement.executeQuery(
+        try (Statement statement = connection.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(
                     "SELECT COUNT(*) " +
-                            "FROM pg_stat_activity " +
-                            "WHERE state ILIKE '%idle%'" ) ) {
-                while ( resultSet.next() ) {
-                    return resultSet.getInt( 1 );
+                            "FROM musician;" )) {
+                while (resultSet.next()) {
+                    return resultSet.getInt(1);
                 }
                 return 0;
             }

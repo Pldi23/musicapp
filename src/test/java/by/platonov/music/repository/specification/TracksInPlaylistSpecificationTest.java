@@ -24,7 +24,7 @@ class TracksInPlaylistSpecificationTest {
         SqlSpecification specification = new TracksInPlaylistSpecification(playlistId);
 
         //then
-        long actual = repository.count(specification);
+        long actual = repository.query(specification).size();
         long expected = 4;
 
         //when

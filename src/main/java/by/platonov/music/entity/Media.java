@@ -3,6 +3,8 @@ package by.platonov.music.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.nio.file.Path;
+
 /**
  * @author dzmitryplatonov on 2019-06-05.
  * @version 0.0.1
@@ -12,5 +14,5 @@ import lombok.Data;
 public class Media extends Entity {
 
     private long id;
-
+    private Path path;
 }

@@ -3,6 +3,7 @@ package by.platonov.music.repository.extractor;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
 
+import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -23,12 +24,13 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
                         .name(resultSet.getString("name"))
                         .genre(Genre.builder()
                                 .id(resultSet.getLong("genreid"))
-                                .title(resultSet.getString("genre"))
+                                .title(resultSet.getString("genre_name"))
                                 .build())
                         .length(resultSet.getLong("length"))
                         .releaseDate(resultSet.getDate("release_date").toLocalDate())
                         .singers(new HashSet<>())
                         .authors(new HashSet<>())
+                        .path(Path.of(resultSet.getString("media_path")))
                         .build();
                 table.put(track.getId(), track);
             }

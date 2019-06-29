@@ -19,6 +19,7 @@ CREATE TABLE public.track
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+alter table track add column media_path text;
 
 --init musician table
 CREATE TABLE public.musician
@@ -98,7 +99,8 @@ CREATE TABLE public.application_user
 );
 ALTER TABLE application_user ADD COLUMN created_at TIMESTAMP DEFAULT NOW();
 ALTER TABLE application_user ADD COLUMN active_status boolean DEFAULT false;
-ALTER TABLE application_user ADD COLUMN verification_hash character varying(200);
+ALTER TABLE application_user ADD COLUMN verification_uuid character varying(200);
+ALTER TABLE application_user add column photo_path character varying(200);
 
 --init user_playlist table
 CREATE TABLE public.user_playlist
@@ -115,23 +117,23 @@ CREATE TABLE public.user_playlist
         ON DELETE NO ACTION
 );
 
-INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_hash)
-values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null),
-    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null),
-    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null),
-    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'pldi@mail.ru', '1975-10-10', true, false, '1'),
-    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1');
+INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_uuid, photo_path)
+values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null, null),
+    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null, null),
+    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null, null),
+    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'pldi@mail.ru', '1975-10-10', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png'),
+    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png');
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
 insert into genre (genre_name)values ('pop'),('rock'),('rap'),('jazz'),('funk'),('retro'),('chanson');
-insert into track ("name", genre_id, release_date, "length")
-values ('Tim', 1, '2019-01-01', 180),
-    ('i_Suss', 7, '2019-02-02', 195),
-    ('Властелин калек', 1, '2018-12-01', 200),
-    ('Зацепила', 1, '2019-03-11', 185),
-    ('Numb', 2, '2005-05-06', 211),
-    ('Duet', 3, '2019-01-06', 201);
+insert into track ("name", genre_id, release_date, "length", media_path)
+values ('Tim', 1, '2019-01-01', 180, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3'),
+    ('i_Suss', 7, '2019-02-02', 195, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/leningrad_i_suss.mp3'),
+    ('Властелин калек', 1, '2018-12-01', 200, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/saluki_vlastelin_kalek.mp3'),
+    ('Зацепила', 1, '2019-03-11', 185, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/artur_pirozhkov_zacepila.mp3'),
+    ('Numb', 2, '2005-05-06', 211, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/linkin-park-numb.mp3'),
+    ('Duet', 3, '2019-01-06', 201, '');
 insert into playlist_track (playlist_id, track_id) values (1, 4), (5, 1), (5, 2), (5, 3), (5, 4);
 insert into musician ("name")
 values ('Avici'),

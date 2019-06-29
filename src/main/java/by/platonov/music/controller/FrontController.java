@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/controller")
 public class FrontController extends HttpServlet {
 
-    private final CommandFactory commandFactory = CommandFactory.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,6 +33,7 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestContent content = new RequestContent(request);
+        CommandFactory commandFactory = CommandFactory.getInstance();
         Command command = commandFactory.getCommand(content);
         CommandResult commandResult = command.execute(content);
 

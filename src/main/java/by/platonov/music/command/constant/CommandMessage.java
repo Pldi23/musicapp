@@ -13,4 +13,7 @@ public class CommandMessage {
     public static final String LOGIN_OPERATION_MESSAGE = "login operation";
     public static final String COMMAND_FAILED_MESSAGE = "Command not exist or have illegal parameter";
     public static final String ERROR_LOGIN_PASS_MESSAGE = "Incorrect login or password";
+    public static final String SUCCESSFULLY_ADDED_MESSAGE = " successfully added";
+    public static final String ALREADY_EXIST_MESSAGE = " already exist";
+    public static final String INVALID_FORMAT_MESSAGE = "Invalid file format";
 }

@@ -19,11 +19,6 @@ public class PlaylistIdSpecification implements SqlSpecification {
     }
 
     @Override
-    public String toSqlClauses() {
-        return String.format("where playlist.id = %d", id);
-    }
-
-    @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(parentSql + SPECIFICATION);
         statement.setLong(1, id);

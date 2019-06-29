@@ -26,8 +26,8 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String SQL_INSERT_USER =
             "INSERT INTO application_user(login, password, is_admin, first_name, last_name, e_mail, gender, " +
-                    "date_of_birth, active_status, verification_hash) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    "date_of_birth, active_status, verification_uuid, photo_path) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     @Language("SQL")
     private static final String SQL_INSERT_USER_PLAYLIST_LINK =
             "INSERT INTO user_playlist(user_login, playlist_id) VALUES (?, ?);";
@@ -41,7 +41,7 @@ public class UserRepository implements Repository<User> {
     private static final String SQL_UPDATE_USER =
             "UPDATE application_user " +
                     "SET password = ?, is_admin = ?, first_name = ?, last_name = ?, e_mail = ?, gender = ?, " +
-                    "date_of_birth = ?, active_status = ?, verification_hash = ? " +
+                    "date_of_birth = ?, active_status = ?, verification_uuid = ?, photo_path = ? " +
                     "WHERE login = ?;";
     @Language("SQL")
     private static final String SQL_COUNT_USER =
@@ -49,7 +49,7 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String SQL_SELECT_USER =
             "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth, created_at, " +
-                    "active_status, verification_hash " +
+                    "active_status, verification_uuid, photo_path " +
                     "FROM application_user ";
 
 
@@ -84,7 +84,7 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean add(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(),
+            if (jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
                     new UserResultSetExtractor()).isEmpty()) {
                 for (Playlist playlist : user.getPlaylists()) {
                     jdbcHelper.execute(connection, SQL_INSERT_USER_PLAYLIST_LINK, user, ((preparedStatement, entity) -> {
@@ -105,7 +105,8 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean remove(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(), new UserResultSetExtractor()).isEmpty()) {
+            if (!jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
+                    new UserResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
                 jdbcHelper.execute(connection, SQL_DELETE_USER, user, new SetUserIdMapper());
                 log.debug(user + " removed");
@@ -120,7 +121,8 @@ public class UserRepository implements Repository<User> {
     @Override
     public boolean update(User user) throws RepositoryException {
         return TransactionHandler.getInstance().transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_USER + new UserLoginSpecification(user.getLogin()).toSqlClauses(), new UserResultSetExtractor()).isEmpty()) {
+            if (!jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
+                    new UserResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
                 for (Playlist playlist : user.getPlaylists()) {
                     jdbcHelper.execute(connection, SQL_INSERT_USER_PLAYLIST_LINK, user, ((preparedStatement, entity) -> {

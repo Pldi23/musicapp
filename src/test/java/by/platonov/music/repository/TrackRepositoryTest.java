@@ -10,6 +10,7 @@ import by.platonov.music.repository.specification.TrackIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,7 @@ class TrackRepositoryTest {
     private TrackRepository repository = TrackRepository.getInstance();
     private Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
+            .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
             .singers(new HashSet<>())
             .authors(new HashSet<>()).build();
 
@@ -34,12 +36,14 @@ class TrackRepositoryTest {
             .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
+            .path(Path.of(""))
             .build();
 
     private Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
+            .path(Path.of(""))
             .build();
 
     @Test

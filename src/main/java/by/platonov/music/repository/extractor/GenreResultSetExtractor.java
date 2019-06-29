@@ -18,7 +18,7 @@ public class GenreResultSetExtractor implements AbstractResultSetExtractor<Genre
             while (resultSet.next()) {
                 Genre genre = Genre.builder()
                         .id(resultSet.getLong("genreid"))
-                        .title(resultSet.getString("genre"))
+                        .title(resultSet.getString("genre_name"))
                         .build();
                 result.add(genre);
             }

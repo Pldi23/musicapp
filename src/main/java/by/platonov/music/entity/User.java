@@ -3,6 +3,7 @@ package by.platonov.music.entity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -25,6 +26,6 @@ public class User extends Guest{
     private LocalDate registrationDate;
     private Set<Playlist> playlists;
     private boolean active;
-    private String hash;
-
+    private String verificationUuid;
+    private Path photoPath;
 }

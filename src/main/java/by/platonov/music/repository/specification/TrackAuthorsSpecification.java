@@ -20,11 +20,6 @@ public class TrackAuthorsSpecification implements SqlSpecification {
     }
 
     @Override
-    public String toSqlClauses() {
-        return String.format("join author_track on author_track.track_id = musician.id where author_track.track_id = %d", trackId);
-    }
-
-    @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(parentSql + SPECIFICATION);
         statement.setLong(1, trackId);

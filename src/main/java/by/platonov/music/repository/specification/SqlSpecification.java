@@ -10,6 +10,5 @@ import java.sql.SQLException;
  */
 public interface SqlSpecification {
 
-    String toSqlClauses();
     PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException;
 }

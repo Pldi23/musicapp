@@ -11,17 +11,12 @@ import java.sql.SQLException;
 public class TracksInPlaylistSpecification implements SqlSpecification{
 
     private static final String SPECIFICATION =
-            "join playlist_track on track.id = playlist_track.track_id where playlist_track.playlist_id = %?";
+            "join playlist_track on track.id = playlist_track.track_id where playlist_track.playlist_id = ?";
 
     private long playlistId;
 
     public TracksInPlaylistSpecification(long playlistId) {
         this.playlistId = playlistId;
-    }
-
-    @Override
-    public String toSqlClauses() {
-        return String.format("join playlist_track on track.id = playlist_track.track_id where playlist_track.playlist_id = %d", playlistId);
     }
 
     @Override

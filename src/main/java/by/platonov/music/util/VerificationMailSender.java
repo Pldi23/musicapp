@@ -15,12 +15,10 @@ import java.util.Properties;
 @Log4j2
 public class VerificationMailSender extends Thread {
 
-    private static final String MAIL_PROPERTIES_PATH = "/mail.properties";
-
     private static final String MAIL_SUBJECT = "Music app verification link";
     private static final String MAIL_MESSAGE = "Please complete your registration by activating a link";
     private static final String LINK_MESSAGE =
-            "Your verification link :: http://localhost:8080/music-app/controller?command=activation&email=%s&hash=%s";
+            "Your verification link :: http://localhost:8080/music-app/controller?command=activation&email=%s&verificationUuid=%s";
 
     private String userEmail;
     private String hash;
@@ -41,7 +39,7 @@ public class VerificationMailSender extends Thread {
         String password;
         String username;
         try {
-            properties.load(VerificationMailSender.class.getResourceAsStream(MAIL_PROPERTIES_PATH));
+            properties.load(VerificationMailSender.class.getResourceAsStream("/mail.properties"));
             mailAddress = properties.getProperty("mail.smtp.user");
             password = properties.getProperty("mail.smtp.password");
 

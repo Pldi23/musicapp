@@ -16,26 +16,11 @@ import java.util.List;
  */
 class JdbcHelper {
 
-    long count(Connection connection, String sql) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            resultSet.next();
-            return resultSet.getLong(1);
-        }
-    }
-
     long count(Connection connection, String sql, SqlSpecification specification) throws SQLException {
         try(PreparedStatement statement = specification.toPreparedStatement(connection, sql);
             ResultSet resultSet = statement.executeQuery()) {
             resultSet.next();
             return resultSet.getLong(1);
-        }
-    }
-
-    <T> List<T> query(Connection connection, String sql, AbstractResultSetExtractor<T> resultSetExtractor) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            return resultSetExtractor.extract(resultSet);
         }
     }
 

@@ -2,8 +2,8 @@ package by.platonov.music.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -22,8 +22,9 @@ public class Track extends Media {
     private long length;
 
     @Builder
-    public Track(long id, String name, Set<Musician> authors, Set<Musician> singers, Genre genre, LocalDate releaseDate, long length) {
-        super(id);
+    public Track(long id, Path path, String name, Set<Musician> authors, Set<Musician> singers, Genre genre,
+                 LocalDate releaseDate, long length) {
+        super(id, path);
         this.name = name;
         this.authors = authors;
         this.singers = singers;

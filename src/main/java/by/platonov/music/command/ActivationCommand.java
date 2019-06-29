@@ -27,8 +27,6 @@ public class ActivationCommand implements Command {
         String email = content.getRequestParameter(EMAIL)[0];
         String hash = content.getRequestParameter(HASH)[0];
 
-        service = new UserService();
-
         try {
             return service.activate(email, hash) ?
                     new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE) :

@@ -39,7 +39,7 @@ class CommandFactoryTest {
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{"log"}));
         when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{"log"});
         Command actual = factory.getCommand(content);
-        Command expected = new ErrorCommand(CommandMessage.ERROR_LOGIN_PASS_MESSAGE);
+        Command expected = new ErrorCommand(CommandMessage.COMMAND_FAILED_MESSAGE);
         assertEquals(expected, actual);
     }
 }

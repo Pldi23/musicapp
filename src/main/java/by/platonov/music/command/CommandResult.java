@@ -1,5 +1,7 @@
 package by.platonov.music.command;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import java.util.Map;
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */
+@EqualsAndHashCode
 public class CommandResult {
     public enum ResponseType {
         FORWARD,

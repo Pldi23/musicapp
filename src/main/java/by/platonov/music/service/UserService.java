@@ -18,25 +18,30 @@ import java.util.List;
  * @author dzmitryplatonov on 2019-06-17.
  * @version 0.0.1
  */
+@Log4j2
 @EqualsAndHashCode
 public class UserService {
+
+    private static final String EXCEPTION_MESSAGE = "Repository provide an exception for user service";
 
     private Repository<User> repository = UserRepository.getInstance();
 
     public List<User> login(String login) throws ServiceException {
         SqlSpecification specification = new UserLoginSpecification(login);
         try {
+            log.debug("finding " + login + " in repository");
             return repository.query(specification);
         } catch (RepositoryException e) {
-            throw new ServiceException("Repository provide an exception for user service", e);
+            throw new ServiceException(EXCEPTION_MESSAGE, e);
         }
     }
 
     public boolean register(User user) throws ServiceException {
         try {
+            log.debug("registering " + user + " in repository");
             return repository.add(user);
         } catch (RepositoryException e) {
-            throw new ServiceException("Repository provide an exception for user service", e);
+            throw new ServiceException(EXCEPTION_MESSAGE, e);
         }
     }
 
@@ -49,11 +54,12 @@ public class UserService {
             if (!users.isEmpty()) {
                 User user = users.get(0);
                 user.setActive(true);
-                user.setHash(null);
+                user.setVerificationUuid(null);
+                log.debug("activating " + email + " in repository");
                 result = repository.update(user);
             }
         } catch (RepositoryException e) {
-            throw new ServiceException("Repository provide an exception for user service", e);
+            throw new ServiceException(EXCEPTION_MESSAGE, e);
         }
         return result;
     }
@@ -65,11 +71,12 @@ public class UserService {
             users = repository.query(specification);
             if (!users.isEmpty()) {
                 for (User user : users) {
+                    log.debug("removing not active " + users);
                     repository.remove(user);
                 }
             }
         } catch (RepositoryException e) {
-            throw new ServiceException("Repository provide an exception for user service", e);
+            throw new ServiceException(EXCEPTION_MESSAGE, e);
         }
     }
 }

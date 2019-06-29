@@ -13,9 +13,12 @@ import by.platonov.music.util.VerificationMailSender;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -33,6 +36,7 @@ public class RegistrationCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
+        Properties properties = new Properties();
         CommandResult commandResult;
         Set<Violation> violations =
                 new LoginValidator(
@@ -54,34 +58,36 @@ public class RegistrationCommand implements Command {
             HashGenerator generator = new HashGenerator();
             String hash = generator.generateHash();
 
-            User user = User.builder()
-                    .login(login)
-                    .password(SCryptUtil.scrypt(password, 16, 16, 16))
-                    .admin(false)
-                    .firstname(firstname)
-                    .lastname(lastname)
-                    .email(email)
-                    .birthDate(LocalDate.parse(birthdate))
-                    .gender(Gender.valueOf(gender.toUpperCase()))
-                    .playlists(new HashSet<>())
-                    .active(false)
-                    .hash(hash)
-                    .build();
-
             try {
+                properties.load(RegistrationCommand.class.getResourceAsStream("/app.properties"));
+                User user = User.builder()
+                        .login(login)
+                        .password(SCryptUtil.scrypt(password, 16, 16, 16))
+                        .admin(false)
+                        .firstname(firstname)
+                        .lastname(lastname)
+                        .email(email)
+                        .birthDate(LocalDate.parse(birthdate))
+                        .gender(Gender.valueOf(gender.toUpperCase()))
+                        .playlists(new HashSet<>())
+                        .active(false)
+                        .verificationUuid(hash)
+                        .photoPath(Path.of(properties.getProperty("default.ava")))
+                        .build();
+
                 if (userService.register(user)) {
                     Thread mailSender = new VerificationMailSender(email, hash);
                     mailSender.start();
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
-                            Map.of(HASH, user.getHash(), EMAIL, user.getEmail()));
+                            Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
 
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                             Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
                 }
-            } catch (ServiceException e) {
+            } catch (ServiceException | IOException e) {
                 log.error("Service provide an exception for registration command ", e);
-                commandResult =  new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
                         Map.of(PROCESS, "registration"));
             }
         } else {

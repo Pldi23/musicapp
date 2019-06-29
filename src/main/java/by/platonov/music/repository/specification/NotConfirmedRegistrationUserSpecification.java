@@ -11,11 +11,7 @@ import java.sql.SQLException;
 public class NotConfirmedRegistrationUserSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION =
-            "where active_status = false and verification_hash is not null and created_at <= now() - INTERVAL '1 DAY';";
-    @Override
-    public String toSqlClauses() {
-        return SPECIFICATION;
-    }
+            "where active_status = false and verification_uuid is not null and created_at <= now() - INTERVAL '1 DAY';";
 
     @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {

@@ -19,11 +19,6 @@ public class UserLoginSpecification implements SqlSpecification {
     }
 
     @Override
-    public String toSqlClauses() {
-        return String.format("where login = '%s';", login);
-    }
-
-    @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(parentSql + SPECIFICATION);
         statement.setString(1, login);

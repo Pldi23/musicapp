@@ -14,10 +14,18 @@ public class RequestConstant {
     public static final String PASSWORD = "password";
     public static final String FIRSTNAME = "firstname";
     public static final String LASTNAME = "lastname";
+    public static final String TRACKNAME = "trackname";
     public static final String EMAIL = "email";
     public static final String BIRTHDATE = "birthdate";
     public static final String GENDER = "gender";
-    public static final String HASH = "hash";
+    public static final String HASH = "verificationUuid";
+    public static final String MEDIA_PATH = "mediapath";
+    public static final String GENRE = "genre";
+    public static final String RELEASE_DATE = "releasedate";
+    public static final String LENGTH = "length";
+    public static final String ID = "id";
+    public static final String SINGER = "singer";
+    public static final String AUTHOR = "author";
 
     public static final String USER = "user";
     public static final String ROLE = "role";
@@ -35,6 +43,7 @@ public class RequestConstant {
     public static final String ADMIN_FIRST_NAME_ATTRIBUTE = "adminFirstName";
     public static final String ERROR_LOGIN_PASS_ATTRIBUTE = "errorLoginPassMessage";
     public static final String VALIDATOR_MESSAGE_ATTRIBUTE = "validatorMessage";
+    public static final String ADD_RESULT_ATTRIBUTE = "addresult";
 
 
 }

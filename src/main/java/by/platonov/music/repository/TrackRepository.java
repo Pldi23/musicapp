@@ -25,14 +25,15 @@ public class TrackRepository implements Repository<Track> {
 
     @Language("SQL")
     private static final String SQL_SELECT_TRACK =
-            "SELECT track.id as id , name as name, genre.id as genreId, genre.genre_name as genre, track.length, track.release_date " +
+            "SELECT track.id as id , name as name, genre.id as genreId, genre.genre_name, track.length," +
+                    " track.release_date, track.media_path " +
                     "FROM track " +
                     "JOIN genre on genre.id = track.genre_id ";
     @Language("SQL")
     private static final String SQL_COUNT_TRACK = "SELECT COUNT(*) FROM track ";
     @Language("SQL")
     private static final String SQL_INSERT_TRACK =
-            "INSERT INTO track(name, genre_id, length, release_date) VALUES (?, ?, ?, ?) RETURNING ID;";
+            "INSERT INTO track(name, genre_id, length, release_date, media_path) VALUES (?, ?, ?, ?, ?) RETURNING ID;";
     @Language("SQL")
     private static final String SQL_INSERT_SINGER_LINK = "INSERT INTO singer_track(track_id, singer_id) VALUES (?, ?);";
     @Language("SQL")
@@ -46,7 +47,8 @@ public class TrackRepository implements Repository<Track> {
     @Language("SQL")
     private static final String SQL_DELETE_PLAYLIST_LINK = "DELETE FROM playlist_track WHERE track_id = ?";
     @Language("SQL")
-    private static final String SQL_UPDATE_TRACK = "UPDATE track SET name = ?, genre_id = ?, length = ?, release_date = ? WHERE id = ?;";
+    private static final String SQL_UPDATE_TRACK = "UPDATE track SET name = ?, genre_id = ?, length = ?, release_date = ?," +
+            " media_path = ? WHERE id = ?;";
 
     private static TrackRepository instance;
     private static ReentrantLock lock = new ReentrantLock();
@@ -78,19 +80,19 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public boolean add(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+            if (jdbcHelper.query(connection, SQL_SELECT_TRACK, new TrackIdSpecification(track.getId()),
                     new TrackResultSetExtractor()).isEmpty()) {
                 long trackId = jdbcHelper.insert(connection, SQL_INSERT_TRACK, track, new SetTrackFieldsMapper());
                 track.setId(trackId);
                 for (Musician singer : track.getSingers()) {
-                    jdbcHelper.insert(connection, SQL_INSERT_SINGER_LINK, track, (preparedStatement, entity) -> {
+                    jdbcHelper.execute(connection, SQL_INSERT_SINGER_LINK, track, (preparedStatement, entity) -> {
                         preparedStatement.setLong(1, track.getId());
                         preparedStatement.setLong(2, singer.getId());
                     });
                 }
 
                 for (Musician author : track.getAuthors()) {
-                    jdbcHelper.insert(connection, SQL_INSERT_AUTHOR_LINK, track, ((preparedStatement, entity) -> {
+                    jdbcHelper.execute(connection, SQL_INSERT_AUTHOR_LINK, track, ((preparedStatement, entity) -> {
                         preparedStatement.setLong(1, track.getId());
                         preparedStatement.setLong(2, author.getId());
                     }));
@@ -107,7 +109,7 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public boolean remove(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK, new TrackIdSpecification(track.getId()),
                     new TrackResultSetExtractor()).isEmpty()) {
                 SetTrackIdMapper setTrackIdMapper = new SetTrackIdMapper();
                 jdbcHelper.execute(connection, SQL_DELETE_PLAYLIST_LINK, track, setTrackIdMapper);
@@ -126,7 +128,7 @@ public class TrackRepository implements Repository<Track> {
     @Override
     public boolean update(Track track) throws RepositoryException {
         return transactionHandler.transactional(connection -> {
-            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK + new TrackIdSpecification(track.getId()).toSqlClauses(),
+            if (!jdbcHelper.query(connection, SQL_SELECT_TRACK, new TrackIdSpecification(track.getId()),
                     new TrackResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_SINGER_LINK, track, new SetTrackIdMapper());
                 for (Musician singer : track.getSingers()) {

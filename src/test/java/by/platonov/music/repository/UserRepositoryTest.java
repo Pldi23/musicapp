@@ -5,11 +5,13 @@ import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import by.platonov.music.repository.specification.LoginIsNotNullSpecification;
+import by.platonov.music.repository.specification.LoginPasswordSpecification;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -28,20 +30,25 @@ class UserRepositoryTest {
             .gender(Gender.MALE).email("pl@pl.ru").birthDate(LocalDate.of(1986, 7, 2))
             .playlists(new HashSet<>()).registrationDate(LocalDate.now())
             .active(false)
-            .hash(null)
+            .verificationUuid(null)
+            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
             .build();
     private User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
             .lastname("Ronaldo").email("Ronaldo@gmail.com").gender(Gender.MALE)
             .registrationDate(LocalDate.now())
             .birthDate(LocalDate.of(1985, 6, 1)).playlists(new HashSet<>())
             .active(false)
-            .hash(null).build();
+            .verificationUuid(null)
+            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+            .build();
     private User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
             .lastname("Zidane").email("pldi@mail.ru").gender(Gender.MALE)
             .registrationDate(LocalDate.now())
             .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
             .active(false)
-            .hash("1").build();
+            .verificationUuid("1")
+            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+            .build();
 
     @Test
     void addShouldBeTrue() throws RepositoryException {
@@ -121,5 +128,19 @@ class UserRepositoryTest {
     void count() throws RepositoryException {
         int expected = 5;
         assertEquals(expected, repository.count(new LoginIsNotNullSpecification()));
+    }
+
+    @Test
+    void shouldPreventSqlInjection() throws RepositoryException {
+        //given
+        LoginPasswordSpecification spec = new LoginPasswordSpecification("pldi", "qwerty'; " +
+                "truncate table user_playlist; truncate table application_user;");
+
+        //when
+        repository.query(spec);
+        long actual = repository.count(new LoginIsNotNullSpecification());
+
+        //then
+        assertEquals(5, actual);
     }
 }

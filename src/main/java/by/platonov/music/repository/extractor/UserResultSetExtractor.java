@@ -3,6 +3,7 @@ package by.platonov.music.repository.extractor;
 import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 
+import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -31,7 +32,9 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
                         .registrationDate(resultSet.getTimestamp("created_at").toLocalDateTime().toLocalDate())
                         .playlists(new HashSet<>())
                         .active(resultSet.getBoolean("active_status"))
-                        .hash(resultSet.getString("verification_hash"))
+                        .verificationUuid(resultSet.getString("verification_uuid"))
+                        .photoPath(resultSet.getString("photo_path") != null ?
+                                Path.of(resultSet.getString("photo_path")) : null)
                         .build();
                 table.put(user.getLogin(), user);
             }

@@ -11,11 +11,6 @@ import java.sql.SQLException;
 public class LoginIsNotNullSpecification implements SqlSpecification {
 
     @Override
-    public String toSqlClauses() {
-        return "where login is not null;";
-    }
-
-    @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
         return connection.prepareStatement(parentSql + "where login is not null;");
     }

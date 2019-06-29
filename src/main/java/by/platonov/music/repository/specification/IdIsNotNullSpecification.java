@@ -11,10 +11,6 @@ import java.sql.SQLException;
 public class IdIsNotNullSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION = "where id IS NOT NULL;";
-    @Override
-    public String toSqlClauses() {
-        return SPECIFICATION;
-    }
 
     @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
