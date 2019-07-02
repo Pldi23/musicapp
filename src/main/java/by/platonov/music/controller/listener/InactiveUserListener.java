@@ -30,6 +30,7 @@ public class InactiveUserListener implements ServletContextListener {
         scheduledExecutorService.schedule(() -> {
             UserService service = new UserService();
             try {
+                log.info("trying to find and remove inactive users");
                 service.removeNotActiveUser();
             } catch (ServiceException e) {
                 log.error("Could not remove inactive users", e);

@@ -6,6 +6,7 @@ import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.MusicianRepository;
 import by.platonov.music.repository.Repository;
 import by.platonov.music.repository.specification.MusicianNameSpecification;
+import by.platonov.music.repository.specification.SearchNameSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import lombok.extern.log4j.Log4j2;
 
@@ -25,7 +26,7 @@ public class MusicianService {
 
     public List<Musician> search(String searchRequest) throws ServiceException {
         log.debug("searching musicians in repository");
-        return serviceHelper.search(searchRequest, repository);
+        return serviceHelper.search(new SearchNameSpecification(searchRequest), repository);
     }
 
     public Musician getMusician(String musicianName) throws ServiceException {

@@ -1,7 +1,6 @@
 package by.platonov.music.service;
 
 import by.platonov.music.db.DatabaseSetupExtension;
-import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
@@ -46,7 +45,7 @@ class UserServiceTest {
         List<User> result = repository.query(new UserLoginSpecification("pldi4"));
         User actual = result.get(0);
         User expected = User.builder().login("pldi4").password("qwerty").admin(false).firstname("Leo")
-                .lastname("Messi").email("messi@gmail.com").gender(Gender.MALE)
+                .lastname("Messi").email("messi@gmail.com").gender(User.Gender.MALE)
                 .registrationDate(LocalDate.now())
                 .birthDate(LocalDate.of(1987, 1, 1)).playlists(new HashSet<>())
                 .active(true)

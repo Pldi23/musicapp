@@ -17,7 +17,11 @@ import java.io.IOException;
  * @version 0.0.1
  */
 @Log4j2
-@WebServlet(urlPatterns = "/controller")
+@WebServlet(urlPatterns = "/controller", loadOnStartup = 1)
+@MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
+        maxFileSize = 15485760L, // 10 MB
+        maxRequestSize = 20971520L // 20 MB
+)
 public class FrontController extends HttpServlet {
 
 
@@ -32,7 +36,7 @@ public class FrontController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestContent content = new RequestContent(request);
+        RequestContent content = RequestContent.createWithAttributes(request);
         CommandFactory commandFactory = CommandFactory.getInstance();
         Command command = commandFactory.getCommand(content);
         CommandResult commandResult = command.execute(content);

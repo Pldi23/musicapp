@@ -3,8 +3,10 @@ package by.platonov.music.command;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.db.DatabaseSetupExtension;
+import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
+import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.service.GenreService;
 import by.platonov.music.service.MusicianService;
 import by.platonov.music.service.TrackService;
@@ -12,6 +14,7 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -35,9 +38,12 @@ class AddTrackCommandTest {
     void execute() {
         RequestContent content = mock(RequestContent.class);
         Track track = Track.builder().id(7)
+//                .filePartBean(new FilePartBean(new File("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3")))
                 .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
                 .name("TestName").singers(new HashSet<>()).authors(new HashSet<>()).genre(Genre.builder().id(1)
-                        .title("pop").build()).releaseDate(LocalDate.parse("1986-02-07")).length(200).build();
+                        .title("pop").build()).releaseDate(LocalDate.parse("1986-02-07"))
+//                .length(200)
+                .build();
 //        AddTrackCommand command = new AddTrackCommand(new TrackService(), new GenreService(), new MusicianService());
         when(content.getRequestParameter(RequestConstant.MEDIA_PATH))
                 .thenReturn(new String[]{"/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"});

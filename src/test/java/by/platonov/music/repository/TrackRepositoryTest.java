@@ -1,15 +1,18 @@
 package by.platonov.music.repository;
 
 import by.platonov.music.db.DatabaseSetupExtension;
+import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
+import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
-import by.platonov.music.repository.specification.SearchSpecification;
+import by.platonov.music.repository.specification.SearchNameSpecification;
 import by.platonov.music.repository.specification.TrackIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -26,25 +29,33 @@ class TrackRepositoryTest {
 
     private TrackRepository repository = TrackRepository.getInstance();
     private Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
-            .releaseDate(LocalDate.of(2019, 1, 1)).length(180)
-            .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
+            .releaseDate(LocalDate.of(2019, 1, 1))
+//            .length(180)
+//            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3")))
+            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3"))
             .singers(new HashSet<>())
             .authors(new HashSet<>()).build();
 
     private Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
             .releaseDate(LocalDate.of(2019, 1,6))
-            .length(201)
+//            .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
-            .path(Path.of(""))
+            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
+//            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/testfile.mp3")))
             .build();
 
     private Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
-            .releaseDate(LocalDate.of(2019, 1, 3)).length(190)
+            .releaseDate(LocalDate.of(2019, 1, 3))
+//            .length(190)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
-            .path(Path.of(""))
+//            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/testfile.mp3")))
+            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
             .build();
+
+    TrackRepositoryTest() throws FilePartBeanException {
+    }
 
     @Test
     void addShouldBeTrue() throws RepositoryException {
@@ -122,7 +133,7 @@ class TrackRepositoryTest {
 
     @Test
     void query() throws RepositoryException {
-        List<Track> actual = repository.query(new SearchSpecification("T"));
+        List<Track> actual = repository.query(new SearchNameSpecification("T"));
         List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }

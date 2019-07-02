@@ -1,5 +1,6 @@
 package by.platonov.music.repository;
 
+import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.repository.mapper.PreparedStatementMapper;
 import by.platonov.music.repository.extractor.AbstractResultSetExtractor;
 import by.platonov.music.repository.specification.SqlSpecification;
@@ -24,7 +25,7 @@ class JdbcHelper {
         }
     }
 
-    <T> List<T> query(Connection connection, String sql, SqlSpecification specification, AbstractResultSetExtractor<T> resultSetExtractor) throws SQLException {
+    <T> List<T> query(Connection connection, String sql, SqlSpecification specification, AbstractResultSetExtractor<T> resultSetExtractor) throws SQLException, FilePartBeanException {
         try (PreparedStatement statement = specification.toPreparedStatement(connection, sql);
              ResultSet resultSet = statement.executeQuery()) {
             return resultSetExtractor.extract(resultSet);

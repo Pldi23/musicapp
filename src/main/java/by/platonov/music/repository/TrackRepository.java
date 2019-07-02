@@ -25,7 +25,7 @@ public class TrackRepository implements Repository<Track> {
 
     @Language("SQL")
     private static final String SQL_SELECT_TRACK =
-            "SELECT track.id as id , name as name, genre.id as genreId, genre.genre_name, track.length," +
+            "SELECT track.id as id , name as name, genre.id as genreId, genre.genre_name," +
                     " track.release_date, track.media_path " +
                     "FROM track " +
                     "JOIN genre on genre.id = track.genre_id ";
@@ -33,7 +33,7 @@ public class TrackRepository implements Repository<Track> {
     private static final String SQL_COUNT_TRACK = "SELECT COUNT(*) FROM track ";
     @Language("SQL")
     private static final String SQL_INSERT_TRACK =
-            "INSERT INTO track(name, genre_id, length, release_date, media_path) VALUES (?, ?, ?, ?, ?) RETURNING ID;";
+            "INSERT INTO track(name, genre_id, release_date, media_path) VALUES (?, ?, ?, ?) RETURNING ID;";
     @Language("SQL")
     private static final String SQL_INSERT_SINGER_LINK = "INSERT INTO singer_track(track_id, singer_id) VALUES (?, ?);";
     @Language("SQL")
@@ -47,7 +47,7 @@ public class TrackRepository implements Repository<Track> {
     @Language("SQL")
     private static final String SQL_DELETE_PLAYLIST_LINK = "DELETE FROM playlist_track WHERE track_id = ?";
     @Language("SQL")
-    private static final String SQL_UPDATE_TRACK = "UPDATE track SET name = ?, genre_id = ?, length = ?, release_date = ?," +
+    private static final String SQL_UPDATE_TRACK = "UPDATE track SET name = ?, genre_id = ?, release_date = ?," +
             " media_path = ? WHERE id = ?;";
 
     private static TrackRepository instance;

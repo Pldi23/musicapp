@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.0.1
  */
 @ExtendWith(DatabaseSetupExtension.class)
-class SearchSpecificationTest {
+class SearchNameSpecificationTest {
 
     @Test
     void toSqlClauses() throws RepositoryException {
         Repository<Musician> repository = MusicianRepository.getInstance();
         String searchRequest = "л";
-        SqlSpecification specification = new SearchSpecification(searchRequest);
+        SqlSpecification specification = new SearchNameSpecification(searchRequest);
         int actual = repository.query(specification).size();
         int expected = 2;
 

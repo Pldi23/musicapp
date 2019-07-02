@@ -1,5 +1,7 @@
 package by.platonov.music.repository.extractor;
 
+import by.platonov.music.exception.FilePartBeanException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -10,5 +12,5 @@ import java.util.List;
  */
 public interface AbstractResultSetExtractor<T> {
 
-    List<T> extract(ResultSet resultSet) throws SQLException;
+    List<T> extract(ResultSet resultSet) throws SQLException, FilePartBeanException;
 }

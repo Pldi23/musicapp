@@ -15,4 +15,5 @@ public class Media extends Entity {
 
     private long id;
     private Path path;
+//    private FilePartBean filePartBean;
 }

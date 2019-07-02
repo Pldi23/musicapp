@@ -37,7 +37,7 @@ ${validatorMessage}
     <input type="hidden" name="command" value="search"/>
     <label>
         Search panel
-        <input type="text" name="searchrequest" placeholder="playlist, track, musician"/>
+        <input type="search" required="" name="searchrequest" placeholder="playlist, track, musician"/>
     </label>
     <input type="submit" name="submit" value="Search">
 </form>

@@ -19,18 +19,17 @@ public class Track extends Media {
     private Set<Musician> singers;
     private Genre genre;
     private LocalDate releaseDate;
-    private long length;
+//    private long length;
 
     @Builder
     public Track(long id, Path path, String name, Set<Musician> authors, Set<Musician> singers, Genre genre,
-                 LocalDate releaseDate, long length) {
+                 LocalDate releaseDate) {
         super(id, path);
         this.name = name;
         this.authors = authors;
         this.singers = singers;
         this.genre = genre;
         this.releaseDate = releaseDate;
-        this.length = length;
+//        this.length = length;
     }
-
 }

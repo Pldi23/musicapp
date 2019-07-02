@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html><head><title>Search results</title></head>
 <hr/>
 <h2>
@@ -6,10 +7,35 @@
 </h2>
 <br>
 Musicians :
-${musicians}
+<%--${musicians}--%>
+<table>
+    <c:forEach var="musician" items="${musicians}" varStatus="status">
+        <tr>
+            <td><c:out value="${ musician.name }" /></td>
+            <td><c:out value="${ musician.id }" /></td>
+        </tr>
+    </c:forEach>
+</table>
 <br>
 Tracks :
-${tracks}
+<%--${tracks}--%>
+<table>
+    <c:forEach var="track" items="${tracks}" varStatus="status">
+        <tr>
+            <td><c:out value="${ track.name }" /></td>
+            <td><c:out value="${ track.id }" /></td>
+            <td>
+                <form method="get" action="controller">
+                <input type="hidden" name="command" value="playsound">
+                <input type="hidden" name="tr" value="${track.path}">
+                <label>
+                    play panel
+                </label>
+                <input type="submit" name="submit" value="play">
+            </form></td>
+        </tr>
+    </c:forEach>
+</table>
 <br>
 Playlists :
 ${playlists}

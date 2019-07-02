@@ -33,7 +33,11 @@ public class LoginCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
-        Set<Violation> violations = new LoginValidator(new PasswordValidator(null)).apply(content);
+
+        Set<Violation> violations =
+                new LoginValidator(
+                        new PasswordValidator(null)).apply(content);
+
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];
             String password = content.getRequestParameter(PASSWORD)[0];

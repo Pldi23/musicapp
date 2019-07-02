@@ -128,11 +128,11 @@ insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum201
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
 insert into genre (genre_name)values ('pop'),('rock'),('rap'),('jazz'),('funk'),('retro'),('chanson');
 insert into track ("name", genre_id, release_date, "length", media_path)
-values ('Tim', 1, '2019-01-01', 180, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3'),
-    ('i_Suss', 7, '2019-02-02', 195, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/leningrad_i_suss.mp3'),
-    ('Властелин калек', 1, '2018-12-01', 200, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/saluki_vlastelin_kalek.mp3'),
-    ('Зацепила', 1, '2019-03-11', 185, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/artur_pirozhkov_zacepila.mp3'),
-    ('Numb', 2, '2005-05-06', 211, '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/linkin-park-numb.mp3'),
+values ('Tim', 1, '2019-01-01', 180, '/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3'),
+    ('i_Suss', 7, '2019-02-02', 195, '/users/dzmitryplatonov/Dropbox/music/leningrad_i_suss.mp3'),
+    ('Властелин калек', 1, '2018-12-01', 200, '/users/dzmitryplatonov/Dropbox/music/saluki_vlastelin_kalek.mp3'),
+    ('Зацепила', 1, '2019-03-11', 185, '/users/dzmitryplatonov/Dropbox/music/artur_pirozhkov_zacepila.mp3'),
+    ('Numb', 2, '2005-05-06', 211, '/users/dzmitryplatonov/Dropbox/music/linkin-park-numb.mp3'),
     ('Duet', 3, '2019-01-06', 201, '');
 insert into playlist_track (playlist_id, track_id) values (1, 4), (5, 1), (5, 2), (5, 3), (5, 4);
 insert into musician ("name")

@@ -22,13 +22,13 @@ public class CommandFactory {
 
     public Command getCommand(RequestContent content) {
 
-        String command = content.getRequestParameters().containsKey(COMMAND) ?
+        String commandName = content.getRequestParameters().containsKey(COMMAND) ?
                 content.getRequestParameter(COMMAND)[0] : ERROR;
 
         try {
-            return CommandType.valueOf(command.toUpperCase()).getCommand();
+            return CommandType.valueOf(commandName.toUpperCase()).getCommand();
         } catch (IllegalArgumentException e) {
-            log.error("Enum Command Type not present for " + command, e);
+            log.error("Enum Command Type not present for " + commandName, e);
             return new ErrorCommand(CommandMessage.COMMAND_FAILED_MESSAGE);
         }
     }

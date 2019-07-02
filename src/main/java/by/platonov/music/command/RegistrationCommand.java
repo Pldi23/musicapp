@@ -5,7 +5,6 @@ import static by.platonov.music.command.constant.RequestConstant.*;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
-import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 import by.platonov.music.service.UserService;
 import by.platonov.music.util.HashGenerator;
@@ -68,7 +67,7 @@ public class RegistrationCommand implements Command {
                         .lastname(lastname)
                         .email(email)
                         .birthDate(LocalDate.parse(birthdate))
-                        .gender(Gender.valueOf(gender.toUpperCase()))
+                        .gender(User.Gender.valueOf(gender.toUpperCase()))
                         .playlists(new HashSet<>())
                         .active(false)
                         .verificationUuid(hash)
@@ -76,7 +75,8 @@ public class RegistrationCommand implements Command {
                         .build();
 
                 if (userService.register(user)) {
-                    Thread mailSender = new VerificationMailSender(email, hash);
+                    Thread mailSender = new VerificationMailSender(content.getServerName(), content.getServerPort(),
+                            content.getContextPath(), email, hash);
                     mailSender.start();
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
                             Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
@@ -91,6 +91,7 @@ public class RegistrationCommand implements Command {
                         Map.of(PROCESS, "registration"));
             }
         } else {
+            log.info("Registration failed because of validator violation");
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                     Map.of("errorRegistrationFormMessage", violations));
         }

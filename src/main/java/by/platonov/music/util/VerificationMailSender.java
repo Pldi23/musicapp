@@ -18,12 +18,18 @@ public class VerificationMailSender extends Thread {
     private static final String MAIL_SUBJECT = "Music app verification link";
     private static final String MAIL_MESSAGE = "Please complete your registration by activating a link";
     private static final String LINK_MESSAGE =
-            "Your verification link :: http://localhost:8080/music-app/controller?command=activation&email=%s&verificationUuid=%s";
+            "Your verification link :: http://%s:%d/%s/controller?command=activation&email=%s&verificationUuid=%s";
 
+    private String serverName;
+    private int serverPort;
+    private String contextPath;
     private String userEmail;
     private String hash;
 
-    public VerificationMailSender(String userEmail, String hash) {
+    public VerificationMailSender(String serverName, int serverPort, String contextPath, String userEmail, String hash) {
+        this.serverName = serverName;
+        this.serverPort = serverPort;
+        this.contextPath = contextPath;
         this.userEmail = userEmail;
         this.hash = hash;
     }
@@ -55,7 +61,7 @@ public class VerificationMailSender extends Thread {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
             message.setSubject(MAIL_SUBJECT);
             message.setText(MAIL_MESSAGE);
-            message.setText(String.format(LINK_MESSAGE, userEmail, hash));
+            message.setText(String.format(LINK_MESSAGE, serverName, serverPort, contextPath, userEmail, hash));
 
             username = properties.getProperty("mail.smtp.username");
             Transport transport = session.getTransport();

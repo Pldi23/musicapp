@@ -10,13 +10,13 @@ import java.sql.SQLException;
  * @author Dzmitry Platonov on 2019-06-25.
  * @version 0.0.1
  */
-public class SearchSpecification implements SqlSpecification {
+public class SearchNameSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION = "WHERE LOWER(name) LIKE LOWER(?);";
     
     private String searchRequest;
 
-    public SearchSpecification(String searchRequest) {
+    public SearchNameSpecification(String searchRequest) {
         this.searchRequest = searchRequest;
     }
 

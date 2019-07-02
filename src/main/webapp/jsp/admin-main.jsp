@@ -16,21 +16,22 @@ Your role: ${role}
     </label>
     <input type="submit" name="submit" value="Search">
 </form>
-<form action="upload" enctype="multipart/form-data" method="post">
-    <input type="hidden" name="command" value="addtrack"/>
+${violations}
+<form action="controller" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="command" value="upload"/>
     <h3>ADD TRACK</h3>
     <label>
-        Track name :
-        <input type="text" name="trackname" required="" placeholder="track name"/>
-    </label>
-    <br>
-    <label>
-        Track path :
+        Track path * :
         <input type="file" name="mediapath" accept=".mp3"/>
     </label>
     <br>
     <label>
-        Singers :
+        Track name * :
+        <input type="text" name="trackname" required="" placeholder="track name"/>
+    </label>
+    <br>
+    <label>
+        Singers * :
         <input type="text" name="singer" required="" placeholder="singer1"/>
         <input type="text" name="singer" placeholder="singer2"/>
         <input type="text" name="singer" placeholder="singer3"/>
@@ -50,12 +51,29 @@ Your role: ${role}
     </label>
     <br>
     <label>
-        Genre :
-        <input type="text" name="genre" required="" placeholder="genre"/>
+        Genre * :
+        <select name="genre">
+            <option value="pop">Pop</option>
+            <option value="rock">Rock</option>
+            <option value="blues">Blues</option>
+            <option value="country">Country</option>
+            <option value="electronic">Electronic</option>
+            <option value="folk">Folk</option>
+            <option value="hip-hop">Hip-Hop</option>
+            <option value="latin">Latin</option>
+            <option value="r&b">R&B</option>
+            <option value="soul">Soul</option>
+            <option value="instrumental">Instrumental</option>
+            <option value="lounge">Lounge</option>
+            <option value="disco">Disco</option>
+            <option value="chanson">Chanson</option>
+            <option value="retro">Retro</option>
+            <option value="funk">Funk</option>
+        </select>
     </label>
     <br>
     <label>
-        Release date :
+        Release date * :
         <input type="date" name="releasedate"/>
     </label>
     <br>

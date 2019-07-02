@@ -1,6 +1,5 @@
 package by.platonov.music.repository.mapper;
 
-import by.platonov.music.entity.Gender;
 import by.platonov.music.entity.User;
 
 import java.sql.Date;
@@ -19,7 +18,7 @@ public class SetUserUpdateMapper implements PreparedStatementMapper<User> {
         preparedStatement.setString(3, user.getFirstname());
         preparedStatement.setString(4, user.getLastname());
         preparedStatement.setString(5, user.getEmail());
-        preparedStatement.setBoolean(6, user.getGender() == Gender.MALE);
+        preparedStatement.setBoolean(6, user.getGender() == User.Gender.MALE);
         preparedStatement.setDate(7, Date.valueOf(user.getBirthDate()));
         preparedStatement.setBoolean(8, user.isActive());
         preparedStatement.setString(9, user.getVerificationUuid());

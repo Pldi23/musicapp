@@ -22,11 +22,13 @@ import java.util.Enumeration;
 public class ConnectionPoolListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        log.info("Initializing connection pool");
         ConnectionPool.getInstance();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        log.info("Destroying connection pool");
         try {
             ConnectionPool.getInstance().tierDown();
             Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();

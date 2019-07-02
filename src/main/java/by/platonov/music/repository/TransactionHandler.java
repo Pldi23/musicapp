@@ -1,6 +1,7 @@
 package by.platonov.music.repository;
 
 import by.platonov.music.db.ConnectionPool;
+import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.exception.RepositoryException;
 import lombok.extern.log4j.Log4j2;
 
@@ -56,7 +57,7 @@ class TransactionHandler {
             T result = transaction.execute(connection); 
             connection.commit();
             return result;
-        } catch (SQLException e) {
+        } catch (SQLException | FilePartBeanException e) {
             try {
                 connection.rollback();
                 log.warn("Rolling back");
