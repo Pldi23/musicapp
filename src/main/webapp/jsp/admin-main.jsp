@@ -82,5 +82,15 @@ ${violations}
     <br/>
 </form>
 ${addresult}
+
+<form action="controller" method="get">
+    <input type="hidden" name="command" value="removetrack">
+    <h3>Remove track</h3>
+    <label>
+        search by id
+        <input type="number" name="id" required="" placeholder="enter track id">
+    </label>
+    <input type="submit" name="submit" value="Remove track">
+</form>
 </body>
 </html>

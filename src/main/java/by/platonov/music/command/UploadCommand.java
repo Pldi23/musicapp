@@ -16,6 +16,7 @@ import by.platonov.music.validator.*;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.Part;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,8 +49,6 @@ public class UploadCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
 
-        CommandResult commandResult;
-
         Set<Violation> violations =
                 new FilePartValidator(
                         new TrackNameValidator(
@@ -70,7 +69,9 @@ public class UploadCommand implements Command {
 
                 String[] singerNames = content.getRequestParameter(SINGER);
                 for (String singerName : singerNames) {
-                    singers.add(musicianService.getMusician(singerName));
+                    if (!singerName.isEmpty()) {
+                        singers.add(musicianService.getMusician(singerName));
+                    }
                 }
                 String[] authorNames = content.getRequestParameter(AUTHOR);
                 for (String authorName : authorNames) {
@@ -81,7 +82,8 @@ public class UploadCommand implements Command {
 
                 Genre genre = genreService.getGenre(genreTitle);
                 Track track = Track.builder()
-                        .path(filePartService.getFilePartBeanRepositoryPath(filePartBean))
+//                        .path(filePartService.getFilePartBeanRepositoryPath(filePartBean))
+                        .path(Path.of(filePartBean.getFilePartName()))
                         .name(trackname)
                         .authors(authors)
                         .singers(singers)
@@ -94,18 +96,15 @@ public class UploadCommand implements Command {
                         track + CommandMessage.ALREADY_EXIST_MESSAGE;
 
                 filePartService.addFilePart(filePartBean);
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                         Map.of(ADD_RESULT_ATTRIBUTE, message));
             } catch (ServiceException | FilePartBeanException e) {
                 log.error("couldn't handle audio file ", e);
-                commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
-
-        } else {
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                    Map.of("violations", violations));
         }
-        return commandResult;
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
+                Map.of("violations", violations));
     }
 
 //    private long getAudioLength(Part part) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException {

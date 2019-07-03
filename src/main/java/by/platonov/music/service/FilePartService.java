@@ -56,7 +56,7 @@ public class FilePartService {
         }
     }
 
-    public Path getFilePartBeanRepositoryPath(FilePartBean filePartBean) {
-        return Path.of(configuration.getPath() + filePartBean.getFilePartName());
-    }
+//    public Path getFilePartBeanRepositoryPath(FilePartBean filePartBean) {
+//        return Path.of(configuration.getPath() + filePartBean.getFilePartName());
+//    }
 }

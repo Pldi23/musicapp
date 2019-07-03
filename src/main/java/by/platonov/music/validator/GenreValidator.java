@@ -30,7 +30,7 @@ public class GenreValidator extends AbstractValidator {
             log.warn("no parameter genre found");
             result.add(new Violation(GENRE_INCORRECT_MESSAGE));
         } else if (content.getRequestParameter(RequestConstant.GENRE)[0].matches(GENRE_REGEX_PATTERN)) {
-            log.warn("");
+            log.warn("genre does not match regex pattern");
             result.add(new Violation(GENRE_INCORRECT_MESSAGE));
         }
         if (next != null) {
