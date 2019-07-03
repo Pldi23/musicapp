@@ -88,31 +88,39 @@ ${addresult}
     <input type="hidden" name="command" value="query"/>
     <h3>Remove track</h3>
     <label>
-        search track
+        query track for removing :
         <input type="text" name="searchrequest" required="" placeholder="track name"/>
     </label>
     <input type="submit" name="submit" value="query">
 </form>
 <br>
 <table>
-Tracks :
+    <c:if test="${not empty tracks}">
+        <c:out value="Tracks"/>
+    </c:if>
     <c:forEach var="track" items="${tracks}" varStatus="status">
         <tr>
             <td><c:out value="${ track.id }"/></td>
             <td><c:out value="${ track.name }"/></td>
             <td><c:out value="${ track.singers }"/></td>
             <td><c:out value="${ track.genre }"/></td>
-            <td><audio controls><source src="music/${track.uuid}" type="audio/mpeg"></audio></td>
+            <td>
+                <audio controls>
+                    <source src="music/${track.uuid}" type="audio/mpeg">
+                </audio>
+            </td>
             <td>
                 <form method="get" action="controller">
-                    <input type="hidden" name="command" value="remove">
+                    <input type="hidden" name="command" value="areyousure">
                     <input type="hidden" name="uuid" value="${ track.uuid }">
+                    <input type="hidden" name="name" value="${ track.name }">
                     <input type="submit" name="submit" value="remove">
-                        ${removeresult}
-                </form> </td>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
+${removeResult}
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 package by.platonov.music.command;
 
+import by.platonov.music.command.constant.CommandMessage;
 import by.platonov.music.command.constant.PageConstant;
-import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.TrackService;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+
+import static by.platonov.music.command.constant.RequestConstant.*;
 
 /**
  * music-app
@@ -31,17 +33,17 @@ public class RemoveTrackCommand implements Command {
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
         try {
-            String uuid = content.getRequestParameter(RequestConstant.UUID)[0];
+            String uuid = content.getRequestParameter(UUID)[0];
 
             if (trackService.remove(uuid)) {
                 log.debug("track with uuid " + uuid + " removed successfully");
                 deleteFile(uuid);
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                        Map.of("removeresult", "successfull"));
+                        Map.of(REMOVE_RESULT, CommandMessage.SUCCESSFULLY_MESSAGE));
             } else {
                 log.debug("could not remove track");
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                        Map.of("removeresult", "not successfull"));
+                        Map.of(REMOVE_RESULT, CommandMessage.FAILED_MESSAGE));
             }
         } catch (ServiceException | IOException e) {
             log.error(e);

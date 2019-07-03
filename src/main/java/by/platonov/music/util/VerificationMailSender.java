@@ -39,7 +39,7 @@ public class VerificationMailSender extends Thread {
         sendMail();
     }
 
-    public void sendMail() {
+    void sendMail() {
         Properties properties = new Properties();
         String mailAddress;
         String password;
@@ -72,6 +72,5 @@ public class VerificationMailSender extends Thread {
         } catch (IOException | MessagingException e) {
             log.error("Could not sent e-mail with activation link");
         }
-
     }
 }

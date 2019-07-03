@@ -6,7 +6,6 @@ import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
-import by.platonov.music.service.FilePartService;
 import by.platonov.music.service.GenreService;
 import by.platonov.music.service.MusicianService;
 import by.platonov.music.service.TrackService;
@@ -39,14 +38,11 @@ public class UploadCommand implements Command {
     private MusicianService musicianService;
     private GenreService genreService;
     private TrackService trackService;
-    private FilePartService filePartService;
 
-    public UploadCommand(MusicianService musicianService, GenreService genreService, TrackService trackService,
-                         FilePartService filePartService) {
+    public UploadCommand(MusicianService musicianService, GenreService genreService, TrackService trackService) {
         this.musicianService = musicianService;
         this.genreService = genreService;
         this.trackService = trackService;
-        this.filePartService = filePartService;
     }
 
     @Override
@@ -61,10 +57,13 @@ public class UploadCommand implements Command {
         if (violations.isEmpty()) {
             try {
                 Part filePart = content.getPart(MEDIA_PATH).get();
-//                FilePartBean filePartBean = new FilePartBean(filePart);
-                File file = createFile(filePart, UnicNameGenerator.generateUnicName());
 
                 String trackname = content.getRequestParameter(TRACKNAME)[0];
+                if (!trackService.searchName(trackname).isEmpty()) {
+                    return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
+                            Map.of(ADD_RESULT_ATTRIBUTE, trackname + " " + CommandMessage.ALREADY_EXIST_MESSAGE));
+                }
+
                 String genreTitle = content.getRequestParameter(GENRE)[0];
                 LocalDate releaseDate = LocalDate.parse(content.getRequestParameter(RELEASE_DATE)[0]);
 
@@ -85,6 +84,7 @@ public class UploadCommand implements Command {
                 }
 
                 Genre genre = genreService.getGenre(genreTitle);
+                File file = createFile(filePart, UnicNameGenerator.generateUnicName());
                 Track track = Track.builder()
                         .uuid(file.getName())
                         .name(trackname)
@@ -94,12 +94,8 @@ public class UploadCommand implements Command {
                         .genre(genre)
                         .build();
 
-                String message = trackService.add(track) ? track + CommandMessage.SUCCESSFULLY_ADDED_MESSAGE :
-                        track + CommandMessage.ALREADY_EXIST_MESSAGE;
-
-//                filePartService.addFilePart(filePartBean);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                        Map.of(ADD_RESULT_ATTRIBUTE, message));
+                        Map.of(ADD_RESULT_ATTRIBUTE, track + CommandMessage.SUCCESSFULLY_ADDED_MESSAGE));
             } catch (ServiceException | IOException e) {
                 log.error("couldn't handle audio file ", e);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);

@@ -27,6 +27,7 @@ public class RequestConstant {
     public static final String UUID = "uuid";
     public static final String SINGER = "singer";
     public static final String AUTHOR = "author";
+    public static final String NAME = "name";
 
     public static final String USER = "user";
     public static final String ROLE = "role";
@@ -34,6 +35,7 @@ public class RequestConstant {
     public static final String ERROR = "error";
     public static final String CURRENT = "current";
     public static final String SEARCH_REQUEST = "searchrequest";
+    public static final String REMOVE_RESULT = "removeResult";
 
     public static final String PROCESS = "process";
     public static final String MUSICIANS_ATTRIBUTE = "musicians";

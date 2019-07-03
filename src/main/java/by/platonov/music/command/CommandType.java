@@ -17,7 +17,9 @@ public enum CommandType {
     ERROR(new ErrorCommand()),
     REMOVE(new RemoveTrackCommand(new TrackService())),
     QUERY(new QueryCommand(new TrackService())),
-    UPLOAD(new UploadCommand(new MusicianService(), new GenreService(), new TrackService(), FilePartService.getInstance())),
+    AREYOUSURE(new AreYouSureCommand()),
+    TOADMIN(new ToAdminCommand()),
+    UPLOAD(new UploadCommand(new MusicianService(), new GenreService(), new TrackService())),
     SEARCH(new SearchCommand(new MusicianService(), new TrackService(), new PlaylistService()));
 
     private Command command;

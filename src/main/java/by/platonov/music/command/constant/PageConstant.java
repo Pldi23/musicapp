@@ -17,4 +17,5 @@ public class PageConstant {
     public static final String REGISTRATION_PAGE = "/jsp/registration.jsp";
     public static final String INFORMATION_PAGE = "/jsp/information.jsp";
     public static final String SEARCH_PAGE = "/jsp/search-result.jsp";
+    public static final String ARE_YOU_SURE_PAGE = "/jsp/are-you-sure.jsp";
 }
