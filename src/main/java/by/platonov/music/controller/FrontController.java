@@ -19,7 +19,7 @@ import java.io.IOException;
 @Log4j2
 @WebServlet(urlPatterns = "/controller", loadOnStartup = 1)
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
-        maxFileSize = 15485760L, // 10 MB
+        maxFileSize = 20485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
 )
 public class FrontController extends HttpServlet {

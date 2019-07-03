@@ -22,9 +22,9 @@ public class Track extends Media {
 //    private long length;
 
     @Builder
-    public Track(long id, Path path, String name, Set<Musician> authors, Set<Musician> singers, Genre genre,
+    public Track(long id, String uuid, String name, Set<Musician> authors, Set<Musician> singers, Genre genre,
                  LocalDate releaseDate) {
-        super(id, path);
+        super(id, uuid);
         this.name = name;
         this.authors = authors;
         this.singers = singers;

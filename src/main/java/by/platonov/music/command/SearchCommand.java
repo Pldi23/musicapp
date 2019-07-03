@@ -46,7 +46,7 @@ public class SearchCommand implements Command {
             playlists = playlistService.search(searchRequest);
             tracks = trackService.searchName(searchRequest);
         } catch (ServiceException e) {
-            log.error("Service provide an exception for searchName command ", e);
+            log.error("Service provide an exception for search command ", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
                     Map.of(PROCESS, CommandMessage.SEARCH_REQUEST_MESSAGE));
         }

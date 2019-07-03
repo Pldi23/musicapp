@@ -23,7 +23,7 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
         Map<Long, Track> table = new HashMap<>();
         while (resultSet.next()) {
             if (!table.containsKey(resultSet.getLong("id"))) {
-                Path path = Path.of(resultSet.getString("media_path"));
+//                Path path = Path.of(resultSet.getString("media_path"));
                 Track track = Track.builder()
                         .id(resultSet.getLong("id"))
                         .name(resultSet.getString("name"))
@@ -35,7 +35,8 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
                         .releaseDate(resultSet.getDate("release_date").toLocalDate())
                         .singers(new HashSet<>())
                         .authors(new HashSet<>())
-                        .path(path)
+                        .uuid(resultSet.getString("media_path"))
+//                        .path(path)
 //                        .filePartBean(new FilePartBean(path.toFile()))
                         .build();
                 table.put(track.getId(), track);

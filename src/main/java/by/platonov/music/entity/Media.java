@@ -14,6 +14,7 @@ import java.nio.file.Path;
 public class Media extends Entity {
 
     private long id;
-    private Path path;
+    private String uuid;
+//    private Path path;
 //    private FilePartBean filePartBean;
 }

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head><title>Welcome</title></head>
 <body>
@@ -83,14 +84,35 @@ ${violations}
 </form>
 ${addresult}
 
-<form action="controller" method="get">
-    <input type="hidden" name="command" value="removetrack">
+<form action="controller" method="post">
+    <input type="hidden" name="command" value="query"/>
     <h3>Remove track</h3>
     <label>
-        search by id
-        <input type="number" name="id" required="" placeholder="enter track id">
+        search track
+        <input type="text" name="searchrequest" required="" placeholder="track name"/>
     </label>
-    <input type="submit" name="submit" value="Remove track">
+    <input type="submit" name="submit" value="query">
 </form>
+<br>
+<table>
+Tracks :
+    <c:forEach var="track" items="${tracks}" varStatus="status">
+        <tr>
+            <td><c:out value="${ track.id }"/></td>
+            <td><c:out value="${ track.name }"/></td>
+            <td><c:out value="${ track.singers }"/></td>
+            <td><c:out value="${ track.genre }"/></td>
+            <td><audio controls><source src="music/${track.uuid}" type="audio/mpeg"></audio></td>
+            <td>
+                <form method="get" action="controller">
+                    <input type="hidden" name="command" value="remove">
+                    <input type="hidden" name="uuid" value="${ track.uuid }">
+                    <input type="submit" name="submit" value="remove">
+                        ${removeresult}
+                </form> </td>
+        </tr>
+    </c:forEach>
+</table>
+
 </body>
 </html>

@@ -18,7 +18,8 @@ public class SetTrackUpdateMapper implements PreparedStatementMapper<Track> {
 //        preparedStatement.setLong(3, track.getLength());
         preparedStatement.setDate(3, Date.valueOf(track.getReleaseDate()));
 //        preparedStatement.setString(5, track.getFilePartBean().getFilePartPath().toString());
-        preparedStatement.setString(4, track.getPath().toString());
+//        preparedStatement.setString(4, track.getPath().toString());
+        preparedStatement.setString(4, track.getUuid());
         preparedStatement.setLong(5, track.getId());
     }
 }

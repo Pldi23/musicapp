@@ -32,7 +32,7 @@ class TrackRepositoryTest {
             .releaseDate(LocalDate.of(2019, 1, 1))
 //            .length(180)
 //            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3")))
-            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3"))
+//            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3"))
             .singers(new HashSet<>())
             .authors(new HashSet<>()).build();
 
@@ -41,7 +41,7 @@ class TrackRepositoryTest {
 //            .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
-            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
+//            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
 //            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/testfile.mp3")))
             .build();
 
@@ -51,7 +51,7 @@ class TrackRepositoryTest {
             .singers(new HashSet<>())
             .authors(new HashSet<>())
 //            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/testfile.mp3")))
-            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
+//            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
             .build();
 
     TrackRepositoryTest() throws FilePartBeanException {

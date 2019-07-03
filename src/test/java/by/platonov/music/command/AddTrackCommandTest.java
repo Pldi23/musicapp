@@ -39,7 +39,7 @@ class AddTrackCommandTest {
         RequestContent content = mock(RequestContent.class);
         Track track = Track.builder().id(7)
 //                .filePartBean(new FilePartBean(new File("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3")))
-                .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
+//                .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
                 .name("TestName").singers(new HashSet<>()).authors(new HashSet<>()).genre(Genre.builder().id(1)
                         .title("pop").build()).releaseDate(LocalDate.parse("1986-02-07"))
 //                .length(200)

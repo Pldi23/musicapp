@@ -5,18 +5,21 @@ import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
-import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.exception.ServiceException;
-import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.service.FilePartService;
 import by.platonov.music.service.GenreService;
 import by.platonov.music.service.MusicianService;
 import by.platonov.music.service.TrackService;
+import by.platonov.music.util.UnicNameGenerator;
 import by.platonov.music.validator.*;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
@@ -58,7 +61,8 @@ public class UploadCommand implements Command {
         if (violations.isEmpty()) {
             try {
                 Part filePart = content.getPart(MEDIA_PATH).get();
-                FilePartBean filePartBean = new FilePartBean(filePart);
+//                FilePartBean filePartBean = new FilePartBean(filePart);
+                File file = createFile(filePart, UnicNameGenerator.generateUnicName());
 
                 String trackname = content.getRequestParameter(TRACKNAME)[0];
                 String genreTitle = content.getRequestParameter(GENRE)[0];
@@ -82,12 +86,10 @@ public class UploadCommand implements Command {
 
                 Genre genre = genreService.getGenre(genreTitle);
                 Track track = Track.builder()
-//                        .path(filePartService.getFilePartBeanRepositoryPath(filePartBean))
-                        .path(Path.of(filePartBean.getFilePartName()))
+                        .uuid(file.getName())
                         .name(trackname)
                         .authors(authors)
                         .singers(singers)
-//                        .length(length)
                         .releaseDate(releaseDate)
                         .genre(genre)
                         .build();
@@ -95,10 +97,10 @@ public class UploadCommand implements Command {
                 String message = trackService.add(track) ? track + CommandMessage.SUCCESSFULLY_ADDED_MESSAGE :
                         track + CommandMessage.ALREADY_EXIST_MESSAGE;
 
-                filePartService.addFilePart(filePartBean);
+//                filePartService.addFilePart(filePartBean);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                         Map.of(ADD_RESULT_ATTRIBUTE, message));
-            } catch (ServiceException | FilePartBeanException e) {
+            } catch (ServiceException | IOException e) {
                 log.error("couldn't handle audio file ", e);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
@@ -106,6 +108,16 @@ public class UploadCommand implements Command {
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                 Map.of("violations", violations));
     }
+
+    private File createFile(Part part, String uuid) throws IOException {
+        String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
+        String extension = filename.substring(filename.lastIndexOf('.'));
+        File file = new File("/users/dzmitryplatonov/Dropbox/music", uuid + extension);
+        Files.copy(part.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        return file;
+    }
+
+
 
 //    private long getAudioLength(Part part) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException {
 //        File temp = Files.createTempFile("tempjavafile", ".mp3").toFile();

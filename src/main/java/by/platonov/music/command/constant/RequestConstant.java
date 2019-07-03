@@ -24,6 +24,7 @@ public class RequestConstant {
     public static final String RELEASE_DATE = "releasedate";
     public static final String LENGTH = "length";
     public static final String ID = "id";
+    public static final String UUID = "uuid";
     public static final String SINGER = "singer";
     public static final String AUTHOR = "author";
 

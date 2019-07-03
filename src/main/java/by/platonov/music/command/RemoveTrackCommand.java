@@ -2,13 +2,15 @@ package by.platonov.music.command;
 
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
-import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.TrackService;
-import by.platonov.music.validator.IdValidator;
-import by.platonov.music.validator.Violation;
+import lombok.extern.log4j.Log4j2;
 
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * music-app
@@ -16,9 +18,10 @@ import java.util.Set;
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1
  */
+@Log4j2
 public class RemoveTrackCommand implements Command {
 
-    TrackService trackService;
+    private TrackService trackService;
 
     public RemoveTrackCommand(TrackService trackService) {
         this.trackService = trackService;
@@ -26,17 +29,28 @@ public class RemoveTrackCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
+        CommandResult commandResult;
+        try {
+            String uuid = content.getRequestParameter(RequestConstant.UUID)[0];
 
-        Set<Violation> violations = new IdValidator(null).apply(content);
-
-        if (violations.isEmpty()) {
-            try {
-                long id = Long.parseLong(content.getRequestParameter(RequestConstant.ID)[0]);
-                Track track = trackService.searchid(id).get(0);
-            } catch (ServiceException e) {
-                e.printStackTrace();
+            if (trackService.remove(uuid)) {
+                log.debug("track with uuid " + uuid + " removed successfully");
+                deleteFile(uuid);
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
+                        Map.of("removeresult", "successfull"));
+            } else {
+                log.debug("could not remove track");
+                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
+                        Map.of("removeresult", "not successfull"));
             }
+        } catch (ServiceException | IOException e) {
+            log.error(e);
+            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
         }
-        return null;
+        return commandResult;
+    }
+
+    private void deleteFile(String uuid) throws IOException {
+        Files.delete(Path.of("/users/dzmitryplatonov/Dropbox/music" + File.separator + uuid));
     }
 }

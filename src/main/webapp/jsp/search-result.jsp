@@ -7,9 +7,6 @@
     Search results
 </h2>
 <br>
-listen top:
-<audio controls><source src="music/avicii-tim.mp3" type="audio/mpeg"></audio>
-<br>
 Musicians :
 <%--${musicians}--%>
 <table>
@@ -28,8 +25,14 @@ Tracks :
         <tr>
             <td><c:out value="${ track.name }"/></td>
             <td><c:out value="${ track.id }"/></td>
-            <td><c:out value="music/${track.path}"/></td>
-            <td><audio controls><source src="music/${track.path}" type="audio/mpeg"></audio></td>
+            <td><audio controls><source src="music/${track.uuid}" type="audio/mpeg"></audio></td>
+            <td>
+            <form method="get" action="controller">
+                <input type="hidden" name="command" value="remove">
+                <input type="hidden" name="uuid" value="${ track.uuid }">
+                <input type="submit" name="submit" value="remove">
+                ${removeresult}
+            </form> </td>
 <%--                <audio controls>--%>
 <%--                    <source src="${ track.path }" type="audio/mpeg">--%>
 <%--                </audio>--%>

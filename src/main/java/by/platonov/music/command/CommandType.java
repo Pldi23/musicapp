@@ -15,7 +15,8 @@ public enum CommandType {
     TOREGISTR(new ToRegistrationCommand()),
     ACTIVATION(new ActivationCommand(new UserService())),
     ERROR(new ErrorCommand()),
-    PLAYSOUND(new PlaySoundCommand()),
+    REMOVE(new RemoveTrackCommand(new TrackService())),
+    QUERY(new QueryCommand(new TrackService())),
     UPLOAD(new UploadCommand(new MusicianService(), new GenreService(), new TrackService(), FilePartService.getInstance())),
     SEARCH(new SearchCommand(new MusicianService(), new TrackService(), new PlaylistService()));
 
