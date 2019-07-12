@@ -26,13 +26,13 @@ Tracks :
             <td><c:out value="${ track.name }"/></td>
             <td><c:out value="${ track.id }"/></td>
             <td><audio controls><source src="music/${track.uuid}" type="audio/mpeg"></audio></td>
-            <td>
-            <form method="get" action="controller">
-                <input type="hidden" name="command" value="remove">
-                <input type="hidden" name="uuid" value="${ track.uuid }">
-                <input type="submit" name="submit" value="remove">
-                ${removeresult}
-            </form> </td>
+<%--            <td>--%>
+<%--            <form method="get" action="controller">--%>
+<%--                <input type="hidden" name="command" value="remove">--%>
+<%--                <input type="hidden" name="uuid" value="${ track.uuid }">--%>
+<%--                <input type="submit" name="submit" value="remove">--%>
+<%--                ${removeresult}--%>
+<%--            </form> </td>--%>
 <%--                <audio controls>--%>
 <%--                    <source src="${ track.path }" type="audio/mpeg">--%>
 <%--                </audio>--%>

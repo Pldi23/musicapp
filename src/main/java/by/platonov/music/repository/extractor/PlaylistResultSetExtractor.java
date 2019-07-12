@@ -14,7 +14,7 @@ public class PlaylistResultSetExtractor implements AbstractResultSetExtractor<Pl
     @Override
     public List<Playlist> extract(ResultSet resultSet) throws SQLException {
         List<Playlist> playlists = new ArrayList<>();
-        Map<Long, Playlist> table = new HashMap<>();
+        Map<Long, Playlist> table = new LinkedHashMap<>();
         while (resultSet.next()) {
             if (!table.containsKey(resultSet.getLong("id"))) {
                 Playlist playlist = Playlist.builder()

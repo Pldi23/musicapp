@@ -1,12 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="page" value="/jsp/information.jsp" scope="request"/>
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setBundle basename="pagecontent" />
 <html><head><title>Sorry</title></head>
 <body>
 <hr/>
-Sorry! We could not complete your ${process} because of technical issues, please re-try your attempt in 15 minutes
-
+<fmt:message key="message.information"/>
 <br>
 <a href="${pageContext.request.contextPath}">
-    Back
+    <fmt:message key="button.back"/>
 </a>
 <hr/>
 </body>

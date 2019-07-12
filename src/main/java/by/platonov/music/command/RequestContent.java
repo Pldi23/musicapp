@@ -21,7 +21,9 @@ public class RequestContent {
     private int serverPort;
     private String contextPath;
 
+
     private RequestContent() {}
+
 
     public static RequestContent createWithAttributes(HttpServletRequest request) throws IOException, ServletException {
         RequestContent content = new RequestContent();
@@ -78,6 +80,7 @@ public class RequestContent {
         contextPath = request.getContextPath();
     }
 
+
     public String getServerName() {
         return serverName;
     }
@@ -121,4 +124,5 @@ public class RequestContent {
     public Map<String, Object> getSessionAttributes() {
         return sessionAttributes;
     }
+
 }

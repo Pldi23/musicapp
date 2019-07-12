@@ -26,10 +26,12 @@ public class RequestEncodingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+
         String codeRequest = request.getCharacterEncoding();
         if (code != null && !code.equalsIgnoreCase(codeRequest)) {
             request.setCharacterEncoding(code);
         }
+        log.debug("EncodingFilter filtering");
         filterChain.doFilter(request, response);
     }
 

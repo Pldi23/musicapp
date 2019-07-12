@@ -5,7 +5,7 @@ import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
-import by.platonov.music.service.TrackService;
+import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -23,10 +23,10 @@ import static by.platonov.music.command.constant.RequestConstant.TRACKS_ATTRIBUT
 @Log4j2
 public class QueryCommand implements Command {
 
-    private TrackService trackService;
+    private CommonService commonService;
 
-    public QueryCommand(TrackService trackService) {
-        this.trackService = trackService;
+    public QueryCommand(CommonService commonService) {
+        this.commonService = commonService;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class QueryCommand implements Command {
         String query = content.getRequestParameter(RequestConstant.SEARCH_REQUEST)[0];
         List<Track> tracks;
         try {
-            tracks = trackService.searchName(query);
+            tracks = commonService.searchTrackByName(query);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                     Map.of(TRACKS_ATTRIBUTE, tracks));
         } catch (ServiceException e) {

@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +38,7 @@ class BirthDateValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"2016-07-02", "2013-08-30"})
     void applyNegative(String input) {
+        Locale.setDefault(new Locale("en_US"));
         String message = "User of the application must be older then 6 years";
 
         when(content.getRequestParameters()).thenReturn(Map.of("birthdate", new String[]{input}));

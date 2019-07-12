@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import lombok.extern.log4j.Log4j2;
@@ -15,8 +16,8 @@ import java.util.Set;
 public class LoginValidator extends AbstractValidator {
 
     private static final String LOGIN_REGEX_PATTERN = "^[(\\w)-]{4,20}";
-    private static final String LOGIN_INCORRECT_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
-            "latin letter, numbers, and punctuation symbols like '-' and '_'";
+//    private static final String LOGIN_INCORRECT_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
+//            "latin letter, numbers, and punctuation symbols like '-' and '_'";
 
     public LoginValidator(ParameterValidator next) {
         super(next);
@@ -27,10 +28,10 @@ public class LoginValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.LOGIN)) {
             log.warn("Invalid content parameter: no login parameter in request");
-            result.add(new Violation(LOGIN_INCORRECT_MESSAGE));
+            result.add(new Violation(MessageManager.getMessage("violation.login")));
         } else if (!content.getRequestParameter(RequestConstant.LOGIN)[0].matches(LOGIN_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LOGIN)[0]);
-            result.add(new Violation(LOGIN_INCORRECT_MESSAGE));
+            result.add(new Violation(MessageManager.getMessage("violation.login")));
         }
         if (next != null) {
             result.addAll(next.apply(content));

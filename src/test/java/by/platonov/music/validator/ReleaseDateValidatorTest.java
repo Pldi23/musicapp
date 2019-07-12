@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ class ReleaseDateValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"2020-07-02", "2030-08-30"})
     void applyNegative(String input) {
-
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.RELEASE_DATE, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.RELEASE_DATE)).thenReturn(new String[]{input});
 

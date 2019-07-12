@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ class LastnameValidatorTest {
             "чу'", "'OSHEA", "'O'SHE'A", " platonov", "platonov ", "Плат-", "-Платонов", "", " ", "1234"})
     void applyNegative(String input) {
         String message = "Last name must contain minimum 2 and maximum 30 letters";
-
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("lastname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.LASTNAME)).thenReturn(new String[]{input});
 

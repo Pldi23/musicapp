@@ -6,10 +6,9 @@ import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
-import by.platonov.music.service.MusicianService;
-import by.platonov.music.service.PlaylistService;
-import by.platonov.music.service.TrackService;
+import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
+
 import static by.platonov.music.command.constant.RequestConstant.*;
 
 import java.util.List;
@@ -24,27 +23,26 @@ import java.util.Map;
 @Log4j2
 public class SearchCommand implements Command {
 
-    private MusicianService musicianService;
-    private TrackService trackService;
-    private PlaylistService playlistService;
+    private CommonService commonService;
 
-    public SearchCommand(MusicianService musicianService, TrackService trackService, PlaylistService playlistService) {
-        this.musicianService = musicianService;
-        this.trackService = trackService;
-        this.playlistService = playlistService;
+    public SearchCommand(CommonService commonService) {
+        this.commonService = commonService;
     }
 
     @Override
     public CommandResult execute(RequestContent content) {
+
+        //todo validation
+
         String searchRequest = content.getRequestParameter(SEARCH_REQUEST)[0];
         List<Musician> musicians;
         List<Track> tracks;
         List<Playlist> playlists;
 
         try {
-            musicians = musicianService.search(searchRequest);
-            playlists = playlistService.search(searchRequest);
-            tracks = trackService.searchName(searchRequest);
+            musicians = commonService.searchMusician(searchRequest);
+            playlists = commonService.searchPlaylist(searchRequest);
+            tracks = commonService.searchTrackByName(searchRequest);
         } catch (ServiceException e) {
             log.error("Service provide an exception for search command ", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,

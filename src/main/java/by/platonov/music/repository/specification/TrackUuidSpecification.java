@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 public class TrackUuidSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "where media_path = ?;";
+    private static final String SPECIFICATION = "where uuid = ?;";
 
     private String uuid;
 

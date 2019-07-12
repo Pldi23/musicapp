@@ -3,24 +3,16 @@ package by.platonov.music.command;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.db.DatabaseSetupExtension;
-import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
-import by.platonov.music.exception.FilePartBeanException;
-import by.platonov.music.service.GenreService;
-import by.platonov.music.service.MusicianService;
-import by.platonov.music.service.TrackService;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

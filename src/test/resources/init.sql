@@ -19,7 +19,7 @@ CREATE TABLE public.track
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
-alter table track add column media_path text;
+alter table track add column uuid text;
 
 --init musician table
 CREATE TABLE public.musician
@@ -127,7 +127,7 @@ values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02'
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
 insert into genre (genre_name)values ('pop'),('rock'),('rap'),('jazz'),('funk'),('retro'),('chanson');
-insert into track ("name", genre_id, release_date, "length", media_path)
+insert into track ("name", genre_id, release_date, "length", uuid)
 values ('Tim', 1, '2019-01-01', 180, '/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3'),
     ('i_Suss', 7, '2019-02-02', 195, '/users/dzmitryplatonov/Dropbox/music/leningrad_i_suss.mp3'),
     ('Властелин калек', 1, '2018-12-01', 200, '/users/dzmitryplatonov/Dropbox/music/saluki_vlastelin_kalek.mp3'),

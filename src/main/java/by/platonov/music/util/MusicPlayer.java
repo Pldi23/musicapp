@@ -1,6 +1,5 @@
 package by.platonov.music.util;
 
-import by.platonov.music.command.ErrorCommand;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;

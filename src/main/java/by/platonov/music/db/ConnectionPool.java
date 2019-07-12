@@ -71,16 +71,16 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws InterruptedException {
-        log.debug("Connection taken");
+        log.trace("Connection taken");
         return connections.take();
     }
 
     public void releaseConnection(Connection connection) {
         connections.add(connection);
-        log.debug("Connection released, available connections: " + connections.size());
+        log.trace("Connection released, available connections: " + connections.size());
     }
 
-    public void tierDown() {
+    public void tierDown() throws SQLException {
         if (create.get()) {
             lock.lock();
             try {
@@ -89,9 +89,6 @@ public class ConnectionPool {
                 }
                 instance = null;
                 create.set(false);
-
-            } catch (SQLException e) {
-                e.printStackTrace();
             } finally {
                 lock.unlock();
             }

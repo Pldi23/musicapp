@@ -28,14 +28,48 @@ public class RequestConstant {
     public static final String SINGER = "singer";
     public static final String AUTHOR = "author";
     public static final String NAME = "name";
+    public static final String TRACK = "track";
+    public static final String MUSICIAN = "musician";
+    public static final String PAGE = "page";
 
+    public static final String LOCALE = "locale";
     public static final String USER = "user";
     public static final String ROLE = "role";
     public static final String ADMIN = "admin";
     public static final String ERROR = "error";
     public static final String CURRENT = "current";
+    public static final String OFFSET = "offset";
+    public static final String NEXT_OFFSET = "nextoffset";
+    public static final String PREVIOUS_OFFSET = "previousoffset";
+    public static final String DIRECTION = "direction";
+    public static final String ORDER = "order";
+    public static final String NEXT = "next";
+    public static final String PREVIOUS = "previous";
+    public static final String PREVIOUS_UNAVAILABLE = "previousunavailable";
+    public static final String NEXT_UNAVAILABLE = "nextunavailable";
+    public static final String SORT_TRACK_ID_ORDER = "sortTrackIdOrder";
+    public static final String SORT_TRACK_NAME_ORDER = "sortTrackNameOrder";
+    public static final String SORT_TRACK_GENRE_ORDER = "sortTrackGenreOrder";
+    public static final String SORT_TRACK_LENGTH_ORDER = "sortTrackLengthOrder";
+    public static final String SORT_MUSICIAN_ID_ORDER = "sortMusicianIdOrder";
+    public static final String SORT_MUSICIAN_NAME_ORDER = "sortMusicianNameOrder";
+    public static final String SORT_GENRE_NAME_ORDER = "sortGenreNameOrder";
+    public static final String SORT_GENRE_ID_ORDER = "sortGenreIdOrder";
+    public static final String SORT_PLAYLIST_ID_ORDER = "sortPlaylistIdOrder";
+    public static final String SORT_PLAYLIST_NAME_ORDER = "sortPlaylistNameOrder";
+    public static final String SORT_PLAYLIST_LENGTH_ORDER = "sortPlaylistLengthOrder";
+    public static final String PREVIOUS_PAGE = "previousPage";
+    public static final String CURRENT_PAGE = "currentPage";
+    public static final String NO_ORDER = "noOrder";
     public static final String SEARCH_REQUEST = "searchrequest";
     public static final String REMOVE_RESULT = "removeResult";
+    public static final String ADD_RESULT = "addResult";
+    public static final String UPDATE_RESULT = "updateResult";
+    public static final String VALIDATOR_RESULT = "violations";
+    public static final String ENTITIES = "entities";
+    public static final String ENTITY = "entity";
+    public static final String RELEASE_FROM = "releaseFrom";
+    public static final String RELEASE_TO = "releaseTo";
 
     public static final String PROCESS = "process";
     public static final String MUSICIANS_ATTRIBUTE = "musicians";
@@ -46,7 +80,6 @@ public class RequestConstant {
     public static final String ADMIN_FIRST_NAME_ATTRIBUTE = "adminFirstName";
     public static final String ERROR_LOGIN_PASS_ATTRIBUTE = "errorLoginPassMessage";
     public static final String VALIDATOR_MESSAGE_ATTRIBUTE = "validatorMessage";
-    public static final String ADD_RESULT_ATTRIBUTE = "addresult";
 
 
 }

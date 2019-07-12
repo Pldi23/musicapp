@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +26,6 @@ class FirstnameValidatorTest {
     @ValueSource(strings = {"Дима", "Dima", "dima", "дима", "ДИМА", "ДИ МА", "чу", "Ди-ма",
             "fdulttpbrkvyjghcneawxioqwertyu"})
     void applyPositive(String input) {
-
         when(content.getRequestParameters()).thenReturn(Map.of("firstname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.FIRSTNAME)).thenReturn(new String[]{input});
 
@@ -40,7 +40,7 @@ class FirstnameValidatorTest {
             "чу?", " Дима", "Дима ", "Дима-", "-Дима", "", " ", "1234"})
     void applyNegative(String input) {
         String message = "First name must contain minimum 2 and maximum 30 letters";
-
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("firstname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.FIRSTNAME)).thenReturn(new String[]{input});
 

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ResourceBundle;
 
 /**
  * music-app
@@ -24,7 +25,7 @@ public class FileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String filename = URLDecoder.decode(request.getPathInfo().substring(1), StandardCharsets.UTF_8);
-        File file = new File("/users/dzmitryplatonov/Dropbox/music", filename);
+        File file = new File(ResourceBundle.getBundle("app").getString("app.music.uploads"), filename);
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));
         response.setHeader("Content-Length", String.valueOf(file.length()));
         response.setHeader("Content-Disposition", "inline; filename=" + file.getName() + "");

@@ -1,18 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<html><head><title>Welcome</title></head>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="page" value="/jsp/main.jsp" scope="request"/>
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setBundle basename="pagecontent" />
+<html><head><title><fmt:message key="label.welcome"/></title></head>
 <body>
-<h3>Welcome</h3>
+<c:import url="locale-form.jsp"/>
+<c:import url="header.jsp"/>
+<h3><fmt:message key="label.welcome"/></h3>
 <hr/>
-${userFirstName}, hello!
-your role: ${role}
-<hr/>
-<a href="controller?command=logout">Logout</a>
-<form action="controller" method="get">
-    <input type="hidden" name="command" value="search"/>
-    <label>
-        Search panel
-        <input type="text" name="searchrequest" placeholder="playlist, track, musician"/>
-    </label>
-    <input type="submit" name="submit" value="Search">
-</form>
 </body></html>

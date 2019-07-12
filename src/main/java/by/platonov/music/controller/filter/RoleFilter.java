@@ -17,7 +17,7 @@ import java.io.IOException;
  * @version 0.0.1
  */
 @Log4j2
-//@WebFilter(urlPatterns = {"/jsp/*"}, initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = PageConstant.LOGIN_PAGE)})
+@WebFilter(urlPatterns = {"/jsp/*"}, initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = PageConstant.LOGIN_PAGE)})
 public class RoleFilter implements Filter {
 
     private String targetPagePath;
@@ -36,6 +36,7 @@ public class RoleFilter implements Filter {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
+        log.debug("RoleFilter filtering");
         if (!checkAccess(request, user)) {
             request.getSession().setAttribute("wrongAction", "Please authorise as admin");
             request.getRequestDispatcher(targetPagePath).forward(request, response);

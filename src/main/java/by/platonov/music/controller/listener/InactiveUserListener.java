@@ -40,11 +40,13 @@ public class InactiveUserListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        try {
-            scheduledExecutorService.awaitTermination(10, TimeUnit.MICROSECONDS);
-        } catch (InterruptedException e) {
-            log.error("could not interrupt listener");
-            Thread.currentThread().interrupt();
-        }
+        scheduledExecutorService.shutdown();
+        log.info("listener destroyed");
+//        try {
+//            scheduledExecutorService.awaitTermination(10, TimeUnit.MICROSECONDS);
+//        } catch (InterruptedException e) {
+//            log.error("could not interrupt listener");
+//            Thread.currentThread().interrupt();
+//        }
     }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ class TrackNameValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "name.mp3", "name.audio"})
     void applyNegative(String input) {
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("trackname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.TRACKNAME)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);

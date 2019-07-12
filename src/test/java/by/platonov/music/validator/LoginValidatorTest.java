@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ class LoginValidatorTest {
     @ValueSource(strings = {"1", "логинрусский", "", "pldi32й", "1234567891011121314151617181920", "qwe", "M@ks",
             "!pldi", "pl di"})
     void applyNegative(String input) {
-
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("login", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[] {input});
 
@@ -54,7 +55,7 @@ class LoginValidatorTest {
     @Test
     void shouldReturnViolationAsNoLoginParameterInRequest() {
         when(content.getRequestAttribute(RequestConstant.LOGIN)).thenReturn(null);
-
+        Locale.setDefault(new Locale("en_US"));
         Set<Violation> actual = validator.apply(content);
         Set<Violation> expected = Set.of(new Violation(EXPECTED_VIOLATION_MESSAGE));
 

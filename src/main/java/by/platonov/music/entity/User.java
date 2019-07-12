@@ -2,6 +2,7 @@ package by.platonov.music.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Set;
  */
 @Data
 @Builder
+@ToString(exclude = "password")
 public class User extends Guest{
 
     private String login;

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ class IdValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"-1","-101", "0"})
     void applyNegative(String input) {
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.ID, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.ID)).thenReturn(new String[]{input});
 

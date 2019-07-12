@@ -30,7 +30,7 @@ class TrackRepositoryTest {
     private TrackRepository repository = TrackRepository.getInstance();
     private Track trackTim = Track.builder().id(1).name("Tim").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 1))
-//            .length(180)
+            .length(180)
 //            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3")))
 //            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3"))
             .singers(new HashSet<>())
@@ -38,7 +38,7 @@ class TrackRepositoryTest {
 
     private Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
             .releaseDate(LocalDate.of(2019, 1,6))
-//            .length(201)
+            .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
 //            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
@@ -47,7 +47,7 @@ class TrackRepositoryTest {
 
     private Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
             .releaseDate(LocalDate.of(2019, 1, 3))
-//            .length(190)
+            .length(190)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
 //            .filePartBean(new FilePartBean(new File("/users/dzmitryplatonov/Dropbox/music/testfile.mp3")))

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class TrackSingersSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION =
-            "join singer_track on singer_track.track_id = musician.id where singer_track.track_id = ?";
+            "join singer_track st on musician.id = st.singer_id where track_id = ?";
 
     private long trackId;
 

@@ -1,9 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<html><head><title>Welcome</title></head>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="page" value="/jsp/verification.jsp" scope="request"/>
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setBundle basename="pagecontent" />
+<html><head><title><fmt:message key="label.welcome"/></title></head>
 <hr/>
-Registration e-mail sent to ${email}. Open this e-mail and follow the link to finish sing-up
-If you do not see this e-mail in your inbox within 15 minutes, look for it in your junk
-mail folder. If you find it there, please mark the e-mail as Not junk
+<fmt:message key="message.emailsent"/> ${email}.
+<fmt:message key="message.verification"/>
 <hr/>
+<form action="controller" method="get">
+    <input type="hidden" name="command" value="to-login">
+    <input type="submit" name="submit" value="<fmt:message key="button.tologin"/>">
+</form>
 </body>
 </html>

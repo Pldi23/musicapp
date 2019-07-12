@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ class PasswordValidatorTest {
         String message = "Password must be minimum 8, maximum 20 symbols, and contain at" +
                 " least 1 number, 1 latin uppercase letter, 1 latin lowercase letter, 1 punctuation. Only latin letters " +
                 "available, spaces are unavailable";
-
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("password", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.PASSWORD)).thenReturn(new String[]{input});
 

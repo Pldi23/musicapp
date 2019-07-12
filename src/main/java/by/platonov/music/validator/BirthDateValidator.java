@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import lombok.extern.log4j.Log4j2;
@@ -18,7 +19,7 @@ public class BirthDateValidator extends AbstractValidator {
 
     private static final int MINIMUM_AGE_ALLOWED_BY_APPLICATION = 6;
 
-    private static final String USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE = "User of the application must be older then 6 years";
+//    private static final String USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE = "User of the application must be older then 6 years";
 
     public BirthDateValidator(ParameterValidator next) {
         super(next);
@@ -29,12 +30,12 @@ public class BirthDateValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.BIRTHDATE)) {
             log.warn("Invalid content parameter: no birthdate parameter in request");
-            result.add(new Violation(USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE));
+            result.add(new Violation(MessageManager.getMessage("violation.birthdate")));
         } else {
             Period period = Period.between(LocalDate.parse(content.getRequestParameter(RequestConstant.BIRTHDATE)[0]), LocalDate.now());
             if (period.getYears() < MINIMUM_AGE_ALLOWED_BY_APPLICATION) {
                 log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.BIRTHDATE)[0]);
-                result.add(new Violation(USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE));
+                result.add(new Violation(MessageManager.getMessage("violation.birthdate")));
             }
         }
         if (next != null) {

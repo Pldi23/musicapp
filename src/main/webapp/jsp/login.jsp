@@ -1,45 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<c:set var="page" value="/jsp/login.jsp" scope="request"/>
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setBundle basename="pagecontent" />
 <html>
 <body>
-<h2>Please login</h2>
+<c:import url="locale-form.jsp"/>
+<h2><fmt:message key="label.login.sentence"/></h2>
+<%--<ctg:info-name/>--%>
 ${validatorMessage}
+${errorLoginPassMessage}
 <form action="controller" method="post">
     <input type="hidden" name="command" value="login"/>
     <label>
-        Enter Username
-        <input type="text" name="login" pattern="^[(\w)-]{4,20}" required="" placeholder="type your login here"
-               title="Login must be minimum 4, maximum 20 symbols, and contain only latin letter, numbers, and punctuation symbols like '-' and '_'"/>
+        <fmt:message key="label.enter.login"/>
+        <input type="text" name="login" pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
+               title="<fmt:message key="prescription.login"/>" lang="en"/>
+
     </label>
     <br>
-    Enter Password
+    <fmt:message key="label.enter.password"/>
     <input type="password" name="password" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required=""
-           placeholder="type your password here"/>
+           placeholder="<fmt:message key="placeholder.password"/>" title="<fmt:message key="prescription.password"/>"/>
     </label>
-    <br>
-    <input type="submit" name="submit" value="Login">
-    <br/>
-    ${errorLoginPassMessage}
-    <br/>
-    ${wrongAction}
-    <br/>
-    ${serviceException}
-    <br/>
-    ${nullPage}
-    <br/>
+    <input type="submit" name="submit" value="<fmt:message key="button.login"/> ">
 </form>
 <form action="controller" method="get">
-    <input type="hidden" name="command" value="toregistr"/>
+    <input type="hidden" name="command" value="to-registr"/>
     <br>
-    <input type="submit" name="submit" value="Registration">
+    <input type="submit" name="submit" value="<fmt:message key="button.registration"/> ">
     <br/>
 </form>
-<form action="controller" method="get">
-    <input type="hidden" name="command" value="search"/>
-    <label>
-        Search panel
-        <input type="search" required="" name="searchrequest" placeholder="playlist, track, musician"/>
-    </label>
-    <input type="submit" name="submit" value="Search">
-</form>
+<%--<form action="controller" method="get">--%>
+<%--    <input type="hidden" name="command" value="set-locale">--%>
+<%--    <input type="hidden" name="page" value="${page}">--%>
+<%--    <select name="locale" onchange="submit()">--%>
+<%--        <option selected="selected">${ not empty locale ? locale : pageContext.request.locale }</option>--%>
+<%--        <option value="en_US">EN</option>--%>
+<%--        <option value="ru_RU">RU</option>--%>
+<%--        <option value="ru_BY">BY</option>--%>
+<%--    </select>--%>
+<%--</form>--%>
 </body>
 </html>

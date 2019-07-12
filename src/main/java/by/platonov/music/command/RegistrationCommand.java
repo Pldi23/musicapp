@@ -2,6 +2,7 @@ package by.platonov.music.command;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
@@ -15,10 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.
@@ -35,7 +33,6 @@ public class RegistrationCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        Properties properties = new Properties();
         CommandResult commandResult;
         Set<Violation> violations =
                 new LoginValidator(
@@ -58,7 +55,7 @@ public class RegistrationCommand implements Command {
             String hash = generator.generateHash();
 
             try {
-                properties.load(RegistrationCommand.class.getResourceAsStream("/app.properties"));
+
                 User user = User.builder()
                         .login(login)
                         .password(SCryptUtil.scrypt(password, 16, 16, 16))
@@ -71,7 +68,7 @@ public class RegistrationCommand implements Command {
                         .playlists(new HashSet<>())
                         .active(false)
                         .verificationUuid(hash)
-                        .photoPath(Path.of(properties.getProperty("default.ava")))
+                        .photoPath(Path.of(ResourceBundle.getBundle("app").getString("default.ava")))
                         .build();
 
                 if (userService.register(user)) {
@@ -83,9 +80,11 @@ public class RegistrationCommand implements Command {
 
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                            Map.of("errorRegistrationFormMessage", "User: " + user.getLogin() + " already exists"));
+                            Map.of(VALIDATOR_RESULT,
+                                    Set.of(new Violation(MessageManager.getMessage("message.user") +
+                                            user.getLogin() + MessageManager.getMessage("exist")))));
                 }
-            } catch (ServiceException | IOException e) {
+            } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
                         Map.of(PROCESS, "registration"));
@@ -93,7 +92,7 @@ public class RegistrationCommand implements Command {
         } else {
             log.info("Registration failed because of validator violation");
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                    Map.of("errorRegistrationFormMessage", violations));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
         return commandResult;
     }

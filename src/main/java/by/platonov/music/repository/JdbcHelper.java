@@ -35,9 +35,8 @@ class JdbcHelper {
     <T> boolean execute(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             preparedStatementMapper.map(statement, entity);
-            statement.execute();
+            return statement.execute();
         }
-        return true;
     }
 
     <T> long insert(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {

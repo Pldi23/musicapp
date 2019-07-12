@@ -1,13 +1,8 @@
 package by.platonov.music.repository.extractor;
 
-import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
-import by.platonov.music.exception.FilePartBeanException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -20,7 +15,7 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
     @Override
     public List<Track> extract(ResultSet resultSet) throws SQLException{
         List<Track> tracks = new ArrayList<>();
-        Map<Long, Track> table = new HashMap<>();
+        Map<Long, Track> table = new LinkedHashMap<>();
         while (resultSet.next()) {
             if (!table.containsKey(resultSet.getLong("id"))) {
 //                Path path = Path.of(resultSet.getString("media_path"));
@@ -31,11 +26,11 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
                                 .id(resultSet.getLong("genreid"))
                                 .title(resultSet.getString("genre_name"))
                                 .build())
-//                        .length(resultSet.getLong("length"))
+                        .length(resultSet.getLong("length"))
                         .releaseDate(resultSet.getDate("release_date").toLocalDate())
                         .singers(new HashSet<>())
                         .authors(new HashSet<>())
-                        .uuid(resultSet.getString("media_path"))
+                        .uuid(resultSet.getString("uuid"))
 //                        .path(path)
 //                        .filePartBean(new FilePartBean(path.toFile()))
                         .build();

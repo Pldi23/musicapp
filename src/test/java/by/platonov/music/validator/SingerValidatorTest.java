@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ class SingerValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "name1111111111111222222222222222222211111113333333331111333331111111111333333333111111333333331",})
     void applyNegative(String input) {
+        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.SINGER, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.SINGER)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);

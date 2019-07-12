@@ -15,11 +15,11 @@ public class SetTrackUpdateMapper implements PreparedStatementMapper<Track> {
     public void map(PreparedStatement preparedStatement, Track track) throws SQLException {
         preparedStatement.setString(1, track.getName());
         preparedStatement.setLong(2, track.getGenre().getId());
-//        preparedStatement.setLong(3, track.getLength());
-        preparedStatement.setDate(3, Date.valueOf(track.getReleaseDate()));
+        preparedStatement.setLong(3, track.getLength());
+        preparedStatement.setDate(4, Date.valueOf(track.getReleaseDate()));
 //        preparedStatement.setString(5, track.getFilePartBean().getFilePartPath().toString());
 //        preparedStatement.setString(4, track.getPath().toString());
-        preparedStatement.setString(4, track.getUuid());
-        preparedStatement.setLong(5, track.getId());
+        preparedStatement.setString(5, track.getUuid());
+        preparedStatement.setLong(6, track.getId());
     }
 }

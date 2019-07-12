@@ -24,12 +24,12 @@ public class UserService {
 
     private static final String EXCEPTION_MESSAGE = "Repository provide an exception for user service";
 
-    private Repository<User> repository = UserRepository.getInstance();
+    private final Repository<User> repository = UserRepository.getInstance();
 
     public List<User> login(String login) throws ServiceException {
         SqlSpecification specification = new UserLoginSpecification(login);
         try {
-            log.debug("finding " + login + " in repository");
+            log.debug("searching " + login + " in repository");
             return repository.query(specification);
         } catch (RepositoryException e) {
             throw new ServiceException(EXCEPTION_MESSAGE, e);
@@ -55,7 +55,7 @@ public class UserService {
                 User user = users.get(0);
                 user.setActive(true);
                 user.setVerificationUuid(null);
-                log.debug("activating " + email + " in repository");
+                log.debug("activating " + email);
                 result = repository.update(user);
             }
         } catch (RepositoryException e) {

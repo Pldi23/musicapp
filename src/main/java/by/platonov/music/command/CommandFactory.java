@@ -26,7 +26,7 @@ public class CommandFactory {
                 content.getRequestParameter(COMMAND)[0] : ERROR;
 
         try {
-            return CommandType.valueOf(commandName.toUpperCase()).getCommand();
+            return CommandType.valueOf(commandName.toUpperCase().replaceAll("[ -]", "_")).getCommand();
         } catch (IllegalArgumentException e) {
             log.error("Enum Command Type not present for " + commandName, e);
             return new ErrorCommand(CommandMessage.COMMAND_FAILED_MESSAGE);

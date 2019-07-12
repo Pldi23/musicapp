@@ -4,6 +4,7 @@ import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,6 +53,7 @@ class ValidatorChainTest {
 
     @Test
     void testApplyNegative() {
+        Locale.setDefault(new Locale("en_US"));
         String login = "p";
         String password = "Password";
         String birthdate = "2016-02-07";

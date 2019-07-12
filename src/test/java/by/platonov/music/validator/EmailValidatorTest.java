@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +39,7 @@ class EmailValidatorTest {
     @ValueSource(strings = {"C", "@chu.com", "D&MA.ru", "пла#тонов", "пла@тонов.com", " Дима@com.com", "", " ", "1234",
             "asdad@com", "p@mail."})
     void applyNegative(String input) {
+        Locale.setDefault(new Locale("en_US"));
         String message = "E-mail example johndoe@domainsample.com";
 
         when(content.getRequestParameters()).thenReturn(Map.of("email", new String[]{input}));
