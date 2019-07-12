@@ -9,11 +9,14 @@ import java.io.IOException;
 
 /**
  * Filter using for setting encoding of request and response to UTF-8
+ *
  * @author dzmitryplatonov on 2019-06-20.
  * @version 0.0.1
  */
 @Log4j2
-@WebFilter(filterName = "requestEncodingFilter", urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
+@WebFilter(filterName = "requestEncodingFilter", urlPatterns = {"/*"},
+        initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")},
+        asyncSupported = true)
 public class RequestEncodingFilter implements Filter {
 
     private static final String ENCODING = "encoding";

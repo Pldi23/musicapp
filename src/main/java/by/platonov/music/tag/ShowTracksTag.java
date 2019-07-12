@@ -69,7 +69,7 @@ public class ShowTracksTag extends TagSupport {
                     }
                     out.write("<td>" + track.getGenre().getTitle() + "</td>");
                     out.write("<td>");
-                    out.write("<audio controls>");
+                    out.write("<audio controls preload=\"metadata\">");
                     out.write("<source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\">");
                     out.write("</audio>");
                     out.write("</td>");

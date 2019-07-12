@@ -14,7 +14,7 @@ import java.io.IOException;
  * @version 0.0.1
  */
 @Log4j2
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = {"/*"}, asyncSupported = true)
 public class DefendXssFilter implements Filter {
 
     @Override

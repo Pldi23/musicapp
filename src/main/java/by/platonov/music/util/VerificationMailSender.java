@@ -1,5 +1,6 @@
 package by.platonov.music.util;
 
+import by.platonov.music.exception.VerificationMailException;
 import lombok.extern.log4j.Log4j2;
 
 import javax.mail.*;
@@ -7,13 +8,14 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.Callable;
 
 /**
  * @author dzmitryplatonov on 2019-06-20.
  * @version 0.0.1
  */
 @Log4j2
-public class VerificationMailSender extends Thread {
+public class VerificationMailSender implements Callable<Boolean> {
 
     private static final String MAIL_SUBJECT = "Music app verification link";
     private static final String MAIL_MESSAGE = "Please complete your registration by activating a link";
@@ -34,12 +36,7 @@ public class VerificationMailSender extends Thread {
         this.hash = hash;
     }
 
-    @Override
-    public void run() {
-        sendMail();
-    }
-
-    void sendMail() {
+     public boolean sendMail() throws VerificationMailException {
         Properties properties = new Properties();
         String mailAddress;
         String password;
@@ -69,8 +66,20 @@ public class VerificationMailSender extends Thread {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             log.debug("Activation link was successfully sent");
+            return true;
         } catch (IOException | MessagingException e) {
             log.error("Could not sent e-mail with activation link");
+            throw new VerificationMailException(e);
         }
     }
+
+    @Override
+    public Boolean call() throws VerificationMailException {
+        return sendMail();
+    }
+//
+//    @Override
+//    public void run() {
+//        sendMail();
+//    }
 }

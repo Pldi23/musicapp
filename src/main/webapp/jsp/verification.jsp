@@ -13,5 +13,8 @@
     <input type="hidden" name="command" value="to-login">
     <input type="submit" name="submit" value="<fmt:message key="button.tologin"/>">
 </form>
+<%--<script type="text/javascript">--%>
+<%--    document.hiddenForm.submit();--%>
+<%--</script>--%>
 </body>
 </html>

@@ -13,10 +13,10 @@ import by.platonov.music.util.VerificationMailSender;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.
@@ -72,12 +72,11 @@ public class RegistrationCommand implements Command {
                         .build();
 
                 if (userService.register(user)) {
-                    Thread mailSender = new VerificationMailSender(content.getServerName(), content.getServerPort(),
+                    VerificationMailSender task = new VerificationMailSender(content.getServerName(), content.getServerPort(),
                             content.getContextPath(), email, hash);
-                    mailSender.start();
+                    Executors.newSingleThreadExecutor().submit(task);
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
                             Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
-
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                             Map.of(VALIDATOR_RESULT,

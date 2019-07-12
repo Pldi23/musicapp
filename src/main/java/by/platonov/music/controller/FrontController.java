@@ -1,8 +1,6 @@
 package by.platonov.music.controller;
 
 import by.platonov.music.command.*;
-import by.platonov.music.command.constant.PageConstant;
-import by.platonov.music.command.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.RequestDispatcher;
@@ -14,14 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Locale;
 
 /**
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */
 @Log4j2
-@WebServlet(urlPatterns = "/controller", loadOnStartup = 1)
+@WebServlet(urlPatterns = "/controller", loadOnStartup = 1, asyncSupported = true)
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 20485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
@@ -50,15 +47,17 @@ public class FrontController extends HttpServlet {
 
         commandResult.getAttributes().forEach(request::setAttribute);
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-        request.getSession().setAttribute(RequestConstant.PREVIOUS_PAGE, request.getSession()
-                .getAttribute(RequestConstant.CURRENT_PAGE));
-        request.getSession().setAttribute(RequestConstant.CURRENT_PAGE, commandResult.getPage());
+//        request.getSession().setAttribute(RequestConstant.PREVIOUS_PAGE, request.getSession()
+//                .getAttribute(RequestConstant.CURRENT_PAGE));
+//        request.getSession().setAttribute(RequestConstant.CURRENT_PAGE, commandResult.getPage());
+
+//        if (command.getClass().isAssignableFrom(LoginCommand.class)) {
+//            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
             request.getSession().invalidate();
         }
-//        if (command.getClass().isAssignableFrom(LoginCommand.class)) {
-//            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
@@ -67,4 +66,26 @@ public class FrontController extends HttpServlet {
             response.sendRedirect(commandResult.getPage());
         }
     }
+
+//        if (command.getClass().isAssignableFrom(SendMailCommand.class)) {
+//            AsyncContext asyncContext = request.startAsync();
+//            asyncContext.addListener(new AppAsyncListener());
+//            asyncContext.start(() -> {
+//                try {
+//                    buildSender(request).sendMail();
+//                } catch (VerificationMailException e) {
+//                    log.error("error while sending", e);
+//                    asyncContext.dispatch("/jsp/error.jsp");
+//                }
+//                asyncContext.complete();
+//            });
+//        }
+//    private VerificationMailSender buildSender(HttpServletRequest request) {
+//        String serverName = request.getServerName();
+//        int serverPort = request.getServerPort();
+//        String contextPath = request.getContextPath();
+//        String userEmail = request.getParameter(RequestConstant.EMAIL);
+//        String userHash = (String) request.getAttribute(RequestConstant.HASH);
+//        return new VerificationMailSender(serverName, serverPort, contextPath, userEmail, userHash);
+//    }
 }

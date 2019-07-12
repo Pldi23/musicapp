@@ -1,5 +1,6 @@
 package by.platonov.music.util;
 
+import by.platonov.music.exception.VerificationMailException;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class VerificationMailSenderTest {
 
     @Test
-    void sendMail(){
+    void sendMail() throws VerificationMailException {
 
         String server = "localhost";
         int port = 8080;
