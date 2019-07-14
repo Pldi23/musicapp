@@ -8,7 +8,7 @@
 <html>
 <head><title><fmt:message key="label.updatetrack"/></title></head>
 <body>
-<c:import url="../locale-form.jsp"/>
+<%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
 <c:import url="../library-form.jsp"/>
 <hr/>

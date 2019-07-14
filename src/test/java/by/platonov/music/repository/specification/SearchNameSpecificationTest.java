@@ -23,7 +23,7 @@ class SearchNameSpecificationTest {
     void toSqlClauses() throws RepositoryException {
         Repository<Musician> repository = MusicianRepository.getInstance();
         String searchRequest = "л";
-        SqlSpecification specification = new SearchNameSpecification(searchRequest);
+        SqlSpecification specification = new SearchNameSpecification(searchRequest, Integer.MAX_VALUE, 0);
         int actual = repository.query(specification).size();
         int expected = 2;
 

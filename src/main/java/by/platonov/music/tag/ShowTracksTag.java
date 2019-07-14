@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
+
 /**
  * music-app
  *
@@ -20,18 +21,24 @@ import static by.platonov.music.command.constant.RequestConstant.*;
 public class ShowTracksTag extends TagSupport {
 
     private List<Track> tracks;
-    private String sortCommandValue;
-    private String removeCommandValue;
-    private String updateCommandValue;
+    private String commandValue;//logic operation for example sort/filter/show all
+    private String removeCommandValue;//visible for admin
+    private String updateCommandValue;//visible for admin
+    private String moreCommandValue;//visible for user
     private boolean nextUnavailable;
     private boolean previousUnavailable;
+    private boolean admin;
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
 
-    public void setSortCommandValue(String sortCommandValue) {
-        this.sortCommandValue = sortCommandValue;
+    public void setCommandValue(String commandValue) {
+        this.commandValue = commandValue;
     }
 
     public void setPreviousUnavailable(boolean previousUnavailable) {
@@ -40,6 +47,10 @@ public class ShowTracksTag extends TagSupport {
 
     public void setRemoveCommandValue(String removeCommandValue) {
         this.removeCommandValue = removeCommandValue;
+    }
+
+    public void setMoreCommandValue(String moreCommandValue) {
+        this.moreCommandValue = moreCommandValue;
     }
 
     public void setUpdateCommandValue(String updateCommandValue) {
@@ -73,22 +84,35 @@ public class ShowTracksTag extends TagSupport {
                     out.write("<source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\">");
                     out.write("</audio>");
                     out.write("</td>");
-                    out.write("<td>");
-                    out.write("<form method=\"get\" action=\"controller\">");
-                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + removeCommandValue + "\">");
-                    out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-                    out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                            MessageManager.getMessage("button.remove") + "\">");
-                    out.write("</form>");
-                    out.write("</td>");
-                    out.write("<td>");
-                    out.write("<form method=\"get\" action=\"controller\">");
-                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + updateCommandValue + "\" >");
-                    out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-                    out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                            MessageManager.getMessage("button.update") + "\">");
-                    out.write("</form>");
-                    out.write("</td>");
+                    if (admin) {
+                        printAdditionalForm(out, track, removeCommandValue, "button.remove");
+//                        out.write("<td>");
+//                        out.write("<form method=\"get\" action=\"controller\">");
+//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + removeCommandValue + "\">");
+//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
+//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+//                                MessageManager.getMessage("button.remove") + "\">");
+//                        out.write("</form>");
+//                        out.write("</td>");
+                        printAdditionalForm(out, track, updateCommandValue, "button.update");
+//                        out.write("<td>");
+//                        out.write("<form method=\"get\" action=\"controller\">");
+//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + updateCommandValue + "\" >");
+//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
+//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+//                                MessageManager.getMessage("button.update") + "\">");
+//                        out.write("</form>");
+//                        out.write("</td>");
+                    }
+                    printAdditionalForm(out, track, moreCommandValue, "button.details");
+//                        out.write("<td>");
+//                        out.write("<form method=\"get\" action=\"controller\">");
+//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + moreCommandValue + "\" >");
+//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
+//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+//                                MessageManager.getMessage("button.update") + "\">");
+//                        out.write("</form>");
+//                        out.write("</td>");
                     out.write("</tr>");
 
                 }
@@ -96,7 +120,7 @@ public class ShowTracksTag extends TagSupport {
 
                 if (!nextUnavailable) {
                     out.write("<form action=\"controller\" method=\"get\">");
-                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + sortCommandValue + "\">");
+                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + commandValue + "\">");
                     out.write("<input type=\"hidden\" name=\"direction\" value=\"next\">");
                     printHiddenFilter(out);
                     out.write("<input type=\"submit\" name=\"submit\" value=\"" +
@@ -105,7 +129,7 @@ public class ShowTracksTag extends TagSupport {
                 }
                 if (!previousUnavailable) {
                     out.write("<form action=\"controller\" method=\"get\">");
-                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + sortCommandValue + "\">");
+                    out.write("<input type=\"hidden\" name=\"command\" value=\"" + commandValue + "\">");
                     out.write("<input type=\"hidden\" name=\"direction\" value=\"previous\">");
                     printHiddenFilter(out);
                     out.write("<input type=\"submit\" name=\"submit\" value=\"" +
@@ -126,5 +150,16 @@ public class ShowTracksTag extends TagSupport {
         out.write("<input type=\"hidden\" name=\"genre\" value=\"" + pageContext.getRequest().getAttribute(GENRE) + "\">");
         out.write("<input type=\"hidden\" name=\"releaseFrom\" value=\"" + pageContext.getRequest().getAttribute(RELEASE_FROM) + "\">");
         out.write("<input type=\"hidden\" name=\"releaseTo\" value=\"" + pageContext.getRequest().getAttribute(RELEASE_TO) + "\">");
+    }
+
+    private void printAdditionalForm(JspWriter out, Track track, String additionalCommandValue, String buttonKey) throws IOException {
+        out.write("<td>");
+        out.write("<form method=\"get\" action=\"controller\">");
+        out.write("<input type=\"hidden\" name=\"command\" value=\"" + additionalCommandValue + "\">");
+        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
+        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+                MessageManager.getMessage(buttonKey) + "\">");
+        out.write("</form>");
+        out.write("</td>");
     }
 }

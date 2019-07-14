@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
 <fmt:setBundle basename="pagecontent" />
 <html>
 <head>
-    <title>Filter</title>
+    <title><fmt:message key="label.track.filter"/></title>
 </head>
 <body>
 <form action="controller" method="get">

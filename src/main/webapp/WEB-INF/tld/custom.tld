@@ -18,6 +18,10 @@
         </attribute>
     </tag>
     <tag>
+        <name>top-tracks</name>
+        <tag-class>by.platonov.music.tag.TopTracksTag</tag-class>
+    </tag>
+    <tag>
         <name>sort-form</name>
         <tag-class>by.platonov.music.tag.SortCommandFormTag</tag-class>
         <attribute>
@@ -40,7 +44,12 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>sortCommandValue</name>
+            <name>commandValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>admin</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -51,6 +60,11 @@
         </attribute>
         <attribute>
             <name>updateCommandValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>moreCommandValue</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

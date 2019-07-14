@@ -10,12 +10,12 @@
     <title><fmt:message key="label.tracklibrary"/></title>
 </head>
 <body>
-<c:import url="../locale-form.jsp"/>
+<%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
 <c:import url="../library-form.jsp"/>
 <c:import url="../track-filter-form.jsp"/>
-<ctg:show-tracks sortCommandValue="filter-track" tracks="${entities}" removeCommandValue="to-remove-track"
-                 updateCommandValue="to-update-track" nextUnavailable="${ nextunavailable }"
-                 previousUnavailable="${ previousunavailable }"/>
+<ctg:show-tracks commandValue="filter-track" tracks="${entities}" admin="${ user.admin }" moreCommandValue="track-detail"
+                 removeCommandValue="to-remove-track" updateCommandValue="to-update-track"
+                 nextUnavailable="${ nextunavailable }" previousUnavailable="${ previousunavailable }"/>
 </body>
 </html>

@@ -41,6 +41,9 @@ public class RequestConstant {
     public static final String OFFSET = "offset";
     public static final String NEXT_OFFSET = "nextoffset";
     public static final String PREVIOUS_OFFSET = "previousoffset";
+    public static final String MUSICIAN_SIZE = "musicianssize";
+    public static final String TRACKS_SIZE = "trackssize";
+    public static final String PLAYLISTS_SIZE = "playlistssize";
     public static final String DIRECTION = "direction";
     public static final String ORDER = "order";
     public static final String NEXT = "next";

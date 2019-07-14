@@ -37,7 +37,7 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Language("SQL")
     private static final String SQL_UPDATE_PLAYLIST = "UPDATE playlist SET name = ? WHERE id = ?;";
     @Language("SQL")
-    private static final String SQL_SELECT_PLAYLIST = "SELECT id, name FROM playlist ";
+    private static final String SQL_SELECT_PLAYLIST = "SELECT playlist.id as id, playlist.name as name FROM playlist ";
     @Language("SQL")
     private static final String SQL_COUNT = "SELECT COUNT(*) FROM playlist ";
 

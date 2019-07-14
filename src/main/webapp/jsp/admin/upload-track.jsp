@@ -8,14 +8,14 @@
 <html>
 <head><title><fmt:message key="label.upload.track"/></title></head>
 <body>
-<c:import url="../locale-form.jsp"/>
+<%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
 <c:import url="../library-form.jsp"/>
 <hr/>
 <ctg:violations violations="${ violations }"/>
-<c:forEach var="violation" items="${ violations }">
-    <c:out value="${ violation.message }"/>
-</c:forEach>
+<%--<c:forEach var="violation" items="${ violations }">--%>
+<%--    <c:out value="${ violation.message }"/>--%>
+<%--</c:forEach>--%>
 <form action="controller" enctype="multipart/form-data" method="post">
     <input type="hidden" name="command" value="upload-track"/>
     <h3><fmt:message key="label.upload.track"/></h3>

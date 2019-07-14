@@ -8,7 +8,7 @@
 <html>
 <head><title><fmt:message key="label.tracklibrary"/></title></head>
 <body>
-<c:import url="../locale-form.jsp"/>
+<%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
 <c:import url="../library-form.jsp"/>
 <hr/>
@@ -22,8 +22,8 @@
 <ctg:sort-form commandValue="sort-track-by-name" submitValue="${ sortnamebutton }"/>
 <ctg:sort-form commandValue="sort-track-by-genre" submitValue="${ sortgenrebutton }"/>
 <c:import url="../track-filter-form.jsp"/>
-<ctg:show-tracks tracks="${ entities }" removeCommandValue="to-remove-track" updateCommandValue="to-update-track"
-                 sortCommandValue="show-all-tracks" nextUnavailable="${ nextunavailable }"
+<ctg:show-tracks tracks="${ entities }" admin="${ user.admin }" removeCommandValue="to-remove-track" updateCommandValue="to-update-track"
+                 commandValue="show-all-tracks" nextUnavailable="${ nextunavailable }"
                  previousUnavailable="${ previousunavailable }"/>
 
 ${removeResult}

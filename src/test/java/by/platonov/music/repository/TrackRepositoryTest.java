@@ -133,7 +133,7 @@ class TrackRepositoryTest {
 
     @Test
     void query() throws RepositoryException {
-        List<Track> actual = repository.query(new SearchNameSpecification("T"));
+        List<Track> actual = repository.query(new SearchNameSpecification("T", Integer.MAX_VALUE, 0));
         List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }

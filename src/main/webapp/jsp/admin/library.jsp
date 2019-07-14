@@ -8,7 +8,7 @@
 <html>
 <head><title><fmt:message key="label.library"/></title></head>
 <body>
-<c:import url="../locale-form.jsp"/>
+<%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
 <hr/>
 <c:if test="${ not empty violations }">

@@ -33,6 +33,20 @@ ${errorLoginPassMessage}
     <input type="submit" name="submit" value="<fmt:message key="button.registration"/> ">
     <br/>
 </form>
+<br>
+<c:import url="search-form.jsp"/>
+<%--<form action="controller" method="post">--%>
+<%--    <input type="hidden" name="command" value="search"/>--%>
+<%--    <label>--%>
+<%--        <fmt:message key="label.search"/>:--%>
+<%--        <input type="text" name="searchrequest" placeholder="<fmt:message key="placeholder.search"/>"/>--%>
+<%--    </label>--%>
+<%--    <input type="submit" name="submit" value="<fmt:message key="button.search"/>">--%>
+<%--</form>--%>
+<br>
+<ctg:top-tracks/>
+</body>
+</html>
 <%--<form action="controller" method="get">--%>
 <%--    <input type="hidden" name="command" value="set-locale">--%>
 <%--    <input type="hidden" name="page" value="${page}">--%>
@@ -43,5 +57,3 @@ ${errorLoginPassMessage}
 <%--        <option value="ru_BY">BY</option>--%>
 <%--    </select>--%>
 <%--</form>--%>
-</body>
-</html>

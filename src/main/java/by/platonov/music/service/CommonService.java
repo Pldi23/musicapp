@@ -29,7 +29,7 @@ public class CommonService {
 
     public List<Track> searchTrackByName(String trackName) throws ServiceException {
         log.debug("searching tracks in " + trackRepository);
-        return search(new SearchNameSpecification(trackName), trackRepository);
+        return search(new SearchNameSpecification(trackName, Integer.MAX_VALUE, 0), trackRepository);
     }
 
     public List<Track> searchTrackByFilter(String trackname, String genreName, LocalDate fromDate, LocalDate toDate,
@@ -37,6 +37,11 @@ public class CommonService {
         log.debug("searching tracks in " + trackRepository);
         return tracksWithMusicians(search(new TrackFilterSpecification(trackname, genreName, fromDate, toDate,
                         singerName, limit, offset), trackRepository));
+    }
+
+    public List<Track> searchTracksByMusician(long musicianId) throws ServiceException {
+        log.debug("searching for tracks for musician id: " + musicianId);
+        return search(new TracksByMusicianSpecification(musicianId), trackRepository);
     }
 
     public List<Track> searchTracks(int limit, long offset) throws ServiceException {
@@ -70,14 +75,23 @@ public class CommonService {
         return tracksWithMusicians(search(new TrackUuidSpecification(uuid), trackRepository));
     }
 
-    public List<Playlist> searchPlaylist(String playlistName) throws ServiceException {
+    public List<Playlist> searchPlaylist(String playlistName, int limit, long offset) throws ServiceException {
         log.debug("searching playlists in repository");
-        return search(new SearchNameSpecification(playlistName), playlistRepository);
+        return search(new SearchNameSpecification(playlistName, limit, offset), playlistRepository);
     }
 
-    public List<Musician> searchMusician(String searchRequest) throws ServiceException {
+    public List<Playlist> searchPlaylistsByTrack(long trackId) throws ServiceException {
+        log.debug("searching all playlists which contains track id:" + trackId);
+        return search(new PlaylistsWithTrackSpecification(trackId), playlistRepository);
+    }
+
+    public List<Musician> searchMusician(String searchRequest, int limit, long offset) throws ServiceException {
         log.debug("searching musicians in repository");
-        return search(new SearchNameSpecification(searchRequest), musicianRepository);
+        return search(new SearchNameSpecification(searchRequest, limit, offset), musicianRepository);
+    }
+    public List<Track> searchTrack(String searchRequest, int limit, long offset) throws ServiceException {
+        log.debug("searching musicians in repository");
+        return search(new SearchNameSpecification(searchRequest, limit, offset), trackRepository);
     }
 
     public Track searchTrackById(String id) throws ServiceException {
@@ -188,6 +202,12 @@ public class CommonService {
         }
     }
 
+    public List<Track> getRandomTen() throws ServiceException {
+        log.debug("getting 10 random tracks");
+        return search(new TrackRandomSpecification(), trackRepository);
+    }
+
+
     private List<Track> tracksWithMusicians(List<Track> tracks) throws ServiceException {
         for (Track track : tracks) {
             track.getSingers().addAll(getTrackSingers(track.getId()));
@@ -211,5 +231,6 @@ public class CommonService {
             throw new ServiceException("exception from repository", e);
         }
     }
+
 
 }

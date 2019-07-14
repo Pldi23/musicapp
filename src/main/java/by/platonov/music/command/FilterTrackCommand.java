@@ -72,7 +72,7 @@ public class FilterTrackCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
         }
         log.debug("command provided tracks: " + tracks);
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_FILTER_LIBRARY_PAGE,
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,
                 Map.of(ENTITIES, tracks, PREVIOUS_UNAVAILABLE, previousUnavailable,
                         NEXT_UNAVAILABLE, nextUnavailable, TRACKNAME, trackName, GENRE, genreName, RELEASE_FROM, fromDate,
                         RELEASE_TO, toDate, SINGER, singerName),

@@ -8,6 +8,17 @@
 <body>
 <c:import url="locale-form.jsp"/>
 <c:import url="header.jsp"/>
+<hr/>
 <h3><fmt:message key="label.welcome"/></h3>
+<c:import url="track-filter-form.jsp"/>
+<c:import url="search-form.jsp"/>
+<%--<form action="controller" method="post">--%>
+<%--    <input type="hidden" name="command" value="search"/>--%>
+<%--    <label>--%>
+<%--        <fmt:message key="label.search"/>:--%>
+<%--        <input type="text" name="searchrequest" placeholder="<fmt:message key="placeholder.search"/>"/>--%>
+<%--    </label>--%>
+<%--    <input type="submit" name="submit" value="<fmt:message key="button.search"/>">--%>
+<%--</form>--%>
 <hr/>
 </body></html>

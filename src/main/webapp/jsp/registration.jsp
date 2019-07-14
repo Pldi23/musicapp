@@ -10,7 +10,7 @@
     <title><fmt:message key="label.welcome"/></title>
 </head>
 <body>
-<c:import url="locale-form.jsp"/>
+<%--<c:import url="locale-form.jsp"/>--%>
 <h2><fmt:message key="registration.message"/></h2>
 <c:if test="${ not empty violations }">
     <ctg:violations violations="${ violations }"/>
@@ -32,7 +32,7 @@ ${serviceException}
     <br>
         <label>
             <fmt:message key="label.enter.dateofbirth"/>
-            <input type="date" name="birthdate" title="<fmt:message key="prescription.dateofbirth"/>"/>
+            <input type="date" name="birthdate" required="required" value="1970-01-01" title="<fmt:message key="prescription.dateofbirth"/>"/>
         </label>
     <br>
         <label>
