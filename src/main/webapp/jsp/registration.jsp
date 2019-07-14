@@ -10,7 +10,7 @@
     <title><fmt:message key="label.welcome"/></title>
 </head>
 <body>
-<%--<c:import url="locale-form.jsp"/>--%>
+<c:import url="locale-form.jsp"/>
 <h2><fmt:message key="registration.message"/></h2>
 <c:if test="${ not empty violations }">
     <ctg:violations violations="${ violations }"/>

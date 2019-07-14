@@ -1,13 +1,11 @@
 package by.platonov.music.tag;
 
-import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.validator.Violation;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Set;
 
 /**

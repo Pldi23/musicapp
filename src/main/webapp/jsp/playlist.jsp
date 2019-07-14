@@ -14,7 +14,7 @@
 <br>
 <c:if test="${ not empty playlist.tracks }"><fmt:message key="label.tracks"/></c:if>
 <table>
-    <c:forEach var="track" items="${ playlist.tarcks }" varStatus="status">
+    <c:forEach var="track" items="${ playlist.tracks }" varStatus="status">
         <tr>
             <td>
                 <audio controls>

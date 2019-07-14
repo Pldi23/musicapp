@@ -5,6 +5,7 @@ import static by.platonov.music.command.constant.PageConstant.*;
 
 import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.CommandMessage;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
 import by.platonov.music.entity.User;
@@ -59,8 +60,6 @@ public class LoginCommand implements Command {
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, MAIN_PAGE,
                         Map.of(),
                         Map.of(USER, users.get(0)
-//                                ,
-//                                ROLE, MessageManager.getMessage("role.user"), USER_FIRST_NAME_ATTRIBUTE, users.get(0).getFirstname()
                 ));
             } else if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())
@@ -70,12 +69,11 @@ public class LoginCommand implements Command {
 
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, ADMIN_PAGE,
                         Map.of(), Map.of(USER, users.get(0)
-//                        , ROLE, MessageManager.getMessage("role.admin"), ADMIN_FIRST_NAME_ATTRIBUTE, users.get(0).getFirstname()
                 ));
             } else {
                 log.debug("login not successful");
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,
-                        Map.of(ERROR_LOGIN_PASS_ATTRIBUTE, MessageManager.getMessage("login.failed")));
+                        Map.of(ERROR_LOGIN_PASS_ATTRIBUTE, MessageManager.getMessage("login.failed", (String) content.getSessionAttribute(LOCALE))));
             }
             return commandResult;
         } else {

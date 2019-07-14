@@ -2,6 +2,7 @@ package by.platonov.music.command;
 
 import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
@@ -64,7 +65,7 @@ public class UploadTrackCommand implements Command {
                 String trackname = content.getRequestParameter(TRACKNAME)[0].trim();
                 if (!commonService.searchTrackByName(trackname).isEmpty()) {
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
-                            Map.of(ADD_RESULT, trackname + " " + MessageManager.getMessage("exist")));
+                            Map.of(ADD_RESULT, trackname + " " + MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
                 }
 
                 String genreTitle = content.getRequestParameter(GENRE)[0];
@@ -101,7 +102,7 @@ public class UploadTrackCommand implements Command {
                 adminService.addTrack(track);
 
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
-                        Map.of(ADD_RESULT, track.getName() + " " + MessageManager.getMessage("added")));
+                        Map.of(ADD_RESULT, track.getName() + " " + MessageManager.getMessage("added", (String) content.getSessionAttribute(LOCALE))));
             } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException | InvalidAudioFrameException e) {
                 log.error("couldn't provide track to next page", e);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);

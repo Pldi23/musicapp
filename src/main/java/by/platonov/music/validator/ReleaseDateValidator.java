@@ -10,6 +10,8 @@ import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * music-app
  *
@@ -31,13 +33,13 @@ public class ReleaseDateValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.RELEASE_DATE)) {
             log.warn("Invalid content parameter: no release date parameter found in request");
-            result.add(new Violation(MessageManager.getMessage("violation.incorrectrelease")));
+            result.add(new Violation(MessageManager.getMessage("violation.incorrectrelease", (String) content.getSessionAttribute(LOCALE))));
         } else {
             Period period = Period.between(LocalDate.parse(content.getRequestParameter(RequestConstant.RELEASE_DATE)[0]),
                     LocalDate.now());
             if (period.isNegative()) {
                 log.warn("invalid release date: parameter is future");
-                result.add(new Violation(MessageManager.getMessage("violation.futurerelease")));
+                result.add(new Violation(MessageManager.getMessage("violation.futurerelease", (String) content.getSessionAttribute(LOCALE))));
             }
         }
         if (next != null) {

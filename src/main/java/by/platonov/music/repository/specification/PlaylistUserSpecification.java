@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * specify playlists that belong to user
+ * to be used with playlist repository
  * @author dzmitryplatonov on 2019-06-14.
  * @version 0.0.1
  */

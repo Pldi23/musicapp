@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * music-app
  *
@@ -33,12 +35,12 @@ public class SingerValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.SINGER)) {
             log.warn("no singer parameter found");
-            result.add(new Violation(MessageManager.getMessage("violation.singer")));
+            result.add(new Violation(MessageManager.getMessage("violation.singer", (String) content.getSessionAttribute(LOCALE))));
         } else if (content.getRequestParameter(RequestConstant.SINGER).length >= MINIMUN_QUANTITY_SINGERS
                 && Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).noneMatch(s -> s.matches(SINGER_REGEX_PATTERN))) {
             //Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).anyMatch(s -> !s.matches(SINGER_REGEX_PATTERN))
             log.warn("One of specified singers doesn't match singer regex pattern");
-            result.add(new Violation(MessageManager.getMessage("violation.singer")));
+            result.add(new Violation(MessageManager.getMessage("violation.singer", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {
             result.addAll(next.apply(content));

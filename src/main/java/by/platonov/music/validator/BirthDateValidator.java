@@ -10,6 +10,8 @@ import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
@@ -30,12 +32,12 @@ public class BirthDateValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.BIRTHDATE)) {
             log.warn("Invalid content parameter: no birthdate parameter in request");
-            result.add(new Violation(MessageManager.getMessage("violation.birthdate")));
+            result.add(new Violation(MessageManager.getMessage("violation.birthdate", (String) content.getSessionAttribute(LOCALE))));
         } else {
             Period period = Period.between(LocalDate.parse(content.getRequestParameter(RequestConstant.BIRTHDATE)[0]), LocalDate.now());
             if (period.getYears() < MINIMUM_AGE_ALLOWED_BY_APPLICATION) {
                 log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.BIRTHDATE)[0]);
-                result.add(new Violation(MessageManager.getMessage("violation.birthdate")));
+                result.add(new Violation(MessageManager.getMessage("violation.birthdate", (String) content.getSessionAttribute(LOCALE))));
             }
         }
         if (next != null) {

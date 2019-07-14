@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * music-app
  *
@@ -29,10 +31,10 @@ public class IdValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.ID)) {
             log.warn("no parameter id found");
-            result.add(new Violation(MessageManager.getMessage("violation.noid")));
+            result.add(new Violation(MessageManager.getMessage("violation.noid", (String) content.getSessionAttribute(LOCALE))));
         } else if (Long.parseLong(content.getRequestParameter(RequestConstant.ID)[0]) <= 0) {
             log.warn("entered id value not positive");
-            result.add(new Violation(MessageManager.getMessage("violation.id")));
+            result.add(new Violation(MessageManager.getMessage("violation.id", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {
             result.addAll(next.apply(content));

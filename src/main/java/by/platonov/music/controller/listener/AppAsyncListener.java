@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * music-app
@@ -21,7 +22,7 @@ public class AppAsyncListener implements AsyncListener {
     @Override
     public void onComplete(AsyncEvent asyncEvent) throws IOException {
         log.info("onComplete");
-        String message = MessageManager.getMessage("message.email.ready");
+        String message = MessageManager.getMessage("message.email.ready", new Locale("en", "US").toString());
         asyncEvent.getSuppliedResponse().getWriter().write(message);
 //        asyncEvent.getAsyncContext().dispatch(PageConstant.LOGIN_PAGE);
 
@@ -40,10 +41,6 @@ public class AppAsyncListener implements AsyncListener {
 
     @Override
     public void onStartAsync(AsyncEvent asyncEvent) throws IOException {
-        String message = MessageManager.getMessage("message.emailsent") +
-                asyncEvent.getSuppliedRequest().getAttribute(RequestConstant.EMAIL) +
-                MessageManager.getMessage("message.verification");
-        asyncEvent.getSuppliedResponse().getWriter().write(message);
         log.info("onStart");
     }
 }

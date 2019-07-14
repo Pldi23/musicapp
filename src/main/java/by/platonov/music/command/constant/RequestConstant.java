@@ -47,7 +47,9 @@ public class RequestConstant {
     public static final String DIRECTION = "direction";
     public static final String ORDER = "order";
     public static final String NEXT = "next";
+    public static final String PLAYLIST = "playlist";
     public static final String PREVIOUS = "previous";
+    public static final String SIZE = "size";
     public static final String PREVIOUS_UNAVAILABLE = "previousunavailable";
     public static final String NEXT_UNAVAILABLE = "nextunavailable";
     public static final String SORT_TRACK_ID_ORDER = "sortTrackIdOrder";

@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * music-app
  *
@@ -31,10 +33,10 @@ public class TrackNameValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)) {
             log.warn("No track name parameter found");
-            result.add(new Violation(MessageManager.getMessage("violation.trackname")));
+            result.add(new Violation(MessageManager.getMessage("violation.trackname", (String) content.getSessionAttribute(LOCALE))));
         } else if (!content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
             log.warn("track name parameter not matched appropriate regex pattern");
-            result.add(new Violation(MessageManager.getMessage("violation.trackname")));
+            result.add(new Violation(MessageManager.getMessage("violation.trackname", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {
             result.addAll(next.apply(content));

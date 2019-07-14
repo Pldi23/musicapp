@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * specify tracks that playlist contain
+ * to be used with Track repository
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */

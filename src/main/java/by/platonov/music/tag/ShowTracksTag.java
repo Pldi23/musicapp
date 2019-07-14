@@ -1,6 +1,7 @@
 package by.platonov.music.tag;
 
 import by.platonov.music.MessageManager;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 
@@ -9,6 +10,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -66,7 +68,7 @@ public class ShowTracksTag extends TagSupport {
         if (tracks != null && !tracks.isEmpty()) {
             JspWriter out = pageContext.getOut();
             try {
-                out.write(MessageManager.getMessage("label.tracks"));
+                out.write(MessageManager.getMessage("label.tracks", (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)));
                 out.write("<table>");
                 for (Track track : tracks) {
                     out.write("<tr>");
@@ -86,33 +88,9 @@ public class ShowTracksTag extends TagSupport {
                     out.write("</td>");
                     if (admin) {
                         printAdditionalForm(out, track, removeCommandValue, "button.remove");
-//                        out.write("<td>");
-//                        out.write("<form method=\"get\" action=\"controller\">");
-//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + removeCommandValue + "\">");
-//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-//                                MessageManager.getMessage("button.remove") + "\">");
-//                        out.write("</form>");
-//                        out.write("</td>");
                         printAdditionalForm(out, track, updateCommandValue, "button.update");
-//                        out.write("<td>");
-//                        out.write("<form method=\"get\" action=\"controller\">");
-//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + updateCommandValue + "\" >");
-//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-//                                MessageManager.getMessage("button.update") + "\">");
-//                        out.write("</form>");
-//                        out.write("</td>");
                     }
                     printAdditionalForm(out, track, moreCommandValue, "button.details");
-//                        out.write("<td>");
-//                        out.write("<form method=\"get\" action=\"controller\">");
-//                        out.write("<input type=\"hidden\" name=\"command\" value=\"" + moreCommandValue + "\" >");
-//                        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-//                        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-//                                MessageManager.getMessage("button.update") + "\">");
-//                        out.write("</form>");
-//                        out.write("</td>");
                     out.write("</tr>");
 
                 }
@@ -124,7 +102,7 @@ public class ShowTracksTag extends TagSupport {
                     out.write("<input type=\"hidden\" name=\"direction\" value=\"next\">");
                     printHiddenFilter(out);
                     out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                            MessageManager.getMessage("button.next") + "\">");
+                            MessageManager.getMessage("button.next", (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)) + "\">");
                     out.write("</form>");
                 }
                 if (!previousUnavailable) {
@@ -133,7 +111,7 @@ public class ShowTracksTag extends TagSupport {
                     out.write("<input type=\"hidden\" name=\"direction\" value=\"previous\">");
                     printHiddenFilter(out);
                     out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                            MessageManager.getMessage("button.previous") + "\">");
+                            MessageManager.getMessage("button.previous", (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)) + "\">");
                     out.write("</form>");
                 }
             } catch (IOException e) {
@@ -158,7 +136,7 @@ public class ShowTracksTag extends TagSupport {
         out.write("<input type=\"hidden\" name=\"command\" value=\"" + additionalCommandValue + "\">");
         out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
         out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                MessageManager.getMessage(buttonKey) + "\">");
+                MessageManager.getMessage(buttonKey, (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)) + "\">");
         out.write("</form>");
         out.write("</td>");
     }

@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * @author dzmitryplatonov on 2019-06-18.
  * @version 0.0.1
@@ -30,10 +32,10 @@ public class PasswordValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.PASSWORD)) {
             log.warn("Invalid content parameter: no password parameter in request");
-            result.add(new Violation(MessageManager.getMessage("violation.password")));
+            result.add(new Violation(MessageManager.getMessage("violation.password", (String) content.getSessionAttribute(LOCALE))));
         } else if (!content.getRequestParameter(RequestConstant.PASSWORD)[0].matches(PASSWORD_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.PASSWORD)[0]);
-            result.add(new Violation(MessageManager.getMessage("violation.password")));
+            result.add(new Violation(MessageManager.getMessage("violation.password", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {
             result.addAll(next.apply(content));

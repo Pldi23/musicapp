@@ -1,5 +1,8 @@
 package by.platonov.music.controller;
 
+import by.platonov.music.controller.listener.AppAsyncListener;
+
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +21,7 @@ import java.util.ResourceBundle;
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1
  */
-@WebServlet("/music/*")
+@WebServlet(value = "/music/*", asyncSupported = true)
 public class FileServlet extends HttpServlet {
 
     @Override
@@ -30,6 +33,15 @@ public class FileServlet extends HttpServlet {
         response.setHeader("Content-Length", String.valueOf(file.length()));
         response.setHeader("Content-Disposition", "inline; filename=" + file.getName() + "");
         Files.copy(file.toPath(), response.getOutputStream());
+//        AsyncContext asyncContext = request.startAsync();
+//        asyncContext.addListener(new AppAsyncListener());
+//        asyncContext.start(() -> {
+//            try {
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            asyncContext.complete();
+//        });
 
     }
 

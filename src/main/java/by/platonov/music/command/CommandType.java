@@ -53,7 +53,8 @@ public enum CommandType {
     TO_LIBRARY(new ToLibraryCommand()),
     TRACK_DETAIL(new TrackDetailCommand(new CommonService())),
     UPLOAD_TRACK(new UploadTrackCommand(new AdminService(), new CommonService())),
-    UPDATE_TRACK(new UpdateTrackCommand(new AdminService(), new CommonService()));
+    UPDATE_TRACK(new UpdateTrackCommand(new AdminService(), new CommonService())),
+    USER_PLAYLISTS(new UserPlaylistsCommand(new CommonService()));
 
     private Command command;
 

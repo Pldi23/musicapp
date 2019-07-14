@@ -1,5 +1,6 @@
 package by.platonov.music;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -10,11 +11,12 @@ import java.util.ResourceBundle;
  */
 public class MessageManager {
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("pagecontent");
+    private static final String CONTENT = "pagecontent";
 
     private MessageManager() { }
 
-    public static String getMessage(String key) {
-        return RESOURCE_BUNDLE.getString(key);
+    public static String getMessage(String key, String locale) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(CONTENT, new Locale(locale));
+        return resourceBundle.getString(key);
     }
 }

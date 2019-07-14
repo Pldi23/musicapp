@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+
 /**
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
@@ -29,10 +31,10 @@ public class EmailValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
             log.warn("Invalid content parameter: no email parameter in request");
-            result.add(new Violation(MessageManager.getMessage("violation.email")));
+            result.add(new Violation(MessageManager.getMessage("violation.email", (String) content.getSessionAttribute(LOCALE))));
         } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
             log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
-            result.add(new Violation(MessageManager.getMessage("violation.email")));
+            result.add(new Violation(MessageManager.getMessage("violation.email", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {
             result.addAll(next.apply(content));

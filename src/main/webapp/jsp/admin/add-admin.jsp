@@ -1,6 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session"/>
 <fmt:setBundle basename="pagecontent" />
 <c:set var="page" value="/jsp/admin/add-admin.jsp" scope="request"/>
 <html>

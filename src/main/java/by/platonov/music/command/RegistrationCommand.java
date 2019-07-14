@@ -80,8 +80,8 @@ public class RegistrationCommand implements Command {
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                             Map.of(VALIDATOR_RESULT,
-                                    Set.of(new Violation(MessageManager.getMessage("message.user") +
-                                            user.getLogin() + MessageManager.getMessage("exist")))));
+                                    Set.of(new Violation(MessageManager.getMessage("message.user", (String) content.getSessionAttribute(LOCALE)) +
+                                            user.getLogin() + MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))))));
                 }
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);

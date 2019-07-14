@@ -10,9 +10,10 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
+${ process }
 <form action="controller" method="get">
-    <input type="hidden" name="command" value="create-playlist">
-    <input type="text" name="name" pattern="[A-Za-zА-Яа-яЁё]{2,30}" required="required">
+    <input type="hidden" name="command" value="playlist-create">
+    <input type="text" name="name" minlength="2" maxlength="50" required="required">
     <input type="submit" name="submit" value="<fmt:message key="button.playlist.create"/> ">
 </form>
 </body>

@@ -25,20 +25,12 @@ public class TopTracksTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         CommonService service = new CommonService();
-        System.out.println("page contaxt session " + pageContext.getSession().getAttribute(RequestConstant.LOCALE));
-        System.out.println("page request locale " + pageContext.getRequest().getLocale());
-
-        Locale locale = pageContext.getSession().getAttribute(RequestConstant.LOCALE) != null ?
-                new Locale((String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)) : pageContext.getRequest().getLocale();
-//        Locale.setDefault(new Locale((String) pageContext.getSession().getAttribute(RequestConstant.LOCALE)));
-        System.out.println(locale);
-//        Locale.setDefault(locale);
-//        Locale.setDefault(new Locale("en_US"));
-        System.out.println();
+        String locale = pageContext.getSession().getAttribute(RequestConstant.LOCALE) != null ?
+                (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE) : pageContext.getRequest().getLocale().toString();
         JspWriter out = pageContext.getOut();
         try {
             List<Track> tracks = service.getRandomTen();
-            out.write("<h3>" + MessageManager.getMessage("label.topten") + "</h3>");
+            out.write("<h3>" + MessageManager.getMessage("label.topten", locale) + "</h3>");
             for (Track track : tracks) {
                 out.write(track.getName());
                 for (Musician singer:track.getSingers()) {
@@ -47,7 +39,7 @@ public class TopTracksTag extends TagSupport {
                 out.write("<audio controls><source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\"></audio>");
                 out.write("<form action=\"controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"track-detail\">\n" +
                         "<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">\n" +
-                        "<input type=\"submit\" name=\"submit\" value=\"" + MessageManager.getMessage("button.details") + "\"/>\n" +
+                        "<input type=\"submit\" name=\"submit\" value=\"" + MessageManager.getMessage("button.details", locale) + "\"/>\n" +
                         "</form>");
             }
         } catch (ServiceException | IOException e) {

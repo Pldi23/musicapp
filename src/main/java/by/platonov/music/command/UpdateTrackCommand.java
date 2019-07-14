@@ -82,9 +82,9 @@ public class UpdateTrackCommand implements Command {
                 commandResult = adminService.updateTrack(track) ?
                         new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
                                 Map.of(UPDATE_RESULT, track.getName() + " " +
-                                        MessageManager.getMessage("updated"))) :
+                                        MessageManager.getMessage("updated", (String) content.getSessionAttribute(LOCALE)))) :
                         new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-                                Map.of(UPDATE_RESULT, MessageManager.getMessage("failed"))
+                                Map.of(UPDATE_RESULT, MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE)))
                         );
             } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException
                     | InvalidAudioFrameException e) {
