@@ -7,7 +7,6 @@
 <html>
 <head><title><fmt:message key="label.search.result"/></title></head>
 <body>
-<%--<c:import url="locale-form.jsp"/>--%>
 <c:import url="header.jsp"/>
 <hr/>
 <h2>

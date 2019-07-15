@@ -10,6 +10,8 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
+<c:import url="track-filter-form.jsp"/>
+<c:import url="search-form.jsp"/>
 <hr/>
 ${ process }
 <form action="controller" method="get">

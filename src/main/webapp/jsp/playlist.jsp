@@ -12,6 +12,7 @@
 <c:import url="header.jsp"/>
 <c:out value="${ playlist.name }"/>
 <br>
+${ process }
 <c:if test="${ not empty playlist.tracks }"><fmt:message key="label.tracks"/></c:if>
 <table>
     <c:forEach var="track" items="${ playlist.tracks }" varStatus="status">
@@ -24,10 +25,10 @@
             <td><c:out value="${ track.name }"/></td>
             <td><c:out value="${ track.genre.title }"/></td>
             <td><c:out value="${ track.releaseDate }"/></td>
-            <td><c:forEach var="singer" items="track.singers">
+            <td><c:forEach var="singer" items="${ track.singers }">
                 <c:out value="${ singer.name }"/>
             </c:forEach></td>
-            <td><c:forEach var="author" items="track.authors">
+            <td><c:forEach var="author" items="${ track.authors }">
                 <c:out value="${ author.name }"/>
             </c:forEach></td>
             <td>
@@ -35,6 +36,14 @@
                     <input type="hidden" name="command" value="track-detail">
                     <input type="hidden" name="id" value="${ track.id }">
                     <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
+                </form>
+            </td>
+            <td>
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="remove-track-from-playlist">
+                    <input type="hidden" name="playlistid" value="${ playlist.id }">
+                    <input type="hidden" name="trackid" value="${ track.id }">
+                    <input type="submit" name="submit" value="<fmt:message key="button.remove.from.playlist"/>">
                 </form>
             </td>
         </tr>

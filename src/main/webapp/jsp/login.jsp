@@ -6,6 +6,10 @@
 <fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session" />
 <fmt:setBundle basename="pagecontent" />
 <html>
+<head>
+
+    <title><fmt:message key="label.main"/></title>
+</head>
 <body>
 <c:import url="locale-form.jsp"/>
 <h2><fmt:message key="label.login.sentence"/></h2>

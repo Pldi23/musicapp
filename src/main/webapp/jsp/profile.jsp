@@ -7,20 +7,24 @@
 <html>
 <head>
     <title><fmt:message key="label.profile"/></title>
+
 </head>
 <body>
 <c:import url="locale-form.jsp"/>
 <c:import url="header.jsp"/>
+<c:import url="track-filter-form.jsp"/>
+<c:import url="search-form.jsp"/>
 <label>
     ${ user.firstname }, <fmt:message key="message.profile"/>
 </label>
 ${ result }
+${ process }
 <img src="${ user.photoPath }">
 <form action="controller" enctype="multipart/form-data" method="post">
     <label>
         <fmt:message key="label.profile.photo"/>
         <input type="hidden" name="command" value="upload-img"/>
-        <input type="file" name="photopath" accept="image/jpeg"/>
+        <input type="file" name="imgpath" accept="image/jpeg"/>
         <input type="submit" name="submit" value="<fmt:message key="button.update"/>">
     </label>
 </form>

@@ -19,10 +19,8 @@ import java.util.List;
 @Log4j2
 public class AdminService {
 
-    private final Repository<Track> trackRepository = TrackRepository.getInstance();
-
-
     public boolean addTrack(Track track) throws ServiceException {
+        TrackRepository trackRepository = TrackRepository.getInstance();
         SqlSpecification specification = new TrackNameSpecification(track.getName());
         try {
             if (trackRepository.query(specification).isEmpty()) {
@@ -38,7 +36,7 @@ public class AdminService {
     public boolean removeTrack(Track track) throws ServiceException {
         try {
             log.debug("Removing track " + track);
-            return trackRepository.remove(track);
+            return TrackRepository.getInstance().remove(track);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }
@@ -46,7 +44,7 @@ public class AdminService {
 
     public boolean updateTrack(Track track) throws ServiceException {
         try {
-            return trackRepository.update(track);
+            return TrackRepository.getInstance().update(track);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
         }

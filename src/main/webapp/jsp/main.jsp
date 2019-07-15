@@ -4,10 +4,13 @@
 <c:set var="page" value="/jsp/main.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session"/>
 <fmt:setBundle basename="pagecontent" />
-<html><head><title><fmt:message key="label.welcome"/></title></head>
+<html>
+<head>
+    <title><fmt:message key="label.welcome"/></title>
+</head>
 <body>
-<c:import url="locale-form.jsp"/>
 <c:import url="header.jsp"/>
+<c:import url="locale-form.jsp"/>
 <hr/>
 <h3><fmt:message key="label.welcome"/></h3>
 <c:import url="track-filter-form.jsp"/>

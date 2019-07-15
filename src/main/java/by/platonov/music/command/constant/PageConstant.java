@@ -10,7 +10,6 @@ public class PageConstant {
     }
 
     public static final String ADMIN_PAGE = "/jsp/admin/admin-main.jsp";
-    public static final String ARE_YOU_SURE_PAGE = "/jsp/admin/are-you-sure.jsp";
     public static final String ERROR_REDIRECT_PAGE = "jsp/error.jsp";
     public static final String GENRE_LIBRARY_PAGE = "/jsp/admin/genre-library.jsp";
     public static final String FILTER_PAGE = "/jsp/filter-result.jsp";
@@ -24,6 +23,7 @@ public class PageConstant {
     public static final String PLAYLIST_LIBRARY_PAGE = "/jsp/admin/playlist-library.jsp";
     public static final String PLAYLIST_PAGE = "/jsp/playlist.jsp";
     public static final String PLAYLIST_CREATE_PAGE = "/jsp/create-playlist.jsp";
+    public static final String REMOVE_CONFIRMATION_PAGE = "/jsp/admin/remove-confirmation.jsp";
     public static final String PROFILE_PAGE = "/jsp/profile.jsp";
     public static final String SEARCH_PAGE = "/jsp/search-result.jsp";
     public static final String SORT_ID_TRACK_LIBRARY_PAGE = "/jsp/admin/sort-id-track.jsp";

@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <c:set var="page" value="/jsp/track.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
-<fmt:setBundle basename="pagecontent" />
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
     <title>${ track.name }</title>
@@ -11,13 +11,30 @@
 <body>
 <%--<c:import url="locale-form.jsp"/>--%>
 <c:import url="header.jsp"/>
+<c:import url="track-filter-form.jsp"/>
+<c:import url="search-form.jsp"/>
 <c:out value="${ track.name }"/>
+<c:if test="${ not empty user }">
+    ${ process }
+    <form action="controller" method="post">
+        <input type="hidden" name="command" value="add-track-to-playlist">
+        <input type="hidden" name="id" value="${ track.id }">
+        <select name="playlistid">
+            <c:forEach var="playlist" items="${ user.playlists }">
+                <option value="${ playlist.id }">${ playlist.name }</option>
+            </c:forEach>
+        </select>
+        <input type="submit" name="submit" value="<fmt:message key="button.add.to.playlist"/>">
+    </form>
+</c:if>
 <br>
 <c:out value="${ track.genre.title }"/>
 <br>
 <c:out value="${ track.releaseDate }"/>
 <br>
-<audio controls><source src="music/${ track.uuid }" type="audio/mpeg"></audio>
+<audio controls>
+    <source src="music/${ track.uuid }" type="audio/mpeg">
+</audio>
 <br>
 <%--mb foto--%>
 <c:if test="${ not empty track.singers }"><fmt:message key="label.singers"/></c:if>
@@ -25,11 +42,13 @@
     <c:forEach var="singer" items="${ track.singers }" varStatus="status">
         <tr>
             <td><c:out value="${ singer.name }"/></td>
-            <td><form action="controller" method="get">
-                <input type="hidden" name="command" value="musician-detail">
-                <input type="hidden" name="id" value="${ singer.id }">
-                <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
-            </form></td>
+            <td>
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="musician-detail">
+                    <input type="hidden" name="id" value="${ singer.id }">
+                    <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
@@ -38,11 +57,13 @@
     <c:forEach var="author" items="${ track.authors }" varStatus="status">
         <tr>
             <td><c:out value="${ author.name }"/></td>
-            <td><form action="controller" method="get">
-                <input type="hidden" name="command" value="musician-detail">
-                <input type="hidden" name="id" value="${ author.id }">
-                <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
-            </form></td>
+            <td>
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="musician-detail">
+                    <input type="hidden" name="id" value="${ author.id }">
+                    <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
@@ -51,13 +72,15 @@
     <c:forEach var="playlist" items="${ playlists }" varStatus="status">
         <tr>
             <td><c:out value="${ playlist.name }"/></td>
-<%--            <td><c:out value="${ size }"/></td>--%>
-<%--            <td><c:out value="${ summary length }"/></td>--%>
-            <td><form action="controller" method="get">
-                <input type="hidden" name="command" value="playlist-detail">
-                <input type="hidden" name="id" value="${ playlist.id }">
-                <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
-            </form></td>
+                <%--            <td><c:out value="${ size }"/></td>--%>
+                <%--            <td><c:out value="${ summary length }"/></td>--%>
+            <td>
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="playlist-detail">
+                    <input type="hidden" name="id" value="${ playlist.id }">
+                    <input type="submit" name="submit" value="<fmt:message key="button.details"/>">
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>

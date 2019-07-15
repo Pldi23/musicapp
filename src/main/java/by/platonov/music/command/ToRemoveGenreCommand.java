@@ -22,6 +22,6 @@ public class ToRemoveGenreCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        return handler.transfer(content, PageConstant.ARE_YOU_SURE_PAGE, commonService::searchGenreById);
+        return handler.transfer(content, PageConstant.REMOVE_CONFIRMATION_PAGE, commonService::searchGenreById);
     }
 }

@@ -6,6 +6,7 @@ import static by.platonov.music.command.constant.PageConstant.*;
 import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.CommandMessage;
 import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.entity.Playlist;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
 import by.platonov.music.entity.User;
@@ -59,8 +60,7 @@ public class LoginCommand implements Command {
                 log.debug(users.get(0) + " logged in as user");
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, MAIN_PAGE,
                         Map.of(),
-                        Map.of(USER, users.get(0)
-                ));
+                        Map.of(USER, users.get(0)));
             } else if (!users.isEmpty()
                     && SCryptUtil.check(password, users.get(0).getPassword())
                     && users.get(0).isActive()
@@ -68,8 +68,7 @@ public class LoginCommand implements Command {
                 log.debug(users.get(0) + " logged in as admin");
 
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, ADMIN_PAGE,
-                        Map.of(), Map.of(USER, users.get(0)
-                ));
+                        Map.of(), Map.of(USER, users.get(0)));
             } else {
                 log.debug("login not successful");
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,

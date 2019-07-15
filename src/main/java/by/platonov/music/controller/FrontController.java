@@ -20,9 +20,9 @@ import java.util.Locale;
  * @version 0.0.1
  */
 @Log4j2
-@WebServlet(urlPatterns = "/controller", loadOnStartup = 1, asyncSupported = true)
+@WebServlet(urlPatterns = "/controller", loadOnStartup = 1)
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
-        maxFileSize = 20485760L, // 10 MB
+        maxFileSize = 20971520L, // 20 MB
         maxRequestSize = 20971520L // 20 MB
 )
 public class FrontController extends HttpServlet {
