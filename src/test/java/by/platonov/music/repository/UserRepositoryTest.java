@@ -30,7 +30,7 @@ class UserRepositoryTest {
             .playlists(new HashSet<>()).registrationDate(LocalDate.now())
             .active(false)
             .verificationUuid(null)
-            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+            .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
     private User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
             .lastname("Ronaldo").email("Ronaldo@gmail.com").gender(User.Gender.MALE)
@@ -38,7 +38,7 @@ class UserRepositoryTest {
             .birthDate(LocalDate.of(1985, 6, 1)).playlists(new HashSet<>())
             .active(false)
             .verificationUuid(null)
-            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+            .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
     private User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
             .lastname("Zidane").email("pldi@mail.ru").gender(User.Gender.MALE)
@@ -46,7 +46,7 @@ class UserRepositoryTest {
             .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
             .active(false)
             .verificationUuid("1")
-            .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+            .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
 
     @Test

@@ -50,7 +50,7 @@ class UserServiceTest {
                 .birthDate(LocalDate.of(1987, 1, 1)).playlists(new HashSet<>())
                 .active(true)
                 .verificationUuid(null)
-                .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+                .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
                 .build();
         assertEquals(expected, actual);
     }

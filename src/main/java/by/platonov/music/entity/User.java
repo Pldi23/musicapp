@@ -29,7 +29,7 @@ public class User extends Guest{
     private Set<Playlist> playlists;
     private boolean active;
     private String verificationUuid;
-    private Path photoPath;
+    private String photoPath;
 
     /**
      * @author dzmitryplatonov on 2019-06-05.

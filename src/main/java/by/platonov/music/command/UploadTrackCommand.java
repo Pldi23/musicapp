@@ -65,7 +65,8 @@ public class UploadTrackCommand implements Command {
                 String trackname = content.getRequestParameter(TRACKNAME)[0].trim();
                 if (!commonService.searchTrackByName(trackname).isEmpty()) {
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
-                            Map.of(ADD_RESULT, trackname + " " + MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
+                            Map.of(ADD_RESULT, trackname + " " +
+                                    MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
                 }
 
                 String genreTitle = content.getRequestParameter(GENRE)[0];

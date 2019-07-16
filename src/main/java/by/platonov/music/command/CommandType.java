@@ -11,6 +11,7 @@ public enum CommandType {
     ACTIVATION(new ActivationCommand(new UserService())),
     ADD_TRACK_TO_PLAYLIST(new AddTrackToPlaylistCommand(new CommonService())),
     BACK(new BackPageCommand()),
+    CHANGE_PASSWORD(new ChangePasswordCommand(new UserService())),
     ERROR(new ErrorCommand()),
     FILTER_TRACK(new FilterTrackCommand(new CommonService())),
     LOGIN(new LoginCommand(new UserService())),
@@ -56,6 +57,10 @@ public enum CommandType {
     TRACK_DETAIL(new TrackDetailCommand(new CommonService())),
     UPLOAD_TRACK(new UploadTrackCommand(new AdminService(), new CommonService())),
     UPLOAD_IMG(new UploadImageCommand(new UserService())),
+    UPDATE_BIRTHDATE(new UpdateBirthDateCommand(new UserService(), new CommandHandler())),
+    UPDATE_GENDER(new UpdateGenderCommand(new UserService(), new CommandHandler())),
+    UPDATE_FIRSTNAME(new UpdateFirstnameCommand(new UserService(), new CommandHandler())),
+    UPDATE_LASTNAME(new UpdateLastnameCommand(new UserService(), new CommandHandler())),
     UPDATE_TRACK(new UpdateTrackCommand(new AdminService(), new CommonService())),
     USER_PLAYLISTS(new UserPlaylistsCommand(new CommonService()));
 

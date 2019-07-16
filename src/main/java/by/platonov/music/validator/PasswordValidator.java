@@ -23,18 +23,26 @@ public class PasswordValidator extends AbstractValidator {
 //            " least 1 number, 1 latin uppercase letter, 1 latin lowercase letter, 1 punctuation. Only latin letters " +
 //            "available, spaces are unavailable";
 
+    private String parameter;
+
+    public PasswordValidator(String parameter, ParameterValidator next) {
+        super(next);
+        this.parameter = parameter;
+    }
+
     public PasswordValidator(ParameterValidator next) {
         super(next);
     }
 
     @Override
     public Set<Violation> apply(RequestContent content) {
+        parameter = parameter != null ? parameter : RequestConstant.PASSWORD;
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.PASSWORD)) {
+        if (!content.getRequestParameters().containsKey(parameter)) {
             log.warn("Invalid content parameter: no password parameter in request");
             result.add(new Violation(MessageManager.getMessage("violation.password", (String) content.getSessionAttribute(LOCALE))));
-        } else if (!content.getRequestParameter(RequestConstant.PASSWORD)[0].matches(PASSWORD_REGEX_PATTERN)) {
-            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.PASSWORD)[0]);
+        } else if (!content.getRequestParameter(parameter)[0].matches(PASSWORD_REGEX_PATTERN)) {
+            log.warn("Invalid content parameter: " + content.getRequestParameter(parameter)[0]);
             result.add(new Violation(MessageManager.getMessage("violation.password", (String) content.getSessionAttribute(LOCALE))));
         }
         if (next != null) {

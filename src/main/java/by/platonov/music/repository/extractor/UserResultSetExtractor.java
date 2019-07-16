@@ -32,8 +32,7 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
                         .playlists(new HashSet<>())
                         .active(resultSet.getBoolean("active_status"))
                         .verificationUuid(resultSet.getString("verification_uuid"))
-                        .photoPath(resultSet.getString("photo_path") != null ?
-                                Path.of(resultSet.getString("photo_path")) : null)
+                        .photoPath(resultSet.getString("photo_path"))
                         .build();
                 table.put(user.getLogin(), user);
             }

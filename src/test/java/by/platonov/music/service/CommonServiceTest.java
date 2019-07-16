@@ -37,7 +37,7 @@ class CommonServiceTest {
                 .birthDate(LocalDate.of(1986, 7, 2)).email("pldi@mail.ru")
                 .playlists(new HashSet<>())
                 .gender(User.Gender.MALE).active(false)
-                .photoPath(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png"))
+                .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
                 .verificationUuid(null).build();
         //'pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null, null
         String playlistName = "my";

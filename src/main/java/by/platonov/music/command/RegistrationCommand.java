@@ -13,7 +13,6 @@ import by.platonov.music.util.VerificationMailSender;
 import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -40,7 +39,8 @@ public class RegistrationCommand implements Command {
                                 new BirthDateValidator(
                                         new FirstnameValidator(
                                                 new LastnameValidator(
-                                                        new EmailValidator(null)))))).apply(content);
+                                                        new EmailValidator(
+                                                                new GenderValidator(null))))))).apply(content);
 
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];
@@ -68,7 +68,7 @@ public class RegistrationCommand implements Command {
                         .playlists(new HashSet<>())
                         .active(false)
                         .verificationUuid(hash)
-                        .photoPath(Path.of(ResourceBundle.getBundle("app").getString("default.ava")))
+                        .photoPath(ResourceBundle.getBundle("app").getString("default.ava"))
                         .build();
 
                 if (userService.register(user)) {
@@ -85,13 +85,16 @@ public class RegistrationCommand implements Command {
                 }
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                        Map.of(PROCESS, "registration"));
+                commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
         } else {
             log.info("Registration failed because of validator violation");
+            String result = "\u2718";
+            for (Violation violation : violations) {
+                result = result.concat(violation.getMessage());
+            }
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                    Map.of(VALIDATOR_RESULT, violations));
+                    Map.of(VALIDATOR_RESULT, result));
         }
         return commandResult;
     }

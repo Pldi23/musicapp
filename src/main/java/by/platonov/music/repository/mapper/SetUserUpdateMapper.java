@@ -22,7 +22,7 @@ public class SetUserUpdateMapper implements PreparedStatementMapper<User> {
         preparedStatement.setDate(7, Date.valueOf(user.getBirthDate()));
         preparedStatement.setBoolean(8, user.isActive());
         preparedStatement.setString(9, user.getVerificationUuid());
-        preparedStatement.setString(10, user.getPhotoPath().toString());
+        preparedStatement.setString(10, user.getPhotoPath());
         preparedStatement.setString(11, user.getLogin());
     }
 }

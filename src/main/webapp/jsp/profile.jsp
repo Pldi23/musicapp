@@ -17,9 +17,9 @@
 <label>
     ${ user.firstname }, <fmt:message key="message.profile"/>
 </label>
-${ result }
+<br>
 ${ process }
-<img src="${ user.photoPath }">
+<div class="img"><img src="music/img/${ user.photoPath }" alt="${ user.login }" class="img-thumbnail"></div>
 <form action="controller" enctype="multipart/form-data" method="post">
     <label>
         <fmt:message key="label.profile.photo"/>
@@ -31,7 +31,7 @@ ${ process }
 <form action="controller" method="post">
     <label>
         <fmt:message key="label.profile.firstname"/>
-        <input type="hidden" name="command" value="update-name">
+        <input type="hidden" name="command" value="update-firstname">
         <input type="text" name="firstname" value="${ user.firstname }" required="required">
         <input type="submit" name="submit" value="<fmt:message key="button.update"/>">
     </label>
@@ -56,6 +56,7 @@ ${ process }
     </label>
 </form>
 <form action="controller" method="post">
+    <input type="hidden" name="command" value="update-birthdate">
     <label>
         <fmt:message key="label.profile.birthdate"/>
         <input type="date" name="birthdate" required="required" value="1970-01-01">
@@ -63,13 +64,14 @@ ${ process }
     </label>
 </form>
 <form action="controller" method="post">
+    <input type="hidden" name="command" value="change-password">
     <label>
         <fmt:message key="label.profile.password.old"/>
         <input type="password" name="oldpassword" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
         <fmt:message key="label.profile.password.new"/>
         <input type="password" name="newpassword" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
         <fmt:message key="label.profile.password.re"/>
-        <input type="password" name="newpassword-check" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
+        <input type="password" name="newpasswordCheck" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
         <input type="submit" name="submit" value="<fmt:message key="button.change.password"/>">
     </label>
 </form>

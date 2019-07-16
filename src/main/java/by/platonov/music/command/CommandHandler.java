@@ -1,13 +1,21 @@
 package by.platonov.music.command;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
+import by.platonov.music.service.UserService;
+import by.platonov.music.validator.AbstractValidator;
+import by.platonov.music.validator.BirthDateValidator;
+import by.platonov.music.validator.Violation;
 import lombok.extern.log4j.Log4j2;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -76,5 +84,35 @@ class CommandHandler<T> {
 
         log.debug("command successfully provide " + t + " to the next page");
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, Map.of(RequestConstant.ENTITY, t));
+    }
+
+    CommandResult update(UserService userService, RequestContent content, String updatedParameter,
+                         AbstractValidator validator, UpdateCommandExecutor updateCommandExecutor) {
+        Set<Violation> violations = validator.apply(content);
+        String result;
+
+        if (violations.isEmpty()) {
+            String parameter = content.getRequestParameter(updatedParameter)[0];
+            User user = (User) content.getSessionAttribute(USER);
+            updateCommandExecutor.update(user, parameter);
+//            user.setBirthDate(LocalDate.parse(birthDate));
+            try {
+                String locale = (String) content.getSessionAttribute(LOCALE);
+                result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :
+                        MessageManager.getMessage("failed", locale);
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
+                        Map.of(PROCESS, result), Map.of(USER, user));
+            } catch (ServiceException e) {
+                log.error("couldn't update birth date", e);
+                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            }
+        } else {
+            result = "\u2718";
+            for (Violation violation : violations) {
+                result = result.concat(violation.getMessage());
+            }
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
+                    Map.of(PROCESS, result));
+        }
     }
 }

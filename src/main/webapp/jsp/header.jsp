@@ -9,7 +9,7 @@
 <div class="container container-fluid bg-light">
     <div class="row">
         <div class="col-md-12">
-            <c:if test="${ empty user}">
+            <c:if test="${ empty user }">
                 <div class="buttons-wrapper d-flex float-md-right">
                     <fmt:message key="label.hello"/>
                     <form action="controller" method="get">

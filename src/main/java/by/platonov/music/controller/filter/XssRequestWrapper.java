@@ -75,7 +75,7 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
         return stripXSS(value);
     }
 
-    private String stripXSS(String value) {
+    String stripXSS(String value) {
 
         if (value != null) {
             // Avoid null characters

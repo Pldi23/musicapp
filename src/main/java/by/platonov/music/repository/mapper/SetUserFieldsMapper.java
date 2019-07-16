@@ -23,6 +23,6 @@ public class SetUserFieldsMapper implements PreparedStatementMapper<User> {
         preparedStatement.setDate(8, Date.valueOf(user.getBirthDate()));
         preparedStatement.setBoolean(9, user.isActive());
         preparedStatement.setString(10, user.getVerificationUuid());
-        preparedStatement.setString(11, user.getPhotoPath().toString());
+        preparedStatement.setString(11, user.getPhotoPath());
     }
 }

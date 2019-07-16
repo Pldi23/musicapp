@@ -50,6 +50,9 @@ public class RequestConstant {
     public static final String ORDER = "order";
     public static final String NEXT = "next";
     public static final String PLAYLIST = "playlist";
+    public static final String PASSWORD_OLD = "oldpassword";
+    public static final String PASSWORD_NEW = "newpassword";
+    public static final String PASSWORD_NEW_CHECK = "newpasswordCheck";
     public static final String PREVIOUS = "previous";
     public static final String SIZE = "size";
     public static final String IMG_PATH = "imgpath";
