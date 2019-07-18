@@ -21,9 +21,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 @Log4j2
 public class ReleaseDateValidator extends AbstractValidator {
 
-//    private static final String RELEASE_DATE_CANNOT_BE_FUTURE_MESSAGE = "Release date could not be in future";
-//    private static final String INCORRECT_RELEASE_DATE_MESSAGE = "Incorrect release date parameter";
-
     public ReleaseDateValidator(ParameterValidator next) {
         super(next);
     }

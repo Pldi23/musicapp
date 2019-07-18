@@ -63,9 +63,9 @@ public class CommonService {
         return tracksWithMusicians(search(new TrackUuidSpecification(uuid), TrackRepository.getInstance()));
     }
 
-    public List<Playlist> searchPlaylist(String playlistName, int limit, long offset) throws ServiceException {
+    public List<Playlist> searchPlaylist(String playlistName, int limit, long offset, User user) throws ServiceException {
         log.debug("searching playlists in repository");
-        return search(new SearchNameSpecification(playlistName, limit, offset), PlaylistRepository.getInstance());
+        return search(new SearchPlayilistNameSpecification(playlistName, limit, offset, user), PlaylistRepository.getInstance());
     }
 
     public List<Playlist> searchPlaylistsByTrack(long trackId) throws ServiceException {

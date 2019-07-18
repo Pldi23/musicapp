@@ -53,7 +53,7 @@ public class RequestContent {
 
     private void setSessionAttributes(HttpServletRequest request) {
         sessionAttributes = new HashMap<>();
-        HttpSession currentSession = request.getSession();
+        HttpSession currentSession = request.getSession(true);
         Enumeration<String> sessionAttributeNames = currentSession.getAttributeNames();
         while (sessionAttributeNames.hasMoreElements()) {
             String sessionAttributeName = sessionAttributeNames.nextElement();

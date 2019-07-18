@@ -18,6 +18,7 @@ import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -51,7 +52,10 @@ public class TrackDetailCommand implements Command {
 //            if (tag.hasField("Cover Art")) {
 //                byte[] b = tag.getFirstArtwork().getBinaryData();
 //            }
-            playlists = commonService.searchPlaylistsByTrackAndUser(Long.parseLong(trackId), user);
+
+            playlists = user != null ? commonService.searchPlaylistsByTrackAndUser(Long.parseLong(trackId), user)
+                    : new ArrayList<>();
+
         } catch (ServiceException e) {
             log.error("command couldn't provide track", e);
             return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);

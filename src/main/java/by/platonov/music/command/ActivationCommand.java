@@ -29,7 +29,7 @@ public class ActivationCommand implements Command {
 
         try {
             return service.activate(email, hash) ?
-                    new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE) :
+                    new CommandResult(CommandResult.ResponseType.FORWARD, INDEX_PAGE) :
                     new CommandResult(CommandResult.ResponseType.REDIRECT, ERROR_REDIRECT_PAGE);
         } catch (ServiceException e) {
             log.error("Service provide an exception for activation command ", e);

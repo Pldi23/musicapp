@@ -20,7 +20,7 @@ public class VerificationMailSender implements Callable<Boolean> {
     private static final String MAIL_SUBJECT = "Music app verification link";
     private static final String MAIL_MESSAGE = "Please complete your registration by activating a link";
     private static final String LINK_MESSAGE =
-            "Your verification link :: http://%s:%d/%s/controller?command=activation&email=%s&verificationUuid=%s";
+            "Your verification link :: http://%s:%d%s/controller?command=activation&email=%s&verificationUuid=%s";
 
     private String serverName;
     private int serverPort;

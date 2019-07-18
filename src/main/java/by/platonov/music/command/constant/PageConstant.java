@@ -13,6 +13,7 @@ public class PageConstant {
     public static final String ERROR_REDIRECT_PAGE = "jsp/error.jsp";
     public static final String GENRE_LIBRARY_PAGE = "/jsp/admin/genre-library.jsp";
     public static final String FILTER_PAGE = "/jsp/filter-result.jsp";
+    public static final String INDEX_PAGE = "/index.jsp";
     public static final String INFORMATION_PAGE = "/jsp/information.jsp";
     public static final String LIBRARY_PAGE = "/jsp/library.jsp";
     public static final String LOGIN_PAGE = "/jsp/login.jsp";

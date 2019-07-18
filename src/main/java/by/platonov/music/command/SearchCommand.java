@@ -5,6 +5,7 @@ import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
+import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
 import by.platonov.music.validator.SearchValidator;
@@ -37,6 +38,7 @@ public class SearchCommand implements Command {
         Set<Violation> violations = new SearchValidator(null).apply(content);
 
         if (violations.isEmpty()) {
+            User user = (User) content.getSessionAttribute(USER);
             String searchRequest = content.getRequestParameter(SEARCH_REQUEST)[0];
             int limit = Integer.parseInt(ResourceBundle.getBundle("app").getString("app.list.limit"));
             Map<String, Object> attributes = new HashMap<>();
@@ -49,16 +51,14 @@ public class SearchCommand implements Command {
             long playlistsSize;
             boolean nextUnavailable = false;
             boolean previousUnavailable = false;
-            boolean next = !content.getRequestParameters().containsKey(DIRECTION)
-                    || content.getRequestParameter(DIRECTION)[0].equals(NEXT);
             long offset = Long.parseLong(content.getRequestParameter(OFFSET)[0]);
 
             try {
                 musiciansSize = commonService.searchMusician(searchRequest, Integer.MAX_VALUE, 0).size();
                 tracksSize = commonService.searchTrack(searchRequest, Integer.MAX_VALUE, 0).size();
-                playlistsSize = commonService.searchPlaylist(searchRequest, Integer.MAX_VALUE, 0).size();
+                playlistsSize = commonService.searchPlaylist(searchRequest, Integer.MAX_VALUE, 0, user).size();
                 musicians = commonService.searchMusician(searchRequest, limit, offset);
-                playlists = commonService.searchPlaylist(searchRequest, limit, offset);
+                playlists = commonService.searchPlaylist(searchRequest, limit, offset, user);
                 tracks = commonService.searchTrack(searchRequest, limit, offset);
                 if (content.getRequestParameters().containsKey("key-musicians")) {
                     attributes.put(MUSICIANS_ATTRIBUTE, musicians);
@@ -94,9 +94,5 @@ public class SearchCommand implements Command {
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE,
                     Map.of(PROCESS, result));
         }
-
-//                Map.of(SEARCH_REQUEST, searchRequest, MUSICIANS_ATTRIBUTE, musicians, MUSICIAN_SIZE, musiciansSize,
-//                        TRACKS_ATTRIBUTE, tracks, TRACKS_SIZE, tracksSize,
-//                        PLAYLISTS_ATTRIBUTE, playlists, PLAYLISTS_SIZE, playlistsSize));
     }
 }

@@ -21,8 +21,12 @@ public class TrackNameValidator extends AbstractValidator {
 
     private static final String TRACKNAME_REGEX_PATTERN = "(?U).{1,30}(?<!(.mp3)|(.wav)|(.audio)|(.format))$";
 
-//    private static final String INCORRECT_TRACKNAME = "Track name must contain at least one symbol and doesn't have " +
-//            "format suffix";
+    private boolean filter;
+
+    public TrackNameValidator(boolean filter, ParameterValidator next) {
+        super(next);
+        this.filter = filter;
+    }
 
     public TrackNameValidator(ParameterValidator next) {
         super(next);
@@ -31,12 +35,23 @@ public class TrackNameValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)) {
-            log.warn("No track name parameter found");
-            result.add(new Violation(MessageManager.getMessage("violation.trackname", (String) content.getSessionAttribute(LOCALE))));
-        } else if (!content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
-            log.warn("track name parameter not matched appropriate regex pattern");
-            result.add(new Violation(MessageManager.getMessage("violation.trackname", (String) content.getSessionAttribute(LOCALE))));
+        String locale = (String) content.getSessionAttribute(LOCALE);
+        Violation violation = new Violation(MessageManager.getMessage("violation.trackname", locale));
+
+        if (filter) {
+            if (content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)
+                    && content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)){
+                log.warn("track name parameter not matched appropriate regex pattern");
+                result.add(violation);
+            }
+        } else {
+            if (!content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)) {
+                log.warn("No track name parameter found");
+                result.add(violation);
+            } else if (!content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
+                log.warn("track name parameter not matched appropriate regex pattern");
+                result.add(violation);
+            }
         }
         if (next != null) {
             result.addAll(next.apply(content));

@@ -28,6 +28,7 @@
             <c:import url="track-filter-form.jsp"/>
         </div>
         <div class="col-8">
+            <p class="text-warning">${ process }</p>
             <h4><fmt:message key="label.filter.result"/></h4>
             <ctg:show-tracks tracks="${ entities }" admin="${ user.admin }" commandValue="filter-track"
                              moreCommandValue="track-detail"

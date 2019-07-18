@@ -5,18 +5,18 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <body>
-<form action="controller" method="get">
+<form action="controller" method="post">
     <input type="hidden" name="command" value="filter-track">
     <input type="hidden" name="offset" value="0">
     <input type="hidden" name="order" value="marker">
     <div class="form-group">
         <label for="inputTrackname"><fmt:message key="label.filter.trackname"/></label>
-        <input type="text" class="form-control" id="inputTrackname"
+        <input type="text" class="form-control" id="inputTrackname" pattern="(?U).{1,30}(?<!(.mp3)|(.wav)|(.audio)|(.format))$"
                name="trackname" placeholder="<fmt:message key="placeholder.track.name"/>"/>
     </div>
     <div class="form-group">
         <label for="inputSingername"><fmt:message key="label.filter.singername"/></label>
-        <input type="text" name="singer" class="form-control" id="inputSingername" value="${ singer}"
+        <input type="text" name="singer" pattern="(?U).{1,30}" class="form-control" id="inputSingername" value="${ singer}"
                placeholder="<fmt:message key="placeholder.singer"/>">
     </div>
     <div class="form-group">
@@ -30,7 +30,7 @@
     <div class="form-group">
         <label for="inputGenre"><fmt:message key="label.filter.genre"/></label>
         <select name="genre" class="form-control" id="inputGenre">
-            <option selected="selected">${ genre }</option>
+            <option selected="selected"></option>
             <option value="pop"><fmt:message key="option.pop"/></option>
             <option value="rock"><fmt:message key="option.rock"/></option>
             <option value="blues"><fmt:message key="option.blues"/></option>

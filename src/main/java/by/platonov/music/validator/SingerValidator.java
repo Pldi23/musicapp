@@ -23,6 +23,13 @@ public class SingerValidator extends AbstractValidator {
     private static final String SINGER_REGEX_PATTERN = "(?U).{1,30}";
     private static final int MINIMUN_QUANTITY_SINGERS = 1;
 
+    private boolean filter;
+
+    public SingerValidator(boolean filter, ParameterValidator next) {
+        super(next);
+        this.filter = filter;
+    }
+
     public SingerValidator(ParameterValidator next) {
         super(next);
     }
@@ -30,14 +37,23 @@ public class SingerValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.SINGER)) {
-            log.warn("no singer parameter found");
-            result.add(new Violation(MessageManager.getMessage("violation.singer", (String) content.getSessionAttribute(LOCALE))));
-        } else if (content.getRequestParameter(RequestConstant.SINGER).length >= MINIMUN_QUANTITY_SINGERS
-                && Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).noneMatch(s -> s.matches(SINGER_REGEX_PATTERN))) {
-            //Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).anyMatch(s -> !s.matches(SINGER_REGEX_PATTERN))
-            log.warn("One of specified singers doesn't match singer regex pattern");
-            result.add(new Violation(MessageManager.getMessage("violation.singer", (String) content.getSessionAttribute(LOCALE))));
+        Violation violation = new Violation(MessageManager.getMessage("violation.singer",
+                (String) content.getSessionAttribute(LOCALE)));
+        if (filter) {
+            if (content.getRequestParameters().containsKey(RequestConstant.SINGER)
+                    && content.getRequestParameter(RequestConstant.SINGER)[0].matches(SINGER_REGEX_PATTERN)) {
+                log.warn("One of specified singers doesn't match singer regex pattern");
+                result.add(violation);
+            }
+        } else {
+            if (!content.getRequestParameters().containsKey(RequestConstant.SINGER)) {
+                log.warn("no singer parameter found");
+                result.add(violation);
+            } else if (content.getRequestParameter(RequestConstant.SINGER).length >= MINIMUN_QUANTITY_SINGERS
+                    && Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).noneMatch(s -> s.matches(SINGER_REGEX_PATTERN))) {
+                log.warn("One of specified singers doesn't match singer regex pattern");
+                result.add(violation);
+            }
         }
         if (next != null) {
             result.addAll(next.apply(content));

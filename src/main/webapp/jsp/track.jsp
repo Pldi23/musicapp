@@ -98,8 +98,6 @@
             <table>
                 <c:forEach var="playlist" items="${ playlists }" varStatus="status">
                     <tr>
-                            <%--            <td><c:out value="${ size }"/></td>--%>
-                            <%--            <td><c:out value="${ summary length }"/></td>--%>
                         <td>
                             <form action="controller" method="get">
                                 <input type="hidden" name="command" value="playlist-detail">

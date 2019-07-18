@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<c:set var="user" scope="session" value="${ user }"/>
 <c:set var="page" value="/jsp/main.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session"/>
 <fmt:setBundle basename="pagecontent"/>

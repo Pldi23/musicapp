@@ -75,7 +75,7 @@
     <br>
     <label>
         <fmt:message key="label.releasedate"/>
-        <input type="date" id="datefield" name="releasedate" max="2000-13-13"/>
+        <input type="date" id="datefield" name="releasedate" />
     </label>
     <br>
     <br>
