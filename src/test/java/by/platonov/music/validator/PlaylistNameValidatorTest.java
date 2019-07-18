@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.RequestContent;
 import by.platonov.music.command.constant.RequestConstant;
 import org.junit.jupiter.api.Test;
@@ -39,16 +40,13 @@ class PlaylistNameValidatorTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"C", "chu.", "D&MA", "пла#тонов", "пла3тонов", "fdulttpbrkvyjghcneawxioqwertyuiop111111222222888888777744",
-            "чу?", " Дима", "Дима ", "Дима-", "-Дима", "", " ", "1234"})
+    @ValueSource(strings = {"C", "fdulttpbrkvyjghcneawxioqwertyuiop111111222222888888777744"})
     void applyNegative(String input) {
-        String message = "Playlist name must contain at least one and at most 50 symbols";
-        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("name", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.NAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(message));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.playlist.name", "en_US")));
 
         assertEquals(expected, actual);
     }

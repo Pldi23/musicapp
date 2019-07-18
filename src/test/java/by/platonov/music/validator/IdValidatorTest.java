@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.RequestContent;
 import by.platonov.music.command.constant.RequestConstant;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
  */
 class IdValidatorTest {
 
-    private static final String EXPECTED_MESSAGE = "Id should be positive";
+//    private static final String EXPECTED_MESSAGE = "Id should be positive";
 
     private IdValidator validator = new IdValidator(null);
     private RequestContent content = mock(RequestContent.class);
@@ -42,12 +43,12 @@ class IdValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"-1","-101", "0"})
     void applyNegative(String input) {
-        Locale.setDefault(new Locale("en_US"));
+//        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.ID, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.ID)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(EXPECTED_MESSAGE));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.id", "en_US")));
 
         assertEquals(expected, actual);
     }

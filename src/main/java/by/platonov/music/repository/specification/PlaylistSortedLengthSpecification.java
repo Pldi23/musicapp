@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class PlaylistSortedLengthSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "select playlist.id, playlist.name, sum(length) as sum " +
+    private static final String SPECIFICATION = "select playlist.id, playlist.name, playlist.private, sum(length) as sum " +
                     "from playlist " +
                     "inner join playlist_track pt on playlist.id = pt.playlist_id " +
                     "inner join track t on pt.track_id = t.id " +

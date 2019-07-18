@@ -19,6 +19,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 /**
@@ -59,10 +60,7 @@ public class UploadImageCommand implements Command {
             }
 
         } else {
-            result = "\u2718";
-            for (Violation violation : violations) {
-                result = result.concat(violation.getMessage());
-            }
+            result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
                     Map.of(PROCESS, result));
         }

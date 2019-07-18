@@ -20,6 +20,7 @@ public class PlaylistResultSetExtractor implements AbstractResultSetExtractor<Pl
                 Playlist playlist = Playlist.builder()
                         .id(resultSet.getLong("id"))
                         .name(resultSet.getString("name"))
+                        .personal(resultSet.getBoolean("private"))
                         .tracks(new HashSet<>())
                         .build();
                 table.put(playlist.getId(), playlist);

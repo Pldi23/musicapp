@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * music-app
@@ -109,6 +110,10 @@ public class CommonService {
         return playlist;
     }
 
+    public List<Playlist> searchPlaylistsByTrackAndUser(long trackId, User user) throws ServiceException {
+        return search(new PlaylistByTrackAndUserSpecification(trackId, user.getLogin()), PlaylistRepository.getInstance());
+    }
+
     public long countTracks() throws ServiceException {
         return count(new IdIsNotNullSpecification(), TrackRepository.getInstance());
     }
@@ -206,18 +211,19 @@ public class CommonService {
             log.debug("getting " + result + " from repository");
             return result;
         } catch (RepositoryException e) {
-            throw new ServiceException("genre repository provide an exception to service" + e);
+            throw new ServiceException("genre repository provide an exception to service", e);
         }
     }
 
     public List<Track> getRandomTen() throws ServiceException {
         log.debug("getting 10 random tracks");
-        return search(new TrackRandomSpecification(), TrackRepository.getInstance());
+        return tracksWithMusicians(search(new TrackRandomSpecification(), TrackRepository.getInstance()));
     }
 
     public boolean createPlaylist(User user, String playlistName) throws ServiceException {
         try {
-            Playlist playlist = Playlist.builder().name(playlistName).tracks(new HashSet<>()).build();
+            boolean personal = !user.isAdmin();
+            Playlist playlist = Playlist.builder().name(playlistName).tracks(new HashSet<>()).personal(personal).build();
             boolean additionResult = PlaylistRepository.getInstance().add(playlist);
             user.getPlaylists().add(playlist);
             boolean updatingResult = UserRepository.getInstance().update(user);
@@ -233,7 +239,9 @@ public class CommonService {
             Track track = TrackRepository.getInstance().query(new TrackIdSpecification(Long.parseLong(trackId))).get(0);
             Playlist playlist = PlaylistRepository.getInstance()
                     .query(new PlaylistIdSpecification(Long.parseLong(playlistId))).get(0);
-            playlist.getTracks().add(track);
+            List<Track> tracks = getPlaylistTracks(playlist.getId());
+            tracks.add(track);
+            playlist.getTracks().addAll(tracks);
             return PlaylistRepository.getInstance().update(playlist);
         } catch (RepositoryException e) {
             log.error("exception from repository ", e);
@@ -252,6 +260,29 @@ public class CommonService {
         }
     }
 
+    public boolean removePlaylistFromUser(User user, String playlistId) throws ServiceException {
+        user.getPlaylists().removeIf(playlist -> playlist.getId() == Long.parseLong(playlistId));
+        try {
+            return UserRepository.getInstance().update(user);
+        } catch (RepositoryException e) {
+            log.error("repository could not update user ", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    public String countPlaylistLength(Playlist playlist) throws ServiceException {
+        long duration = getPlaylistTracks(playlist.getId()).stream().mapToLong(Track::getLength).sum();
+        long hours = TimeUnit.SECONDS.toHours(duration);
+        duration -= TimeUnit.HOURS.toSeconds(hours);
+        long minutes = TimeUnit.SECONDS.toMinutes(duration);
+        duration -= TimeUnit.MINUTES.toSeconds(minutes);
+        return String.format("%02d:%02d:%02d", hours, minutes, duration);
+    }
+
+    public String countPlaylistSize(Playlist playlist) throws ServiceException {
+        return String.valueOf(getPlaylistTracks(playlist.getId()).size());
+    }
+
     private List<Track> tracksWithMusicians(List<Track> tracks) throws ServiceException {
         for (Track track : tracks) {
             track.getSingers().addAll(getTrackSingers(track.getId()));
@@ -260,7 +291,7 @@ public class CommonService {
         return tracks;
     }
 
-    private List<Track> getPlaylistTracks(long playlistId) throws ServiceException {
+    public List<Track> getPlaylistTracks(long playlistId) throws ServiceException {
         return tracksWithMusicians(search(new TracksInPlaylistSpecification(playlistId), TrackRepository.getInstance()));
     }
 

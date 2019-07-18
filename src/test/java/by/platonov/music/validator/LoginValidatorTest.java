@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,8 @@ import static org.mockito.Mockito.*;
  */
 class LoginValidatorTest {
 
-    public static final String EXPECTED_VIOLATION_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
-            "latin letter, numbers, and punctuation symbols like '-' and '_'";
+//    public static final String EXPECTED_VIOLATION_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
+//            "latin letter, numbers, and punctuation symbols like '-' and '_'";
 
     private LoginValidator validator = new LoginValidator(null);
     private RequestContent content = mock(RequestContent.class);
@@ -47,7 +48,7 @@ class LoginValidatorTest {
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[] {input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(EXPECTED_VIOLATION_MESSAGE));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")));
 
         assertEquals(expected, actual);
     }
@@ -57,7 +58,7 @@ class LoginValidatorTest {
         when(content.getRequestAttribute(RequestConstant.LOGIN)).thenReturn(null);
         Locale.setDefault(new Locale("en_US"));
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(EXPECTED_VIOLATION_MESSAGE));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")));
 
         assertEquals(expected, actual);
     }

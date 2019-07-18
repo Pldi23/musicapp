@@ -25,6 +25,7 @@ public class DefendXssFilter implements Filter {
     public void destroy() {
     }
 
+    //todo настроить так чтобы работал только на страницах где вводится что или гет-запросы
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

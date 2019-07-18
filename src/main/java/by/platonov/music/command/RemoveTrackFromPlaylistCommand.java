@@ -2,6 +2,7 @@ package by.platonov.music.command;
 
 import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
@@ -34,8 +35,11 @@ public class RemoveTrackFromPlaylistCommand implements Command {
                     MessageManager.getMessage("removed", (String) content.getSessionAttribute(LOCALE)) :
                     MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE));
             Playlist playlist = commonService.searchPlaylistByIdWitTracks(playlistId);
+            String length = commonService.countPlaylistLength(playlist);
+            String size = commonService.countPlaylistSize(playlist);
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
-                            Map.of(PLAYLIST, playlist, PROCESS, result));
+                            Map.of(PLAYLIST, playlist, PROCESS, result, RequestConstant.LENGTH, length,
+                                    RequestConstant.SIZE, size));
         } catch (ServiceException e) {
             log.error("command could't add track to playlist", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);

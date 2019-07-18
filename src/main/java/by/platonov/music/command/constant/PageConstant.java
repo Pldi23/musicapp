@@ -14,7 +14,7 @@ public class PageConstant {
     public static final String GENRE_LIBRARY_PAGE = "/jsp/admin/genre-library.jsp";
     public static final String FILTER_PAGE = "/jsp/filter-result.jsp";
     public static final String INFORMATION_PAGE = "/jsp/information.jsp";
-    public static final String LIBRARY_PAGE = "/jsp/admin/library.jsp";
+    public static final String LIBRARY_PAGE = "/jsp/library.jsp";
     public static final String LOGIN_PAGE = "/jsp/login.jsp";
     public static final String MAIN_PAGE = "/jsp/main.jsp";
     public static final String MUSICIAN_PAGE = "/jsp/musician.jsp";

@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author dzmitryplatonov on 2019-06-18.
@@ -40,6 +41,7 @@ public class LoginCommand implements Command {
         Set<Violation> violations =
                 new LoginValidator(
                         new PasswordValidator(null)).apply(content);
+        String result;
 
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];
@@ -72,13 +74,15 @@ public class LoginCommand implements Command {
             } else {
                 log.debug("login not successful");
                 commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,
-                        Map.of(ERROR_LOGIN_PASS_ATTRIBUTE, MessageManager.getMessage("login.failed", (String) content.getSessionAttribute(LOCALE))));
+                        Map.of(ERROR_LOGIN_PASS_ATTRIBUTE, MessageManager.getMessage("login.failed",
+                                (String) content.getSessionAttribute(LOCALE))));
             }
             return commandResult;
         } else {
+            result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             log.debug("login not successful");
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, LOGIN_PAGE,
-                    Map.of(VALIDATOR_MESSAGE_ATTRIBUTE, violations));
+                    Map.of(VALIDATOR_MESSAGE_ATTRIBUTE, result));
         }
         return commandResult;
     }

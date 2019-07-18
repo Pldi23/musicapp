@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,14 +40,14 @@ class EmailValidatorTest {
     @ValueSource(strings = {"C", "@chu.com", "D&MA.ru", "пла#тонов", "пла@тонов.com", " Дима@com.com", "", " ", "1234",
             "asdad@com", "p@mail."})
     void applyNegative(String input) {
-        Locale.setDefault(new Locale("en_US"));
-        String message = "E-mail example johndoe@domainsample.com";
+//        Locale.setDefault(new Locale("en", "US"));
+//        String message = "E-mail example johndoe@domainsample.com";
 
         when(content.getRequestParameters()).thenReturn(Map.of("email", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.EMAIL)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(message));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.email", "en_US")));
 
         assertEquals(expected, actual);
     }

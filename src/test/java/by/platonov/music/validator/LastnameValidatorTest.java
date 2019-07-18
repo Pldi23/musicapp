@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,13 +41,13 @@ class LastnameValidatorTest {
     @ValueSource(strings = {"Plat3tonov", "Plat#onov", "C", "chu.", "пла#тонов", "пла3тонов", "fdulttpbrkvyjghcneawxioqwertyuiop",
             "чу'", "'OSHEA", "'O'SHE'A", " platonov", "platonov ", "Плат-", "-Платонов", "", " ", "1234"})
     void applyNegative(String input) {
-        String message = "Last name must contain minimum 2 and maximum 30 letters";
-        Locale.setDefault(new Locale("en_US"));
+//        String message = "Last name must contain minimum 2 and maximum 30 letters";
+//        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("lastname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.LASTNAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(message));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.lastname", "en_US")));
 
         assertEquals(expected, actual);
     }

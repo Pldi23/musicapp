@@ -12,6 +12,7 @@
 <h2>
     <fmt:message key="label.search.result"/>
 </h2>
+${ process }
 <br>
 <c:if test="${ not empty musicians }"><fmt:message key="label.musicians"/>: ${ musicianssize } <fmt:message
         key="label.found"/>

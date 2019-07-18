@@ -4,6 +4,25 @@
     <jsp-version>2.1</jsp-version>
     <short-name>ctg</short-name>
     <tag>
+        <name>remove-track-from-playlist</name>
+        <tag-class>by.platonov.music.tag.RemoveTrackFromPlaylistTag</tag-class>
+        <attribute>
+            <name>currentPlaylist</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>userPlaylists</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>track</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <name>violations</name>
         <tag-class>by.platonov.music.tag.ViolationTag</tag-class>
         <attribute>
@@ -20,10 +39,15 @@
     <tag>
         <name>top-tracks</name>
         <tag-class>by.platonov.music.tag.TopTracksTag</tag-class>
+        <attribute>
+            <name>head</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
-        <name>sort-form</name>
-        <tag-class>by.platonov.music.tag.SortCommandFormTag</tag-class>
+        <name>command-form</name>
+        <tag-class>by.platonov.music.tag.CommandFormTag</tag-class>
         <attribute>
             <name>commandValue</name>
             <required>false</required>
@@ -31,6 +55,11 @@
         </attribute>
         <attribute>
             <name>submitValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>sortOrder</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

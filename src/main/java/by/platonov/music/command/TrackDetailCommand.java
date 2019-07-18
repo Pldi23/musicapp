@@ -4,6 +4,7 @@ import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
+import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
@@ -38,18 +39,19 @@ public class TrackDetailCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        String id = content.getRequestParameter(RequestConstant.ID)[0];
+        String trackId = content.getRequestParameter(RequestConstant.ID)[0];
+        User user = (User) content.getSessionAttribute(RequestConstant.USER);
         Track track;
         List<Playlist> playlists;
         try {
-            track = commonService.searchTrackById(id);
+            track = commonService.searchTrackById(trackId);
 //            AudioFile f = AudioFileIO.read(new File(ResourceBundle.getBundle("app").getString("app.music.uploads") +
 //                    File.separator + track.getUuid()));
 //            Tag tag = f.getTag();
 //            if (tag.hasField("Cover Art")) {
 //                byte[] b = tag.getFirstArtwork().getBinaryData();
 //            }
-            playlists = commonService.searchPlaylistsByTrack(Long.parseLong(id));
+            playlists = commonService.searchPlaylistsByTrackAndUser(Long.parseLong(trackId), user);
         } catch (ServiceException e) {
             log.error("command couldn't provide track", e);
             return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);

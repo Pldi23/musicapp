@@ -3,9 +3,6 @@
 <fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
 <fmt:setBundle basename="pagecontent" />
 <html>
-<%--<head>--%>
-<%--    <title><fmt:message key="label.library"/></title>--%>
-<%--</head>--%>
 <body>
 <form action="controller" method="get">
     <input type="hidden" name="command" value="to-library">

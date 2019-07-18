@@ -95,7 +95,6 @@ class CommandHandler<T> {
             String parameter = content.getRequestParameter(updatedParameter)[0];
             User user = (User) content.getSessionAttribute(USER);
             updateCommandExecutor.update(user, parameter);
-//            user.setBirthDate(LocalDate.parse(birthDate));
             try {
                 String locale = (String) content.getSessionAttribute(LOCALE);
                 result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :

@@ -16,6 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.
@@ -79,20 +80,17 @@ public class RegistrationCommand implements Command {
                             Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
                 } else {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                            Map.of(VALIDATOR_RESULT,
-                                    Set.of(new Violation(MessageManager.getMessage("message.user", (String) content.getSessionAttribute(LOCALE)) +
-                                            user.getLogin() + MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))))));
+                            Map.of(VALIDATOR_RESULT, MessageManager.getMessage("message.user",
+                                    (String) content.getSessionAttribute(LOCALE)) + user.getLogin() + " " +
+                                    MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
                 }
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
                 commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
         } else {
+            String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             log.info("Registration failed because of validator violation");
-            String result = "\u2718";
-            for (Violation violation : violations) {
-                result = result.concat(violation.getMessage());
-            }
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
                     Map.of(VALIDATOR_RESULT, result));
         }

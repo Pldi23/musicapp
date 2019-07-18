@@ -18,9 +18,9 @@
 <fmt:message var="sortidbutton" key="button.sort.track.id" scope="page"/>
 <fmt:message var="sortnamebutton" key="button.sort.track.name" scope="page"/>
 <fmt:message var="sortgenrebutton" key="button.sort.track.genre" scope="page"/>
-<ctg:sort-form commandValue="sort-track-by-id" submitValue="${ sortidbutton }"/>
-<ctg:sort-form commandValue="sort-track-by-name" submitValue="${ sortnamebutton }"/>
-<ctg:sort-form commandValue="sort-track-by-genre" submitValue="${ sortgenrebutton }"/>
+<ctg:command-form commandValue="sort-track-by-id" submitValue="${ sortidbutton }"/>
+<ctg:command-form commandValue="sort-track-by-name" submitValue="${ sortnamebutton }"/>
+<ctg:command-form commandValue="sort-track-by-genre" submitValue="${ sortgenrebutton }"/>
 <c:import url="../track-filter-form.jsp"/>
 <ctg:show-tracks tracks="${ entities }" admin="${ user.admin }" removeCommandValue="to-remove-track" updateCommandValue="to-update-track"
                  commandValue="show-all-tracks" nextUnavailable="${ nextunavailable }"

@@ -23,9 +23,6 @@ public class SingerValidator extends AbstractValidator {
     private static final String SINGER_REGEX_PATTERN = "(?U).{1,30}";
     private static final int MINIMUN_QUANTITY_SINGERS = 1;
 
-//    private static final String INCORRECT_SINGER =
-//            "You should enter at least 1 singer, and his name should contain at least one symbol";
-
     public SingerValidator(ParameterValidator next) {
         super(next);
     }

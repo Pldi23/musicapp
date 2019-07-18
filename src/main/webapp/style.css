@@ -1,0 +1,13 @@
+.imageContainer{
+    width: 90px;
+    height: 90px;
+    margin: auto;
+    display: block;
+}
+
+.pictureLogo{
+    position:absolute;
+    /*hat size=128px*/
+    top:60px;
+    z-index:3;
+}

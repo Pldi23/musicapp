@@ -28,13 +28,17 @@ public class PlaylistDetailCommand implements Command {
     public CommandResult execute(RequestContent content) {
         String playlistId = content.getRequestParameter(RequestConstant.ID)[0];
         Playlist playlist;
+        String length;
+        String size;
         try {
             playlist = commonService.searchPlaylistByIdWitTracks(playlistId);
+            length = commonService.countPlaylistLength(playlist);
+            size = commonService.countPlaylistSize(playlist);
         } catch (ServiceException e) {
             log.error("command could't provide playlist", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
-                Map.of(RequestConstant.PLAYLIST, playlist));
+                Map.of(RequestConstant.PLAYLIST, playlist, RequestConstant.LENGTH, length, RequestConstant.SIZE, size));
     }
 }

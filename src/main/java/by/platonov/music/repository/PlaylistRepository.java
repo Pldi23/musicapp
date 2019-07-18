@@ -25,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PlaylistRepository implements Repository<Playlist> {
 
     @Language("SQL")
-    private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlist (name) VALUES (?) RETURNING ID;";
+    private static final String SQL_INSERT_PLAYLIST = "INSERT INTO playlist (name, private) VALUES (?, ?) RETURNING ID;";
     @Language("SQL")
     private static final String SQL_INSERT_TRACK_PLAYLIST_LINK = "INSERT INTO playlist_track (playlist_id, track_id) VALUES (?, ?);";
     @Language("SQL")
@@ -35,9 +35,10 @@ public class PlaylistRepository implements Repository<Playlist> {
     @Language("SQL")
     private static final String SQL_DELETE_PLAYLIST_USER_LINK = "DELETE FROM user_playlist WHERE playlist_id = ?";
     @Language("SQL")
-    private static final String SQL_UPDATE_PLAYLIST = "UPDATE playlist SET name = ? WHERE id = ?;";
+    private static final String SQL_UPDATE_PLAYLIST = "UPDATE playlist SET name = ?, private = ? WHERE id = ?;";
     @Language("SQL")
-    private static final String SQL_SELECT_PLAYLIST = "SELECT playlist.id as id, playlist.name as name FROM playlist ";
+    private static final String SQL_SELECT_PLAYLIST = "SELECT playlist.id as id, playlist.name as name, playlist.private " +
+            "FROM playlist ";
     @Language("SQL")
     private static final String SQL_COUNT = "SELECT COUNT(*) FROM playlist ";
 
@@ -119,6 +120,7 @@ public class PlaylistRepository implements Repository<Playlist> {
                     jdbcHelper.execute(connection, SQL_INSERT_TRACK_PLAYLIST_LINK, playlist.getId(), ((preparedStatement, entity) -> {
                         preparedStatement.setLong(1, playlist.getId());
                         preparedStatement.setLong(2, track.getId());
+
                     }));
                 }
                 jdbcHelper.execute(connection, SQL_UPDATE_PLAYLIST, playlist, new SetPlaylistUpdateMapper());

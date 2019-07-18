@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,14 +39,14 @@ class BirthDateValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"2016-07-02", "2013-08-30"})
     void applyNegative(String input) {
-        Locale.setDefault(new Locale("en_US"));
-        String message = "User of the application must be older then 6 years";
+//        Locale.setDefault(new Locale("en_US"));
+//        String message = "User of the application must be older then 6 years";
 
         when(content.getRequestParameters()).thenReturn(Map.of("birthdate", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(message));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.birthdate", "en_US")));
 
         assertEquals(expected, actual);
     }

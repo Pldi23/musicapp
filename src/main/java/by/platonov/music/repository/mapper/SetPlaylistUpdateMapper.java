@@ -13,6 +13,7 @@ public class SetPlaylistUpdateMapper implements PreparedStatementMapper<Playlist
     @Override
     public void map(PreparedStatement preparedStatement, Playlist playlist) throws SQLException {
         preparedStatement.setString(1, playlist.getName());
-        preparedStatement.setLong(2, playlist.getId());
+        preparedStatement.setBoolean(2, playlist.isPersonal());
+        preparedStatement.setLong(3, playlist.getId());
     }
 }

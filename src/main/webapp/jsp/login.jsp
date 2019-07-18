@@ -3,42 +3,63 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <c:set var="page" value="/jsp/login.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session" />
-<fmt:setBundle basename="pagecontent" />
+<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session"/>
+<fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-
     <title><fmt:message key="label.main"/></title>
 </head>
 <body>
-<c:import url="locale-form.jsp"/>
-<h2><fmt:message key="label.login.sentence"/></h2>
-${validatorMessage}
-${errorLoginPassMessage}
-<form action="controller" method="post">
-    <input type="hidden" name="command" value="login"/>
-    <label>
-        <fmt:message key="label.enter.login"/>
-        <input type="text" name="login" pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
-               title="<fmt:message key="prescription.login"/>" lang="en"/>
-
-    </label>
-    <br>
-    <fmt:message key="label.enter.password"/>
-    <input type="password" name="password" pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required=""
-           placeholder="<fmt:message key="placeholder.password"/>" title="<fmt:message key="prescription.password"/>"/>
-    </label>
-    <input type="submit" name="submit" value="<fmt:message key="button.login"/> ">
-</form>
-<form action="controller" method="get">
-    <input type="hidden" name="command" value="to-registr"/>
-    <br>
-    <input type="submit" name="submit" value="<fmt:message key="button.registration"/> ">
-    <br/>
-</form>
-<br>
-<c:import url="search-form.jsp"/>
-<br>
-<ctg:top-tracks/>
+<div class="container-fluid bg-light">
+    <div class="row">
+        <div class="col-1">
+            <c:import url="locale-form.jsp"/>
+        </div>
+        <div class="col-10">
+            <c:import url="header.jsp"/>
+        </div>
+        <div class="col-1">
+            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<div class="container container-fluid bg-light">
+    <div class="row">
+        <div class="col-8">
+            <p class="text-warning">${ validatorMessage }</p>
+            <p class="text-warning">${errorLoginPassMessage}</p>
+            <form action="controller" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="command" value="login"/>
+                    <label for="exampleInputEmail1"><fmt:message key="label.enter.login"/></label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                           name="login"
+                           pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
+                           title="<fmt:message key="prescription.login"/>"/>
+                    <small id="emailHelp" class="form-text text-muted"><fmt:message key="prescription.login"/></small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1"><fmt:message key="label.enter.password"/></label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="password"
+                           pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required=""
+                           placeholder="<fmt:message key="placeholder.password"/>"
+                           title="<fmt:message key="prescription.password"/>"/>
+                    <small id="passwordHelp" class="form-text text-muted"><fmt:message
+                            key="prescription.password"/></small>
+                    <input type="submit" name="submit" class="btn btn-outline-dark"
+                           value="<fmt:message key="button.login"/> ">
+                </div>
+            </form>
+        </div>
+        <div class="col-4">
+            <img src="music/img/login-page-image.svg" alt="music app"
+                 width="320" height="320">
+        </div>
+    </div>
+</div>
+<hr>
+<ctg:top-tracks head="true"/>
+<c:import url="footer.jsp"/>
 </body>
 </html>

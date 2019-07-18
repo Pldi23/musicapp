@@ -1,5 +1,6 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import org.junit.jupiter.api.Test;
@@ -88,9 +89,12 @@ class ValidatorChainTest {
         Set<Violation> actual = new LoginValidator(new PasswordValidator(new BirthDateValidator(
                 new FirstnameValidator(new LastnameValidator(new EmailValidator(null)))))).apply(content);
 
-        Set<Violation> expected = Set.of(new Violation(loginMessage), new Violation(passwordMessage),
-                new Violation(birthdateMessage), new Violation(firstnameMessage), new Violation(lastnameMessage),
-                new Violation(emailMessage));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")),
+                new Violation(MessageManager.getMessage("violation.password", "en_US")),
+                new Violation(MessageManager.getMessage("violation.birthdate", "en_US")),
+                new Violation(MessageManager.getMessage("violation.firstname", "en_US")),
+                new Violation(MessageManager.getMessage("violation.lastname", "en_US")),
+                new Violation(MessageManager.getMessage("violation.email", "en_US")));
 
         assertEquals(expected, actual);
     }

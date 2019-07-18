@@ -70,7 +70,9 @@ public class ShowTracksTag extends TagSupport {
             try {
                 out.write(MessageManager.getMessage("label.tracks", locale));
                 out.write("<table>");
+                out.write("<tbody>");
                 printTableTracks(out, locale);
+                out.write("</tbody>");
                 out.write("</table>");
                 if (!nextUnavailable) {
                     printListingForm(out, "next", "button.next", locale);
@@ -88,15 +90,24 @@ public class ShowTracksTag extends TagSupport {
 
     private void printTableTracks(JspWriter out, String locale) throws IOException {
         for (Track track : tracks) {
-            out.write("<tr>");
-            out.write("<td>" + track.getId() + "</c:out></td>");
-            out.write("<td>" + track.getName() + "</c:out></td>");
+            out.write("<tr class=\"table-bg-light\">");
+            if (admin) {
+                out.write("<td>" + track.getId() + "</c:out></td>");
+            }
+            out.write("<td><form action=\"controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"track-detail\">\n" +
+                    "<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">\n" +
+                    "<input type=\"submit\" class=\"btn btn-light\" name=\"submit\" value=\"" + track.getName() + "\"/>\n" +
+                    "</form></td>");
+            out.write("<td>");
+            out.write("<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">");
             for (Musician singer : track.getSingers()) {
-                out.write("<td>" + singer.getName() + "</c:out></td>");
+                printMusicianButton(out, singer);
             }
-            for (Musician author : track.getAuthors()) {
-                out.write("<td>" + author.getName() + "</td>");
-            }
+            out.write("</div>");
+            out.write("</td>");
+//            for (Musician author : track.getAuthors()) {
+//                out.write("<td>" + author.getName() + "</td>");
+//            }
             out.write("<td>" + track.getGenre().getTitle() + "</td>");
             out.write("<td>");
             out.write("<audio controls preload=\"metadata\">");
@@ -107,7 +118,7 @@ public class ShowTracksTag extends TagSupport {
                 printAdditionalForm(out, track, removeCommandValue, "button.remove", locale);
                 printAdditionalForm(out, track, updateCommandValue, "button.update", locale);
             }
-            printAdditionalForm(out, track, moreCommandValue, "button.details", locale);
+//            printAdditionalForm(out, track, moreCommandValue, "button.details", locale);
             out.write("</tr>");
         }
     }
@@ -131,13 +142,20 @@ public class ShowTracksTag extends TagSupport {
         out.write("</td>");
     }
 
-    private void printListingForm(JspWriter out, String direction, String button,  String locale) throws IOException {
+    private void printListingForm(JspWriter out, String direction, String button, String locale) throws IOException {
         out.write("<form action=\"controller\" method=\"get\">");
         out.write("<input type=\"hidden\" name=\"command\" value=\"" + commandValue + "\">");
         out.write("<input type=\"hidden\" name=\"direction\" value=\"" + direction + "\">");
         printHiddenFilter(out);
-        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+        out.write("<input type=\"submit\" class=\"btn btn-outline-dark\" name=\"submit\" value=\"" +
                 MessageManager.getMessage(button, locale) + "\">");
         out.write("</form>");
+    }
+
+    private void printMusicianButton(JspWriter out, Musician musician) throws IOException {
+        out.write("<form action=\"controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"musician-detail\">\n" +
+                "<input type=\"hidden\" name=\"id\" value=\"" + musician.getId() + "\">\n" +
+                "<input type=\"submit\" class=\"btn btn-light btn-sm\" name=\"submit\" value=\"" + musician.getName() + "\"/>\n" +
+                "</form>");
     }
 }

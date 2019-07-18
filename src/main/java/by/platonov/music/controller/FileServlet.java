@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1
  */
-@WebServlet(value = "/music/*", asyncSupported = true)
+@WebServlet(value = "/music/*")
 public class FileServlet extends HttpServlet {
 
     @Override

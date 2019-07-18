@@ -7,8 +7,8 @@
 <html>
 <head><title><fmt:message key="label.welcome"/></title></head>
 <body>
-<c:import url="../locale-form.jsp"/>
 <c:import url="../header.jsp"/>
+<c:import url="../locale-form.jsp"/>
 <h3><fmt:message key="label.welcome"/> </h3>
 <hr/>
 <form action="controller" method="get">
@@ -16,6 +16,7 @@
     <input type="submit" name="submit" value="<fmt:message key="button.upload.track"/>">
 </form>
 <c:import url="../library-form.jsp"/>
+<c:import url="../footer.jsp"/>
 </body>
 </html>
 

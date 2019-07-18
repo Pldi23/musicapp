@@ -26,8 +26,6 @@ class GenreRepositoryTest {
     private Genre existsGenre = Genre.builder().id(1).title("pop").build();
     private Genre updatedGenre = Genre.builder().id(1).title("new").build();
 
-
-
     @Test
     void addShouldBeTrue() throws RepositoryException {
         assertTrue(repository.add(newGenre));

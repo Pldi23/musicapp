@@ -64,6 +64,7 @@ CREATE TABLE public.playlist
 (
     id serial,
     name character varying(200) COLLATE pg_catalog."default",
+    private boolean,
     CONSTRAINT playlist_pkey1 PRIMARY KEY (id)
 );
 
