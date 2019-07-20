@@ -90,6 +90,18 @@ public class UserService {
         }
     }
 
+    public boolean updatePlaylistAccess(String playlistId) throws ServiceException {
+        try {
+            Playlist playlist = PlaylistRepository.getInstance()
+                    .query(new PlaylistIdSpecification(Long.parseLong(playlistId))).get(0);
+            boolean isPersonal = !playlist.isPersonal();
+            playlist.setPersonal(isPersonal);
+            return PlaylistRepository.getInstance().update(playlist);
+        } catch (RepositoryException e) {
+            throw new ServiceException(EXCEPTION_MESSAGE, e);
+        }
+    }
+
     private User getUserWithPlaylists(User user) throws RepositoryException {
         List<Playlist> playlists = PlaylistRepository.getInstance().query(new PlaylistUserSpecification(user.getLogin()));
         user.getPlaylists().addAll(playlists);

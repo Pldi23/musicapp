@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="page" value="/jsp/my-playlists.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
@@ -17,7 +17,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -28,24 +28,43 @@
             <c:import url="track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <p class="text-info">${ process }</p>
-            <form action="controller" method="get" class="form-inline">
-                <input type="hidden" name="command" value="playlist-create">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="text" class="form-control" name="name" minlength="2" maxlength="50"
-                           required="required" placeholder="<fmt:message key="label.new.playlist.name"/>">
-                </div>
-                <input type="submit" class="btn btn-secondary mb-2" name="submit"
-                       value="<fmt:message key="button.playlist.create"/> ">
-            </form>
-            <hr>
-            <c:if test="${ not empty playlists }"><fmt:message key="label.playlists.total"/> :: ${ size } </c:if>
+            <p class="text-info">${ requestScope.process }</p>
+            <c:if test="${ sessionScope.user.admin eq false}">
+                <form action="controller" method="get" class="form-inline">
+                    <input type="hidden" name="command" value="playlist-create">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="name" minlength="2" maxlength="50"
+                               required="required" placeholder="<fmt:message key="label.new.playlist.name"/>">
+                    </div>
+                    <input type="submit" class="btn btn-secondary mb-2" name="submit"
+                           value="<fmt:message key="button.playlist.create"/> ">
+                </form>
+                <hr>
+            </c:if>
+            <c:if test="${ sessionScope.user.admin eq true }">
+                <form action="controller" method="get" class="form-inline">
+                    <input type="hidden" name="command" value="playlist-create">
+                    <label for="selectForm"><fmt:message key="label.access"/>::</label>
+                    <select name="access" id="selectForm" class="form-control">
+                        <option value="true"><fmt:message key="option.personal"/></option>
+                        <option value="false"><fmt:message key="option.public"/></option>
+                    </select>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="name" minlength="2" maxlength="50"
+                               required="required" placeholder="<fmt:message key="label.new.playlist.name"/>">
+                    </div>
+                    <input type="submit" class="btn btn-secondary mb-2" name="submit"
+                           value="<fmt:message key="button.playlist.create"/> ">
+                </form>
+                <hr>
+            </c:if>
+            <c:if test="${ not empty requestScope.playlists }"><fmt:message key="label.playlists.total"/> :: ${ requestScope.size } </c:if>
             <table>
-                <c:forEach var="map" items="${ statistic }">
+                <c:forEach var="playlist" items="${ requestScope.playlists }">
                     <tr>
                         <td>
                             <c:choose>
-                                <c:when test="${ map.key.personal }">
+                                <c:when test="${ playlist.personal }">
                                     <span class="badge badge-secondary"><fmt:message key="badge.private"/></span>
                                 </c:when>
                                 <c:otherwise>
@@ -56,27 +75,42 @@
                         <td>
                             <form action="controller" method="get">
                                 <input type="hidden" name="command" value="playlist-detail">
-                                <input type="hidden" name="id" value="${ map.key.id }">
+                                <input type="hidden" name="id" value="${ playlist.id }">
                                 <input type="submit" class="btn btn-light" name="submit"
-                                       value="<c:out value="${ map.key.name }"/>">
+                                       value="<c:out value="${ playlist.name }"/>">
                             </form>
                         </td>
                         <td>
                             <form class="form-inline">
                                 <div class="form-group">
-                                    <span class="badge badge-info"><fmt:message key="badge.duration"/></span>
-                                    <h6><c:out value="${ map.value[0] }"/></h6>
+                                    <span class="badge badge-info">
+                                        <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/>
+                                    </span>
                                 </div>
                                 <div class="form-group">
-                                    <span class="badge badge-info"><fmt:message key="badge.quantity"/></span>
-                                    <h6><c:out value="${ map.value[1] }"/></h6>
+                                    <span class="badge badge-info">
+                                        <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
+                                </div>
+                                <div class="form-group">
+                                    <span class="badge badge-info">
+                                        <fmt:message key="badge.genre"/>::<c:out value="${ playlist.getMostPopularGenre() }"/></span>
                                 </div>
                             </form>
                         </td>
+                        <c:if test="${ sessionScope.user.admin eq true }">
+                            <td>
+                                <form action="controller" method="get">
+                                    <input type="hidden" name="command" value="change-access">
+                                    <input type="hidden" name="id" value="${ playlist.id }">
+                                    <input type="submit" class="btn btn-outline-info btn-sm" name="submit"
+                                           value="<fmt:message key="button.update.access"/>">
+                                </form>
+                            </td>
+                        </c:if>
                         <td>
                             <form action="controller" method="get">
                                 <input type="hidden" name="command" value="remove-my-playlist">
-                                <input type="hidden" name="id" value="${ map.key.id }">
+                                <input type="hidden" name="id" value="${ playlist.id }">
                                 <input type="submit" class="btn btn-danger btn-sm" name="submit"
                                        value="<fmt:message key="button.remove"/>">
                             </form>
@@ -86,7 +120,7 @@
             </table>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="music/img/login-page-image.svg" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
         </div>
     </div>
 </div>

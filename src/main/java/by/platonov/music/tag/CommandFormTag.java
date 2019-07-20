@@ -1,9 +1,13 @@
 package by.platonov.music.tag;
 
+import by.platonov.music.MessageManager;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+
+import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 
 /**
  * music-app
@@ -31,6 +35,8 @@ public class CommandFormTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
+        String locale = pageContext.getSession().getAttribute(LOCALE) != null ?
+                (String) pageContext.getSession().getAttribute(LOCALE) : pageContext.getRequest().getLocale().toString();
         JspWriter out = pageContext.getOut();
         try {
             out.write("<form action=\"controller\" method=\"get\">");
@@ -39,8 +45,8 @@ public class CommandFormTag extends TagSupport {
             if (sortOrder) {
                 out.write("<input type=\"hidden\" name=\"order\" value=\"marker\">");
             }
-            out.write("<input type=\"submit\" name=\"submit\" value=\"" +
-                    submitValue + "\">");
+            out.write("<input type=\"submit\" class=\"btn btn-outline-dark\" name=\"submit\" value=\"" +
+                    MessageManager.getMessage(submitValue, locale) + "\">");
             out.write("</form>");
         } catch (IOException e) {
             throw new JspException(e);

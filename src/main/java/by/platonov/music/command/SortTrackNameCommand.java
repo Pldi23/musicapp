@@ -46,6 +46,6 @@ public class SortTrackNameCommand implements Command {
 //        }
 //        log.debug("command provide sorted track list: " + tracks);
 //        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-//                Map.of(TRACKS_ATTRIBUTE, tracks), Map.of(SORT_TRACK_NAME_ORDER, sortTrackNameOrder));
+//                Map.of(TRACKS, tracks), Map.of(SORT_TRACK_NAME_ORDER, sortTrackNameOrder));
     }
 }

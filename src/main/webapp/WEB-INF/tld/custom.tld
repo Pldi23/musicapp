@@ -37,10 +37,20 @@
         </attribute>
     </tag>
     <tag>
-        <name>top-tracks</name>
-        <tag-class>by.platonov.music.tag.TopTracksTag</tag-class>
+        <name>print-tracks</name>
+        <tag-class>by.platonov.music.tag.PrintTracksTag</tag-class>
         <attribute>
             <name>head</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>tracks</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -89,11 +99,6 @@
         </attribute>
         <attribute>
             <name>updateCommandValue</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>moreCommandValue</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

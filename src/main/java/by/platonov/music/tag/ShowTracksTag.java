@@ -24,7 +24,6 @@ public class ShowTracksTag extends TagSupport {
     private String commandValue;//logic operation for example sort/filter/show all
     private String removeCommandValue;//visible for admin
     private String updateCommandValue;//visible for admin
-    private String moreCommandValue;//visible for user
     private boolean nextUnavailable;
     private boolean previousUnavailable;
     private boolean admin;
@@ -47,10 +46,6 @@ public class ShowTracksTag extends TagSupport {
 
     public void setRemoveCommandValue(String removeCommandValue) {
         this.removeCommandValue = removeCommandValue;
-    }
-
-    public void setMoreCommandValue(String moreCommandValue) {
-        this.moreCommandValue = moreCommandValue;
     }
 
     public void setUpdateCommandValue(String updateCommandValue) {
@@ -108,7 +103,7 @@ public class ShowTracksTag extends TagSupport {
 //            for (Musician author : track.getAuthors()) {
 //                out.write("<td>" + author.getName() + "</td>");
 //            }
-            out.write("<td>" + track.getGenre().getTitle() + "</td>");
+            out.write("<td><span class=\"badge badge-info\">" + track.getGenre().getTitle() + "</span></td>");
             out.write("<td>");
             out.write("<audio controls preload=\"metadata\">");
             out.write("<source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\">");
@@ -118,7 +113,6 @@ public class ShowTracksTag extends TagSupport {
                 printAdditionalForm(out, track, removeCommandValue, "button.remove", locale);
                 printAdditionalForm(out, track, updateCommandValue, "button.update", locale);
             }
-//            printAdditionalForm(out, track, moreCommandValue, "button.details", locale);
             out.write("</tr>");
         }
     }

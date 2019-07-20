@@ -10,7 +10,7 @@
 <body>
 <%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
-<c:import url="../library-form.jsp"/>
+<c:import url="../library/library-form.jsp"/>
 <hr/>
 <fmt:message key="message.update"/> ${ entity.uuid }.
 <c:if test="${ not empty violations }">

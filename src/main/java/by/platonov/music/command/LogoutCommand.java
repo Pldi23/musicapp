@@ -9,6 +9,6 @@ import by.platonov.music.command.constant.PageConstant;
 public class LogoutCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.LOGIN_PAGE);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INDEX_PAGE);
     }
 }

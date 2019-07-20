@@ -50,6 +50,7 @@ public class RequestConstant {
     public static final String ORDER = "order";
     public static final String NEXT = "next";
     public static final String PLAYLIST = "playlist";
+    public static final String ACCESS = "access";
     public static final String PASSWORD_OLD = "oldpassword";
     public static final String PASSWORD_NEW = "newpassword";
     public static final String PASSWORD_NEW_CHECK = "newpasswordCheck";
@@ -85,8 +86,8 @@ public class RequestConstant {
 
     public static final String PROCESS = "process";
     public static final String MUSICIANS_ATTRIBUTE = "musicians";
-    public static final String TRACKS_ATTRIBUTE = "tracks";
-    public static final String PLAYLISTS_ATTRIBUTE = "playlists";
+    public static final String TRACKS = "tracks";
+    public static final String PLAYLISTS = "playlists";
     public static final String COMMAND_MESSAGE_FACTORY_ATTRIBUTE = "commandFactoryMessage";
     public static final String USER_FIRST_NAME_ATTRIBUTE = "userFirstName";
     public static final String ADMIN_FIRST_NAME_ATTRIBUTE = "adminFirstName";

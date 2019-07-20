@@ -20,6 +20,7 @@ CREATE TABLE public.track
         ON DELETE NO ACTION
 );
 alter table track add column uuid text;
+alter table track add column created_at timestamp default now();
 
 --init musician table
 CREATE TABLE public.musician

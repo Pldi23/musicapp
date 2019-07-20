@@ -40,7 +40,8 @@ public class TrackNameValidator extends AbstractValidator {
 
         if (filter) {
             if (content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)
-                    && content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)){
+                    && !content.getRequestParameter(RequestConstant.TRACKNAME)[0].isBlank()
+                    && !content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
                 log.warn("track name parameter not matched appropriate regex pattern");
                 result.add(violation);
             }

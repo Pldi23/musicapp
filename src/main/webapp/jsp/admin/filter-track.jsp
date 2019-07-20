@@ -12,7 +12,7 @@
 <body>
 <%--<c:import url="../locale-form.jsp"/>--%>
 <c:import url="../header.jsp"/>
-<c:import url="../library-form.jsp"/>
+<c:import url="../library/library-form.jsp"/>
 <c:import url="../track-filter-form.jsp"/>
 <ctg:show-tracks commandValue="filter-track" tracks="${entities}" admin="${ user.admin }" moreCommandValue="track-detail"
                  removeCommandValue="to-remove-track" updateCommandValue="to-update-track"

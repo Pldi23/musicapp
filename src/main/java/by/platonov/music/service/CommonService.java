@@ -53,9 +53,9 @@ public class CommonService {
         return search(new EntityIdNotNullSpecification(limit, offset), GenreRepository.getInstance());
     }
 
-    public List<Playlist> searchPlaylists(int limit, long offset) throws ServiceException {
+    public List<Playlist> searchPlaylists(int limit, long offset, boolean isAdmin) throws ServiceException {
         log.debug("searching for playlists in limit: " + limit + " and offset: " + offset);
-        return search(new EntityIdNotNullSpecification(limit, offset), PlaylistRepository.getInstance());
+        return playlistsWithTracks(search(new PlaylistPublicLimitSpecification(limit, offset, isAdmin), PlaylistRepository.getInstance()));
     }
 
     public List<Track> searchTrackByUuid(String uuid) throws ServiceException {
@@ -84,7 +84,7 @@ public class CommonService {
     }
 
     public List<Playlist> searchUserPlaylists(User user) throws ServiceException {
-        return search(new PlaylistUserSpecification(user.getLogin()), PlaylistRepository.getInstance());
+        return playlistsWithTracks(search(new PlaylistUserSpecification(user.getLogin()), PlaylistRepository.getInstance()));
     }
 
     public Track searchTrackById(String id) throws ServiceException {
@@ -126,8 +126,8 @@ public class CommonService {
         return count(new IdIsNotNullSpecification(), GenreRepository.getInstance());
     }
 
-    public long countPlaylists() throws ServiceException {
-        return count(new IdIsNotNullSpecification(), PlaylistRepository.getInstance());
+    public long countPlaylists(boolean isAdmin) throws ServiceException {
+        return count(new PlaylistPublicLimitSpecification(Integer.MAX_VALUE, 0, isAdmin), PlaylistRepository.getInstance());
     }
 
     public long countUsersPlaylists(User user) throws ServiceException {
@@ -167,15 +167,18 @@ public class CommonService {
     }
 
     public List<Playlist> sortedPlaylistsId(boolean isAscending, int limit, long offset) throws ServiceException {
-        return search(new EntitySortedIdSpecification(isAscending, limit, offset), PlaylistRepository.getInstance());
+        return playlistsWithTracks(search(new EntitySortedIdSpecification(isAscending, limit, offset),
+                PlaylistRepository.getInstance()));
     }
 
-    public List<Playlist> sortedPlaylistsName(boolean isAscending, int limit, long offset) throws ServiceException {
-        return search(new EntitySortedNameSpecification(isAscending, limit, offset), PlaylistRepository.getInstance());
+    public List<Playlist> sortedPlaylistsName(boolean isAscending, int limit, long offset, boolean isAdmin) throws ServiceException {
+        return playlistsWithTracks(search(new PlaylistSortedNameSpecification(isAscending, limit, offset, isAdmin),
+                PlaylistRepository.getInstance()));
     }
 
-    public List<Playlist> sortedPlaylistLength(boolean isAscending, int limit, long offset) throws ServiceException {
-        return search(new PlaylistSortedLengthSpecification(isAscending, limit, offset), PlaylistRepository.getInstance());
+    public List<Playlist> sortedPlaylistLength(boolean isAscending, int limit, long offset, boolean isAdmin) throws ServiceException {
+        return playlistsWithTracks(search(new PlaylistSortedLengthSpecification(isAscending, limit, offset, isAdmin),
+                PlaylistRepository.getInstance()));
     }
 
     public Musician getMusician(String musicianName) throws ServiceException {
@@ -220,10 +223,15 @@ public class CommonService {
         return tracksWithMusicians(search(new TrackRandomSpecification(), TrackRepository.getInstance()));
     }
 
-    public boolean createPlaylist(User user, String playlistName) throws ServiceException {
+    public List<Track> getTracksLastAdded() throws ServiceException {
+        log.debug("getting 10 tracks last added");
+        return tracksWithMusicians(search(new TracksLastAddedSpecification(), TrackRepository.getInstance()));
+    }
+
+    public boolean createPlaylist(User user, boolean isPersonal, String playlistName) throws ServiceException {
         try {
-            boolean personal = !user.isAdmin();
-            Playlist playlist = Playlist.builder().name(playlistName).tracks(new HashSet<>()).personal(personal).build();
+//            boolean personal = !user.isAdmin();
+            Playlist playlist = Playlist.builder().name(playlistName).tracks(new HashSet<>()).personal(isPersonal).build();
             boolean additionResult = PlaylistRepository.getInstance().add(playlist);
             user.getPlaylists().add(playlist);
             boolean updatingResult = UserRepository.getInstance().update(user);
@@ -271,12 +279,8 @@ public class CommonService {
     }
 
     public String countPlaylistLength(Playlist playlist) throws ServiceException {
-        long duration = getPlaylistTracks(playlist.getId()).stream().mapToLong(Track::getLength).sum();
-        long hours = TimeUnit.SECONDS.toHours(duration);
-        duration -= TimeUnit.HOURS.toSeconds(hours);
-        long minutes = TimeUnit.SECONDS.toMinutes(duration);
-        duration -= TimeUnit.MINUTES.toSeconds(minutes);
-        return String.format("%02d:%02d:%02d", hours, minutes, duration);
+        playlist.getTracks().addAll(getPlaylistTracks(playlist.getId()));
+        return playlist.getTotalDuration();
     }
 
     public String countPlaylistSize(Playlist playlist) throws ServiceException {
@@ -293,6 +297,14 @@ public class CommonService {
 
     public List<Track> getPlaylistTracks(long playlistId) throws ServiceException {
         return tracksWithMusicians(search(new TracksInPlaylistSpecification(playlistId), TrackRepository.getInstance()));
+    }
+
+    private List<Playlist> playlistsWithTracks(List<Playlist> playlists) throws ServiceException {
+//        playlists.stream().forEach(playlist -> playlist.getTracks().addAll(getPlaylistTracks(playlist.getId())));
+        for (Playlist playlist : playlists) {
+            playlist.getTracks().addAll(getPlaylistTracks(playlist.getId()));
+        }
+        return playlists;
     }
 
     private List<Musician> getTrackSingers(long trackId) throws ServiceException {

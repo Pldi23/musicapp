@@ -19,7 +19,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -86,14 +86,14 @@
 
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" class="btn btn-light"
+                    <input type="submit" name="submit" class="btn btn-outline-dark"
                            value="<fmt:message key="button.register"/>">
 
                 </div>
             </form>
         </div>
         <div class="col-4">
-            <img src="music/img/login-page-image.svg" alt="music app"
+            <img src="<c:url value="/resources/login-page-image.svg"/>" alt="music app"
                  width="320" height="320">
         </div>
     </div>

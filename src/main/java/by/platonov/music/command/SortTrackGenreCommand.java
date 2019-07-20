@@ -48,7 +48,7 @@ public class SortTrackGenreCommand implements Command {
 //        }
 //        log.debug("command provide sorted track list: " + tracks);
 //        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-//                Map.of(TRACKS_ATTRIBUTE, tracks), Map.of(SORT_TRACK_GENRE_ORDER, sortTrackGenreOrder));
+//                Map.of(TRACKS, tracks), Map.of(SORT_TRACK_GENRE_ORDER, sortTrackGenreOrder));
 //    }
     }
 }

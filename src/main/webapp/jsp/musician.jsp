@@ -17,7 +17,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <img src="music/img/note.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/note.svg"/>" width="100" height="60" alt="">
         </div>
         <div class="col-8">
             <ul class="list-inline">
@@ -35,7 +35,7 @@
             </ul>
         </div>
         <div class="col-2">
-            <img src="music/img/note.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/note.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -73,7 +73,7 @@
         </div>
         <div class="col-2">
             <c:import url="search-form.jsp"/>
-            <img class="img-fluid" src="music/img/login-page-image.svg" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
         </div>
     </div>
 </div>

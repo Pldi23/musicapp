@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static by.platonov.music.command.constant.RequestConstant.PROCESS;
-import static by.platonov.music.command.constant.RequestConstant.TRACKS_ATTRIBUTE;
+import static by.platonov.music.command.constant.RequestConstant.TRACKS;
 
 /**
  * music-app
@@ -36,7 +36,7 @@ public class QueryCommand implements Command {
         try {
             tracks = commonService.searchTrackByName(query);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
-                    Map.of(TRACKS_ATTRIBUTE, tracks));
+                    Map.of(TRACKS, tracks));
         } catch (ServiceException e) {
             log.error("Service provide an exception for query command ", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,

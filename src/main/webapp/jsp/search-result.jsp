@@ -14,7 +14,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img class="img-responsive" src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img class="img-responsive" src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -50,6 +50,8 @@
                                     <source src="music/${track.uuid}" type="audio/mpeg">
                                 </audio>
                             </td>
+                            <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
+                                <c:out value="${ track.genre.title }"/></span></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -124,6 +126,12 @@
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
                                 </form>
                             </td>
+                            <td><span class="badge badge-info">
+                                    <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/></span></td>
+                            <td><span class="badge badge-info">
+                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span></td>
+                            <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
+                                <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -157,22 +165,3 @@
 <c:import url="footer.jsp"/>
 </body>
 </html>
-<%--            <td>--%>
-<%--            <form method="get" action="controller">--%>
-<%--                <input type="hidden" name="command" value="remove">--%>
-<%--                <input type="hidden" name="uuid" value="${ track.uuid }">--%>
-<%--                <input type="submit" name="submit" value="remove">--%>
-<%--                ${removeresult}--%>
-<%--            </form> </td>--%>
-<%--                <audio controls>--%>
-<%--                    <source src="${ track.path }" type="audio/mpeg">--%>
-<%--                </audio>--%>
-<%--                <form method="get" action="controller">--%>
-<%--                    <input type="hidden" name="command" value="playsound">--%>
-<%--                    <input type="hidden" name="tr" value="${track.path}">--%>
-<%--                    <label>--%>
-<%--                        play panel--%>
-<%--                    </label>--%>
-<%--                    <input type="submit" name="submit" value="play">--%>
-<%--                </form>--%>
-

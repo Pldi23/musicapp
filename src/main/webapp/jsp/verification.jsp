@@ -14,7 +14,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>

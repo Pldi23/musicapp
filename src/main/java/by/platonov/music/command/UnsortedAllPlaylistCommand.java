@@ -3,7 +3,7 @@ package by.platonov.music.command;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
-import by.platonov.music.exception.ServiceException;
+import by.platonov.music.entity.User;
 import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,7 +26,8 @@ public class UnsortedAllPlaylistCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
+        User user = (User) content.getSessionAttribute(RequestConstant.USER);
         return handler.sorted(content, RequestConstant.NO_ORDER, PageConstant.PLAYLIST_LIBRARY_PAGE,
-                commonService::countPlaylists, (b, v, l) -> commonService.searchPlaylists(v, l));
+                () -> commonService.countPlaylists(user.isAdmin()), (b, v, l) -> commonService.searchPlaylists(v, l, user.isAdmin()));
     }
 }

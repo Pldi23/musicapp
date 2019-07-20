@@ -17,7 +17,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img class="img-responsive" src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img class="img-responsive" src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -31,11 +31,10 @@
             <p class="text-warning">${ process }</p>
             <h4><fmt:message key="label.filter.result"/></h4>
             <ctg:show-tracks tracks="${ entities }" admin="${ user.admin }" commandValue="filter-track"
-                             moreCommandValue="track-detail"
                              nextUnavailable="${ nextunavailable }" previousUnavailable="${ previousunavailable }"/>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="music/img/login-page-image.svg" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
         </div>
     </div>
 </div>

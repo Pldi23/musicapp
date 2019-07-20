@@ -41,7 +41,8 @@ public class SingerValidator extends AbstractValidator {
                 (String) content.getSessionAttribute(LOCALE)));
         if (filter) {
             if (content.getRequestParameters().containsKey(RequestConstant.SINGER)
-                    && content.getRequestParameter(RequestConstant.SINGER)[0].matches(SINGER_REGEX_PATTERN)) {
+                    && !content.getRequestParameter(RequestConstant.SINGER)[0].isBlank()
+                    && !content.getRequestParameter(RequestConstant.SINGER)[0].matches(SINGER_REGEX_PATTERN)) {
                 log.warn("One of specified singers doesn't match singer regex pattern");
                 result.add(violation);
             }

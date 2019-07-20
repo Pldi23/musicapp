@@ -64,17 +64,17 @@ public class SearchCommand implements Command {
                     attributes.put(MUSICIANS_ATTRIBUTE, musicians);
                     attributes.put(MUSICIAN_SIZE, musiciansSize);
                 } else if (content.getRequestParameters().containsKey("key-tracks")) {
-                    attributes.put(TRACKS_ATTRIBUTE, tracks);
+                    attributes.put(TRACKS, tracks);
                     attributes.put(TRACKS_SIZE, tracksSize);
                 } else if (content.getRequestParameters().containsKey("key-playlists")) {
-                    attributes.put(PLAYLISTS_ATTRIBUTE, playlists);
+                    attributes.put(PLAYLISTS, playlists);
                     attributes.put(PLAYLISTS_SIZE, playlistsSize);
                 } else {
                     attributes.put(MUSICIANS_ATTRIBUTE, musicians);
                     attributes.put(MUSICIAN_SIZE, musiciansSize);
-                    attributes.put(TRACKS_ATTRIBUTE, tracks);
+                    attributes.put(TRACKS, tracks);
                     attributes.put(TRACKS_SIZE, tracksSize);
-                    attributes.put(PLAYLISTS_ATTRIBUTE, playlists);
+                    attributes.put(PLAYLISTS, playlists);
                     attributes.put(PLAYLISTS_SIZE, playlistsSize);
                 }
                 attributes.put(NEXT_OFFSET, offset + limit);

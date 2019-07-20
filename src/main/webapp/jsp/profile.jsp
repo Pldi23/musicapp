@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <c:set var="page" value="/jsp/profile.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
@@ -18,7 +18,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -28,15 +28,15 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-3">
-            <div class="img"><img src="music/img/${ user.photoPath }" alt="${ user.login }" class="rounded-circle"
+            <div class="img"><img src="music/img/${ sessionScope.user.photoPath }" alt="${ sessionScope.user.login }" class="rounded-circle"
                                   width="200" height="200">
             </div>
-            <h4><c:out value="${ user.login }"/></h4>
+            <h4><c:out value="${ sessionScope.user.login }"/></h4>
             <h3><fmt:message key="profile.overview"/></h3>
         </div>
         <div class="col-8">
             <h3><fmt:message key="message.profile"/></h3>
-            <p class="text-info">${ process }</p>
+            <p class="text-info">${ requestScope.process }</p>
             <form action="controller" enctype="multipart/form-data" method="post">
                 <label>
                     <fmt:message key="label.profile.photo"/>
@@ -49,7 +49,7 @@
                 <label>
                     <fmt:message key="label.profile.firstname"/>
                     <input type="hidden" name="command" value="update-firstname">
-                    <input type="text" name="firstname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ user.firstname }" required="required">
+                    <input type="text" name="firstname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ sessionScope.user.firstname }" required="required">
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
@@ -57,7 +57,7 @@
                 <label>
                     <fmt:message key="label.profile.lastname"/>
                     <input type="hidden" name="command" value="update-lastname">
-                    <input type="text" name="lastname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ user.lastname }" required="required">
+                    <input type="text" name="lastname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ sessionScope.user.lastname }" required="required">
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
@@ -66,7 +66,7 @@
                     <fmt:message key="label.profile.gender"/>
                     <input type="hidden" name="command" value="update-gender">
                     <select name="gender">
-                        <option selected="selected">${ user.gender }</option>
+                        <option selected="selected">${ sessionScope.user.gender }</option>
                         <option value="male"><fmt:message key="option.male"/></option>
                         <option value="female"><fmt:message key="option.female"/></option>
                     </select>

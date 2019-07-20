@@ -1,18 +1,13 @@
 package by.platonov.music.tag;
 
-import by.platonov.music.MessageManager;
-import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
-import by.platonov.music.exception.ServiceException;
-import by.platonov.music.service.CommonService;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * music-app
@@ -20,27 +15,33 @@ import java.util.stream.Collectors;
  * @author Dzmitry Platonov on 2019-07-13.
  * @version 0.0.1
  */
-public class TopTracksTag extends TagSupport {
+public class PrintTracksTag extends TagSupport {
 
     private boolean head;
+    private String label;
+    private List<Track> tracks;
 
     public void setHead(boolean head) {
         this.head = head;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
+    }
+
     @Override
     public int doStartTag() throws JspException {
-        CommonService service = new CommonService();
-        String locale = pageContext.getSession().getAttribute(RequestConstant.LOCALE) != null ?
-                (String) pageContext.getSession().getAttribute(RequestConstant.LOCALE) : pageContext.getRequest().getLocale().toString();
         JspWriter out = pageContext.getOut();
         try {
-            List<Track> tracks = service.getRandomTen();
             if (head) {
                 out.write("<div class=\"container container-fluid bg-light\">");
                 out.write("<div class=\"row\">");
                 out.write("<div class=\"col-8\">");
-                out.write("<h3>" + MessageManager.getMessage("label.topten", locale) + "</h3>");
+                out.write("<h3>" + label + "</h3>");
                 out.write("</div>");
                 out.write("</div>");
                 out.write("</div>");
@@ -71,7 +72,7 @@ public class TopTracksTag extends TagSupport {
             out.write("</div>");
             out.write("</div>");
             out.write("</div>");
-        } catch (ServiceException | IOException e) {
+        } catch (IOException e) {
             throw new JspException(e);
         }
         return SKIP_BODY;

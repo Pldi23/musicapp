@@ -2,6 +2,7 @@ package by.platonov.music.command;
 
 import by.platonov.music.command.constant.CommandMessage;
 import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.service.CommonService;
 import by.platonov.music.service.UserService;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class CommandFactoryTest {
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{RequestConstant.LOGIN}));
         when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{RequestConstant.LOGIN});
         Command actual = factory.getCommand(content);
-        Command expected = new LoginCommand(new UserService());
+        Command expected = new LoginCommand(new UserService(), new CommonService());
         assertEquals(expected, actual);
     }
 

@@ -70,7 +70,7 @@ public class SortTrackIdCommand implements Command {
 //        }
 //        log.debug("command provide sorted track list: " + trackList);
 //        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SORT_ID_TRACK_LIBRARY_PAGE,
-//                Map.of(TRACKS_ATTRIBUTE, trackList,  PREVIOUS_UNAVAILABLE, previousUnavailable,
+//                Map.of(TRACKS, trackList,  PREVIOUS_UNAVAILABLE, previousUnavailable,
 //                        NEXT_UNAVAILABLE, nextUnavailable),
 //                Map.of(SORT_TRACK_ID_ORDER, sortTrackIdOrder, NEXT_OFFSET, offset + limit,
 //                        PREVIOUS_OFFSET, offset - limit));

@@ -3,5 +3,6 @@
 <head>
     <title>Index</title></head>
 <body>
-<jsp:forward page="/jsp/login.jsp"/>
-</body></html>
+<jsp:forward page="controller?command=entry"/>
+</body>
+</html>

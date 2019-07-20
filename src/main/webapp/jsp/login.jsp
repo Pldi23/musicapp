@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <c:set var="page" value="/jsp/login.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" scope="session"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }" scope="session"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
@@ -19,7 +19,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -27,8 +27,8 @@
 <div class="container container-fluid bg-light">
     <div class="row">
         <div class="col-8">
-            <p class="text-warning">${ validatorMessage }</p>
-            <p class="text-warning">${errorLoginPassMessage}</p>
+            <p class="text-warning">${ requestScope.validatorMessage }</p>
+            <p class="text-warning">${requestScope.errorLoginPassMessage}</p>
             <form action="controller" method="post">
                 <div class="form-group">
                     <input type="hidden" name="command" value="login"/>
@@ -53,13 +53,14 @@
             </form>
         </div>
         <div class="col-4">
-            <img src="music/img/login-page-image.svg" alt="music app"
+            <img src="<c:url value="/resources/login-page-image.svg"/>" alt="music app"
                  width="320" height="320">
         </div>
     </div>
 </div>
 <hr>
-<ctg:top-tracks head="true"/>
+<fmt:message var="label" key="label.new.arrivals" scope="page"/>
+<ctg:print-tracks head="true" tracks="${ tracks }" label="${ label }"/>
 <c:import url="footer.jsp"/>
 </body>
 </html>

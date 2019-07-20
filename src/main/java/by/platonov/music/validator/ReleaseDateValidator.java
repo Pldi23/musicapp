@@ -28,7 +28,8 @@ public class ReleaseDateValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.RELEASE_DATE)) {
+        if (!content.getRequestParameters().containsKey(RequestConstant.RELEASE_DATE)
+                || content.getRequestParameter(RequestConstant.RELEASE_DATE)[0].isBlank()) {
             log.warn("Invalid content parameter: no release date parameter found in request");
             result.add(new Violation(MessageManager.getMessage("violation.incorrectrelease", (String) content.getSessionAttribute(LOCALE))));
         } else {

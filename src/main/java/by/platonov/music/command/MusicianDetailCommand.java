@@ -36,7 +36,7 @@ public class MusicianDetailCommand implements Command {
         Musician musician;
         List<Track> tracks;
         int size;
-        Genre genre;
+        String genre;
         try {
             musician = commonService.searchMusicianById(id);
             tracks = commonService.searchTracksByMusician(Long.parseLong(id));
@@ -46,7 +46,9 @@ public class MusicianDetailCommand implements Command {
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                     .entrySet()
                     .stream()
-                    .max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
+                    .max(Comparator.comparing(Map.Entry::getValue))
+                    .map(genreLongEntry -> genreLongEntry.getKey().getTitle())
+                    .orElse("");
 
         } catch (ServiceException e) {
             log.error("command couldn't provide tracks", e);
@@ -54,6 +56,6 @@ public class MusicianDetailCommand implements Command {
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.MUSICIAN_PAGE,
                 Map.of(RequestConstant.ENTITIES, tracks, RequestConstant.MUSICIAN, musician,
-                        RequestConstant.SIZE, size, RequestConstant.GENRE, genre.getTitle()));
+                        RequestConstant.SIZE, size, RequestConstant.GENRE, genre));
     }
 }

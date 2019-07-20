@@ -18,7 +18,7 @@
             <c:import url="header.jsp"/>
         </div>
         <div class="col-1">
-            <img src="music/img/epam-logo.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>
@@ -26,7 +26,7 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <img src="music/img/note.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/note.svg"/>" width="100" height="60" alt="">
         </div>
         <div class="col-2">
 <%--            <form action="controller" method="post">--%>
@@ -64,7 +64,7 @@
             </ul>
         </div>
         <div class="col-2">
-            <img src="music/img/note.svg" width="100" height="60" alt="">
+            <img src="<c:url value="/resources/note.svg"/>" width="100" height="60" alt="">
         </div>
     </div>
 </div>

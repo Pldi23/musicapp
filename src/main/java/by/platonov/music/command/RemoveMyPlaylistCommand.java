@@ -44,7 +44,7 @@ public class RemoveMyPlaylistCommand implements Command {
                         List.of(commonService.countPlaylistLength(playlist), commonService.countPlaylistSize(playlist)));
             }
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_PLAYLISTS_PAGE,
-                    Map.of(RequestConstant.PROCESS, result, RequestConstant.PLAYLISTS_ATTRIBUTE, playlists,
+                    Map.of(RequestConstant.PROCESS, result, RequestConstant.PLAYLISTS, playlists,
                             RequestConstant.PLAYLISTS_STATISTIC, playlistWithStatistics));
         } catch (ServiceException e) {
             log.error("command can't remove playlist from " + user + " playlists", e);

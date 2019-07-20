@@ -23,9 +23,6 @@ import static org.mockito.Mockito.when;
  */
 class TrackNameValidatorTest {
 
-    public static final String EXPECTED_VIOLATION_MESSAGE =
-            "Track name must contain at least one symbol and doesn't have format suffix";
-
     private TrackNameValidator validator = new TrackNameValidator(null);
     private RequestContent content = mock(RequestContent.class);
 
