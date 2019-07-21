@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <c:set var="page" value="/jsp/track.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
@@ -69,7 +69,7 @@
             <br>
             <c:if test="${ not empty track.singers }">
                 <label class="display-5"><fmt:message key="label.singers"/></label>
-                <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="btn-group" role="group" aria-label="Basic">
                     <c:forEach var="singer" items="${ track.singers }" varStatus="status">
                         <form action="controller" method="get">
                             <input type="hidden" name="command" value="musician-detail">
@@ -83,7 +83,7 @@
             <br>
             <c:if test="${ not empty track.authors }">
                 <label class="display-5"><fmt:message key="label.authors"/></label>
-                <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="btn-group" role="group" aria-label="Basic">
                     <c:forEach var="author" items="${ track.authors }" varStatus="status">
                         <form action="controller" method="get">
                             <input type="hidden" name="command" value="musician-detail">
@@ -108,6 +108,22 @@
                     </tr>
                 </c:forEach>
             </table>
+            <c:if test="${ sessionScope.user.admin eq true }">
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-update-track">
+                    <input type="hidden" name="entityType" value="track">
+                    <input type="hidden" name="id" value="${ requestScope.track.id }">
+                    <input type="submit" class="btn btn-outline-info" name="submit"
+                           value="<fmt:message key="button.update"/>">
+                </form>
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-remove-track">
+                    <input type="hidden" name="id" value="${ requestScope.track.id }">
+                    <input type="hidden" name="entityType" value="track">
+                    <input type="submit" class="btn btn-outline-danger" name="submit"
+                           value="<fmt:message key="button.remove"/>">
+                </form>
+            </c:if>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">

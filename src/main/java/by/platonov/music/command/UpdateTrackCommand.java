@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -45,57 +46,56 @@ public class UpdateTrackCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
 
-        CommandResult commandResult;
-
         Set<Violation> violations =
                 new TrackNameValidator(
                         new SingerValidator(
                                 new GenreValidator(
                                         new ReleaseDateValidator(null)))).apply(content);
 
-        if (violations.isEmpty()) {
-            try {
-                Track track = Track.builder()
-                        .id(Long.parseLong(content.getRequestParameter(ID)[0]))
-                        .uuid(content.getRequestParameter(UUID)[0])
-                        .name(content.getRequestParameter(TRACKNAME)[0])
-                        .singers(new HashSet<>())
-                        .authors(new HashSet<>())
-                        .length(getAudioLength(content.getRequestParameter(UUID)[0]))
-                        .genre(commonService.getGenre(content.getRequestParameter(GENRE)[0]))
-                        .releaseDate(LocalDate.parse(content.getRequestParameter(RELEASE_DATE)[0]))
-                        .build();
+        try {
+            Track track = Track.builder()
+                    .id(Long.parseLong(content.getRequestParameter(ID)[0]))
+                    .uuid(content.getRequestParameter(UUID)[0])
+                    .name(content.getRequestParameter(TRACKNAME)[0])
+                    .singers(new HashSet<>())
+                    .authors(new HashSet<>())
+                    .length(getAudioLength(content.getRequestParameter(UUID)[0]))
+                    .genre(commonService.getGenre(content.getRequestParameter(GENRE)[0]))
+                    .releaseDate(LocalDate.parse(content.getRequestParameter(RELEASE_DATE)[0]))
+                    .build();
 
-                String[] singerNames = content.getRequestParameter(SINGER);
-                for (String singerName : singerNames) {
-                    if (!singerName.isEmpty()) {
-                        track.getSingers().add(commonService.getMusician(singerName.trim()));
-                    }
+            String[] singerNames = content.getRequestParameter(SINGER);
+            for (String singerName : singerNames) {
+                if (!singerName.isEmpty()) {
+                    track.getSingers().add(commonService.getMusician(singerName.trim()));
                 }
-                String[] authorNames = content.getRequestParameter(AUTHOR);
-                for (String authorName : authorNames) {
-                    if (!authorName.isEmpty()) {
-                        track.getAuthors().add(commonService.getMusician(authorName.trim()));
-                    }
-                }
-
-                commandResult = adminService.updateTrack(track) ?
-                        new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-                                Map.of(UPDATE_RESULT, track.getName() + " " +
-                                        MessageManager.getMessage("updated", (String) content.getSessionAttribute(LOCALE)))) :
-                        new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-                                Map.of(UPDATE_RESULT, MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE)))
-                        );
-            } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException
-                    | InvalidAudioFrameException e) {
-                log.error("command couldn't provide track for update", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
-        } else {
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_TRACK_PAGE,
-                    Map.of(VALIDATOR_RESULT, violations));
+            String[] authorNames = content.getRequestParameter(AUTHOR);
+            for (String authorName : authorNames) {
+                if (!authorName.isEmpty()) {
+                    track.getAuthors().add(commonService.getMusician(authorName.trim()));
+                }
+            }
+
+            if (violations.isEmpty()) {
+
+                String locale = (String) content.getSessionAttribute(LOCALE);
+                String result = adminService.updateTrack(track) ?
+                        track.getName() + " " + MessageManager.getMessage("updated", locale) :
+                        MessageManager.getMessage("failed", locale);
+
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_TRACK_PAGE,
+                        Map.of(UPDATE_RESULT, result, ENTITY, track));
+            } else {
+                String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_TRACK_PAGE,
+                        Map.of(VALIDATOR_RESULT, result, ENTITY, track));
+            }
+        } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException
+                | InvalidAudioFrameException e) {
+            log.error("command couldn't provide track for update", e);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
         }
-        return commandResult;
     }
 
     private long getAudioLength(String uuid) throws IOException, TagException, ReadOnlyFileException,

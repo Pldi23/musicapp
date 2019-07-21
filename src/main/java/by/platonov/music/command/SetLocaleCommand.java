@@ -30,7 +30,7 @@ public class SetLocaleCommand implements Command {
         String page = content.getRequestParameters().getOrDefault(RequestConstant.PAGE, new String[]{PageConstant.INDEX_PAGE})[0];
         page = page.equals(PageConstant.LOGIN_PAGE) ? PageConstant.INDEX_PAGE : page;
         Map<String, Object> attributes = new HashMap<>();
-        if (page.equals(PageConstant.MAIN_PAGE)) {
+        if (page.equals(PageConstant.MAIN_PAGE) || page.equals(PageConstant.ADMIN_PAGE)) {
             try {
                 attributes.put(RequestConstant.TRACKS, commonService.getRandomTen());
             } catch (ServiceException e) {
@@ -39,5 +39,8 @@ public class SetLocaleCommand implements Command {
             }
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes, Map.of(RequestConstant.LOCALE, locale));
+//        return new CommandResult(CommandResult.ResponseType.FORWARD,
+//                (String) content.getSessionAttribute(RequestConstant.REFERER), Map.of(),
+//                Map.of(RequestConstant.LOCALE, locale));
     }
 }

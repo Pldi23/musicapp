@@ -10,7 +10,9 @@ public class PageConstant {
     }
 
     public static final String ADMIN_PAGE = "/jsp/admin/admin-main.jsp";
+    public static final String ENTITY_REMOVED_PAGE = "/jsp/admin/entity-removed.jsp";
     public static final String ERROR_REDIRECT_PAGE = "jsp/error.jsp";
+    public static final String GENRE_PAGE = "/jsp//genre.jsp";
     public static final String GENRE_LIBRARY_PAGE = "/jsp/admin/genre-library.jsp";
     public static final String FILTER_PAGE = "/jsp/filter-result.jsp";
     public static final String INDEX_PAGE = "/index.jsp";

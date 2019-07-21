@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }" />
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }" />
 <fmt:setBundle basename="pagecontent" />
 <c:set var="page" value="/jsp/library/library-track.jsp" scope="request"/>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
@@ -16,10 +16,10 @@
         </div>
         <div class="col-8">
             <c:import url="../sort-button-group.jsp"/>
-            <ctg:show-tracks tracks="${ entities }" admin="${ user.admin }" removeCommandValue="to-remove-track"
+            <ctg:show-tracks tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }" removeCommandValue="to-remove-track"
                              updateCommandValue="to-update-track"
-                             commandValue="show-all-tracks" nextUnavailable="${ nextunavailable }"
-                             previousUnavailable="${ previousunavailable }"/>
+                             commandValue="show-all-tracks" nextUnavailable="${ requestScope.nextunavailable }"
+                             previousUnavailable="${ requestScope.previousunavailable }"/>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">

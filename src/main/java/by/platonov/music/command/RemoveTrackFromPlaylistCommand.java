@@ -34,7 +34,7 @@ public class RemoveTrackFromPlaylistCommand implements Command {
             String result = commonService.removeTrackFromPlaylist(trackId, playlistId) ?
                     MessageManager.getMessage("removed", (String) content.getSessionAttribute(LOCALE)) :
                     MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE));
-            Playlist playlist = commonService.searchPlaylistByIdWitTracks(playlistId);
+            Playlist playlist = commonService.searchPlaylistByIdWithTracks(playlistId).get(0);
             String length = commonService.countPlaylistLength(playlist);
             String size = commonService.countPlaylistSize(playlist);
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,

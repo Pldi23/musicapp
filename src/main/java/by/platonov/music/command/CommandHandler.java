@@ -74,16 +74,25 @@ class CommandHandler<T> {
 
     CommandResult transfer(RequestContent content, String page, TransferCommandExecutor<T> commandExecutor) {
         String parameterValue = content.getRequestParameter(ID)[0];
+        String entityType = content.getRequestParameters().containsKey(ENTITY_TYPE) ?
+                content.getRequestParameter(ENTITY_TYPE)[0] : "empty";
         T t;
         try {
-            t = commandExecutor.transfer(parameterValue);
+            List<T> entities = commandExecutor.transfer(parameterValue);
+            if (entities.isEmpty()) {
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                        Map.of(RequestConstant.PROCESS,
+                                MessageManager.getMessage("message.entity.not.available",
+                                        (String) content.getSessionAttribute(RequestConstant.LOCALE))));
+            }
+            t = entities.get(0);
         } catch (ServiceException e) {
             log.error("command couldn't search track");
             return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
         }
 
         log.debug("command successfully provide " + t + " to the next page");
-        return new CommandResult(CommandResult.ResponseType.FORWARD, page, Map.of(RequestConstant.ENTITY, t));
+        return new CommandResult(CommandResult.ResponseType.FORWARD, page, Map.of(ENTITY, t, ENTITY_TYPE, entityType));
     }
 
     CommandResult update(UserService userService, RequestContent content, String updatedParameter,

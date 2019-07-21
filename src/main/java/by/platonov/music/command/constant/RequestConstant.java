@@ -33,6 +33,7 @@ public class RequestConstant {
     public static final String PAGE = "page";
 
     public static final String LOCALE = "locale";
+    public static final String ENTITY_TYPE = "entityType";
     public static final String USER = "user";
     public static final String ROLE = "role";
     public static final String ADMIN = "admin";
@@ -85,6 +86,8 @@ public class RequestConstant {
     public static final String PLAYLISTS_STATISTIC = "statistic";
 
     public static final String PROCESS = "process";
+    public static final String LASTPAGE = "lastPage";
+    public static final String REFERER = "referer";
     public static final String MUSICIANS_ATTRIBUTE = "musicians";
     public static final String TRACKS = "tracks";
     public static final String PLAYLISTS = "playlists";

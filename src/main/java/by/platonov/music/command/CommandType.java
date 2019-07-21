@@ -24,6 +24,7 @@ public enum CommandType {
     QUERY(new QueryCommand(new CommonService())),
     REGISTER(new RegistrationCommand(new UserService())),
     REMOVE(new RemoveTrackCommand(new AdminService(), new CommonService())),
+    REMOVE_CANCEL(new RemoveCancelCommand(new CommonService())),
     REMOVE_MY_PLAYLIST(new RemoveMyPlaylistCommand(new CommonService())),
     REMOVE_TRACK_FROM_PLAYLIST(new RemoveTrackFromPlaylistCommand(new CommonService())),
     SEARCH(new SearchCommand(new CommonService())),

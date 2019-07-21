@@ -2,11 +2,13 @@ package by.platonov.music.command;
 
 import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
 import java.util.Map;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
@@ -32,15 +34,20 @@ public class AddTrackToPlaylistCommand implements Command {
         String trackId = content.getRequestParameter(ID)[0];
         String playlistId = content.getRequestParameter(PLAYLIST_ID)[0];
         try {
-            Track track = commonService.searchTrackById(trackId);
+            String locale = (String) content.getSessionAttribute(LOCALE);
+            List<Track> tracks = commonService.searchTrackById(trackId);
+            if (tracks.isEmpty()) {
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                        Map.of(RequestConstant.PROCESS,
+                                MessageManager.getMessage("message.entity.not.available", locale)));
+            }
+            Track track = tracks.get(0);
             return commonService.addTrackToPLaylist(trackId, playlistId) ?
                     new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
-                            Map.of(PROCESS, MessageManager.getMessage("added",
-                                    (String) content.getSessionAttribute(LOCALE)),
+                            Map.of(PROCESS, MessageManager.getMessage("added", locale),
                                     TRACK, track)) :
                     new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
-                            Map.of(PROCESS, MessageManager.getMessage("failed",
-                                    (String) content.getSessionAttribute(LOCALE)),
+                            Map.of(PROCESS, MessageManager.getMessage("failed", locale),
                                     TRACK, track));
         } catch (ServiceException e) {
             log.error("command could't add track to playlist", e);

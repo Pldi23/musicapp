@@ -93,7 +93,7 @@
                 </label>
                 <br>
                 <br>
-                <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.upload.track"/>">
+                <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.upload.track"/>">
                 <br/>
             </form>
         </div>

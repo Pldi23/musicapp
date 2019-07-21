@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Locale;
 
 /**
@@ -53,9 +52,6 @@ public class FrontController extends HttpServlet {
 
         commandResult.getAttributes().forEach(request::setAttribute);
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-//        request.getSession().setAttribute(RequestConstant.PREVIOUS_PAGE, request.getSession()
-//                .getAttribute(RequestConstant.CURRENT_PAGE));
-//        request.getSession().setAttribute(RequestConstant.CURRENT_PAGE, commandResult.getPage());
 
 //        if (command.getClass().isAssignableFrom(LoginCommand.class)) {
 //            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");

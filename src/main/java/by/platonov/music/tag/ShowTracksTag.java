@@ -130,7 +130,7 @@ public class ShowTracksTag extends TagSupport {
         out.write("<form method=\"get\" action=\"controller\">");
         out.write("<input type=\"hidden\" name=\"command\" value=\"" + additionalCommandValue + "\">");
         out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-        out.write("<input type=\"submit\" name=\"submit\" value=\"" +
+        out.write("<input type=\"submit\" class=\"btn btn-outline-info\" name=\"submit\" value=\"" +
                 MessageManager.getMessage(buttonKey, locale) + "\">");
         out.write("</form>");
         out.write("</td>");

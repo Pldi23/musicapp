@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * music-app
@@ -87,27 +86,29 @@ public class CommonService {
         return playlistsWithTracks(search(new PlaylistUserSpecification(user.getLogin()), PlaylistRepository.getInstance()));
     }
 
-    public Track searchTrackById(String id) throws ServiceException {
+    public List<Track> searchTrackById(String id) throws ServiceException {
         log.debug("searching track by id in trackRepository");
-        return tracksWithMusicians(search(new TrackIdSpecification(Long.parseLong(id)), TrackRepository.getInstance())).get(0);
+        return tracksWithMusicians(search(new TrackIdSpecification(Long.parseLong(id)), TrackRepository.getInstance()));
     }
 
-    public Musician searchMusicianById(String id) throws ServiceException {
-        return search(new MusicianIdSpecification(Long.parseLong(id)), MusicianRepository.getInstance()).get(0);
+    public List<Musician> searchMusicianById(String id) throws ServiceException {
+        return search(new MusicianIdSpecification(Long.parseLong(id)), MusicianRepository.getInstance());
     }
 
-    public Genre searchGenreById(String id) throws ServiceException {
-        return search(new GenreIdSpecification(Long.parseLong(id)), GenreRepository.getInstance()).get(0);
+    public List<Genre> searchGenreById(String id) throws ServiceException {
+        return search(new GenreIdSpecification(Long.parseLong(id)), GenreRepository.getInstance());
     }
 
-    public Playlist searchPlaylistById(String id) throws ServiceException {
-        return search(new PlaylistIdSpecification(Long.parseLong(id)), PlaylistRepository.getInstance()).get(0);
+    public List<Playlist> searchPlaylistById(String id) throws ServiceException {
+        return search(new PlaylistIdSpecification(Long.parseLong(id)), PlaylistRepository.getInstance());
     }
 
-    public Playlist searchPlaylistByIdWitTracks(String id) throws ServiceException {
-        Playlist playlist = searchPlaylistById(id);
-        playlist.getTracks().addAll(getPlaylistTracks(Long.parseLong(id)));
-        return playlist;
+    public List<Playlist> searchPlaylistByIdWithTracks(String id) throws ServiceException {
+        List<Playlist> playlists = searchPlaylistById(id);
+        for (Playlist playlist : playlists) {
+            playlist.getTracks().addAll(getPlaylistTracks(Long.parseLong(id)));
+        }
+        return playlists;
     }
 
     public List<Playlist> searchPlaylistsByTrackAndUser(long trackId, User user) throws ServiceException {
@@ -258,14 +259,18 @@ public class CommonService {
     }
 
     public boolean removeTrackFromPlaylist(String trackId, String playlistId) throws ServiceException {
+        boolean result = true;
         try {
-            Playlist playlist = searchPlaylistByIdWitTracks(playlistId);
-            playlist.getTracks().removeIf(t -> t.getId() == Long.parseLong(trackId));
-            return PlaylistRepository.getInstance().update(playlist);
+            List<Playlist> playlists = searchPlaylistByIdWithTracks(playlistId);
+            for (Playlist playlist : playlists) {
+                playlist.getTracks().removeIf(t -> t.getId() == Long.parseLong(trackId));
+                result = PlaylistRepository.getInstance().update(playlist);
+            }
         } catch (RepositoryException e) {
             log.error("exception from repository ", e);
             throw new ServiceException(e);
         }
+        return result;
     }
 
     public boolean removePlaylistFromUser(User user, String playlistId) throws ServiceException {

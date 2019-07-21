@@ -22,6 +22,10 @@
     </div>
 </div>
 <hr>
+<c:if test="${ sessionScope.user.admin eq true }">
+    <c:import url="library/library-navbar.jsp"/>
+    <hr/>
+</c:if>
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">

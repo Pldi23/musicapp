@@ -2,6 +2,8 @@ package by.platonov.music.command;
 
 import by.platonov.music.exception.ServiceException;
 
+import java.util.List;
+
 /**
  * music-app
  *
@@ -9,5 +11,5 @@ import by.platonov.music.exception.ServiceException;
  * @version 0.0.1
  */
 interface TransferCommandExecutor<T> {
-    T transfer(String parameter) throws ServiceException;
+    List<T> transfer(String parameter) throws ServiceException;
 }

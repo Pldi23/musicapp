@@ -100,10 +100,13 @@ public class UploadTrackCommand implements Command {
                         .genre(genre)
                         .build();
 
-                adminService.addTrack(track);
+                String locale = (String) content.getSessionAttribute(LOCALE);
+                String result = adminService.addTrack(track) ?
+                        track.getName() + " " + MessageManager.getMessage("added", locale)
+                        : MessageManager.getMessage("failed", locale);
 
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
-                        Map.of(ADD_RESULT, track.getName() + " " + MessageManager.getMessage("added", (String) content.getSessionAttribute(LOCALE))));
+                        Map.of(ADD_RESULT, result));
             } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException | InvalidAudioFrameException e) {
                 log.error("couldn't provide track to next page", e);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);

@@ -1,10 +1,12 @@
 package by.platonov.music.service;
 
+import by.platonov.music.entity.Genre;
+import by.platonov.music.entity.Musician;
+import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
-import by.platonov.music.repository.Repository;
-import by.platonov.music.repository.TrackRepository;
+import by.platonov.music.repository.*;
 import by.platonov.music.repository.specification.*;
 import lombok.extern.log4j.Log4j2;
 
@@ -34,12 +36,7 @@ public class AdminService {
     }
 
     public boolean removeTrack(Track track) throws ServiceException {
-        try {
-            log.debug("Removing track " + track);
-            return TrackRepository.getInstance().remove(track);
-        } catch (RepositoryException e) {
-            throw new ServiceException(e);
-        }
+        return remove(track, TrackRepository.getInstance());
     }
 
     public boolean updateTrack(Track track) throws ServiceException {
@@ -47,6 +44,27 @@ public class AdminService {
             return TrackRepository.getInstance().update(track);
         } catch (RepositoryException e) {
             throw new ServiceException(e);
+        }
+    }
+
+    public boolean removePlaylist(Playlist playlist) throws ServiceException {
+        return remove(playlist, PlaylistRepository.getInstance());
+    }
+
+    public boolean removeMusician(Musician musician) throws ServiceException {
+        return remove(musician, MusicianRepository.getInstance());
+    }
+
+    public boolean removeGenre(Genre genre) throws ServiceException {
+        return remove(genre, GenreRepository.getInstance());
+    }
+
+    private <T> boolean remove(T t, Repository<T> repository) throws ServiceException {
+        try {
+            log.debug("Removing entity " + t);
+            return repository.remove(t);
+        } catch (RepositoryException e) {
+            throw new ServiceException("repository provide exception for Common service", e);
         }
     }
 

@@ -1,7 +1,11 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.constant.CommandMessage;
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
+import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.entity.Genre;
+import by.platonov.music.entity.Musician;
+import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.AdminService;
@@ -12,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -36,29 +41,116 @@ public class RemoveTrackCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        CommandResult commandResult;
+//        CommandResult commandResult;
+        String locale = (String) content.getSessionAttribute(LOCALE);
         try {
-            String id = content.getRequestParameter(ID)[0];
-            Track track = commonService.searchTrackById(id);
-
-            if (adminService.removeTrack(track)) {
-                deleteFile(track.getUuid());
-                log.debug(track + " removed successfully");
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-                        Map.of(REMOVE_RESULT, CommandMessage.SUCCESSFULLY_MESSAGE));
-            } else {
-                log.debug("could not remove track");
-                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-                        Map.of(REMOVE_RESULT, CommandMessage.FAILED_MESSAGE));
-            }
-        } catch (ServiceException | IOException e) {
-            log.error(e);
-            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return removeEntity(content) ?
+                    new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                            Map.of(PROCESS, MessageManager.getMessage("removed", locale)))
+                    : new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                    Map.of(PROCESS, MessageManager.getMessage("message.already.removed", locale)));
+        } catch (ServiceException | IOException | EntityParameterNotFoundException e) {
+            log.error("command could not remove track", e);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
         }
-        return commandResult;
+
+//        try {
+//            String id = content.getRequestParameter(ID)[0];
+//            Track track = commonService.searchTrackById(id);
+//            String locale = (String) content.getSessionAttribute(LOCALE);
+//
+//            if (adminService.removeTrack(track)) {
+//                deleteFile(track.getUuid());
+//                log.debug(track + " removed successfully");
+//                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD,
+//                        (String) content.getSessionAttribute(LASTPAGE),
+//                        Map.of(REMOVE_RESULT, MessageManager.getMessage("removed", locale), OFFSET, 0L),
+//                        Map.of(PREVIOUS_OFFSET, 0L, NEXT_OFFSET, 0L));
+//            } else {
+//                log.debug("could not remove track");
+//                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
+//                        Map.of(REMOVE_RESULT, MessageManager.getMessage("failed", locale), OFFSET, 0L),
+//                        Map.of(PREVIOUS_OFFSET, 0L, NEXT_OFFSET, 0L));
+//            }
+//        } catch (ServiceException | IOException e) {
+//            log.error("command could not remove track", e);
+//            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+//        }
+//        return commandResult;
     }
 
     private void deleteFile(String uuid) throws IOException {
         Files.delete(Path.of(ResourceBundle.getBundle("app").getString("app.music.uploads") + File.separator + uuid));
     }
+
+    private boolean removeEntity(RequestContent content) throws ServiceException, IOException, EntityParameterNotFoundException {
+        boolean result;
+        String entityType = content.getRequestParameter(RequestConstant.ENTITY_TYPE)[0];
+        String id = content.getRequestParameter(ID)[0];
+        switch (entityType) {
+            case RequestConstant.TRACK:
+                List<Track> tracks = commonService.searchTrackById(id);
+                if (!tracks.isEmpty()) {
+                    Track track = tracks.get(0);
+                    deleteFile(track.getUuid());
+                    result = adminService.removeTrack(track);
+                } else {
+                    result = false;
+                }
+                break;
+            case RequestConstant.PLAYLIST:
+                List<Playlist> playlists = commonService.searchPlaylistById(id);
+                if (!playlists.isEmpty()) {
+                    Playlist playlist = playlists.get(0);
+                    result = adminService.removePlaylist(playlist);
+                } else {
+                    result = false;
+                }
+                break;
+            case RequestConstant.MUSICIAN:
+                List<Musician> musicians = commonService.searchMusicianById(id);
+                if (!musicians.isEmpty()) {
+                    Musician musician = musicians.get(0);
+                    result = adminService.removeMusician(musician);
+                } else {
+                    result = false;
+                }
+                break;
+            case RequestConstant.GENRE:
+                List<Genre> genres = commonService.searchGenreById(id);
+                if (!genres.isEmpty()) {
+                    Genre genre = genres.get(0);
+                    result = adminService.removeGenre(genre);
+                } else {
+                    result = false;
+                }
+                break;
+            default:
+                throw new EntityParameterNotFoundException("could not detect entity");
+        }
+        return result;
+    }
+
+//    private String detectPage(RequestContent content) throws EntityParameterNotFoundException {
+//        String result;
+//        String entityType = content.getRequestParameter(RequestConstant.ENTITY_TYPE)[0];
+//        switch (entityType) {
+//            case RequestConstant.TRACK:
+//                result = PageConstant.TRACK_PAGE;
+//                break;
+//            case RequestConstant.PLAYLIST:
+//                result = PageConstant.PLAYLIST_PAGE;
+//                break;
+//            case RequestConstant.MUSICIAN:
+//                result = PageConstant.MUSICIAN_PAGE;
+//                break;
+//            case RequestConstant.GENRE:
+//                result = PageConstant.GENRE_PAGE;
+//                break;
+//            default:
+//                throw new EntityParameterNotFoundException("Entity type not specified correctly, could not detect page. " +
+//                        "Request doesn't contain parameter or parameter is invalid");
+//        }
+//        return result;
+//    }
 }

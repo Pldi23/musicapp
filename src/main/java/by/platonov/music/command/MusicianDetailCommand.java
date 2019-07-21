@@ -1,5 +1,6 @@
 package by.platonov.music.command;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Genre;
@@ -38,7 +39,14 @@ public class MusicianDetailCommand implements Command {
         int size;
         String genre;
         try {
-            musician = commonService.searchMusicianById(id);
+            List<Musician> musicians = commonService.searchMusicianById(id);
+            if (musicians.isEmpty()) {
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                        Map.of(RequestConstant.PROCESS,
+                                MessageManager.getMessage("message.entity.not.available",
+                                        (String) content.getSessionAttribute(RequestConstant.LOCALE))));
+            }
+            musician = musicians.get(0);
             tracks = commonService.searchTracksByMusician(Long.parseLong(id));
             size = tracks.size();
             genre = tracks.stream()

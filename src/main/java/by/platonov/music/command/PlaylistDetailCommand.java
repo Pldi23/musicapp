@@ -1,12 +1,15 @@
 package by.platonov.music.command;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
+import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +34,14 @@ public class PlaylistDetailCommand implements Command {
         String length;
         String size;
         try {
-            playlist = commonService.searchPlaylistByIdWitTracks(playlistId);
+            List<Playlist> playlists = commonService.searchPlaylistById(playlistId);
+            if (playlists.isEmpty()) {
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                        Map.of(RequestConstant.PROCESS,
+                                MessageManager.getMessage("message.entity.not.available",
+                                        (String) content.getSessionAttribute(RequestConstant.LOCALE))));
+            }
+            playlist = playlists.get(0);
             length = commonService.countPlaylistLength(playlist);
             size = commonService.countPlaylistSize(playlist);
         } catch (ServiceException e) {

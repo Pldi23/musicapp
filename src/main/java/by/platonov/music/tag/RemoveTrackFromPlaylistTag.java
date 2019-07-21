@@ -48,7 +48,7 @@ public class RemoveTrackFromPlaylistTag extends TagSupport {
             JspWriter out = pageContext.getOut();
             try {
                 out.write("<td>\n" +
-                        "<form action=\"controller\" method=\"get\">\n" +
+                        "<form action=\"controller\" method=\"post\">\n" +
                         "<input type=\"hidden\" name=\"command\" value=\"remove-track-from-playlist\">\n" +
                         "<input type=\"hidden\" name=\"playlistid\" value=\"" + currentPlaylist.getId() + "\">\n" +
                         "<input type=\"hidden\" name=\"trackid\" value=\"" + track.getId() + "\">\n" +

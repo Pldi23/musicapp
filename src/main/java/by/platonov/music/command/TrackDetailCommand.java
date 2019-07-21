@@ -1,5 +1,6 @@
 package by.platonov.music.command;
 
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
@@ -35,13 +36,14 @@ public class TrackDetailCommand implements Command {
         Track track;
         List<Playlist> playlists;
         try {
-            track = commonService.searchTrackById(trackId);
-//            AudioFile f = AudioFileIO.read(new File(ResourceBundle.getBundle("app").getString("app.music.uploads") +
-//                    File.separator + track.getUuid()));
-//            Tag tag = f.getTag();
-//            if (tag.hasField("Cover Art")) {
-//                byte[] b = tag.getFirstArtwork().getBinaryData();
-//            }
+            List<Track> tracks = commonService.searchTrackById(trackId);
+            if (tracks.isEmpty()) {
+                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
+                        Map.of(RequestConstant.PROCESS,
+                                MessageManager.getMessage("message.entity.not.available",
+                                        (String) content.getSessionAttribute(RequestConstant.LOCALE))));
+            }
+            track = tracks.get(0);
 
             playlists = user != null ? commonService.searchPlaylistsByTrackAndUser(Long.parseLong(trackId), user)
                     : new ArrayList<>();
