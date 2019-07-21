@@ -39,4 +39,8 @@ public class User extends Guest{
         FEMALE,
         MALE
     }
+
+    public int getPlaylistsQuantity() {
+        return playlists.size();
+    }
 }

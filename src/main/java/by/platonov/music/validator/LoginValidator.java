@@ -18,8 +18,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 public class LoginValidator extends AbstractValidator {
 
     private static final String LOGIN_REGEX_PATTERN = "^[(\\w)-]{4,20}";
-//    private static final String LOGIN_INCORRECT_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
-//            "latin letter, numbers, and punctuation symbols like '-' and '_'";
 
     public LoginValidator(ParameterValidator next) {
         super(next);

@@ -33,8 +33,8 @@
             <form action="controller" method="post">
                 <input type="hidden" name="command" value="register"/>
                 <div class="form-group">
-                    <label for="exampleInputLogin"><fmt:message key="label.enter.login"/></label>
-                    <input type="text" class="form-control" id="exampleInputLogin" aria-describedby="loginHelp"
+                    <label for="inputLogin"><fmt:message key="label.enter.login"/></label>
+                    <input type="text" class="form-control" id="inputLogin" aria-describedby="loginHelp"
                            name="login"
                            pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
                            title="<fmt:message key="prescription.login"/>"/>

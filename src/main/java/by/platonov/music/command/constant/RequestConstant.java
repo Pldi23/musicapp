@@ -83,6 +83,10 @@ public class RequestConstant {
     public static final String ENTITY = "entity";
     public static final String RELEASE_FROM = "releaseFrom";
     public static final String RELEASE_TO = "releaseTo";
+    public static final String BIRTH_FROM = "birthDateFrom";
+    public static final String BIRTH_TO = "birthDateTo";
+    public static final String REGISTRATION_FROM = "createdFrom";
+    public static final String REGISTRATION_TO = "createdTo";
     public static final String PLAYLISTS_STATISTIC = "statistic";
 
     public static final String PROCESS = "process";

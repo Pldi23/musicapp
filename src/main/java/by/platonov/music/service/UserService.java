@@ -10,6 +10,7 @@ import by.platonov.music.repository.specification.*;
 import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -100,6 +101,22 @@ public class UserService {
             throw new ServiceException(EXCEPTION_MESSAGE, e);
         }
     }
+
+    public List<User> searchAllUsers() throws ServiceException {
+        try {
+            List<User> users = UserRepository.getInstance().query(new LoginIsNotNullSpecification());
+            for (User user : users) {
+                getUserWithPlaylists(user);
+            }
+            return users;
+        } catch (RepositoryException e) {
+            log.debug("could not search for all users", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    public List<User> searchUserByFilter(String login,boolean isAdmin, firstname, lastname, email, LocalDate.parse(birthdateFrom), LocalDate.parse(birthdateTo), LocalDate.parse(registrationFrom),
+            LocalDate.parse(regisrationTo), Integer.MAX_VALUE, 0)
 
     private User getUserWithPlaylists(User user) throws RepositoryException {
         List<Playlist> playlists = PlaylistRepository.getInstance().query(new PlaylistUserSpecification(user.getLogin()));
