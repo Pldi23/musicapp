@@ -19,8 +19,8 @@
             <p class="text-info">${requestScope.removeResult}</p>
             <p class="text-info">${requestScope.updateResult}</p>
             <c:set var="additionalButtons" value="${ sessionScope.user.admin }"/>
-            <ctg:show-tracks tracks="${ requestScope.entities }" commandValue="sort-track-by-id" updateCommandValue="to-update-track"
-                             removeCommandValue="to-remove-track" nextUnavailable="${ requestScope.nextunavailable }"
+            <ctg:show-tracks tracks="${ requestScope.entities }" commandValue="sort-track-by-id"
+                             nextUnavailable="${ requestScope.nextunavailable }"
                              previousUnavailable="${ requestScope.previousunavailable }" admin="${ sessionScope.user.admin }"/>
         </div>
         <div class="col-2">

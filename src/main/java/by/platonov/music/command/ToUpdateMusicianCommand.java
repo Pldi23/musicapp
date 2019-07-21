@@ -22,6 +22,7 @@ public class ToUpdateMusicianCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        return handler.transfer(content, PageConstant.UPDATE_MUSICIAN_PAGE, commonService::searchMusicianById);
+        return handler
+                .transfer(content, PageConstant.UPDATE_MUSICIAN_PAGE, commonService::searchMusicianById);
     }
 }

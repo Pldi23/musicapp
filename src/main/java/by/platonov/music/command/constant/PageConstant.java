@@ -48,6 +48,7 @@ public class PageConstant {
     public static final String UPDATE_GENRE_PAGE = "/jsp/admin/update-genre.jsp";
     public static final String UPDATE_PLAYLIST_PAGE = "/jsp/admin/update-playlist.jsp";
     public static final String UPLOAD_TRACK_PAGE = "/jsp/admin/upload-track.jsp";
+    public static final String USER_LIBRARY_PAGE = "/jsp/user-library/user-library.jsp";
     public static final String USER_PLAYLISTS_PAGE = "/jsp/my-playlists.jsp";
     public static final String VERIFICATION_PAGE = "/jsp/verification.jsp";
 }

@@ -41,7 +41,6 @@ public class RemoveTrackCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-//        CommandResult commandResult;
         String locale = (String) content.getSessionAttribute(LOCALE);
         try {
             return removeEntity(content) ?
@@ -53,30 +52,6 @@ public class RemoveTrackCommand implements Command {
             log.error("command could not remove track", e);
             return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
         }
-
-//        try {
-//            String id = content.getRequestParameter(ID)[0];
-//            Track track = commonService.searchTrackById(id);
-//            String locale = (String) content.getSessionAttribute(LOCALE);
-//
-//            if (adminService.removeTrack(track)) {
-//                deleteFile(track.getUuid());
-//                log.debug(track + " removed successfully");
-//                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD,
-//                        (String) content.getSessionAttribute(LASTPAGE),
-//                        Map.of(REMOVE_RESULT, MessageManager.getMessage("removed", locale), OFFSET, 0L),
-//                        Map.of(PREVIOUS_OFFSET, 0L, NEXT_OFFSET, 0L));
-//            } else {
-//                log.debug("could not remove track");
-//                commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-//                        Map.of(REMOVE_RESULT, MessageManager.getMessage("failed", locale), OFFSET, 0L),
-//                        Map.of(PREVIOUS_OFFSET, 0L, NEXT_OFFSET, 0L));
-//            }
-//        } catch (ServiceException | IOException e) {
-//            log.error("command could not remove track", e);
-//            commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-//        }
-//        return commandResult;
     }
 
     private void deleteFile(String uuid) throws IOException {
@@ -130,27 +105,4 @@ public class RemoveTrackCommand implements Command {
         }
         return result;
     }
-
-//    private String detectPage(RequestContent content) throws EntityParameterNotFoundException {
-//        String result;
-//        String entityType = content.getRequestParameter(RequestConstant.ENTITY_TYPE)[0];
-//        switch (entityType) {
-//            case RequestConstant.TRACK:
-//                result = PageConstant.TRACK_PAGE;
-//                break;
-//            case RequestConstant.PLAYLIST:
-//                result = PageConstant.PLAYLIST_PAGE;
-//                break;
-//            case RequestConstant.MUSICIAN:
-//                result = PageConstant.MUSICIAN_PAGE;
-//                break;
-//            case RequestConstant.GENRE:
-//                result = PageConstant.GENRE_PAGE;
-//                break;
-//            default:
-//                throw new EntityParameterNotFoundException("Entity type not specified correctly, could not detect page. " +
-//                        "Request doesn't contain parameter or parameter is invalid");
-//        }
-//        return result;
-//    }
 }

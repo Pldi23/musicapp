@@ -46,6 +46,22 @@
             <c:import url="track-filter-form.jsp"/>
         </div>
         <div class="col-8">
+            <c:if test="${ sessionScope.user.admin eq true }">
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-update-musician">
+                    <input type="hidden" name="entityType" value="musician">
+                    <input type="hidden" name="id" value="${ requestScope.musician.id }">
+                    <input type="submit" class="btn btn-outline-info" name="submit"
+                           value="<fmt:message key="button.update"/>">
+                </form>
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-remove-musician">
+                    <input type="hidden" name="id" value="${ requestScope.musician.id }">
+                    <input type="hidden" name="entityType" value="musician">
+                    <input type="submit" class="btn btn-outline-danger" name="submit"
+                           value="<fmt:message key="button.remove"/>">
+                </form>
+            </c:if>
             <table>
                 <c:forEach var="track" items="${ entities }" varStatus="status">
                     <tr>

@@ -53,24 +53,6 @@
                                 <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span></td>
                             <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
                                 <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
-                            <c:if test="${ user.admin eq true}">
-                                <td>
-                                    <form method="get" action="controller">
-                                        <input type="hidden" name="command" value="to-remove-playlist">
-                                        <input type="hidden" name="id" value="${ playlist.id }">
-                                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                                               value="<fmt:message key="button.remove"/>">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method="get" action="controller">
-                                        <input type="hidden" name="command" value="to-update-playlist">
-                                        <input type="hidden" name="id" value="${ playlist.id }">
-                                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                                               value="<fmt:message key="button.update"/>">
-                                    </form>
-                                </td>
-                            </c:if>
                         </tr>
                     </c:forEach>
                     </tbody>

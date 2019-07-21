@@ -21,7 +21,7 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 public class SingerValidator extends AbstractValidator {
 
     private static final String SINGER_REGEX_PATTERN = "(?U).{1,30}";
-    private static final int MINIMUN_QUANTITY_SINGERS = 1;
+    private static final int MINIMUM_QUANTITY_SINGERS = 1;
 
     private boolean filter;
 
@@ -50,7 +50,7 @@ public class SingerValidator extends AbstractValidator {
             if (!content.getRequestParameters().containsKey(RequestConstant.SINGER)) {
                 log.warn("no singer parameter found");
                 result.add(violation);
-            } else if (content.getRequestParameter(RequestConstant.SINGER).length >= MINIMUN_QUANTITY_SINGERS
+            } else if (content.getRequestParameter(RequestConstant.SINGER).length >= MINIMUM_QUANTITY_SINGERS
                     && Arrays.stream(content.getRequestParameter(RequestConstant.SINGER)).noneMatch(s -> s.matches(SINGER_REGEX_PATTERN))) {
                 log.warn("One of specified singers doesn't match singer regex pattern");
                 result.add(violation);

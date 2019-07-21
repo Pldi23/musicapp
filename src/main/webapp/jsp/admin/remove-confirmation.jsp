@@ -13,18 +13,18 @@
             <c:import url="../track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <fmt:message key="message.remove.confirm"/> '${ requestScope.entity.name }' <fmt:message key="message.database.remove"/>
+            <fmt:message key="message.remove.confirm"/><c:out value="'${ requestScope.entity.name }'"/><fmt:message key="message.database.remove"/>
             <form action="controller" method="post">
                 <input type="hidden" name="command" value="remove">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">
                 <input type="hidden" name="entityType" value="${ requestScope.entityType }">
-                <input type="submit" name="submit" value="<fmt:message key="button.finally.remove"/> ">
+                <input type="submit" class="btn btn-outline-danger" name="submit" value="<fmt:message key="button.finally.remove"/> ">
             </form>
             <form action="controller" method="get">
                 <input type="hidden" name="command" value="remove-cancel">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">
                 <input type="hidden" name="entityType" value="${ requestScope.entityType }">
-                <input type="submit" name="submit" value="<fmt:message key="button.cancel"/>">
+                <input type="submit" class="btn btn-outline-secondary" name="submit" value="<fmt:message key="button.cancel"/>">
             </form>
         </div>
         <div class="col-2">

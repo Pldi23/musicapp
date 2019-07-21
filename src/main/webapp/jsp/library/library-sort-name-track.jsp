@@ -17,8 +17,7 @@
         <div class="col-8">
             <c:import url="../sort-button-group.jsp"/>
             <ctg:show-tracks tracks="${ entities }" commandValue="sort-track-by-name"
-                             removeCommandValue="to-remove-track"
-                             updateCommandValue="to-update-track" previousUnavailable="${ previousunavailable }"
+                             previousUnavailable="${ previousunavailable }"
                              nextUnavailable="${ nextunavailable }"/>
         </div>
         <div class="col-2">

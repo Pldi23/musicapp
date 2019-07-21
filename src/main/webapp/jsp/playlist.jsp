@@ -29,24 +29,6 @@
             <img src="<c:url value="/resources/note.svg"/>" width="100" height="60" alt="">
         </div>
         <div class="col-2">
-<%--            <form action="controller" method="post">--%>
-<%--                <input type="hidden" name="command" value="playlist-personal">--%>
-<%--                &lt;%&ndash;                    <select name="gender">&ndash;%&gt;--%>
-<%--                &lt;%&ndash;                        <option selected="selected">${ user.gender }</option>&ndash;%&gt;--%>
-<%--                &lt;%&ndash;                        <option value="male"><fmt:message key="option.personal"/></option>&ndash;%&gt;--%>
-<%--                &lt;%&ndash;                        <option value="female"><fmt:message key="option.public"/></option>&ndash;%&gt;--%>
-<%--                &lt;%&ndash;                    </select>&ndash;%&gt;--%>
-<%--                <c:choose>--%>
-<%--                    <c:when test="${ playlist.personal }">--%>
-<%--                        <input type="submit" class="btn btn-dark" name="submit"--%>
-<%--                               value="<fmt:message key="button.update"/>">--%>
-<%--                    </c:when>--%>
-<%--                    <c:otherwise>--%>
-<%--                        <input type="submit" class="btn btn-dark" name="submit"--%>
-<%--                               value="<fmt:message key="button.update"/>">--%>
-<%--                    </c:otherwise>--%>
-<%--                </c:choose>--%>
-<%--            </form>--%>
             <c:choose>
                 <c:when test="${ playlist.personal }">
                     <span class="badge badge-secondary"><fmt:message key="badge.private"/></span>
@@ -84,6 +66,22 @@
         </div>
         <div class="col-8">
             <p class="text-info"><c:out value="${ process }"/></p>
+            <c:if test="${ sessionScope.user.admin eq true }">
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-update-playlist">
+                    <input type="hidden" name="entityType" value="playlist">
+                    <input type="hidden" name="id" value="${ requestScope.playlist.id }">
+                    <input type="submit" class="btn btn-outline-info" name="submit"
+                           value="<fmt:message key="button.update"/>">
+                </form>
+                <form action="controller" method="post">
+                    <input type="hidden" name="command" value="to-remove-playlist">
+                    <input type="hidden" name="id" value="${ requestScope.playlist.id }">
+                    <input type="hidden" name="entityType" value="playlist">
+                    <input type="submit" class="btn btn-outline-danger" name="submit"
+                           value="<fmt:message key="button.remove"/>">
+                </form>
+            </c:if>
             <c:if test="${ not empty playlist.tracks }"><fmt:message key="label.tracks"/></c:if>
             <table>
                 <c:forEach var="track" items="${ playlist.tracks }" varStatus="status">

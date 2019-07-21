@@ -5,7 +5,6 @@ import by.platonov.music.entity.User;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.PlaylistRepository;
-import by.platonov.music.repository.Repository;
 import by.platonov.music.repository.UserRepository;
 import by.platonov.music.repository.specification.*;
 import lombok.EqualsAndHashCode;

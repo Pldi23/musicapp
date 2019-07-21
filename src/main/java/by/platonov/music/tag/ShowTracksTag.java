@@ -22,8 +22,6 @@ public class ShowTracksTag extends TagSupport {
 
     private List<Track> tracks;
     private String commandValue;//logic operation for example sort/filter/show all
-    private String removeCommandValue;//visible for admin
-    private String updateCommandValue;//visible for admin
     private boolean nextUnavailable;
     private boolean previousUnavailable;
     private boolean admin;
@@ -44,14 +42,6 @@ public class ShowTracksTag extends TagSupport {
         this.previousUnavailable = previousUnavailable;
     }
 
-    public void setRemoveCommandValue(String removeCommandValue) {
-        this.removeCommandValue = removeCommandValue;
-    }
-
-    public void setUpdateCommandValue(String updateCommandValue) {
-        this.updateCommandValue = updateCommandValue;
-    }
-
     public void setNextUnavailable(boolean nextUnavailable) {
         this.nextUnavailable = nextUnavailable;
     }
@@ -66,7 +56,7 @@ public class ShowTracksTag extends TagSupport {
                 out.write(MessageManager.getMessage("label.tracks", locale));
                 out.write("<table>");
                 out.write("<tbody>");
-                printTableTracks(out, locale);
+                printTableTracks(out);
                 out.write("</tbody>");
                 out.write("</table>");
                 if (!nextUnavailable) {
@@ -83,7 +73,7 @@ public class ShowTracksTag extends TagSupport {
         return SKIP_BODY;
     }
 
-    private void printTableTracks(JspWriter out, String locale) throws IOException {
+    private void printTableTracks(JspWriter out) throws IOException {
         for (Track track : tracks) {
             out.write("<tr class=\"table-bg-light\">");
             if (admin) {
@@ -109,10 +99,6 @@ public class ShowTracksTag extends TagSupport {
             out.write("<source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\">");
             out.write("</audio>");
             out.write("</td>");
-            if (admin) {
-                printAdditionalForm(out, track, removeCommandValue, "button.remove", locale);
-                printAdditionalForm(out, track, updateCommandValue, "button.update", locale);
-            }
             out.write("</tr>");
         }
     }
@@ -123,17 +109,6 @@ public class ShowTracksTag extends TagSupport {
         out.write("<input type=\"hidden\" name=\"genre\" value=\"" + pageContext.getRequest().getAttribute(GENRE) + "\">");
         out.write("<input type=\"hidden\" name=\"releaseFrom\" value=\"" + pageContext.getRequest().getAttribute(RELEASE_FROM) + "\">");
         out.write("<input type=\"hidden\" name=\"releaseTo\" value=\"" + pageContext.getRequest().getAttribute(RELEASE_TO) + "\">");
-    }
-
-    private void printAdditionalForm(JspWriter out, Track track, String additionalCommandValue, String buttonKey, String locale) throws IOException {
-        out.write("<td>");
-        out.write("<form method=\"get\" action=\"controller\">");
-        out.write("<input type=\"hidden\" name=\"command\" value=\"" + additionalCommandValue + "\">");
-        out.write("<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">");
-        out.write("<input type=\"submit\" class=\"btn btn-outline-info\" name=\"submit\" value=\"" +
-                MessageManager.getMessage(buttonKey, locale) + "\">");
-        out.write("</form>");
-        out.write("</td>");
     }
 
     private void printListingForm(JspWriter out, String direction, String button, String locale) throws IOException {

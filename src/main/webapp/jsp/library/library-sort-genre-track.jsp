@@ -17,9 +17,7 @@
         <div class="col-8">
             <c:import url="../sort-button-group.jsp"/>
             <ctg:show-tracks tracks="${ entities }" commandValue="sort-track-by-genre"
-                             updateCommandValue="to-update-track"
-                             removeCommandValue="to-remove-track" nextUnavailable="${ nextunavailable }"
-                             previousUnavailable="${ previousunavailable }"/>
+                             nextUnavailable="${ nextunavailable }" previousUnavailable="${ previousunavailable }"/>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">

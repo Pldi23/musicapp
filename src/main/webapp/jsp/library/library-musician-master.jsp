@@ -50,22 +50,6 @@
                             <td><span class="badge badge-info">
 <%--                                <fmt:message key="label.filter.genre"/>::<c:out value="${ playlist.getMostPopularGenre() }"/>--%>
                             </span></td>
-                            <c:if test="${ user.admin eq true}">
-                                <td>
-                                    <form method="get" action="controller">
-                                        <input type="hidden" name="command" value="to-remove-musician">
-                                        <input type="hidden" name="id" value="${ musician.id }">
-                                        <input type="submit" class="btn btn-outline-dark" name="submit" value="remove">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method="get" action="controller">
-                                        <input type="hidden" name="command" value="to-update-musician">
-                                        <input type="hidden" name="id" value="${ musician.id }">
-                                        <input type="submit" class="btn btn-outline-dark" name="submit" value="update">
-                                    </form>
-                                </td>
-                            </c:if>
                         </tr>
                     </c:forEach>
                     </tbody>

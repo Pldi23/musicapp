@@ -40,11 +40,15 @@ public class AdminService {
     }
 
     public boolean updateTrack(Track track) throws ServiceException {
-        try {
-            return TrackRepository.getInstance().update(track);
-        } catch (RepositoryException e) {
-            throw new ServiceException(e);
-        }
+        return update(track, TrackRepository.getInstance());
+    }
+
+    public boolean updateMusician(Musician musician) throws ServiceException {
+        return update(musician, MusicianRepository.getInstance());
+    }
+
+    public boolean updatePlaylist(Playlist playlist) throws ServiceException {
+        return update(playlist, PlaylistRepository.getInstance());
     }
 
     public boolean removePlaylist(Playlist playlist) throws ServiceException {
@@ -64,7 +68,16 @@ public class AdminService {
             log.debug("Removing entity " + t);
             return repository.remove(t);
         } catch (RepositoryException e) {
-            throw new ServiceException("repository provide exception for Common service", e);
+            throw new ServiceException("repository provide exception for Admin service", e);
+        }
+    }
+
+    private <T> boolean update(T t, Repository<T> repository) throws ServiceException {
+        try {
+            log.debug("Updating entity " + t);
+            return repository.update(t);
+        } catch (RepositoryException e) {
+            throw new ServiceException("could't update " + t, e);
         }
     }
 

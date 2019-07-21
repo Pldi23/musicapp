@@ -16,8 +16,7 @@
         </div>
         <div class="col-8">
             <c:import url="../sort-button-group.jsp"/>
-            <ctg:show-tracks tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }" removeCommandValue="to-remove-track"
-                             updateCommandValue="to-update-track"
+            <ctg:show-tracks tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }"
                              commandValue="show-all-tracks" nextUnavailable="${ requestScope.nextunavailable }"
                              previousUnavailable="${ requestScope.previousunavailable }"/>
         </div>
