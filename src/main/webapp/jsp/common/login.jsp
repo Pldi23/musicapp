@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
-<c:set var="page" value="/jsp/login.jsp" scope="request"/>
+<c:set var="page" value="/jsp/common/login.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }" scope="session"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -30,7 +30,7 @@
             <p class="text-warning">${ requestScope.validatorMessage }</p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-warning">${requestScope.errorLoginPassMessage}</p>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <div class="form-group">
                     <input type="hidden" name="command" value="login"/>
                     <label for="exampleInputEmail1"><fmt:message key="label.enter.login"/></label>

@@ -30,7 +30,7 @@
         <div class="col-8">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <form action="controller" method="get">
+                    <form action="<c:url value="/controller"/>" method="get">
                         <input type="hidden" name="command" value="to-register-admin">
                         <input type="submit" name="submit" value="<fmt:message key="button.admin.new"/>"
                                class="btn btn-secondary">
@@ -54,7 +54,7 @@
                 <c:forEach var="entity" items="${ requestScope.entities }">
                     <tr class="table-bg-light">
                         <td>
-                            <form action="controller" method="get">
+                            <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="user-detail">
                                 <input type="hidden" name="id" value="${ entity.login }">
                                 <input type="submit" class="btn btn-link" name="submit" value="${ entity.login }">
@@ -103,7 +103,7 @@
                 </tbody>
             </table>
             <c:if test="${ requestScope.nextunavailable eq 'false'}">
-                <form action="controller" method="get">
+                <form action="<c:url value="/controller"/>" method="get">
                     <input type="hidden" name="command" value="${ requestScope.pageCommand }">
                     <input type="hidden" name="direction" value="next">
                     <input type="hidden" name="login" value="${ requestScope.login }">
@@ -119,7 +119,7 @@
                 </form>
             </c:if>
             <c:if test="${ requestScope.previousunavailable eq 'false' }">
-                <form action="controller" method="get">
+                <form action="<c:url value="/controller"/>" method="get">
                     <input type="hidden" name="command" value="${ requestScope.pageCommand }">
                     <input type="hidden" name="direction" value="previous">
                     <input type="hidden" name="login" value="${ requestScope.login }">

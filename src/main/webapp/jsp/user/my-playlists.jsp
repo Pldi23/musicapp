@@ -1,7 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="page" value="/jsp/my-playlists.jsp" scope="request"/>
+<c:set var="page" value="/jsp/user/my-playlists.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -23,7 +23,7 @@
 </div>
 <hr>
 <c:if test="${ sessionScope.user.admin eq true }">
-    <c:import url="../library/library-navbar.jsp"/>
+    <c:import url="../trash/navbar.jsp"/>
     <hr/>
 </c:if>
 <div class="container-fluid bg-light">
@@ -34,7 +34,7 @@
         <div class="col-8">
             <p class="text-info">${ requestScope.process }</p>
             <c:if test="${ sessionScope.user.admin eq false}">
-                <form action="controller" method="get" class="form-inline">
+                <form action="<c:url value="/controller"/>" method="get" class="form-inline">
                     <input type="hidden" name="command" value="playlist-create">
                     <div class="form-group mx-sm-3 mb-2">
                         <input type="text" class="form-control" name="name" minlength="2" maxlength="50"
@@ -46,7 +46,7 @@
                 <hr>
             </c:if>
             <c:if test="${ sessionScope.user.admin eq true }">
-                <form action="controller" method="get" class="form-inline">
+                <form action="<c:url value="/controller"/>" method="get" class="form-inline">
                     <input type="hidden" name="command" value="playlist-create">
                     <label for="selectForm"><fmt:message key="label.access"/>::</label>
                     <select name="access" id="selectForm" class="form-control">
@@ -77,7 +77,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <form action="controller" method="get">
+                            <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="playlist-detail">
                                 <input type="hidden" name="id" value="${ playlist.id }">
                                 <input type="submit" class="btn btn-light" name="submit"
@@ -103,7 +103,7 @@
                         </td>
                         <c:if test="${ sessionScope.user.admin eq true }">
                             <td>
-                                <form action="controller" method="get">
+                                <form action="<c:url value="/controller"/>" method="get">
                                     <input type="hidden" name="command" value="change-access">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-outline-info btn-sm" name="submit"
@@ -112,7 +112,7 @@
                             </td>
                         </c:if>
                         <td>
-                            <form action="controller" method="get">
+                            <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="remove-my-playlist">
                                 <input type="hidden" name="id" value="${ playlist.id }">
                                 <input type="submit" class="btn btn-danger btn-sm" name="submit"

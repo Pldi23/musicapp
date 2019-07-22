@@ -34,7 +34,6 @@ public class RequestEncodingFilter implements Filter {
         if (code != null && !code.equalsIgnoreCase(codeRequest)) {
             request.setCharacterEncoding(code);
         }
-        log.debug("EncodingFilter filtering");
         filterChain.doFilter(request, response);
     }
 

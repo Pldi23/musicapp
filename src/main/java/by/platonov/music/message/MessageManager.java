@@ -1,4 +1,4 @@
-package by.platonov.music;
+package by.platonov.music.message;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

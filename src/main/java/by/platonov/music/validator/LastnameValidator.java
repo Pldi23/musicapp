@@ -1,6 +1,6 @@
 package by.platonov.music.validator;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.command.RequestContent;
 import lombok.extern.log4j.Log4j2;

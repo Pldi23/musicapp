@@ -3,7 +3,7 @@ package by.platonov.music.command;
 import static by.platonov.music.command.constant.RequestConstant.*;
 import static by.platonov.music.command.constant.PageConstant.*;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
 import by.platonov.music.validator.*;

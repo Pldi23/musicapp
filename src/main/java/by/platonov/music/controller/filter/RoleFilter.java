@@ -1,6 +1,6 @@
 package by.platonov.music.controller.filter;
 
-import by.platonov.music.command.constant.PageConstant;
+import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.User;
 import lombok.extern.log4j.Log4j2;
 
@@ -12,14 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static by.platonov.music.command.constant.PageConstant.*;
+
 /**
  * @author dzmitryplatonov on 2019-06-23.
  * @version 0.0.1
  */
 @Log4j2
 @WebFilter(urlPatterns = {"/jsp/*"},
-        initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = PageConstant.LOGIN_PAGE)},
-        asyncSupported = true)
+        initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = NOT_AUTHORIZED_PAGE)})
 public class RoleFilter implements Filter {
 
     private String targetPagePath;
@@ -36,12 +37,11 @@ public class RoleFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(RequestConstant.USER);
 
-        log.debug("RoleFilter filtering");
         if (!checkAccess(request, user)) {
-            request.getSession().setAttribute("wrongAction", "Please authorise as admin");
-            request.getRequestDispatcher(targetPagePath).forward(request, response);
+            log.warn("non-authorized access blocked");
+            response.sendRedirect(targetPagePath);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
@@ -49,8 +49,15 @@ public class RoleFilter implements Filter {
     }
 
     private boolean checkAccess(HttpServletRequest request, User user) {
+        boolean result = true;
         String uri = request.getRequestURI();
-        return !uri.contains(PageConstant.ADMIN_PAGE) || user.isAdmin();
+        if (user == null && uri.contains(ADMIN_DIRECTORY) || uri.contains(USER_DIRECTORY) || uri.contains(MUSIC_LIB_DIRECTORY)) {
+            result = false;
+        }
+        if(user != null && !user.isAdmin() && uri.contains(ADMIN_DIRECTORY)) {
+            result = false;
+        }
+        return result;
     }
 
     @Override

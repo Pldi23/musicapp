@@ -39,6 +39,7 @@ public class FrontController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         RequestContent content = RequestContent.createWithAttributes(request);
         Locale locale = content.getSessionAttributes().containsKey(RequestConstant.LOCALE) ?
                 new Locale((String) content.getSessionAttribute(RequestConstant.LOCALE)) : request.getLocale();
@@ -52,9 +53,6 @@ public class FrontController extends HttpServlet {
 
         commandResult.getAttributes().forEach(request::setAttribute);
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-
-//        if (command.getClass().isAssignableFrom(LoginCommand.class)) {
-//            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
             request.getSession().invalidate();

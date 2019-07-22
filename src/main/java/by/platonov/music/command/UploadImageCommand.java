@@ -1,11 +1,11 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
-import by.platonov.music.util.UnicNameGenerator;
+import by.platonov.music.util.HashGenerator;
 import by.platonov.music.validator.PhotoPartValidator;
 import by.platonov.music.validator.Violation;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +19,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 /**
@@ -47,7 +46,8 @@ public class UploadImageCommand implements Command {
             try {
                 Part filePart = content.getPart(IMG_PATH).get();
                 User user = (User) content.getSessionAttribute(USER);
-                File file = createFile(filePart, UnicNameGenerator.generateUnicName());
+                HashGenerator generator = new HashGenerator();
+                File file = createFile(filePart, generator.generateHash());
                 user.setPhotoPath(file.getName());
                 String locale = (String) content.getSessionAttribute(LOCALE);
                 result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :

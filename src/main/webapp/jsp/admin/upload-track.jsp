@@ -8,7 +8,7 @@
 <html>
 <head><title><fmt:message key="label.upload.track"/></title></head>
 <body>
-<c:import url="../library/library-master.jsp"/>
+<c:import url="../music-lib/topbar.jsp"/>
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
@@ -18,7 +18,7 @@
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-info"><c:out value="${ requestScope.addResult }"/></p>
 
-            <form action="controller" enctype="multipart/form-data" method="post">
+            <form action="<c:url value="/controller"/>" enctype="multipart/form-data" method="post">
                 <input type="hidden" name="command" value="upload-track"/>
                 <h3><fmt:message key="label.upload.track"/></h3>
                 <label>

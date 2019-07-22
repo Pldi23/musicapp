@@ -1,14 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
     <title><fmt:message key="label.search"/></title>
 </head>
 <body>
-<form action="controller" method="post">
+<form action="<c:url value="/controller"/>" method="post">
     <input type="hidden" name="command" value="search"/>
     <input type="hidden" name="offset" value="0">
     <div class="form-group">

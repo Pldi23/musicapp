@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <body>
-<form action="controller" method="post">
+<form action="<c:url value="/controller"/>" method="post">
     <input type="hidden" name="command" value="filter-user">
     <input type="hidden" name="offset" value="0">
     <input type="hidden" name="order" value="marker">

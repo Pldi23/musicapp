@@ -3,19 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }" />
 <fmt:setBundle basename="pagecontent" />
-<c:set var="page" value="/jsp/library/library-track.jsp" scope="request"/>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <html>
 <head><title><fmt:message key="label.tracklibrary"/></title></head>
 <body>
-<c:import url="library-master.jsp"/>
+<c:import url="topbar.jsp"/>
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../../common/track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <c:import url="sort-button-group.jsp"/>
+            <c:import url="track-buttons.jsp"/>
             <ctg:show-tracks tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }"
                              commandValue="show-all-tracks" nextUnavailable="${ requestScope.nextunavailable }"
                              previousUnavailable="${ requestScope.previousunavailable }"/>
@@ -25,9 +24,6 @@
         </div>
     </div>
 </div>
-
-${removeResult}
-${updateResult}
-<c:import url="../../common/footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>

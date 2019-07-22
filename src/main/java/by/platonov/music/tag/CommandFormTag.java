@@ -1,6 +1,6 @@
 package by.platonov.music.tag;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -39,7 +39,7 @@ public class CommandFormTag extends TagSupport {
                 (String) pageContext.getSession().getAttribute(LOCALE) : pageContext.getRequest().getLocale().toString();
         JspWriter out = pageContext.getOut();
         try {
-            out.write("<form action=\"controller\" method=\"get\">");
+            out.write("<form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"get\">");
             out.write("<input type=\"hidden\" name=\"command\" value=\"" + commandValue + "\">");
             out.write("<input type=\"hidden\" name=\"offset\" value=\"0\">");
             if (sortOrder) {

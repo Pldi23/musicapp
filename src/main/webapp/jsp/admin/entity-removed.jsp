@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent" />
 <html><head><title><fmt:message key="label.library"/></title></head>
 <body>
-<c:import url="../library/library-master.jsp"/>
+<c:import url="../music-lib/topbar.jsp"/>
 <hr/>
 <div class="container-fluid bg-light">
     <div class="row">

@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 

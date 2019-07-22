@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<c:set var="page" value="/jsp/musician.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -48,7 +47,7 @@
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-info"><c:out value="${ requestScope.process }"/></p>
             <fmt:message key="label.id"/> <c:out value="${ requestScope.entity.id }"/>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="update-playlist">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">
                 <br>

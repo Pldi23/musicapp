@@ -1,6 +1,6 @@
 package by.platonov.music.tag;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 
@@ -79,7 +79,7 @@ public class ShowTracksTag extends TagSupport {
             if (admin) {
                 out.write("<td>" + track.getId() + "</c:out></td>");
             }
-            out.write("<td><form action=\"controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"track-detail\">\n" +
+            out.write("<td><form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"track-detail\">\n" +
                     "<input type=\"hidden\" name=\"id\" value=\"" + track.getId() + "\">\n" +
                     "<input type=\"submit\" class=\"btn btn-light\" name=\"submit\" value=\"" + track.getName() + "\"/>\n" +
                     "</form></td>");
@@ -112,7 +112,7 @@ public class ShowTracksTag extends TagSupport {
     }
 
     private void printListingForm(JspWriter out, String direction, String button, String locale) throws IOException {
-        out.write("<form action=\"controller\" method=\"get\">");
+        out.write("<form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"get\">");
         out.write("<input type=\"hidden\" name=\"command\" value=\"" + commandValue + "\">");
         out.write("<input type=\"hidden\" name=\"direction\" value=\"" + direction + "\">");
         printHiddenFilter(out);
@@ -122,7 +122,7 @@ public class ShowTracksTag extends TagSupport {
     }
 
     private void printMusicianButton(JspWriter out, Musician musician) throws IOException {
-        out.write("<form action=\"controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"musician-detail\">\n" +
+        out.write("<form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"get\"><input type=\"hidden\" name=\"command\" value=\"musician-detail\">\n" +
                 "<input type=\"hidden\" name=\"id\" value=\"" + musician.getId() + "\">\n" +
                 "<input type=\"submit\" class=\"btn btn-light btn-sm\" name=\"submit\" value=\"" + musician.getName() + "\"/>\n" +
                 "</form>");

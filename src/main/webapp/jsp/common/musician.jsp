@@ -1,12 +1,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<c:set var="page" value="/jsp/musician.jsp" scope="request"/>
-<fmt:setLocale value="${ not empty locale ? locale : pageContext.request.locale }"/>
+<c:set var="page" value="/jsp/common/musician.jsp" scope="request"/>
+<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>${ musician.name }</title>
+    <title>${ requestScope.musician.name }</title>
 </head>
 <body>
 <div class="container-fluid bg-light">
@@ -29,9 +29,9 @@
         </div>
         <div class="col-8">
             <ul class="list-inline">
-                <li class="list-inline-item"><h3><c:out value="${ musician.name }"/></h3></li>
-                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.quantity"/> :: <c:out value="${ size }"/></h5></li>
-                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="label.filter.genre"/> :: <c:out value="${ genre }"/></h5></li>
+                <li class="list-inline-item"><h3><c:out value="${ requestScope.musician.name }"/></h3></li>
+                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.quantity"/> :: <c:out value="${ requestScope.size }"/></h5></li>
+                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="label.filter.genre"/> :: <c:out value="${ requestScope.genre }"/></h5></li>
             </ul>
         </div>
         <div class="col-2">
@@ -47,14 +47,14 @@
         </div>
         <div class="col-8">
             <c:if test="${ sessionScope.user.admin eq true }">
-                <form action="controller" method="post">
+                <form action="<c:url value="/controller"/>" method="post">
                     <input type="hidden" name="command" value="to-update-musician">
                     <input type="hidden" name="entityType" value="musician">
                     <input type="hidden" name="id" value="${ requestScope.musician.id }">
                     <input type="submit" class="btn btn-outline-info" name="submit"
                            value="<fmt:message key="button.update"/>">
                 </form>
-                <form action="controller" method="post">
+                <form action="<c:url value="/controller"/>" method="post">
                     <input type="hidden" name="command" value="to-remove-musician">
                     <input type="hidden" name="id" value="${ requestScope.musician.id }">
                     <input type="hidden" name="entityType" value="musician">
@@ -63,10 +63,10 @@
                 </form>
             </c:if>
             <table>
-                <c:forEach var="track" items="${ entities }" varStatus="status">
+                <c:forEach var="track" items="${ requestScope.entities }" varStatus="status">
                     <tr>
                         <td>
-                            <form action="controller" method="get">
+                            <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="track-detail">
                                 <input type="hidden" name="id" value="${ track.id }">
                                 <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">

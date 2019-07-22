@@ -1,10 +1,9 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Playlist;
-import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.AdminService;
 import by.platonov.music.service.CommonService;
@@ -15,7 +14,6 @@ import lombok.extern.log4j.Log4j2;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * music-app

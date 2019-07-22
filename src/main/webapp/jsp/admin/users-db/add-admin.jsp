@@ -32,7 +32,7 @@
         <div class="col-8">
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-warning"><c:out value="${ requestScope.process }"/></p>
-            <form action = "controller" method = "post" >
+            <form action = "<c:url value="/controller"/>" method = "post" >
                 <input type="hidden" name="command" value="register-admin"/>
                 <label>
                     <fmt:message key="label.enter.login"/> :

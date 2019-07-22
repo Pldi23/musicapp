@@ -15,14 +15,14 @@
                         <img src="<c:url value="/resources/image2vector.svg"/>" class="mr-3 nav-item nav-link" alt="music app"
                              width="55" height="55">
                         <h3 class="mr-3 nav-item nav-link"><fmt:message key="label.registration.form"/></h3>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-login">
                                 <input type="submit" name="submit" value="<fmt:message key="button.tologin"/>"
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="post" class="mr-3 nav-item nav-link form-inline">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link form-inline">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
@@ -42,14 +42,14 @@
                         <img src="<c:url value="/resources/image2vector.svg"/>" class="mr-3 nav-item nav-link" alt="music app"
                              width="55" height="55">
                         <h3 class="mr-3 nav-item nav-link"><fmt:message key="label.login.sentence"/></h3>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-registr"/>
                                 <input type="submit" name="submit" value="<fmt:message key="button.registration"/> "
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="post" class="mr-3 nav-item nav-link form-inline">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link form-inline">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
@@ -69,21 +69,21 @@
                         <img src="<c:url value="/resources/image2vector.svg"/>" class="mr-3 nav-item nav-link" alt="music app"
                              width="55" height="55">
                         <h3 class="mr-3 nav-item nav-link"><fmt:message key="label.hello"/></h3>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-login">
                                 <input type="submit" name="submit" value="<fmt:message key="button.tologin"/>"
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-registr"/>
                                 <input type="submit" name="submit" value="<fmt:message key="button.registration"/> "
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="post" class="mr-3 nav-item nav-link form-inline">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link form-inline">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
@@ -103,14 +103,14 @@
                         <img src="<c:url value="/resources/image2vector.svg"/>" class="mr-3 nav-item nav-link" alt="music app"
                              width="55" height="55">
                         <h3 class="mr-3 nav-item nav-link">${ sessionScope.user.firstname }, <fmt:message key="role.admin"/></h3>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-library">
                                 <input type="submit" name="submit" value="<fmt:message key="button.library"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-user-library">
                                 <input type="hidden" name="offset" value="0">
@@ -118,14 +118,14 @@
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-profile">
                                 <input type="submit" name="submit" value="<fmt:message key="button.profile"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="post" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="logout">
                                 <input type="submit" name="submit" value="<fmt:message key="button.logout"/>"
@@ -139,28 +139,28 @@
                         <img src="<c:url value="/resources/image2vector.svg"/>" class="mr-3 nav-item nav-link" alt="music app"
                              width="55" height="55">
                         <h3 class="mr-3 nav-item nav-link">${ sessionScope.user.firstname }, <fmt:message key="role.user"/></h3>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-library">
                                 <input type="submit" name="submit" value="<fmt:message key="button.library"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="user-playlists">
                                 <input type="submit" name="submit" value="<fmt:message key="button.playlists.my"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-profile">
                                 <input type="submit" name="submit" value="<fmt:message key="button.profile"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="controller" method="post" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="logout">
                                 <input type="submit" name="submit" value="<fmt:message key="button.logout"/>"

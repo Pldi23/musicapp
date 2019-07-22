@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
-<c:set var="page" value="/jsp/registration.jsp" scope="request"/>
+<c:set var="page" value="/jsp/common/registration.jsp" scope="request"/>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <html>
 <head>
@@ -30,7 +30,7 @@
             <h2><fmt:message key="registration.message"/></h2>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-warning"><c:out value="${ requestScope.process }"/></p>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="register"/>
                 <div class="form-group">
                     <label for="inputLogin"><fmt:message key="label.enter.login"/></label>

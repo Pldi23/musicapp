@@ -1,6 +1,6 @@
 package by.platonov.music.tag;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
 import lombok.extern.log4j.Log4j2;
@@ -48,7 +48,7 @@ public class RemoveTrackFromPlaylistTag extends TagSupport {
             JspWriter out = pageContext.getOut();
             try {
                 out.write("<td>\n" +
-                        "<form action=\"controller\" method=\"post\">\n" +
+                        "<form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"post\">\n" +
                         "<input type=\"hidden\" name=\"command\" value=\"remove-track-from-playlist\">\n" +
                         "<input type=\"hidden\" name=\"playlistid\" value=\"" + currentPlaylist.getId() + "\">\n" +
                         "<input type=\"hidden\" name=\"trackid\" value=\"" + track.getId() + "\">\n" +

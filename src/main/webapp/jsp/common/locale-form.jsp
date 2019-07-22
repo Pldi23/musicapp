@@ -2,12 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <body>
-<form action="controller" method="get" class="form-inline">
+<form action="<c:url value="/controller"/>" method="get" class="form-inline">
     <input type="hidden" name="command" value="set-locale">
     <input type="hidden" name="page" value="${ requestScope.page }">
     <select name="locale" onchange="submit()" class="custom-select my-1 mr-sm-2"
             id="inlineFormCustomSelectPref">
-        <option selected="selected" value="${ not empty locale ? locale : pageContext.request.locale }">
+        <option selected="selected" value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }">
             <c:choose>
                 <c:when test="${ locale eq 'en_us' }">
                     <c:out value="English"/>

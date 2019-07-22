@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.entity.Track;

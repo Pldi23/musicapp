@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<c:set var="page" value="/jsp/profile.jsp" scope="request"/>
+<c:set var="page" value="/jsp/user/profile.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -40,7 +40,7 @@
             <p class="text-info">${ requestScope.process }</p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
 
-            <form action="controller" enctype="multipart/form-data" method="post">
+            <form action="<c:url value="/controller"/>" enctype="multipart/form-data" method="post">
                 <label>
                     <fmt:message key="label.profile.photo"/>
                     <input type="hidden" name="command" value="upload-img"/>
@@ -48,7 +48,7 @@
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <label>
                     <fmt:message key="label.profile.firstname"/>
                     <input type="hidden" name="command" value="update-firstname">
@@ -56,7 +56,7 @@
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <label>
                     <fmt:message key="label.profile.lastname"/>
                     <input type="hidden" name="command" value="update-lastname">
@@ -64,7 +64,7 @@
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <label>
                     <fmt:message key="label.profile.gender"/>
                     <input type="hidden" name="command" value="update-gender">
@@ -76,7 +76,7 @@
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="update-birthdate">
                 <label>
                     <fmt:message key="label.profile.birthdate"/>
@@ -85,7 +85,7 @@
                 </label>
             </form>
             <hr/>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="change-password">
                 <div class="form-group w-25">
                     <div class="col-xs-1">

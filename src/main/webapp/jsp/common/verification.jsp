@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="page" value="/jsp/verification.jsp" scope="request"/>
+<c:set var="page" value="/jsp/common/verification.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-8">
             <c:if test="${ sessionScope.user.admin eq true }">
-                <form action="controller" method="get">
+                <form action="<c:url value="/controller"/>" method="get">
                    <input type="hidden" name="command" value="to-admin">
                     <input type="submit" class="btn btn-outline-secondary" name="submit" value="<fmt:message key="button.to.site"/>">
                 </form>

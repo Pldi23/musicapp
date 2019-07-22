@@ -4,11 +4,10 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }" />
 <fmt:setBundle basename="pagecontent" />
-<c:set var="page" value="/jsp/admin/update-track.jsp" scope="request"/>
 <html>
 <head><title><fmt:message key="label.updatetrack"/></title></head>
 <body>
-<c:import url="../library/library-master.jsp"/>
+<c:import url="../music-lib/topbar.jsp"/>
 <hr/>
 <div class="container-fluid bg-light">
     <div class="row">
@@ -19,7 +18,7 @@
             <fmt:message key="message.update"/><c:out value="${ requestScope.entity.uuid }."/>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-info"><c:out value="${ requestScope.updateResult }"/></p>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="update-track">
                 <input type="hidden" name="uuid" value="${ requestScope.entity.uuid }">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">

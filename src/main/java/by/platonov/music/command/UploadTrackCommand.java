@@ -1,13 +1,13 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.*;
-import by.platonov.music.util.UnicNameGenerator;
+import by.platonov.music.util.HashGenerator;
 import by.platonov.music.validator.*;
 import lombok.extern.log4j.Log4j2;
 import org.jaudiotagger.audio.AudioFile;
@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -89,7 +88,8 @@ public class UploadTrackCommand implements Command {
                 }
 
                 Genre genre = commonService.getGenre(genreTitle);
-                File file = createFile(filePart, UnicNameGenerator.generateUnicName());
+                HashGenerator generator = new HashGenerator();
+                File file = createFile(filePart, generator.generateHash());
                 Track track = Track.builder()
                         .uuid(file.getName())
                         .name(trackname)

@@ -1,11 +1,10 @@
 package by.platonov.music.validator;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.RequestContent;
 import by.platonov.music.command.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 

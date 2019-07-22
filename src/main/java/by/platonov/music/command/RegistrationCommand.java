@@ -2,7 +2,7 @@ package by.platonov.music.command;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.validator.*;
@@ -16,7 +16,6 @@ import lombok.extern.log4j.Log4j2;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 /**
  * @author dzmitryplatonov on 2019-06-19.

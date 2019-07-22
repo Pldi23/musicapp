@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
-<c:set var="page" value="/jsp/admin/search-result.jsp" scope="request"/>
+<c:set var="page" value="/jsp/common/search-result.jsp" scope="request"/>
 <html>
 <head><title><fmt:message key="label.search.result"/></title></head>
 <body>
@@ -41,7 +41,7 @@
                                 <c:out value="${ author.name }"/>
                             </c:forEach></td>
                             <td>
-                                <form action="controller" method="get">
+                                <form action="<c:url value="/controller"/>" method="get">
                                     <input type="hidden" name="command" value="track-detail">
                                     <input type="hidden" name="id" value="${ track.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">
@@ -58,7 +58,7 @@
                     </c:forEach>
                 </table>
                 <c:if test="${ trackssize - nextoffset > 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-tracks" value="1">
@@ -68,7 +68,7 @@
                     </form>
                 </c:if>
                 <c:if test="${ previousoffset >= 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-tracks" value="1">
@@ -85,7 +85,7 @@
                     <c:forEach var="musician" items="${ musicians }" varStatus="status">
                         <tr>
                             <td>
-                                <form action="controller" method="get">
+                                <form action="<c:url value="/controller"/>" method="get">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ musician.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ musician.name }">
@@ -95,7 +95,7 @@
                     </c:forEach>
                 </table>
                 <c:if test="${ musicianssize - nextoffset > 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-musicians" value="1">
@@ -105,7 +105,7 @@
                     </form>
                 </c:if>
                 <c:if test="${ previousoffset >= 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-musicians" value="1">
@@ -122,7 +122,7 @@
                     <c:forEach var="playlist" items="${ playlists }" varStatus="status">
                         <tr>
                             <td>
-                                <form action="controller" method="get">
+                                <form action="<c:url value="/controller"/>" method="get">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
@@ -138,7 +138,7 @@
                     </c:forEach>
                 </table>
                 <c:if test="${ playlistssize - nextoffset > 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-playlists" value="1">
@@ -148,7 +148,7 @@
                     </form>
                 </c:if>
                 <c:if test="${ previousoffset >= 0 }">
-                    <form action="controller" method="post">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
                         <input type="hidden" name="searchrequest" value="${ searchrequest }">
                         <input type="hidden" name="key-playlists" value="1">

@@ -50,11 +50,11 @@ public class FilterUserCommand implements Command {
             String lastname = content.getRequestParameter(LASTNAME)[0];
             String email = content.getRequestParameter(EMAIL)[0];
             LocalDate birthdateFrom = !content.getRequestParameter(BIRTH_FROM)[0].isBlank() ?
-                    LocalDate.parse(content.getRequestParameter(BIRTH_FROM)[0]) : LocalDate.EPOCH;
+                    LocalDate.parse(content.getRequestParameter(BIRTH_FROM)[0]) : LocalDate.of(1900, 1, 1);
             LocalDate birthdateTo = !content.getRequestParameter(BIRTH_TO)[0].isBlank() ?
                     LocalDate.parse(content.getRequestParameter(BIRTH_TO)[0]) : LocalDate.now();
             LocalDate registrationFrom = !content.getRequestParameter(REGISTRATION_FROM)[0].isBlank() ?
-                    LocalDate.parse(content.getRequestParameter(REGISTRATION_FROM)[0]) : LocalDate.MIN;
+                    LocalDate.parse(content.getRequestParameter(REGISTRATION_FROM)[0]) : LocalDate.EPOCH;
             LocalDate regisrationTo = !content.getRequestParameter(REGISTRATION_TO)[0].isBlank() ?
                     LocalDate.parse(content.getRequestParameter(REGISTRATION_TO)[0]) : LocalDate.now();
 
@@ -92,8 +92,8 @@ public class FilterUserCommand implements Command {
                 attributes.put(LASTNAME, lastname);
                 attributes.put(BIRTH_FROM, birthdateFrom);
                 attributes.put(BIRTH_TO, birthdateTo);
-                attributes.put(RELEASE_FROM, registrationFrom);
-                attributes.put(RELEASE_TO, regisrationTo);
+                attributes.put(REGISTRATION_FROM, registrationFrom);
+                attributes.put(REGISTRATION_TO, regisrationTo);
                 attributes.put(EMAIL, email);
                 attributes.put(PAGE_COMMAND, FILTER_USER);
             } catch (ServiceException e) {

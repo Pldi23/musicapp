@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent" />
 <html><head><title><fmt:message key="label.track.remove.confirmation"/></title></head>
 <body>
-<c:import url="../library/library-master.jsp"/>
+<c:import url="../music-lib/topbar.jsp"/>
 <hr/>
 <div class="container-fluid bg-light">
     <div class="row">
@@ -14,13 +14,13 @@
         </div>
         <div class="col-8">
             <fmt:message key="message.remove.confirm"/><c:out value="'${ requestScope.entity.name }'"/><fmt:message key="message.database.remove"/>
-            <form action="controller" method="post">
+            <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="remove">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">
                 <input type="hidden" name="entityType" value="${ requestScope.entityType }">
                 <input type="submit" class="btn btn-outline-danger" name="submit" value="<fmt:message key="button.finally.remove"/> ">
             </form>
-            <form action="controller" method="get">
+            <form action="<c:url value="/controller"/>" method="get">
                 <input type="hidden" name="command" value="remove-cancel">
                 <input type="hidden" name="id" value="${ requestScope.entity.id }">
                 <input type="hidden" name="entityType" value="${ requestScope.entityType }">

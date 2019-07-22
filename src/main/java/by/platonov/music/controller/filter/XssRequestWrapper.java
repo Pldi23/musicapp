@@ -41,7 +41,6 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
 
     XssRequestWrapper(HttpServletRequest servletRequest) {
         super(servletRequest);
-        log.debug("Xss filter working");
     }
 
     @Override

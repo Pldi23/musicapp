@@ -1,9 +1,8 @@
 package by.platonov.music.command;
 
-import by.platonov.music.MessageManager;
+import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
-import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
