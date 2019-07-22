@@ -39,8 +39,5 @@ public class SetLocaleCommand implements Command {
             }
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes, Map.of(RequestConstant.LOCALE, locale));
-//        return new CommandResult(CommandResult.ResponseType.FORWARD,
-//                (String) content.getSessionAttribute(RequestConstant.REFERER), Map.of(),
-//                Map.of(RequestConstant.LOCALE, locale));
     }
 }

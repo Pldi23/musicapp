@@ -26,6 +26,7 @@ public class PageConstant {
     public static final String PLAYLIST_LIBRARY_PAGE = "/jsp/library/library-playlist.jsp";
     public static final String PLAYLIST_PAGE = "/jsp/playlist.jsp";
     public static final String PLAYLIST_CREATE_PAGE = "/jsp/create-playlist.jsp";
+    public static final String REGISTR_ADMIN_PAGE = "/jsp/user-library/add-admin.jsp";
     public static final String REMOVE_CONFIRMATION_PAGE = "/jsp/admin/remove-confirmation.jsp";
     public static final String PROFILE_PAGE = "/jsp/profile.jsp";
     public static final String SEARCH_PAGE = "/jsp/search-result.jsp";
@@ -48,6 +49,7 @@ public class PageConstant {
     public static final String UPDATE_GENRE_PAGE = "/jsp/admin/update-genre.jsp";
     public static final String UPDATE_PLAYLIST_PAGE = "/jsp/admin/update-playlist.jsp";
     public static final String UPLOAD_TRACK_PAGE = "/jsp/admin/upload-track.jsp";
+    public static final String USER_PAGE = "/jsp/user-library/user.jsp";
     public static final String USER_LIBRARY_PAGE = "/jsp/user-library/user-library.jsp";
     public static final String USER_PLAYLISTS_PAGE = "/jsp/my-playlists.jsp";
     public static final String VERIFICATION_PAGE = "/jsp/verification.jsp";

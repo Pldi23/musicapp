@@ -18,7 +18,13 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 public class LastnameValidator extends AbstractValidator {
 
     private static final String LASTNAME_REGEX_PATTERN = "^[^\\p{Punct}\\p{Blank}][\\p{L} '-]{0,28}[^\\p{Punct}\\p{Blank}]$";
-//    private static final String LASTNAME_INCORRECT_MESSAGE = "Last name must contain minimum 2 and maximum 30 letters";
+
+    private boolean filter;
+
+    public LastnameValidator(boolean filter, ParameterValidator next) {
+        super(next);
+        this.filter = filter;
+    }
 
     public LastnameValidator(ParameterValidator next) {
         super(next);
@@ -27,12 +33,23 @@ public class LastnameValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.LASTNAME)) {
-            log.warn("Invalid content parameter: no lastname parameter in request");
-            result.add(new Violation(MessageManager.getMessage("violation.lastname", (String) content.getSessionAttribute(LOCALE))));
-        } else if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
-            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LASTNAME)[0]);
-            result.add(new Violation(MessageManager.getMessage("violation.lastname", (String) content.getSessionAttribute(LOCALE))));
+        Violation violation = new Violation(MessageManager.getMessage("violation.lastname",
+                (String) content.getSessionAttribute(LOCALE)));
+        if (filter) {
+            if (content.getRequestParameters().containsKey(RequestConstant.LASTNAME)
+                    && !content.getRequestParameter(RequestConstant.LASTNAME)[0].isBlank()
+                    && !content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
+                log.warn("last name doesn't match regex pattern");
+                result.add(violation);
+            }
+        } else {
+            if (!content.getRequestParameters().containsKey(RequestConstant.LASTNAME)) {
+                log.warn("Invalid content parameter: no lastname parameter in request");
+                result.add(violation);
+            } else if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
+                log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LASTNAME)[0]);
+                result.add(violation);
+            }
         }
         if (next != null) {
             result.addAll(next.apply(content));

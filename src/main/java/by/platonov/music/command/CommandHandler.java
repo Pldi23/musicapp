@@ -7,11 +7,9 @@ import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
 import by.platonov.music.validator.AbstractValidator;
-import by.platonov.music.validator.BirthDateValidator;
 import by.platonov.music.validator.Violation;
 import lombok.extern.log4j.Log4j2;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -115,12 +113,8 @@ class CommandHandler<T> {
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
         } else {
-            result = "\u2718";
-            for (Violation violation : violations) {
-                result = result.concat(violation.getMessage());
-            }
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
-                    Map.of(PROCESS, result));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
 }

@@ -30,7 +30,7 @@ public class UserService {
             log.debug("searching " + login + " in repository");
             users = UserRepository.getInstance().query(specification);
             for (User user : users) {
-                getUserWithPlaylists(user);
+                setUserWithPlaylists(user);
             }
             return users;
         } catch (RepositoryException e) {
@@ -102,11 +102,11 @@ public class UserService {
         }
     }
 
-    public List<User> searchAllUsers() throws ServiceException {
+    public List<User> searchAllUsers(int limit, long offset) throws ServiceException {
         try {
-            List<User> users = UserRepository.getInstance().query(new LoginIsNotNullSpecification());
+            List<User> users = UserRepository.getInstance().query(new UserAllLimitSpecification(limit, offset));
             for (User user : users) {
-                getUserWithPlaylists(user);
+                setUserWithPlaylists(user);
             }
             return users;
         } catch (RepositoryException e) {
@@ -115,12 +115,34 @@ public class UserService {
         }
     }
 
-    public List<User> searchUserByFilter(String login,boolean isAdmin, firstname, lastname, email, LocalDate.parse(birthdateFrom), LocalDate.parse(birthdateTo), LocalDate.parse(registrationFrom),
-            LocalDate.parse(regisrationTo), Integer.MAX_VALUE, 0)
+    public List<User> searchUserByLogin(String login) throws ServiceException {
+        try {
+            List<User> users = UserRepository.getInstance().query(new UserLoginSpecification(login));
+            for (User user : users) {
+                setUserWithPlaylists(user);
+            }
+            return users;
+        } catch (RepositoryException e) {
+            log.debug("could not search user by login", e);
+            throw new ServiceException(e);
+        }
+    }
 
-    private User getUserWithPlaylists(User user) throws RepositoryException {
+    public List<User> searchUserByFilter(String login, Boolean isAdmin, String firstname, String lastname,
+                                         String email,  LocalDate birthdateFrom, LocalDate birthdateTo,
+                                         LocalDate registrationFrom, LocalDate regisrationTo, int limit, long offset) throws ServiceException {
+
+        try {
+            return UserRepository.getInstance().query(new UserFilterSpecification(login, isAdmin, firstname, lastname, email,
+                    birthdateFrom, birthdateTo, registrationFrom, regisrationTo, limit, offset));
+        } catch (RepositoryException e) {
+            log.debug("could not search users by filter", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    private void setUserWithPlaylists(User user) throws RepositoryException {
         List<Playlist> playlists = PlaylistRepository.getInstance().query(new PlaylistUserSpecification(user.getLogin()));
         user.getPlaylists().addAll(playlists);
-        return user;
     }
 }

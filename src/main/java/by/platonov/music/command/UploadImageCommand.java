@@ -60,9 +60,8 @@ public class UploadImageCommand implements Command {
             }
 
         } else {
-            result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
-                    Map.of(PROCESS, result));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
 

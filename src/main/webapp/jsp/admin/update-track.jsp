@@ -13,12 +13,12 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
             <fmt:message key="message.update"/><c:out value="${ requestScope.entity.uuid }."/>
-            <p class="text-warning">${ requestScope.violations }</p>
-            <p class="text-info">${ requestScope.updateResult }</p>
+            <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
+            <p class="text-info"><c:out value="${ requestScope.updateResult }"/></p>
             <form action="controller" method="post">
                 <input type="hidden" name="command" value="update-track">
                 <input type="hidden" name="uuid" value="${ requestScope.entity.uuid }">
@@ -79,10 +79,10 @@
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
-            <c:import url="../search-form.jsp"/>
+            <c:import url="../common/search-form.jsp"/>
         </div>
     </div>
 </div>
-<c:import url="../footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>

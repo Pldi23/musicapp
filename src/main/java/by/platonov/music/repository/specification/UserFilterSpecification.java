@@ -1,7 +1,5 @@
 package by.platonov.music.repository.specification;
 
-import by.platonov.music.entity.User;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,7 +24,7 @@ public class UserFilterSpecification implements SqlSpecification {
     private static final String LIMIT_OFFSET_SPECIFICATION = "limit ? offset ?;";
 
     private String login;
-    private boolean isAdmin;
+    private Boolean isAdmin;
     private String firstname;
     private String lastname;
     private String email;
@@ -37,7 +35,7 @@ public class UserFilterSpecification implements SqlSpecification {
     private int limit;
     private long offset;
 
-    public UserFilterSpecification(String login, boolean isAdmin, String firstname, String lastname, String email,
+    public UserFilterSpecification(String login, Boolean isAdmin, String firstname, String lastname, String email,
                                    LocalDate birthDateFrom, LocalDate birthDateTo, LocalDate registrationDateFrom,
                                    LocalDate registrationDateTo, int limit, long offset) {
         this.login = login;
@@ -55,24 +53,37 @@ public class UserFilterSpecification implements SqlSpecification {
 
     @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {
-        if (isAdmin == null)
+        PreparedStatement statement;
+        String specification;
+        if (isAdmin == null) {
+            specification = parentSql + SPECIFICATION + LIMIT_OFFSET_SPECIFICATION;
+            statement = connection.prepareStatement(specification);
 
-            PreparedStatement statement = connection.prepareStatement();
-
-        statement.setString(1, "%" + login + "%");
-        statement.setBoolean(2, isAdmin);
-        statement.setString(3, "%" + firstname + "%");
-        statement.setString(4, "%" + lastname + "%");
-        statement.setString(5, "%" + email + "%");
-
-        statement.setBoolean(6, gender == User.Gender.MALE);
-        statement.setDate(7, Date.valueOf(birthDateFrom));
-        statement.setDate(8, Date.valueOf(birthDateTo));
-        statement.setDate(9, Date.valueOf(registrationDateFrom));
-        statement.setDate(10, Date.valueOf(registrationDateTo));
-        statement.setInt(11, limit);
-        statement.setLong(12, offset);
-
+            statement.setString(1, "%" + login + "%");
+            statement.setString(2, "%" + firstname + "%");
+            statement.setString(3, "%" + lastname + "%");
+            statement.setString(4, "%" + email + "%");
+            statement.setDate(5, Date.valueOf(birthDateFrom));
+            statement.setDate(6, Date.valueOf(birthDateTo));
+            statement.setDate(7, Date.valueOf(registrationDateFrom));
+            statement.setDate(8, Date.valueOf(registrationDateTo));
+            statement.setInt(9, limit);
+            statement.setLong(10, offset);
+        } else {
+            specification = parentSql + SPECIFICATION + ADMIN_SPECIFICATION + LIMIT_OFFSET_SPECIFICATION;
+            statement = connection.prepareStatement(specification);
+            statement.setString(1, "%" + login + "%");
+            statement.setString(2, "%" + firstname + "%");
+            statement.setString(3, "%" + lastname + "%");
+            statement.setString(4, "%" + email + "%");
+            statement.setDate(5, Date.valueOf(birthDateFrom));
+            statement.setDate(6, Date.valueOf(birthDateTo));
+            statement.setDate(7, Date.valueOf(registrationDateFrom));
+            statement.setDate(8, Date.valueOf(registrationDateTo));
+            statement.setBoolean(9, isAdmin);
+            statement.setInt(10, limit);
+            statement.setLong(11, offset);
+        }
         return statement;
     }
 }

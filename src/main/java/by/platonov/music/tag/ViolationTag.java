@@ -7,6 +7,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * music-app
@@ -25,11 +26,10 @@ public class ViolationTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         if (violations != null && !violations.isEmpty()) {
+            String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\n\u2718"));
             JspWriter out = pageContext.getOut();
             try {
-                for (Violation violation : violations) {
-                    out.write(violation.getMessage() + "\n");
-                }
+                out.write(result);
             } catch (IOException e) {
                 throw new JspException(e);
             }

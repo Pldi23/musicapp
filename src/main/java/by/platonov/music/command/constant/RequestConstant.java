@@ -88,6 +88,9 @@ public class RequestConstant {
     public static final String REGISTRATION_FROM = "createdFrom";
     public static final String REGISTRATION_TO = "createdTo";
     public static final String PLAYLISTS_STATISTIC = "statistic";
+    public static final String PAGE_COMMAND = "pageCommand";
+    public static final String FILTER_USER = "filter-user";
+    public static final String USER_LIBRARY = "to-user-library";
 
     public static final String PROCESS = "process";
     public static final String LASTPAGE = "lastPage";

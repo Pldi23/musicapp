@@ -11,10 +11,10 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-1">
-            <c:import url="../locale-form.jsp"/>
+            <c:import url="../common/locale-form.jsp"/>
         </div>
         <div class="col-10">
-            <c:import url="../header.jsp"/>
+            <c:import url="../common/header.jsp"/>
         </div>
         <div class="col-1">
             <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
@@ -36,18 +36,18 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
             <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
-            <c:import url="../search-form.jsp"/>
+            <c:import url="../common/search-form.jsp"/>
         </div>
     </div>
 </div>
-<c:import url="../footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>
 <%--<form action="controller" method="get">--%>

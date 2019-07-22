@@ -5,6 +5,7 @@ import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.*;
 import by.platonov.music.repository.specification.*;
+import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.List;
  * @version 0.0.1
  */
 @Log4j2
+@EqualsAndHashCode
 public class CommonService {
 
     public List<Track> searchTrackByName(String trackName) throws ServiceException {

@@ -29,14 +29,8 @@ public class UserPlaylistsCommand implements Command {
     public CommandResult execute(RequestContent content) {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);
         List<Playlist> playlists;
-//        Map<Playlist, List<String>> playlistWithStatistics = new HashMap();
         try {
             playlists = commonService.searchUserPlaylists(user);
-//            for (Playlist playlist : playlists) {
-//                playlistWithStatistics.put(playlist,
-//                        List.of(commonService.countPlaylistLength(playlist), commonService.countPlaylistSize(playlist)));
-//            }
-//            log.debug("playlist statistics: " + playlistWithStatistics);
         } catch (ServiceException e) {
             log.error("command could't count users playlists", e);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);

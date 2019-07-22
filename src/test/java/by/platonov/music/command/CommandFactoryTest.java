@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.constant.CommandMessage;
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.RequestConstant;
 import by.platonov.music.service.CommonService;
 import by.platonov.music.service.UserService;
@@ -40,7 +40,7 @@ class CommandFactoryTest {
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{"log"}));
         when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{"log"});
         Command actual = factory.getCommand(content);
-        Command expected = new ErrorCommand(CommandMessage.COMMAND_FAILED_MESSAGE);
+        Command expected = new ErrorCommand(MessageManager.getMessage("message.command.not.exist", "en_US"));
         assertEquals(expected, actual);
     }
 }

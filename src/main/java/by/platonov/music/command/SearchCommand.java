@@ -1,6 +1,6 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.constant.CommandMessage;
+import by.platonov.music.MessageManager;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Playlist;
@@ -15,7 +15,6 @@ import lombok.extern.log4j.Log4j2;
 import static by.platonov.music.command.constant.RequestConstant.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * music-app
@@ -84,15 +83,15 @@ public class SearchCommand implements Command {
             } catch (ServiceException e) {
                 log.error("Service provide an exception for search command ", e);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                        Map.of(PROCESS, CommandMessage.SEARCH_REQUEST_MESSAGE));
+                        Map.of(PROCESS, MessageManager.getMessage("search.request",
+                                (String) content.getSessionAttribute(LOCALE))));
             }
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE, attributes);
         } else {
-            String result = "\u2718" + violations.stream()
-                    .map(Violation::getMessage).collect(Collectors.joining("\u2718"));
+
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE,
-                    Map.of(PROCESS, result));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
 }

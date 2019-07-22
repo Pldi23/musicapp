@@ -5,12 +5,10 @@ import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
 import by.platonov.music.validator.*;
+import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
@@ -21,6 +19,7 @@ import static by.platonov.music.command.constant.RequestConstant.*;
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1
  */
+@Log4j2
 public class FilterUserCommand implements Command {
 
     private UserService userService;
@@ -32,28 +31,32 @@ public class FilterUserCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
 
-//        Set<Violation> violations = new LoginValidator()
         Set<Violation> violations =
-                new TrackNameValidator(true,
-                        new SingerValidator(true,
-                                new FilterReleaseDateValidator(null))).apply(content);
+                new FilterFieldValidator(LOGIN,
+                        new FilterFieldValidator(FIRSTNAME,
+                                new FilterFieldValidator(LASTNAME,
+                                        new FilterFieldValidator(EMAIL,
+                                                new FilterDateValidator(BIRTH_FROM, BIRTH_TO,
+                                                        new FilterDateValidator(REGISTRATION_FROM, REGISTRATION_TO, null))))))
+                        .apply(content);
 
         if (violations.isEmpty()) {
 
             List<User> users;
             String login = content.getRequestParameter(LOGIN)[0];
-            String role = !content.getRequestParameter(ROLE)[0].isBlank() ? content.getRequestParameter(ROLE)[0] : "";
+            Boolean role = !content.getRequestParameter(ROLE)[0].isBlank() ?
+                    Boolean.parseBoolean(content.getRequestParameter(ROLE)[0]) : null;
             String firstname = content.getRequestParameter(FIRSTNAME)[0];
             String lastname = content.getRequestParameter(LASTNAME)[0];
             String email = content.getRequestParameter(EMAIL)[0];
-            String birthdateFrom = !content.getRequestParameter(BIRTH_FROM)[0].isBlank() ?
-                    content.getRequestParameter(BIRTH_FROM)[0] : LocalDate.EPOCH.toString();
-            String birthdateTo = !content.getRequestParameter(BIRTH_TO)[0].isBlank() ?
-                    content.getRequestParameter(BIRTH_TO)[0] : LocalDate.now().toString();
-            String registrationFrom = !content.getRequestParameter(REGISTRATION_FROM)[0].isBlank() ?
-                    content.getRequestParameter(REGISTRATION_FROM)[0] : LocalDate.EPOCH.toString();
-            String regisrationTo = !content.getRequestParameter(REGISTRATION_TO)[0].isBlank() ?
-                    content.getRequestParameter(REGISTRATION_TO)[0] : LocalDate.now().toString();
+            LocalDate birthdateFrom = !content.getRequestParameter(BIRTH_FROM)[0].isBlank() ?
+                    LocalDate.parse(content.getRequestParameter(BIRTH_FROM)[0]) : LocalDate.EPOCH;
+            LocalDate birthdateTo = !content.getRequestParameter(BIRTH_TO)[0].isBlank() ?
+                    LocalDate.parse(content.getRequestParameter(BIRTH_TO)[0]) : LocalDate.now();
+            LocalDate registrationFrom = !content.getRequestParameter(REGISTRATION_FROM)[0].isBlank() ?
+                    LocalDate.parse(content.getRequestParameter(REGISTRATION_FROM)[0]) : LocalDate.MIN;
+            LocalDate regisrationTo = !content.getRequestParameter(REGISTRATION_TO)[0].isBlank() ?
+                    LocalDate.parse(content.getRequestParameter(REGISTRATION_TO)[0]) : LocalDate.now();
 
             int limit = Integer.parseInt(ResourceBundle.getBundle("app").getString("app.list.limit"));
             boolean nextUnavailable = false;
@@ -61,10 +64,11 @@ public class FilterUserCommand implements Command {
             boolean next = !content.getRequestParameters().containsKey(DIRECTION)
                     || content.getRequestParameter(DIRECTION)[0].equals(NEXT);
             long offset;
+            Map<String, Object> attributes = new HashMap<>();
             try {
-                long size = userService.searchUserByFilter(login, role, firstname, lastname, User.Gender.valueOf(gender.toUpperCase()),
-                        email, LocalDate.parse(birthdateFrom), LocalDate.parse(birthdateTo), LocalDate.parse(registrationFrom),
-                        LocalDate.parse(regisrationTo), Integer.MAX_VALUE, 0).size();
+                long size = userService.searchUserByFilter(login, role, firstname, lastname, email, birthdateFrom,
+                        birthdateTo, registrationFrom, regisrationTo, Integer.MAX_VALUE, 0).size();
+
                 if (content.getRequestParameters().containsKey(OFFSET)) {
                     offset = 0;
                     previousUnavailable = true;
@@ -78,25 +82,31 @@ public class FilterUserCommand implements Command {
                         previousUnavailable = offset - limit < 0;
                     }
                 }
-                tracks = commonService.searchTrackByFilter(trackName, genreName, LocalDate.parse(fromDate),
-                        LocalDate.parse(toDate), singerName, limit, offset);
+                users = userService.searchUserByFilter(login, role, firstname, lastname, email, birthdateFrom,
+                        birthdateTo, registrationFrom, regisrationTo, limit, offset);
+                attributes.put(ENTITIES, users);
+                attributes.put(PREVIOUS_UNAVAILABLE, previousUnavailable);
+                attributes.put(NEXT_UNAVAILABLE, nextUnavailable);
+                attributes.put(LOGIN, login);
+                attributes.put(FIRSTNAME, firstname);
+                attributes.put(LASTNAME, lastname);
+                attributes.put(BIRTH_FROM, birthdateFrom);
+                attributes.put(BIRTH_TO, birthdateTo);
+                attributes.put(RELEASE_FROM, registrationFrom);
+                attributes.put(RELEASE_TO, regisrationTo);
+                attributes.put(EMAIL, email);
+                attributes.put(PAGE_COMMAND, FILTER_USER);
             } catch (ServiceException e) {
-                log.error("command could't provide track list", e);
+                log.error("command could't provide users list", e);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
             }
-            log.debug("command provided tracks: " + tracks);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,
-                    Map.of(ENTITIES, tracks, PREVIOUS_UNAVAILABLE, previousUnavailable,
-                            NEXT_UNAVAILABLE, nextUnavailable, TRACKNAME, trackName, GENRE, genreName, RELEASE_FROM, fromDate,
-                            RELEASE_TO, toDate, SINGER, singerName),
+            log.debug("command provided users: " + users);
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_LIBRARY_PAGE, attributes,
                     Map.of(NEXT_OFFSET, offset + limit, PREVIOUS_OFFSET, offset - limit));
         } else {
-            String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             log.info("filter failed because of validator violation");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,
-                    Map.of(PROCESS, result));
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_LIBRARY_PAGE,
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
-        return null;
-}
 }

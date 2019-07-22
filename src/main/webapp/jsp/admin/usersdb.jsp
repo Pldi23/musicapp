@@ -8,7 +8,7 @@
     <title><fmt:message key="label.users"/> </title>
 </head>
 <body>
-<c:import url="../header.jsp"/>
+<c:import url="../common/header.jsp"/>
 <form action="controller" method="get">
     <input type="hidden" name="command" value="to-create-admin">
     <input type="submit" name="submit" value="<fmt:message key="button.admin.new"/>">

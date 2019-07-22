@@ -23,7 +23,8 @@ public enum CommandType {
     PLAYLIST_DETAIL(new PlaylistDetailCommand(new CommonService())),
     PLAYLIST_CREATE(new PlaylistCreateCommand(new CommonService())),
     QUERY(new QueryCommand(new CommonService())),
-    REGISTER(new RegistrationCommand(new UserService())),
+    REGISTER(new RegistrationCommand(new UserService(), false)),
+    REGISTER_ADMIN(new RegistrationCommand(new UserService(), true)),
     REMOVE(new RemoveTrackCommand(new AdminService(), new CommonService())),
     REMOVE_CANCEL(new RemoveCancelCommand()),
     REMOVE_MY_PLAYLIST(new RemoveMyPlaylistCommand(new CommonService())),
@@ -44,12 +45,13 @@ public enum CommandType {
     SORT_PLAYLIST_BY_NAME(new SortPlaylistNameCommand(new CommonService(), new CommandHandler<>())),
     SORT_PLAYLIST_BY_LENGTH(new SortPlaylistLengthCommand(new CommonService(), new CommandHandler<>())),
     SORT_PLAYLIST_BY_ID(new SortPlaylistIdCommand(new CommonService(), new CommandHandler<>())),
-    TO_ADMIN(new ToAdminCommand()),
+    TO_ADMIN(new ToAdminCommand(new CommonService())),
     TO_CREATE_PLAYLIST(new ToCreatePlaylistCommand()),
     TO_LOGIN(new ToLoginCommand()),
     TO_LIBRARY(new ToLibraryCommand(new CommonService())),
     TO_PROFILE(new ToProfileCommand()),
     TO_REGISTR(new ToRegistrationCommand()),
+    TO_REGISTER_ADMIN(new ToAdminRegistrationCommand()),
     TO_REMOVE_TRACK(new ToRemoveTrackCommand(new CommonService(), new CommandHandler<>())),
     TO_REMOVE_MUSICIAN(new ToRemoveMusicianCommand(new CommonService(), new CommandHandler<>())),
     TO_REMOVE_GENRE(new ToRemoveMusicianCommand(new CommonService(), new CommandHandler<>())),
@@ -70,6 +72,7 @@ public enum CommandType {
     UPDATE_MUSICIAN(new UpdateMusicianCommand(new AdminService())),
     UPDATE_PLAYLIST(new UpdatePlaylistCommand(new AdminService(), new CommonService())),
     UPDATE_TRACK(new UpdateTrackCommand(new AdminService(), new CommonService())),
+    USER_DETAIL(new UserDetailCommand(new UserService())),
     USER_PLAYLISTS(new UserPlaylistsCommand(new CommonService()));
 
     private Command command;

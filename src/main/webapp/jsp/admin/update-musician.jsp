@@ -1,5 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <c:set var="page" value="/jsp/musician.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
@@ -14,7 +15,7 @@
         <div class="col-1">
         </div>
         <div class="col-10">
-            <c:import url="../header.jsp"/>
+            <c:import url="../common/header.jsp"/>
         </div>
         <div class="col-1">
             <img src="<c:url value="/resources/epam-logo.svg"/>" width="100" height="60" alt="">
@@ -41,11 +42,11 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <p class="text-warning">${ requestScope.violations }</p>
-            <p class="text-info">${ requestScope.process }</p>
+            <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
+            <p class="text-info"><c:out value="${ requestScope.process }"/></p>
             <fmt:message key="label.id"/> <c:out value="${ requestScope.entity.id }"/>
             <form action="controller" method="post">
                 <input type="hidden" name="command" value="update-musician">
@@ -61,11 +62,11 @@
             </form>
         </div>
         <div class="col-2">
-            <c:import url="../search-form.jsp"/>
+            <c:import url="../common/search-form.jsp"/>
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
         </div>
     </div>
 </div>
-<c:import url="../footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>

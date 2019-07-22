@@ -20,7 +20,13 @@ public class EmailValidator extends AbstractValidator {
     private static final String EMAIL_REGEX_PATTERN =
             "^[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}@(?=.*\\.)[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}." +
                     "[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}[^.@]$";
-//    private static final String EMAIL_INCORRECT_MESSAGE = "E-mail example johndoe@domainsample.com";
+
+    private boolean filter;
+
+    public EmailValidator(boolean filter, ParameterValidator next) {
+        super(next);
+        this.filter = filter;
+    }
 
     public EmailValidator(ParameterValidator next) {
         super(next);
@@ -29,12 +35,23 @@ public class EmailValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
-            log.warn("Invalid content parameter: no email parameter in request");
-            result.add(new Violation(MessageManager.getMessage("violation.email", (String) content.getSessionAttribute(LOCALE))));
-        } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
-            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
-            result.add(new Violation(MessageManager.getMessage("violation.email", (String) content.getSessionAttribute(LOCALE))));
+        Violation violation = new Violation(MessageManager.getMessage("violation.email",
+                (String) content.getSessionAttribute(LOCALE)));
+        if (filter) {
+            if (content.getRequestParameters().containsKey(RequestConstant.EMAIL)
+                    && !content.getRequestParameter(RequestConstant.EMAIL)[0].isBlank()
+                    && !content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
+                log.warn("first name doesn't match regex pattern");
+                result.add(violation);
+            }
+        } else {
+            if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
+                log.warn("Invalid content parameter: no email parameter in request");
+                result.add(violation);
+            } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
+                log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
+                result.add(violation);
+            }
         }
         if (next != null) {
             result.addAll(next.apply(content));

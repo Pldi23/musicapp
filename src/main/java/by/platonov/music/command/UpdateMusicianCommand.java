@@ -46,9 +46,8 @@ public class UpdateMusicianCommand implements Command {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_MUSICIAN_PAGE,
                         Map.of(RequestConstant.PROCESS, result, RequestConstant.ENTITY, musician));
             } else {
-                String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_MUSICIAN_PAGE,
-                        Map.of(RequestConstant.VALIDATOR_RESULT, result, RequestConstant.ENTITY, musician));
+                        Map.of(RequestConstant.VALIDATOR_RESULT, violations, RequestConstant.ENTITY, musician));
             }
         } catch (ServiceException e) {
             log.error("command couldn't update musician", e);

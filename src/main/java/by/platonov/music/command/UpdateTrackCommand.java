@@ -87,9 +87,8 @@ public class UpdateTrackCommand implements Command {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_TRACK_PAGE,
                         Map.of(UPDATE_RESULT, result, ENTITY, track));
             } else {
-                String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPDATE_TRACK_PAGE,
-                        Map.of(VALIDATOR_RESULT, result, ENTITY, track));
+                        Map.of(VALIDATOR_RESULT, violations, ENTITY, track));
             }
         } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException
                 | InvalidAudioFrameException e) {

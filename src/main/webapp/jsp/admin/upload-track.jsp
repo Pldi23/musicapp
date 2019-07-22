@@ -12,11 +12,11 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <p class="text-warning">${ requestScope.violations }</p>
-            <p class="text-info">${ requestScope.addResult }</p>
+            <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
+            <p class="text-info"><c:out value="${ requestScope.addResult }"/></p>
 
             <form action="controller" enctype="multipart/form-data" method="post">
                 <input type="hidden" name="command" value="upload-track"/>
@@ -99,11 +99,11 @@
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
-            <c:import url="../search-form.jsp"/>
+            <c:import url="../common/search-form.jsp"/>
         </div>
     </div>
 </div>
-<c:import url="../footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 <script>src = "maxdate.js"</script>
 </html>

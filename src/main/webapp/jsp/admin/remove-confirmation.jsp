@@ -10,7 +10,7 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="../track-filter-form.jsp"/>
+            <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
             <fmt:message key="message.remove.confirm"/><c:out value="'${ requestScope.entity.name }'"/><fmt:message key="message.database.remove"/>
@@ -29,10 +29,10 @@
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
-            <c:import url="../search-form.jsp"/>
+            <c:import url="../common/search-form.jsp"/>
         </div>
     </div>
 </div>
-<c:import url="../footer.jsp"/>
+<c:import url="../common/footer.jsp"/>
 </body>
 </html>

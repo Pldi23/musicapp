@@ -20,9 +20,6 @@ import static org.mockito.Mockito.*;
  */
 class LoginValidatorTest {
 
-//    public static final String EXPECTED_VIOLATION_MESSAGE = "Login must be minimum 4, maximum 20 symbols, and contain only " +
-//            "latin letter, numbers, and punctuation symbols like '-' and '_'";
-
     private LoginValidator validator = new LoginValidator(null);
     private RequestContent content = mock(RequestContent.class);
 

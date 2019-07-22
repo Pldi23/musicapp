@@ -112,9 +112,8 @@ public class UploadTrackCommand implements Command {
                 return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
         }
-        String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
-                Map.of(VALIDATOR_RESULT, result));
+                Map.of(VALIDATOR_RESULT, violations));
     }
 
     private File createFile(Part part, String uuid) throws IOException {

@@ -26,9 +26,11 @@ import java.util.stream.Collectors;
 public class RegistrationCommand implements Command {
 
     private UserService userService;
+    private boolean isAdmin;
 
-    public RegistrationCommand(UserService userService) {
+    public RegistrationCommand(UserService userService, boolean isAdmin) {
         this.userService = userService;
+        this.isAdmin = isAdmin;
     }
 
     @Override
@@ -42,6 +44,8 @@ public class RegistrationCommand implements Command {
                                                 new LastnameValidator(
                                                         new EmailValidator(
                                                                 new GenderValidator(null))))))).apply(content);
+
+        String page = isAdmin ? PageConstant.REGISTR_ADMIN_PAGE : PageConstant.REGISTRATION_PAGE;
 
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];
@@ -60,7 +64,7 @@ public class RegistrationCommand implements Command {
                 User user = User.builder()
                         .login(login)
                         .password(SCryptUtil.scrypt(password, 16, 16, 16))
-                        .admin(false)
+                        .admin(isAdmin)
                         .firstname(firstname)
                         .lastname(lastname)
                         .email(email)
@@ -79,20 +83,20 @@ public class RegistrationCommand implements Command {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
                             Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
                 } else {
-                    commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                            Map.of(VALIDATOR_RESULT, MessageManager.getMessage("message.user",
-                                    (String) content.getSessionAttribute(LOCALE)) + user.getLogin() + " " +
-                                    MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
+                        commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, page,
+                                Map.of(PROCESS, MessageManager.getMessage("message.user",
+                                        (String) content.getSessionAttribute(LOCALE)) + user.getLogin() + " " +
+                                        MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
+
                 }
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
                 commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             }
         } else {
-            String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             log.info("Registration failed because of validator violation");
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTRATION_PAGE,
-                    Map.of(VALIDATOR_RESULT, result));
+            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, page,
+                    Map.of(VALIDATOR_RESULT, violations));
         }
         return commandResult;
     }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -37,7 +36,7 @@ public class FilterTrackCommand implements Command {
         Set<Violation> violations =
                 new TrackNameValidator(true,
                         new SingerValidator(true,
-                                new FilterReleaseDateValidator(null))).apply(content);
+                                new FilterDateValidator(RELEASE_FROM, RELEASE_TO, null))).apply(content);
 
         if (violations.isEmpty()) {
 
@@ -85,10 +84,9 @@ public class FilterTrackCommand implements Command {
                             RELEASE_TO, toDate, SINGER, singerName),
                     Map.of(NEXT_OFFSET, offset + limit, PREVIOUS_OFFSET, offset - limit));
         } else {
-            String result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             log.info("filter failed because of validator violation");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,
-                    Map.of(PROCESS, result));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
 }

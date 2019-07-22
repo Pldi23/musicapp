@@ -24,7 +24,6 @@ public class RequestContent {
     private String contextPath;
     private String referer;
 
-
     private RequestContent() {
     }
 

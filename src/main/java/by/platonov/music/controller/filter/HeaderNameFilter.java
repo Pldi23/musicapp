@@ -26,13 +26,10 @@ public class HeaderNameFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        log.debug("filter working");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(httpServletResponse);
 
-        log.debug("ref: " + httpServletRequest.getHeader("Referer"));
-        log.debug("session page: " + httpServletRequest.getSession().getAttribute(RequestConstant.PAGE));
         responseWrapper.setHeader("Referer", (String) httpServletRequest.getSession().getAttribute(RequestConstant.PAGE));
         filterChain.doFilter(servletRequest, servletResponse);
     }

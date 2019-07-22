@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
@@ -38,8 +37,6 @@ public class ChangePasswordCommand implements Command {
                 new PasswordValidator(PASSWORD_OLD,
                         new PasswordValidator(PASSWORD_NEW,
                                 new PasswordValidator(PASSWORD_NEW_CHECK, null))).apply(content);
-
-        String result;
 
         if (violations.isEmpty()) {
             String oldPassword = content.getRequestParameter(PASSWORD_OLD)[0];
@@ -70,9 +67,8 @@ public class ChangePasswordCommand implements Command {
             }
 
         } else {
-            result = "\u2718" + violations.stream().map(Violation::getMessage).collect(Collectors.joining("\u2718"));
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
-                    Map.of(PROCESS, result));
+                    Map.of(VALIDATOR_RESULT, violations));
         }
     }
 }

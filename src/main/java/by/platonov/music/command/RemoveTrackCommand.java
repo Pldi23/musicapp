@@ -7,6 +7,7 @@ import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.Track;
+import by.platonov.music.exception.EntityParameterNotFoundException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.AdminService;
 import by.platonov.music.service.CommonService;
