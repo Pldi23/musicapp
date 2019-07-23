@@ -29,31 +29,5 @@ public class UpdateBirthDateCommand implements Command {
     public CommandResult execute(RequestContent content) {
         return commandHandler.update(userService, content, BIRTHDATE, new BirthDateValidator(null),
                 (user, parameter) -> user.setBirthDate(LocalDate.parse(parameter)));
-
-//        Set<Violation> violations = new BirthDateValidator(null).apply(content);
-//        String result;
-//
-//        if (violations.isEmpty()) {
-//            String birthDate = content.getRequestParameter(BIRTHDATE)[0];
-//            User user = (User) content.getSessionAttribute(USER);
-//            user.setBirthDate(LocalDate.parse(birthDate));
-//            try {
-//                String locale = (String) content.getSessionAttribute(LOCALE);
-//                result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :
-//                        MessageManager.getMessage("failed", locale);
-//                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
-//                        Map.of(PROCESS, result), Map.of(USER, user));
-//            } catch (ServiceException e) {
-//                log.error("couldn't update birth date", e);
-//                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-//            }
-//        } else {
-//            result = "\u2718";
-//            for (Violation violation : violations) {
-//                result = result.concat(violation.getMessage());
-//            }
-//            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
-//                    Map.of(PROCESS, result));
-//        }
     }
 }

@@ -9,13 +9,13 @@
             id="inlineFormCustomSelectPref">
         <option selected="selected" value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }">
             <c:choose>
-                <c:when test="${ locale eq 'en_us' }">
+                <c:when test="${ sessionScope.locale eq 'en_us' }">
                     <c:out value="English"/>
                 </c:when>
-                <c:when test="${ locale eq 'ru_ru' }">
+                <c:when test="${ sessionScope.locale eq 'ru_ru' }">
                     <c:out value="Русский"/>
                 </c:when>
-                <c:when test="${ locale eq 'ru_by' }">
+                <c:when test="${ sessionScope.locale eq 'ru_by' }">
                     <c:out value="Беларускі"/>
                 </c:when>
                 <c:otherwise>

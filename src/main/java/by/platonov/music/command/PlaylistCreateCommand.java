@@ -64,7 +64,7 @@ public class PlaylistCreateCommand implements Command {
                         Map.of(RequestConstant.PROCESS, result, RequestConstant.PLAYLISTS, playlists));
             } catch (ServiceException e) {
                 log.error("command can't add playlist ", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
 
         } else {

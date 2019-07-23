@@ -10,7 +10,6 @@ public enum CommandType {
 
     ACTIVATION(new ActivationCommand(new UserService())),
     ADD_TRACK_TO_PLAYLIST(new AddTrackToPlaylistCommand(new CommonService())),
-    BACK(new BackPageCommand()),
     CHANGE_ACCESS(new ChangePlaylistAccess(new UserService(), new CommonService())),
     CHANGE_PASSWORD(new ChangePasswordCommand(new UserService())),
     ENTRY(new EntryCommand(new CommonService())),

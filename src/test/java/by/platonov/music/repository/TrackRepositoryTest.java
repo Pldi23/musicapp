@@ -1,10 +1,8 @@
 package by.platonov.music.repository;
 
 import by.platonov.music.db.DatabaseSetupExtension;
-import by.platonov.music.entity.FilePartBean;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
-import by.platonov.music.exception.FilePartBeanException;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
 import by.platonov.music.repository.specification.SearchNameSpecification;
@@ -12,8 +10,6 @@ import by.platonov.music.repository.specification.TrackIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +50,7 @@ class TrackRepositoryTest {
 //            .path(Path.of("/users/dzmitryplatonov/Dropbox/music/testfile.mp3"))
             .build();
 
-    TrackRepositoryTest() throws FilePartBeanException {
+    TrackRepositoryTest() {
     }
 
     @Test

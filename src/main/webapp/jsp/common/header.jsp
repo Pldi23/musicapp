@@ -27,7 +27,7 @@
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
                                     <fmt:message key="label.search"/>:
-                                    <input class="form-control mr-sm-2" type="text" name="searchrequest"
+                                    <input class="form-control mr-sm-2" type="text" name="searchrequest" required pattern=".{1,10}"
                                            placeholder="<fmt:message key="placeholder.search"/>"/>
                                 </label>
                                 <input type="hidden" name="offset" value="0">
@@ -54,7 +54,7 @@
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
                                     <fmt:message key="label.search"/>:
-                                    <input class="form-control mr-sm-2" type="text" name="searchrequest"
+                                    <input class="form-control mr-sm-2" type="text" name="searchrequest" required pattern=".{1,10}"
                                            placeholder="<fmt:message key="placeholder.search"/>"/>
                                 </label>
                                 <input type="hidden" name="offset" value="0">
@@ -88,7 +88,7 @@
                                 <input type="hidden" name="command" value="search"/>
                                 <label>
                                     <fmt:message key="label.search"/>:
-                                    <input class="form-control mr-sm-2" type="text" name="searchrequest"
+                                    <input class="form-control mr-sm-2" type="text" name="searchrequest" required pattern=".{1,10}"
                                            placeholder="<fmt:message key="placeholder.search"/>"/>
                                 </label>
                                 <input type="hidden" name="offset" value="0">

@@ -19,9 +19,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 @Log4j2
 public class IdValidator extends AbstractValidator {
 
-//    private static final String ID_INVALID_MESSAGE = "Id should be positive";
-//    private static final String ID_PARAMETER_ABSENT_MESSAGE = "Id parameter not found in request";
-
     public IdValidator(ParameterValidator next) {
         super(next);
     }

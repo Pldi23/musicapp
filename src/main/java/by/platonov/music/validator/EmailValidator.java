@@ -21,12 +21,6 @@ public class EmailValidator extends AbstractValidator {
             "^[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}@(?=.*\\.)[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}." +
                     "[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}[^.@]$";
 
-    private boolean filter;
-
-    public EmailValidator(boolean filter, ParameterValidator next) {
-        super(next);
-        this.filter = filter;
-    }
 
     public EmailValidator(ParameterValidator next) {
         super(next);
@@ -37,22 +31,15 @@ public class EmailValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         Violation violation = new Violation(MessageManager.getMessage("violation.email",
                 (String) content.getSessionAttribute(LOCALE)));
-        if (filter) {
-            if (content.getRequestParameters().containsKey(RequestConstant.EMAIL)
-                    && !content.getRequestParameter(RequestConstant.EMAIL)[0].isBlank()
-                    && !content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
-                log.warn("first name doesn't match regex pattern");
-                result.add(violation);
-            }
-        } else {
-            if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
-                log.warn("Invalid content parameter: no email parameter in request");
-                result.add(violation);
-            } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
-                log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
-                result.add(violation);
-            }
+
+        if (!content.getRequestParameters().containsKey(RequestConstant.EMAIL)) {
+            log.warn("Invalid content parameter: no email parameter in request");
+            result.add(violation);
+        } else if (!content.getRequestParameter(RequestConstant.EMAIL)[0].matches(EMAIL_REGEX_PATTERN)) {
+            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.EMAIL)[0]);
+            result.add(violation);
         }
+
         if (next != null) {
             result.addAll(next.apply(content));
         }

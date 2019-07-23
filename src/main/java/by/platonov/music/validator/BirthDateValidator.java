@@ -21,8 +21,6 @@ public class BirthDateValidator extends AbstractValidator {
 
     private static final int MINIMUM_AGE_ALLOWED_BY_APPLICATION = 6;
 
-//    private static final String USER_AGE_BEYOND_MINIMAL_LEVEL_MESSAGE = "User of the application must be older then 6 years";
-
     public BirthDateValidator(ParameterValidator next) {
         super(next);
     }

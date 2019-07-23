@@ -7,6 +7,7 @@ import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.*;
+import by.platonov.music.util.FileCreator;
 import by.platonov.music.util.HashGenerator;
 import by.platonov.music.validator.*;
 import lombok.extern.log4j.Log4j2;
@@ -20,9 +21,6 @@ import org.jaudiotagger.tag.TagException;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +87,8 @@ public class UploadTrackCommand implements Command {
 
                 Genre genre = commonService.getGenre(genreTitle);
                 HashGenerator generator = new HashGenerator();
-                File file = createFile(filePart, generator.generateHash());
+                FileCreator fileCreator = new FileCreator(ResourceBundle.getBundle("app").getString("app.music.uploads"));
+                File file = fileCreator.createFile(filePart, generator.generateHash());
                 Track track = Track.builder()
                         .uuid(file.getName())
                         .name(trackname)
@@ -109,20 +108,20 @@ public class UploadTrackCommand implements Command {
                         Map.of(ADD_RESULT, result));
             } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException | InvalidAudioFrameException e) {
                 log.error("couldn't provide track to next page", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.UPLOAD_TRACK_PAGE,
                 Map.of(VALIDATOR_RESULT, violations));
     }
 
-    private File createFile(Part part, String uuid) throws IOException {
-        String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
-        String extension = filename.substring(filename.lastIndexOf('.'));
-        File file = new File(ResourceBundle.getBundle("app").getString("app.music.uploads"), uuid + extension);
-        Files.copy(part.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        return file;
-    }
+//    private File createFile(Part part, String uuid) throws IOException {
+//        String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
+//        String extension = filename.substring(filename.lastIndexOf('.'));
+//        File file = new File(ResourceBundle.getBundle("app").getString("app.music.uploads"), uuid + extension);
+//        Files.copy(part.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        return file;
+//    }
 
     private long getAudioLength(File file) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException {
         AudioFile audioFile = AudioFileIO.read(file);

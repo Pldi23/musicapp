@@ -2,7 +2,6 @@ package by.platonov.music.command;
 
 import static by.platonov.music.command.constant.RequestConstant.*;
 
-import by.platonov.music.message.MessageManager;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -29,8 +28,9 @@ public class CommandFactory {
             return CommandType.valueOf(commandName.toUpperCase().replaceAll("[ -]", "_")).getCommand();
         } catch (IllegalArgumentException e) {
             log.error("Enum Command Type not present for " + commandName, e);
-            return new ErrorCommand(MessageManager.getMessage("message.command.not.exist",
-                    (String) content.getSessionAttribute(LOCALE)));
+            return new ErrorCommand(e);
+//            return new ErrorCommand(MessageManager.getMessage("message.command.not.exist",
+//                    (String) content.getSessionAttribute(LOCALE)));
         }
     }
 }

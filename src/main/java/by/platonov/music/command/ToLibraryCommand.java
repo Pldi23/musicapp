@@ -34,7 +34,7 @@ public class ToLibraryCommand implements Command {
                     Map.of(RequestConstant.TRACKS, lastAddedTracks));
         } catch (ServiceException e) {
             log.error("command could't provide track list", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

@@ -21,8 +21,8 @@ import static by.platonov.music.command.constant.PageConstant.*;
  * @version 0.0.1
  */
 @Log4j2
-@WebFilter(urlPatterns = {"/*"},
-        initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = SESSION_TIMEOUT_PAGE)})
+//@WebFilter(urlPatterns = {"/*"},
+//        initParams = {@WebInitParam(name = "TARGET_PAGE_PATH", value = LOGIN_PAGE)})
 public class TimeOutFilter implements Filter {
 
     private String targetPath;
@@ -35,7 +35,7 @@ public class TimeOutFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session != null && !session.isNew()) {
             filterChain.doFilter(request, response);
         } else {

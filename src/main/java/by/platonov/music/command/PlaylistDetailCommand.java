@@ -45,7 +45,7 @@ public class PlaylistDetailCommand implements Command {
             size = commonService.countPlaylistSize(playlist);
         } catch (ServiceException e) {
             log.error("command could't provide playlist", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
                 Map.of(RequestConstant.PLAYLIST, playlist, RequestConstant.LENGTH, length, RequestConstant.SIZE, size));

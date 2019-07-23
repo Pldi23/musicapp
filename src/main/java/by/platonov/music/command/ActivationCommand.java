@@ -30,7 +30,7 @@ public class ActivationCommand implements Command {
                     new CommandResult(CommandResult.ResponseType.REDIRECT, ERROR_REDIRECT_PAGE);
         } catch (ServiceException e) {
             log.error("Service provide an exception for activation command ", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

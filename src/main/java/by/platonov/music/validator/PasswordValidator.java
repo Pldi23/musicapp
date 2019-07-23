@@ -19,9 +19,6 @@ public class PasswordValidator extends AbstractValidator {
 
     private static final String PASSWORD_REGEX_PATTERN = "^(?=.*\\d)(?=.*\\p{Lower})(?=.*\\p{Upper})(?=.*\\p{Punct})" +
             "(?=\\S+$).{8,20}$";
-//    private static final String INCORRECT_PASS_MESSAGE = "Password must be minimum 8, maximum 20 symbols, and contain at" +
-//            " least 1 number, 1 latin uppercase letter, 1 latin lowercase letter, 1 punctuation. Only latin letters " +
-//            "available, spaces are unavailable";
 
     private String parameter;
 

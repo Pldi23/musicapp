@@ -75,7 +75,7 @@ public class FilterTrackCommand implements Command {
                         LocalDate.parse(toDate), singerName, limit, offset);
             } catch (ServiceException e) {
                 log.error("command could't provide track list", e);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
             log.debug("command provided tracks: " + tracks);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,

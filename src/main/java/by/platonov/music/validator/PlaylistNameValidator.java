@@ -20,7 +20,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 public class PlaylistNameValidator extends AbstractValidator {
 
     private static final String PLAYLIST_NAME_REGEX_PATTERN = ".{2,50}";
-//            "^[^\\p{Punct}\\p{Blank}][\\p{L} '-]{0,48}[^\\p{Punct}\\p{Blank}]$";
 
     public PlaylistNameValidator(ParameterValidator next) {
         super(next);

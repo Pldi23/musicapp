@@ -20,7 +20,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 public class GenreValidator extends AbstractValidator {
 
     private static final String GENRE_REGEX_PATTERN = "\\D{3,30}";
-//    private static final String GENRE_INCORRECT_MESSAGE = "Wrong genre parameter";
 
     public GenreValidator(ParameterValidator next) {
         super(next);

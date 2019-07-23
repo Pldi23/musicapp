@@ -40,7 +40,8 @@ class CommandFactoryTest {
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{"log"}));
         when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{"log"});
         Command actual = factory.getCommand(content);
-        Command expected = new ErrorCommand(MessageManager.getMessage("message.command.not.exist", "en_US"));
+//        Command expected = new ErrorCommand(MessageManager.getMessage("message.command.not.exist", "en_US"));
+        Command expected = new ErrorCommand(new IllegalArgumentException());
         assertEquals(expected, actual);
     }
 }

@@ -35,7 +35,7 @@ public class SetLocaleCommand implements Command {
                 attributes.put(RequestConstant.TRACKS, commonService.getRandomTen());
             } catch (ServiceException e) {
                 log.error("command could't provide tracks", e);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes, Map.of(RequestConstant.LOCALE, locale));

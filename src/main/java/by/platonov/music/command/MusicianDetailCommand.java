@@ -59,7 +59,7 @@ public class MusicianDetailCommand implements Command {
 
         } catch (ServiceException e) {
             log.error("command couldn't provide tracks", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.MUSICIAN_PAGE,
                 Map.of(RequestConstant.ENTITIES, tracks, RequestConstant.MUSICIAN, musician,

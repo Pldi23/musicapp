@@ -27,10 +27,6 @@ public class FilterFieldValidator extends AbstractValidator {
         this.parameter = parameter;
     }
 
-    public FilterFieldValidator(ParameterValidator next) {
-        super(next);
-    }
-
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();

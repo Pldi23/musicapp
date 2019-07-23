@@ -63,7 +63,7 @@ public class ChangePasswordCommand implements Command {
                         Map.of(USER, user));
             } catch (ServiceException e) {
                 log.error("couldn't update password", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
 
         } else {

@@ -76,7 +76,7 @@
                     <input type="email" name="email" required placeholder="<fmt:message key="placeholder.email"/>" title="<fmt:message key="title.email"/>"/>
                 </label>
                 <br>
-                <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.register"/>">
+                <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.register.admin"/>">
                 <br/>
             </form>
         </div>

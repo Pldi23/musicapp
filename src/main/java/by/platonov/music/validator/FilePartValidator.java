@@ -19,9 +19,6 @@ import static by.platonov.music.command.constant.RequestConstant.LOCALE;
 @Log4j2
 public class FilePartValidator extends AbstractValidator {
 
-//    private static final String FILE_PART_INCORRECT_MESSAGE = "No file part found";
-//    private static final String FILE_PART_WRONG_FORMAT_MESSAGE = "Wrong file format";
-
     public FilePartValidator(ParameterValidator next) {
         super(next);
     }

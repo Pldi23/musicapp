@@ -11,7 +11,7 @@ public class PageConstant {
 
     public static final String ADMIN_PAGE = "/jsp/admin/admin-main.jsp";
     public static final String ENTITY_REMOVED_PAGE = "/jsp/admin/entity-removed.jsp";
-    public static final String ERROR_REDIRECT_PAGE = "/jsp/error.jsp";
+    public static final String ERROR_REDIRECT_PAGE = "/jsp/common/error.jsp";
     public static final String FILTER_PAGE = "/jsp/common/filter-result.jsp";
     public static final String INDEX_PAGE = "/index.jsp";
     public static final String INFORMATION_PAGE = "/jsp/common/information.jsp";
@@ -29,7 +29,7 @@ public class PageConstant {
     public static final String REMOVE_CONFIRMATION_PAGE = "/jsp/admin/remove-confirmation.jsp";
     public static final String PROFILE_PAGE = "/jsp/user/profile.jsp";
     public static final String SEARCH_PAGE = "/jsp/common/search-result.jsp";
-    public static final String SESSION_TIMEOUT_PAGE = "/jsp/common/session-timeout.jsp";
+    public static final String SESSION_TIMEOUT_PAGE = "/jsp/common/error.jsp";
     public static final String SORT_ID_TRACK_LIBRARY_PAGE = "/jsp/music-lib/track-sortid.jsp";
     public static final String SORT_GENRE_TRACK_LIBRARY_PAGE = "/jsp/music-lib/track-sortgenre.jsp";
     public static final String SORT_NAME_TRACK_LIBRARY_PAGE = "/jsp/music-lib/track-sortname.jsp";

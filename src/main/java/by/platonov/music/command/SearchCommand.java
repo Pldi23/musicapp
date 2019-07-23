@@ -82,9 +82,7 @@ public class SearchCommand implements Command {
                 attributes.put(NEXT_UNAVAILABLE, nextUnavailable);
             } catch (ServiceException e) {
                 log.error("Service provide an exception for search command ", e);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.INFORMATION_PAGE,
-                        Map.of(PROCESS, MessageManager.getMessage("search.request",
-                                (String) content.getSessionAttribute(LOCALE))));
+                return new ErrorCommand(e).execute(content);
             }
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE, attributes);

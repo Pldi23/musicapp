@@ -98,7 +98,7 @@ public class RequestConstant {
     public static final String MUSICIANS_ATTRIBUTE = "musicians";
     public static final String TRACKS = "tracks";
     public static final String PLAYLISTS = "playlists";
-    public static final String COMMAND_MESSAGE_FACTORY_ATTRIBUTE = "commandFactoryMessage";
+    public static final String THROWABLE = "throwable";
     public static final String USER_FIRST_NAME_ATTRIBUTE = "userFirstName";
     public static final String ADMIN_FIRST_NAME_ATTRIBUTE = "adminFirstName";
     public static final String ERROR_LOGIN_PASS_ATTRIBUTE = "errorLoginPassMessage";

@@ -60,7 +60,7 @@ class CommandHandler<T> {
             entities = sortCommandExecutor.sort(sortOrder, limit, offset);
         } catch (ServiceException e) {
             log.error("command couldn't provide sorted tracklist", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         log.debug("command provide sorted track list: " + entities);
         return new CommandResult(CommandResult.ResponseType.FORWARD, page,
@@ -86,7 +86,7 @@ class CommandHandler<T> {
             t = entities.get(0);
         } catch (ServiceException e) {
             log.error("command couldn't search track");
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
 
         log.debug("command successfully provide " + t + " to the next page");
@@ -110,7 +110,7 @@ class CommandHandler<T> {
                         Map.of(PROCESS, result), Map.of(USER, user));
             } catch (ServiceException e) {
                 log.error("couldn't update birth date", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
         } else {
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,

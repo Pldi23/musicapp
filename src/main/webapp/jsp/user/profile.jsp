@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-3">
-            <div class="img"><img src="music/img/${ sessionScope.user.photoPath }" alt="${ sessionScope.user.login }" class="rounded-circle"
+            <div class="img"><img src="music/${ sessionScope.user.photoPath }" alt="${ sessionScope.user.login }" class="rounded-circle"
                                   width="200" height="200">
             </div>
             <h4><c:out value="${ sessionScope.user.login }"/></h4>

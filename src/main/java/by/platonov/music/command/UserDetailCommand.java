@@ -40,7 +40,7 @@ public class UserDetailCommand implements Command {
             user = users.get(0);
         } catch (ServiceException e) {
             log.error("command could't provide user details", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_PAGE,
                 Map.of(RequestConstant.ENTITY, user));

@@ -50,7 +50,7 @@ public class TrackDetailCommand implements Command {
 
         } catch (ServiceException e) {
             log.error("command couldn't provide track", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
                 Map.of(RequestConstant.TRACK, track, RequestConstant.PLAYLISTS, playlists));

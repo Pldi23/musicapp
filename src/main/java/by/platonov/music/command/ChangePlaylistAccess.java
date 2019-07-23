@@ -44,7 +44,7 @@ public class ChangePlaylistAccess implements Command {
                             RequestConstant.PLAYLISTS, commonService.searchUserPlaylists(user)));
         } catch (ServiceException e) {
             log.error("couldn't change playlist level access", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

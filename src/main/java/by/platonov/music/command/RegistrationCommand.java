@@ -90,7 +90,7 @@ public class RegistrationCommand implements Command {
                 }
             } catch (ServiceException e) {
                 log.error("Service provide an exception for registration command ", e);
-                commandResult = new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
         } else {
             log.info("Registration failed because of validator violation");

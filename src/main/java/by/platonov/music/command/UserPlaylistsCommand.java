@@ -33,7 +33,7 @@ public class UserPlaylistsCommand implements Command {
             playlists = commonService.searchUserPlaylists(user);
         } catch (ServiceException e) {
             log.error("command could't count users playlists", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_PLAYLISTS_PAGE,
                 Map.of(RequestConstant.SIZE, playlists.size(), RequestConstant.PLAYLISTS, playlists));

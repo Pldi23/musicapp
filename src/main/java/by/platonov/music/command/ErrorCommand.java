@@ -3,6 +3,7 @@ package by.platonov.music.command;
 import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.command.constant.RequestConstant;
 import lombok.EqualsAndHashCode;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 
@@ -13,10 +14,10 @@ import java.util.Map;
 @EqualsAndHashCode
 public class ErrorCommand implements Command {
 
-    private String errorMessage;
+    private Throwable throwable;
 
-    public ErrorCommand(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public ErrorCommand(Throwable throwable) {
+        this.throwable = throwable;
     }
 
     public ErrorCommand() {
@@ -24,7 +25,7 @@ public class ErrorCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE,
-                Map.of(), Map.of(RequestConstant.COMMAND_MESSAGE_FACTORY_ATTRIBUTE, errorMessage));
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE,
+                Map.of(RequestConstant.THROWABLE, throwable));
     }
 }

@@ -8,18 +8,7 @@ package by.platonov.music.exception;
  */
 public class EntityParameterNotFoundException extends Exception {
 
-    public EntityParameterNotFoundException() {
-    }
-
     public EntityParameterNotFoundException(String message) {
         super(message);
-    }
-
-    public EntityParameterNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public EntityParameterNotFoundException(Throwable cause) {
-        super(cause);
     }
 }

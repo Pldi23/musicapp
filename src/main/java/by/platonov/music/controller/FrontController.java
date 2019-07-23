@@ -62,7 +62,7 @@ public class FrontController extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
             requestDispatcher.forward(request, response);
         } else {
-            response.sendRedirect(commandResult.getPage());
+            response.sendRedirect(request.getServletContext().getContextPath() + commandResult.getPage());
         }
     }
 }

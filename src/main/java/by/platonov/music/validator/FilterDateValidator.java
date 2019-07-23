@@ -29,10 +29,6 @@ public class FilterDateValidator extends AbstractValidator {
         this.parameterTo = parameterTo;
     }
 
-    public FilterDateValidator(ParameterValidator next) {
-        super(next);
-    }
-
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();

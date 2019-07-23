@@ -98,7 +98,7 @@ public class FilterUserCommand implements Command {
                 attributes.put(PAGE_COMMAND, FILTER_USER);
             } catch (ServiceException e) {
                 log.error("command could't provide users list", e);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
             log.debug("command provided users: " + users);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_LIBRARY_PAGE, attributes,

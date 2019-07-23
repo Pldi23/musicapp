@@ -49,7 +49,7 @@ public class UpdateMusicianCommand implements Command {
             }
         } catch (ServiceException e) {
             log.error("command couldn't update musician", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

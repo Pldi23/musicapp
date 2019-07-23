@@ -78,7 +78,7 @@ public class LoginCommand implements Command {
             return commandResult;
         } catch (ServiceException e) {
             log.error("Could not process login command ", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, INFORMATION_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

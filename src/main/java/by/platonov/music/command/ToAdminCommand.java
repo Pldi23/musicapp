@@ -29,7 +29,7 @@ public class ToAdminCommand implements Command {
                     Map.of(RequestConstant.TRACKS, commonService.getRandomTen()));
         } catch (ServiceException e) {
             log.error("Could not provide tracks to admin main page ", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

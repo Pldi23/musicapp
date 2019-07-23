@@ -5,6 +5,7 @@ import by.platonov.music.command.constant.PageConstant;
 import by.platonov.music.entity.User;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.UserService;
+import by.platonov.music.util.FileCreator;
 import by.platonov.music.util.HashGenerator;
 import by.platonov.music.validator.PhotoPartValidator;
 import by.platonov.music.validator.Violation;
@@ -47,7 +48,8 @@ public class UploadImageCommand implements Command {
                 Part filePart = content.getPart(IMG_PATH).get();
                 User user = (User) content.getSessionAttribute(USER);
                 HashGenerator generator = new HashGenerator();
-                File file = createFile(filePart, generator.generateHash());
+                FileCreator fileCreator = new FileCreator(ResourceBundle.getBundle("app").getString("app.music.uploads"));
+                File file = fileCreator.createFile(filePart, generator.generateHash());
                 user.setPhotoPath(file.getName());
                 String locale = (String) content.getSessionAttribute(LOCALE);
                 result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :
@@ -56,7 +58,7 @@ public class UploadImageCommand implements Command {
                         Map.of(PROCESS, result), Map.of(USER, user));
             } catch (IOException | ServiceException e) {
                 log.error("couldn't upload file", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
 
         } else {
@@ -65,11 +67,11 @@ public class UploadImageCommand implements Command {
         }
     }
 
-    private File createFile(Part part, String uuid) throws IOException {
-        String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
-        String extension = filename.substring(filename.lastIndexOf('.'));
-        File file = new File(ResourceBundle.getBundle("app").getString("app.img.uploads"), uuid + extension);
-        Files.copy(part.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        return file;
-    }
+//    private File createFile(Part part, String uuid) throws IOException {
+//        String filename = Path.of(part.getSubmittedFileName()).getFileName().toString();
+//        String extension = filename.substring(filename.lastIndexOf('.'));
+//        File file = new File(ResourceBundle.getBundle("app").getString("app.music.uploads"), uuid + extension);
+//        Files.copy(part.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        return file;
+//    }
 }

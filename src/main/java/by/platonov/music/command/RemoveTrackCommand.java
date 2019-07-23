@@ -51,7 +51,8 @@ public class RemoveTrackCommand implements Command {
                     Map.of(PROCESS, MessageManager.getMessage("message.already.removed", locale)));
         } catch (ServiceException | IOException | EntityParameterNotFoundException e) {
             log.error("command could not remove track", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+//            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 

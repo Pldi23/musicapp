@@ -77,9 +77,4 @@ public class VerificationMailSender implements Callable<Boolean> {
     public Boolean call() throws VerificationMailException {
         return sendMail();
     }
-//
-//    @Override
-//    public void run() {
-//        sendMail();
-//    }
 }

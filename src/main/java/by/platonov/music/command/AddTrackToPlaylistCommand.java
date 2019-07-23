@@ -51,7 +51,7 @@ public class AddTrackToPlaylistCommand implements Command {
                                     TRACK, track));
         } catch (ServiceException e) {
             log.error("command could't add track to playlist", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

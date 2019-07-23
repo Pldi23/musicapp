@@ -29,11 +29,10 @@
             <c:import url="user-filter-form.jsp"/>
         </div>
         <div class="col-8">
-<%--            <p class="text-warning"><c:out value="${ requestScope.violations }"/></p>--%>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-warning"><c:out value="${ requestScope.process }"/></p>
             <div class="jumbotron">
-                <div class="img"><img src="music/img/${ requestScope.entity.photoPath }"
+                <div class="img"><img src="music/${ requestScope.entity.photoPath }"
                                       alt="${ requestScope.entity.login }"
                                       class="rounded-circle" width="200" height="200">
                 </div>

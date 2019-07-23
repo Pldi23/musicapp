@@ -59,7 +59,7 @@ public class ToUserLibraryCommand implements Command {
                     Map.of(NEXT_OFFSET, offset + limit, PREVIOUS_OFFSET, offset - limit));
         } catch (ServiceException e) {
             log.error("command couldn't provide users", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

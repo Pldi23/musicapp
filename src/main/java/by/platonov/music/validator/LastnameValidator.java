@@ -19,12 +19,6 @@ public class LastnameValidator extends AbstractValidator {
 
     private static final String LASTNAME_REGEX_PATTERN = "^[^\\p{Punct}\\p{Blank}][\\p{L} '-]{0,28}[^\\p{Punct}\\p{Blank}]$";
 
-    private boolean filter;
-
-    public LastnameValidator(boolean filter, ParameterValidator next) {
-        super(next);
-        this.filter = filter;
-    }
 
     public LastnameValidator(ParameterValidator next) {
         super(next);
@@ -35,22 +29,15 @@ public class LastnameValidator extends AbstractValidator {
         Set<Violation> result = new HashSet<>();
         Violation violation = new Violation(MessageManager.getMessage("violation.lastname",
                 (String) content.getSessionAttribute(LOCALE)));
-        if (filter) {
-            if (content.getRequestParameters().containsKey(RequestConstant.LASTNAME)
-                    && !content.getRequestParameter(RequestConstant.LASTNAME)[0].isBlank()
-                    && !content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
-                log.warn("last name doesn't match regex pattern");
-                result.add(violation);
-            }
-        } else {
-            if (!content.getRequestParameters().containsKey(RequestConstant.LASTNAME)) {
-                log.warn("Invalid content parameter: no lastname parameter in request");
-                result.add(violation);
-            } else if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
-                log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LASTNAME)[0]);
-                result.add(violation);
-            }
+
+        if (!content.getRequestParameters().containsKey(RequestConstant.LASTNAME)) {
+            log.warn("Invalid content parameter: no lastname parameter in request");
+            result.add(violation);
+        } else if (!content.getRequestParameter(RequestConstant.LASTNAME)[0].matches(LASTNAME_REGEX_PATTERN)) {
+            log.warn("Invalid content parameter: " + content.getRequestParameter(RequestConstant.LASTNAME)[0]);
+            result.add(violation);
         }
+
         if (next != null) {
             result.addAll(next.apply(content));
         }

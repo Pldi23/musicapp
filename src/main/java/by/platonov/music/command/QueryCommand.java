@@ -37,7 +37,7 @@ public class QueryCommand implements Command {
                     Map.of(TRACKS, tracks));
         } catch (ServiceException e) {
             log.error("Service provide an exception for query command ", e);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
 
     }

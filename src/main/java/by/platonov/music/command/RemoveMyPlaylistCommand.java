@@ -48,7 +48,7 @@ public class RemoveMyPlaylistCommand implements Command {
                             RequestConstant.PLAYLISTS_STATISTIC, playlistWithStatistics));
         } catch (ServiceException e) {
             log.error("command can't remove playlist from " + user + " playlists", e);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+            return new ErrorCommand(e).execute(content);
         }
     }
 }

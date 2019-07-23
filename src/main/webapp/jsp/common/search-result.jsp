@@ -57,32 +57,32 @@
                         </tr>
                     </c:forEach>
                 </table>
-                <c:if test="${ trackssize - nextoffset > 0 }">
+                <c:if test="${ requestScope.trackssize - requestScope.nextoffset > 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-tracks" value="1">
                         <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ nextoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
-                <c:if test="${ previousoffset >= 0 }">
+                <c:if test="${ requestScope.previousoffset >= 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-tracks" value="1">
                         <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ previousoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>
             </c:if>
             <br>
-            <c:if test="${ not empty musicians }"><fmt:message key="label.musicians"/>: ${ musicianssize } <fmt:message
+            <c:if test="${ not empty requestScope.musicians }"><fmt:message key="label.musicians"/>: ${ requestScope.musicianssize } <fmt:message
                     key="label.found"/>
                 <table>
-                    <c:forEach var="musician" items="${ musicians }" varStatus="status">
+                    <c:forEach var="musician" items="${ requestScope.musicians }" varStatus="status">
                         <tr>
                             <td>
                                 <form action="<c:url value="/controller"/>" method="get">
@@ -94,32 +94,32 @@
                         </tr>
                     </c:forEach>
                 </table>
-                <c:if test="${ musicianssize - nextoffset > 0 }">
+                <c:if test="${ requestScope.musicianssize - requestScope.nextoffset > 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-musicians" value="1">
                         <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ nextoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
-                <c:if test="${ previousoffset >= 0 }">
+                <c:if test="${ requestScope.previousoffset >= 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-musicians" value="1">
                         <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ previousoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>
             </c:if>
             <br>
-            <c:if test="${ not empty playlists }"><fmt:message key="label.playlists"/>: ${ playlistssize } <fmt:message
+            <c:if test="${ not empty requestScope.playlists }"><fmt:message key="label.playlists"/>: ${ requestScope.playlistssize } <fmt:message
                     key="label.found"/>
                 <table>
-                    <c:forEach var="playlist" items="${ playlists }" varStatus="status">
+                    <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
                         <tr>
                             <td>
                                 <form action="<c:url value="/controller"/>" method="get">
@@ -137,23 +137,23 @@
                         </tr>
                     </c:forEach>
                 </table>
-                <c:if test="${ playlistssize - nextoffset > 0 }">
+                <c:if test="${ requestScope.playlistssize - requestScope.nextoffset > 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-playlists" value="1">
                         <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ nextoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
-                <c:if test="${ previousoffset >= 0 }">
+                <c:if test="${ requestScope.previousoffset >= 0 }">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ searchrequest }">
+                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
                         <input type="hidden" name="key-playlists" value="1">
                         <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ previousoffset }">
+                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
                         <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>

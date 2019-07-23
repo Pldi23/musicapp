@@ -1,7 +1,5 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.constant.RequestConstant;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,7 +20,6 @@ public class RequestContent {
     private String serverName;
     private int serverPort;
     private String contextPath;
-    private String referer;
 
     private RequestContent() {
     }
@@ -37,7 +34,6 @@ public class RequestContent {
         content.setServerName(request);
         content.setServerPort(request);
         content.setContextPath(request);
-        content.setReferer(request);
         return content;
     }
 
@@ -76,13 +72,6 @@ public class RequestContent {
         serverName = request.getServerName();
     }
 
-    private void setReferer(HttpServletRequest request) {
-        String lastPage = request.getHeader(RequestConstant.REFERER);
-        if (lastPage != null) {
-            referer = lastPage.substring(lastPage.lastIndexOf('/'));
-        }
-    }
-
     private void setServerPort(HttpServletRequest request) {
         serverPort = request.getServerPort();
     }
@@ -102,10 +91,6 @@ public class RequestContent {
 
     public String getContextPath() {
         return contextPath;
-    }
-
-    public String getReferer() {
-        return referer;
     }
 
     public List<Part> getRequestParts() {
