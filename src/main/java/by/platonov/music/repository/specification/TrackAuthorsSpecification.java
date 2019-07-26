@@ -12,7 +12,7 @@ public class TrackAuthorsSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION =
             "join author_track a on musician.id = a.author_id where track_id = ?";
-//            "join author_track on author_track.track_id = musician.id where author_track.track_id = ?";
+
     private long trackId;
 
     public TrackAuthorsSpecification(long trackId) {

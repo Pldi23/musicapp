@@ -3,8 +3,10 @@ package by.platonov.music.db;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -78,7 +80,7 @@ public class ConnectionPool {
         log.trace("Connection released, available connections: " + connections.size());
     }
 
-    public void tierDown() throws SQLException {
+    public void destroyPool() {
         if (create.get()) {
             lock.lock();
             try {
@@ -86,11 +88,18 @@ public class ConnectionPool {
                     connection.close();
                 }
                 instance = null;
+                Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
+                while (driverEnumeration.hasMoreElements()) {
+                    log.info("Deregistering driver");
+                    DriverManager.deregisterDriver(driverEnumeration.nextElement());
+                }
                 create.set(false);
+            } catch (SQLException e) {
+                log.error("Exception during destroying connection pool", e);
             } finally {
                 lock.unlock();
             }
         }
-        log.debug("Connection pool tier down");
+        log.debug("Connection pool destroyed");
     }
 }

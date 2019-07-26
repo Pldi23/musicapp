@@ -31,7 +31,7 @@
             <p class="text-warning">${ requestScope.process }</p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <h4><fmt:message key="label.filter.result"/></h4>
-            <ctg:show-tracks tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }" commandValue="filter-track"
+            <ctg:track-table tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }" commandValue="filter-track"
                              nextUnavailable="${ requestScope.nextunavailable }" previousUnavailable="${ requestScope.previousunavailable }"/>
         </div>
         <div class="col-2">

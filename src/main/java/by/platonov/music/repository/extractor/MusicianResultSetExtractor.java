@@ -17,8 +17,8 @@ public class MusicianResultSetExtractor implements AbstractResultSetExtractor<Mu
         List<Musician> result = new ArrayList<>();
         while (resultSet.next()) {
             Musician musician = Musician.builder()
-                    .id(resultSet.getLong("id"))
-                    .name(resultSet.getString("name"))
+                    .id(resultSet.getLong(ExtractConstant.ID))
+                    .name(resultSet.getString(ExtractConstant.NAME))
                     .build();
             result.add(musician);
         }

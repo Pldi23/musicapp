@@ -21,8 +21,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class UserService {
 
-    private static final String EXCEPTION_MESSAGE = "Repository provide an exception for user service";
-
     public List<User> login(String login) throws ServiceException {
         SqlSpecification specification = new UserLoginSpecification(login);
         List<User> users;
@@ -34,7 +32,7 @@ public class UserService {
             }
             return users;
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 
@@ -43,7 +41,7 @@ public class UserService {
             log.debug("registering " + user + " in repository");
             return UserRepository.getInstance().add(user);
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 
@@ -61,13 +59,13 @@ public class UserService {
                 result = UserRepository.getInstance().update(user);
             }
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
         return result;
     }
 
     public void removeNotActiveUser() throws ServiceException {
-        SqlSpecification specification = new NotConfirmedRegistrationUserSpecification();
+        SqlSpecification specification = new UserNotConfirmedRegistrationSpecification();
         List<User> users;
         try {
             users = UserRepository.getInstance().query(specification);
@@ -78,7 +76,7 @@ public class UserService {
                 }
             }
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 
@@ -86,7 +84,7 @@ public class UserService {
         try {
             return UserRepository.getInstance().update(user);
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 
@@ -98,7 +96,7 @@ public class UserService {
             playlist.setPersonal(isPersonal);
             return PlaylistRepository.getInstance().update(playlist);
         } catch (RepositoryException e) {
-            throw new ServiceException(EXCEPTION_MESSAGE, e);
+            throw new ServiceException("Repository provide an exception for user service", e);
         }
     }
 
@@ -142,7 +140,7 @@ public class UserService {
     }
 
     private void setUserWithPlaylists(User user) throws RepositoryException {
-        List<Playlist> playlists = PlaylistRepository.getInstance().query(new PlaylistUserSpecification(user.getLogin()));
+        List<Playlist> playlists = PlaylistRepository.getInstance().query(new PlaylistOwnedByUserSpecification(user.getLogin()));
         user.getPlaylists().addAll(playlists);
     }
 }

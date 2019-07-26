@@ -3,14 +3,13 @@ package by.platonov.music.repository;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.User;
-import by.platonov.music.repository.specification.LoginIsNotNullSpecification;
-import by.platonov.music.repository.specification.LoginPasswordSpecification;
+import by.platonov.music.repository.specification.UserLoginIsNotNullSpecification;
+import by.platonov.music.repository.specification.UserLoginPasswordSpecification;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 import by.platonov.music.repository.specification.SqlSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +56,7 @@ class UserRepositoryTest {
     @Test
     void addShouldIncreaseSize() throws RepositoryException {
         repository.add(newUser);
-        long actualSize = repository.count(new LoginIsNotNullSpecification());
+        long actualSize = repository.count(new UserLoginIsNotNullSpecification());
         int expectedSize = 6;
         assertEquals(expectedSize, actualSize);
     }
@@ -78,7 +77,7 @@ class UserRepositoryTest {
     @Test
     void addExistingUserShouldNotIncreaseSize() throws RepositoryException {
         repository.add(updatedUser);
-        long actualSize = repository.count(new LoginIsNotNullSpecification());
+        long actualSize = repository.count(new UserLoginIsNotNullSpecification());
         int expectedSize = 5;
         assertEquals(expectedSize, actualSize);
     }
@@ -96,7 +95,7 @@ class UserRepositoryTest {
     @Test
     void removeShouldDecreaseSize() throws RepositoryException {
         repository.remove(selectedUser);
-        long actual = repository.count(new LoginIsNotNullSpecification());
+        long actual = repository.count(new UserLoginIsNotNullSpecification());
         int expected = 4;
         assertEquals(expected, actual);
     }
@@ -126,18 +125,18 @@ class UserRepositoryTest {
     @Test
     void count() throws RepositoryException {
         int expected = 5;
-        assertEquals(expected, repository.count(new LoginIsNotNullSpecification()));
+        assertEquals(expected, repository.count(new UserLoginIsNotNullSpecification()));
     }
 
     @Test
     void shouldPreventSqlInjection() throws RepositoryException {
         //given
-        LoginPasswordSpecification spec = new LoginPasswordSpecification("pldi", "qwerty'; " +
+        UserLoginPasswordSpecification spec = new UserLoginPasswordSpecification("pldi", "qwerty'; " +
                 "truncate table user_playlist; truncate table application_user;");
 
         //when
         repository.query(spec);
-        long actual = repository.count(new LoginIsNotNullSpecification());
+        long actual = repository.count(new UserLoginIsNotNullSpecification());
 
         //then
         assertEquals(5, actual);

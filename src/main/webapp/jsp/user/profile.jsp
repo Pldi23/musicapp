@@ -80,7 +80,7 @@
                 <input type="hidden" name="command" value="update-birthdate">
                 <label>
                     <fmt:message key="label.profile.birthdate"/>
-                    <input type="date" name="birthdate" required="required" value="1970-01-01">
+                    <input type="date" name="birthdate" required="required" value="${ sessionScope.user.birthDate }">
                     <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
             </form>

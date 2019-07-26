@@ -1,6 +1,8 @@
 package by.platonov.music.command;
 
+import by.platonov.music.command.impl.*;
 import by.platonov.music.service.*;
+import by.platonov.music.service.FileService;
 
 /**
  * @author dzmitryplatonov on 2019-06-15.
@@ -10,7 +12,7 @@ public enum CommandType {
 
     ACTIVATION(new ActivationCommand(new UserService())),
     ADD_TRACK_TO_PLAYLIST(new AddTrackToPlaylistCommand(new CommonService())),
-    CHANGE_ACCESS(new ChangePlaylistAccess(new UserService(), new CommonService())),
+    CHANGE_ACCESS(new ChangePlaylistAccessCommand(new UserService(), new CommonService())),
     CHANGE_PASSWORD(new ChangePasswordCommand(new UserService())),
     ENTRY(new EntryCommand(new CommonService())),
     ERROR(new ErrorCommand()),
@@ -24,7 +26,7 @@ public enum CommandType {
     QUERY(new QueryCommand(new CommonService())),
     REGISTER(new RegistrationCommand(new UserService(), false)),
     REGISTER_ADMIN(new RegistrationCommand(new UserService(), true)),
-    REMOVE(new RemoveTrackCommand(new AdminService(), new CommonService())),
+    REMOVE(new RemoveTrackCommand(new AdminService(), new CommonService(), new FileService())),
     REMOVE_CANCEL(new RemoveCancelCommand()),
     REMOVE_MY_PLAYLIST(new RemoveMyPlaylistCommand(new CommonService())),
     REMOVE_TRACK_FROM_PLAYLIST(new RemoveTrackFromPlaylistCommand(new CommonService())),
@@ -59,8 +61,8 @@ public enum CommandType {
     TO_UPLOAD_TRACK(new ToUploadTrackCommand()),
     TO_USER_LIBRARY(new ToUserLibraryCommand(new UserService())),
     TRACK_DETAIL(new TrackDetailCommand(new CommonService())),
-    UPLOAD_TRACK(new UploadTrackCommand(new AdminService(), new CommonService())),
-    UPLOAD_IMG(new UploadImageCommand(new UserService())),
+    UPLOAD_TRACK(new UploadTrackCommand(new AdminService(), new CommonService(), new FileService())),
+    UPLOAD_IMG(new UploadImageCommand(new UserService(), new FileService())),
     UPDATE_BIRTHDATE(new UpdateBirthDateCommand(new UserService(), new CommandHandler())),
     UPDATE_GENDER(new UpdateGenderCommand(new UserService(), new CommandHandler())),
     UPDATE_FIRSTNAME(new UpdateFirstnameCommand(new UserService(), new CommandHandler())),

@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
  * music-app

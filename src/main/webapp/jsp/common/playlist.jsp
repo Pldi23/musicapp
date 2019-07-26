@@ -56,7 +56,7 @@
         <div class="col-2">
             <h5><fmt:message key="label.playlists.my"/></h5>
             <c:forEach var="userPlaylist" items="${ sessionScope.user.playlists }">
-                <form action="<c:url value="/controller"/>" method="get">
+                <form action="<c:url value="/controller"/>" method="post">
                     <input type="hidden" name="command" value="playlist-detail">
                     <input type="hidden" name="id" value="${ userPlaylist.id }">
                     <input type="submit" class="btn btn-light btn-block" name="submit"
@@ -92,7 +92,7 @@
                             </audio>
                         </td>
                         <td>
-                            <form action="<c:url value="/controller"/>" method="get">
+                            <form action="<c:url value="/controller"/>" method="post">
                                 <input type="hidden" name="command" value="track-detail">
                                 <input type="hidden" name="id" value="${ track.id }">
                                 <input type="submit" class="btn btn-light btn-sm" name="submit" value="${ track.name }">
@@ -102,7 +102,7 @@
                         <td><span class="badge badge-secondary"><c:out value="${ track.releaseDate }"/></span></td>
                         <td>
                             <c:forEach var="singer" items="${ track.singers }">
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ singer.id }">
                                     <input type="submit" class="btn btn-light btn-sm" name="submit"
@@ -112,7 +112,7 @@
                         </td>
                         <td>
                             <c:forEach var="author" items="${ track.authors }">
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ author.id }">
                                     <input type="submit" class="btn btn-light btn-sm" name="submit"

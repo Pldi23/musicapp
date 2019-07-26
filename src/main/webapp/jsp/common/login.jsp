@@ -38,7 +38,6 @@
                            name="login"
                            pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
                            title="<fmt:message key="prescription.login"/>"/>
-<%--                    <small id="emailHelp" class="form-text text-muted"><fmt:message key="prescription.login"/></small>--%>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1"><fmt:message key="label.enter.password"/></label>
@@ -46,8 +45,9 @@
                            pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required=""
                            placeholder="<fmt:message key="placeholder.password"/>"
                            title="<fmt:message key="prescription.password"/>"/>
-<%--                    <small id="passwordHelp" class="form-text text-muted"><fmt:message--%>
-<%--                            key="prescription.password"/></small>--%>
+
+                </div>
+                <div class="form-group">
                     <input type="submit" name="submit" class="btn btn-outline-dark"
                            value="<fmt:message key="button.login"/> ">
                 </div>

@@ -9,7 +9,7 @@ import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
  * music-app
@@ -46,7 +46,7 @@ public class FilterDateValidator extends AbstractValidator {
                 result.add(violation);
             }
         } else if (!content.getRequestParameter(parameterFrom)[0].isBlank()) {
-            from = LocalDate.parse(content.getRequestParameter(parameterTo)[0]);
+            from = LocalDate.parse(content.getRequestParameter(parameterFrom)[0]);
             if (Period.between(from, LocalDate.now()).isNegative()) {
                 log.warn("from-date in future");
                 result.add(violation);

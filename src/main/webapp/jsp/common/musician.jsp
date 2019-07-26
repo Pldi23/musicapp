@@ -66,7 +66,7 @@
                 <c:forEach var="track" items="${ requestScope.entities }" varStatus="status">
                     <tr>
                         <td>
-                            <form action="<c:url value="/controller"/>" method="get">
+                            <form action="<c:url value="/controller"/>" method="post">
                                 <input type="hidden" name="command" value="track-detail">
                                 <input type="hidden" name="id" value="${ track.id }">
                                 <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">

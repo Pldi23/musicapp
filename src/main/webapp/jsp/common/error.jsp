@@ -33,7 +33,9 @@
                 <hr>
                 <p><fmt:message key="message.error"/></p>
                 <hr>
-                <p class="mb-0"><c:out value="message:: ${ requestScope.throwable.toString() }"/></p>
+                <c:if test="${ not empty requestScope.throwable }">
+                    <p class="mb-0"><c:out value="message:: ${ requestScope.throwable.toString() }"/></p>
+                </c:if>
                 <c:if test="${ empty requestScope.throwable  }">
                     <p class="mb-0"><c:out value="status code:: ${ pageContext.errorData.statusCode }"/></p>
                     <p class="mb-0"><c:out value="URI:: ${ pageContext.errorData.requestURI } "/></p>

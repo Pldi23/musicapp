@@ -5,7 +5,7 @@ import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.IdIsNotNullSpecification;
-import by.platonov.music.repository.specification.SearchNameSpecification;
+import by.platonov.music.repository.specification.EntityNameLimitOffsetSpecification;
 import by.platonov.music.repository.specification.TrackIdSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -129,7 +129,7 @@ class TrackRepositoryTest {
 
     @Test
     void query() throws RepositoryException {
-        List<Track> actual = repository.query(new SearchNameSpecification("T", Integer.MAX_VALUE, 0));
+        List<Track> actual = repository.query(new EntityNameLimitOffsetSpecification("T", Integer.MAX_VALUE, 0));
         List<Track> expected = List.of(trackTim, trackDuet);
         assertEquals(expected, actual);
     }

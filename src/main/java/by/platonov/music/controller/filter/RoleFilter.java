@@ -1,6 +1,6 @@
 package by.platonov.music.controller.filter;
 
-import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.entity.User;
 import lombok.extern.log4j.Log4j2;
 
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static by.platonov.music.command.constant.PageConstant.*;
+import static by.platonov.music.constant.PageConstant.*;
 
 /**
  * @author dzmitryplatonov on 2019-06-23.

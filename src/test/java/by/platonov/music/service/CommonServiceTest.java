@@ -3,19 +3,7 @@ package by.platonov.music.service;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.User;
-import by.platonov.music.exception.RepositoryException;
-import by.platonov.music.exception.ServiceException;
-import by.platonov.music.repository.UserRepository;
-import by.platonov.music.repository.specification.PlaylistUserSpecification;
-import by.platonov.music.repository.specification.UserLoginSpecification;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.HashSet;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * music-app

@@ -71,7 +71,7 @@
                 <label class="display-5"><fmt:message key="label.singers"/></label>
                 <div class="btn-group" role="group" aria-label="Basic">
                     <c:forEach var="singer" items="${ requestScope.track.singers }" varStatus="status">
-                        <form action="<c:url value="/controller"/>" method="get">
+                        <form action="<c:url value="/controller"/>" method="post">
                             <input type="hidden" name="command" value="musician-detail">
                             <input type="hidden" name="id" value="${ singer.id }">
                             <input type="submit" class="btn btn-outline-secondary" name="submit"
@@ -85,7 +85,7 @@
                 <label class="display-5"><fmt:message key="label.authors"/></label>
                 <div class="btn-group" role="group" aria-label="Basic">
                     <c:forEach var="author" items="${ requestScope.track.authors }" varStatus="status">
-                        <form action="<c:url value="/controller"/>" method="get">
+                        <form action="<c:url value="/controller"/>" method="post">
                             <input type="hidden" name="command" value="musician-detail">
                             <input type="hidden" name="id" value="${ author.id }">
                             <input type="submit" class="btn btn-outline-secondary" name="submit"
@@ -99,7 +99,7 @@
                 <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
                     <tr>
                         <td>
-                            <form action="<c:url value="/controller"/>" method="get">
+                            <form action="<c:url value="/controller"/>" method="post">
                                 <input type="hidden" name="command" value="playlist-detail">
                                 <input type="hidden" name="id" value="${ playlist.id }">
                                 <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">

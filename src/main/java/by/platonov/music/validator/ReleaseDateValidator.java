@@ -2,7 +2,7 @@ package by.platonov.music.validator;
 
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
  * music-app

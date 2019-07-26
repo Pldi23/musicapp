@@ -1,7 +1,7 @@
 package by.platonov.music.command;
 
-import by.platonov.music.command.constant.PageConstant;
-import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.constant.PageConstant;
+import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;

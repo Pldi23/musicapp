@@ -16,7 +16,7 @@ public class TrackFilterSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION =
             "SELECT distinct track.id as id, track.name as name, genre.id as genreId, genre.genre_name, length," +
-                    " track.release_date, track.uuid " +
+                    " track.release_date, track.created_at, track.uuid " +
                     "FROM track " +
                     "join genre on genre.id = track.genre_id " +
                     "join singer_track st on track.id = st.track_id " +

@@ -2,7 +2,7 @@ package by.platonov.music.validator;
 
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.constant.RequestConstant;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

@@ -2,6 +2,7 @@ package by.platonov.music.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
  * @author dzmitryplatonov on 2019-06-04.
  * @version 0.0.1
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 public class Playlist extends Entity {

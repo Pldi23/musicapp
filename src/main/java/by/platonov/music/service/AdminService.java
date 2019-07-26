@@ -10,8 +10,6 @@ import by.platonov.music.repository.*;
 import by.platonov.music.repository.specification.*;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.List;
-
 /**
  * music-app
  *
@@ -23,7 +21,7 @@ public class AdminService {
 
     public boolean addTrack(Track track) throws ServiceException {
         TrackRepository trackRepository = TrackRepository.getInstance();
-        SqlSpecification specification = new TrackNameSpecification(track.getName());
+        SqlSpecification specification = new EntityNameSpecification(track.getName());
         try {
             if (trackRepository.query(specification).isEmpty()) {
                 log.debug("adding " + track + " to trackRepository");

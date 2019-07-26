@@ -60,7 +60,7 @@ public class PlaylistRepository implements Repository<Playlist> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new PlaylistRepository(TransactionHandler.getInstance(), new JdbcHelper());
+                    instance = new PlaylistRepository(new TransactionHandler(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {

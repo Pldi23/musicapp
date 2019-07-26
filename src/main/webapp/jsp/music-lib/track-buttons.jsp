@@ -8,18 +8,38 @@
 <body>
 <div class="btn-toolbar" role="toolbar">
     <div class="btn-group mr-2" role="group" aria-label="First group">
-        <ctg:command-form commandValue="sort-track-by-name" submitValue="button.sort.track.name"/>
+        <form action="<c:url value="/controller"/>" method="post">
+            <input type="hidden" name="command" value="sort-track-by-name">
+            <input type="hidden" name="current" value="0">
+            <input type="submit" name="submit" class="btn btn-outline-dark"
+                   value="<fmt:message key="button.sort.track.name"/>">
+        </form>
     </div>
     <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <ctg:command-form commandValue="sort-track-by-genre" submitValue="button.sort.track.genre"/>
+        <form action="<c:url value="/controller"/>" method="post">
+            <input type="hidden" name="command" value="sort-track-by-genre">
+            <input type="hidden" name="current" value="0">
+            <input type="submit" name="submit" class="btn btn-outline-dark"
+                   value="<fmt:message key="button.sort.track.genre"/>">
+        </form>
     </div>
     <c:if test="${ sessionScope.user.admin eq true}">
         <div class="btn-group" role="group" aria-label="Third group">
-            <ctg:command-form commandValue="sort-track-by-id" submitValue="button.sort.track.id"/>
+            <form action="<c:url value="/controller"/>" method="post">
+                <input type="hidden" name="command" value="sort-track-by-id">
+                <input type="hidden" name="current" value="0">
+                <input type="submit" name="submit" class="btn btn-outline-dark"
+                       value="<fmt:message key="button.sort.track.id"/>">
+            </form>
         </div>
     </c:if>
     <div class="btn-group mr-2" role="group" aria-label="Fourth group">
-        <ctg:command-form commandValue="sort-track-by-length" submitValue="button.sort.track.length"/>
+        <form action="<c:url value="/controller"/>" method="post">
+            <input type="hidden" name="command" value="sort-track-by-length">
+            <input type="hidden" name="current" value="0">
+            <input type="submit" name="submit" class="btn btn-outline-dark"
+                   value="<fmt:message key="button.sort.track.length"/>">
+        </form>
     </div>
 </div>
 </body>

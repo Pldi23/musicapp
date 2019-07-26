@@ -15,16 +15,14 @@ import java.io.IOException;
  */
 @Log4j2
 @WebFilter(filterName = "requestEncodingFilter", urlPatterns = {"/*"},
-        initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")},
-        asyncSupported = true)
+        initParams = {@WebInitParam(name = "ENCODING", value = "UTF-8", description = "Encoding Param")})
 public class RequestEncodingFilter implements Filter {
 
-    private static final String ENCODING = "encoding";
     private String code;
 
     @Override
     public void init(FilterConfig filterConfig) {
-        code = filterConfig.getInitParameter(ENCODING);
+        code = filterConfig.getInitParameter("ENCODING");
     }
 
     @Override

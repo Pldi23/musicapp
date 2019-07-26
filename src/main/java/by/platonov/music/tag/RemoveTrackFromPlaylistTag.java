@@ -11,7 +11,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.Set;
 
-import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
  * music-app

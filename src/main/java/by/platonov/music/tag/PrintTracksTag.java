@@ -42,10 +42,8 @@ public class PrintTracksTag extends TagSupport {
                     out.write("<div class=\"container container-fluid bg-light\">");
                     out.write("<div class=\"row\">");
                     out.write("<div class=\"col-8\">");
-                    out.write("<h3>" + label + "</h3>");
-                    out.write("</div>");
-                    out.write("</div>");
-                    out.write("</div>");
+                    out.write("<h3 class=\"text-info\">" + label + "</h3>");
+                    out.write("</div></div></div>");
                 }
                 out.write("<div class=\"container container-fluid bg-light\">");
                 out.write("<div class=\"row\">");
@@ -71,9 +69,7 @@ public class PrintTracksTag extends TagSupport {
                 }
                 out.write("</tbody>");
                 out.write("</table>");
-                out.write("</div>");
-                out.write("</div>");
-                out.write("</div>");
+                out.write("</div></div></div>");
             } catch (IOException e) {
                 throw new JspException(e);
             }

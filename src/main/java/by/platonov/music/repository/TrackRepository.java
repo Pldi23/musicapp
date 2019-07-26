@@ -26,7 +26,7 @@ public class TrackRepository implements Repository<Track> {
     @Language("SQL")
     private static final String SQL_SELECT_TRACK =
             "SELECT track.id as id , track.name as name, genre.id as genreId, genre.genre_name, length," +
-                    " track.release_date, track.uuid " +
+                    " track.release_date, track.created_at, track.uuid " +
                     "FROM track " +
                     "JOIN genre on genre.id = track.genre_id ";
     @Language("SQL")
@@ -67,7 +67,7 @@ public class TrackRepository implements Repository<Track> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new TrackRepository(TransactionHandler.getInstance(), new JdbcHelper());
+                    instance = new TrackRepository(new TransactionHandler(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {

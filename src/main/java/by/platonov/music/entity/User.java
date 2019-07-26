@@ -2,9 +2,9 @@ package by.platonov.music.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -12,10 +12,11 @@ import java.util.Set;
  * @author dzmitryplatonov on 2019-06-04.
  * @version 0.0.1
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @ToString(exclude = "password")
-public class User extends Guest{
+public class User extends Entity{
 
     private String login;
     private String password;

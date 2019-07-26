@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static by.platonov.music.repository.extractor.ExtractConstant.*;
+
 /**
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
@@ -17,22 +19,20 @@ public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track
         List<Track> tracks = new ArrayList<>();
         Map<Long, Track> table = new LinkedHashMap<>();
         while (resultSet.next()) {
-            if (!table.containsKey(resultSet.getLong("id"))) {
-//                Path path = Path.of(resultSet.getString("media_path"));
+            if (!table.containsKey(resultSet.getLong(ID))) {
                 Track track = Track.builder()
-                        .id(resultSet.getLong("id"))
-                        .name(resultSet.getString("name"))
+                        .id(resultSet.getLong(ID))
+                        .name(resultSet.getString(NAME))
                         .genre(Genre.builder()
-                                .id(resultSet.getLong("genreid"))
-                                .title(resultSet.getString("genre_name"))
+                                .id(resultSet.getLong(GENRE_ID))
+                                .title(resultSet.getString(GENRE_NAME))
                                 .build())
-                        .length(resultSet.getLong("length"))
-                        .releaseDate(resultSet.getDate("release_date").toLocalDate())
+                        .length(resultSet.getLong(LENGTH))
+                        .releaseDate(resultSet.getDate(RELEASE_DATE).toLocalDate())
                         .singers(new HashSet<>())
                         .authors(new HashSet<>())
-                        .uuid(resultSet.getString("uuid"))
-//                        .path(path)
-//                        .filePartBean(new FilePartBean(path.toFile()))
+                        .uuid(resultSet.getString(UUID))
+                        .createDate(resultSet.getTimestamp(CREATED_AT).toLocalDateTime().toLocalDate())
                         .build();
                 table.put(track.getId(), track);
             }

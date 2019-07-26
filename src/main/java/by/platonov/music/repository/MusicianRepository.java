@@ -32,9 +32,7 @@ public class MusicianRepository implements Repository<Musician> {
     @Language("SQL")
     private static final String SQL_DELETE_SINGER_LINK = "DELETE FROM singer_track WHERE singer_id = ?";
     @Language("SQL")
-    private static final String SQL_UPDATE_MUSICIAN = "UPDATE musician " +
-            "SET name = ? " +
-            "WHERE id = ?;";
+    private static final String SQL_UPDATE_MUSICIAN = "UPDATE musician SET name = ? WHERE id = ?;";
     @Language("SQL")
     private static final String SQL_QUERY_MUSICIAN = "SELECT id, name " +
             "FROM musician ";
@@ -58,7 +56,7 @@ public class MusicianRepository implements Repository<Musician> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new MusicianRepository(TransactionHandler.getInstance(), new JdbcHelper());
+                    instance = new MusicianRepository(new TransactionHandler(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -85,7 +83,7 @@ public class MusicianRepository implements Repository<Musician> {
 
     @Override
     public boolean remove(Musician musician) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
+        return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, new MusicianIdSpecification(musician.getId()),
                     new MusicianResultSetExtractor()).isEmpty()) {
                 PreparedStatementMapper<Musician> mapper = new SetMusicianIdMapper();
@@ -103,7 +101,7 @@ public class MusicianRepository implements Repository<Musician> {
 
     @Override
     public boolean update(Musician musician) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
+        return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_QUERY_MUSICIAN, new MusicianIdSpecification(musician.getId()),
                     new MusicianResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_UPDATE_MUSICIAN, musician, new SetMusicianUpdateMapper());

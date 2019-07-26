@@ -14,7 +14,7 @@
 <c:import url="../common/header.jsp"/>
 <c:import url="../library/library-form.jsp"/>
 <c:import url="../common/track-filter-form.jsp"/>
-<ctg:show-tracks commandValue="filter-track" tracks="${entities}" admin="${ user.admin }" moreCommandValue="track-detail"
+<ctg:track-table commandValue="filter-track" tracks="${entities}" admin="${ user.admin }" moreCommandValue="track-detail"
                  removeCommandValue="to-remove-track" updateCommandValue="to-update-track"
                  nextUnavailable="${ nextunavailable }" previousUnavailable="${ previousunavailable }"/>
 </body>

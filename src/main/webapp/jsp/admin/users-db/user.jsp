@@ -74,10 +74,10 @@
                         <c:forEach var="playlist" items="${ requestScope.entity.playlists }">
                             <tr class="table-bg-light">
                                 <c:if test="${ sessionScope.user.admin eq true}">
-                                    <td><c:out value="${ playlist.id }"/></td>
+                                    <td><c:out value="id:: ${ playlist.id }"/></td>
                                 </c:if>
                                 <td>
-                                    <form action="<c:url value="/controller"/>" method="get">
+                                    <form action="<c:url value="/controller"/>" method="post">
                                         <input type="hidden" name="command" value="playlist-detail">
                                         <input type="hidden" name="id" value="${ playlist.id }">
                                         <input type="submit" class="btn btn-outline-secondary" name="submit" value="${ playlist.name }">

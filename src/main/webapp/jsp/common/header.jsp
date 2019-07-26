@@ -110,7 +110,7 @@
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-user-library">
                                 <input type="hidden" name="offset" value="0">

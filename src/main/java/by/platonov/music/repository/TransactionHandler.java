@@ -6,8 +6,6 @@ import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author dzmitryplatonov on 2019-06-09.
@@ -18,28 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Log4j2
 class TransactionHandler {
-
-    private static TransactionHandler instance;
-    private static ReentrantLock lock = new ReentrantLock();
-    private static AtomicBoolean create = new AtomicBoolean(false);
-
-    private TransactionHandler() {
-    }
-
-    static TransactionHandler getInstance() {
-        if (!create.get()) {
-            lock.lock();
-            try {
-                if (instance == null) {
-                    instance = new TransactionHandler();
-                    create.set(true);
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-        return instance;
-    }
 
     <T> T transactional(Transaction<T> transaction) throws RepositoryException {
         ConnectionPool pool = ConnectionPool.getInstance();

@@ -70,7 +70,7 @@ public class UserRepository implements Repository<User> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new UserRepository(TransactionHandler.getInstance(), new JdbcHelper());
+                    instance = new UserRepository(new TransactionHandler(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
@@ -83,7 +83,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public boolean add(User user) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
+        return transactionHandler.transactional(connection -> {
             if (jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
                     new UserResultSetExtractor()).isEmpty()) {
                 for (Playlist playlist : user.getPlaylists()) {
@@ -104,7 +104,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public boolean remove(User user) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
+        return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
                     new UserResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
@@ -120,7 +120,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public boolean update(User user) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection -> {
+        return transactionHandler.transactional(connection -> {
             if (!jdbcHelper.query(connection, SQL_SELECT_USER, new UserLoginSpecification(user.getLogin()),
                     new UserResultSetExtractor()).isEmpty()) {
                 jdbcHelper.execute(connection, SQL_DELETE_USER_PLAYLIST_LINK, user, new SetUserIdMapper());
@@ -142,7 +142,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public long count(SqlSpecification specification) throws RepositoryException {
-        return TransactionHandler.getInstance().transactional(connection ->
+        return transactionHandler.transactional(connection ->
                 jdbcHelper.count(connection, SQL_COUNT_USER, specification));
     }
 

@@ -2,13 +2,13 @@ package by.platonov.music.validator;
 
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.constant.RequestConstant;
+import by.platonov.music.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.platonov.music.command.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
  * music-app
@@ -26,6 +26,7 @@ public class FilePartValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
+        if (content.getPart(RequestConstant.MEDIA_PATH).isPresent())
         if (content.getPart(RequestConstant.MEDIA_PATH).isEmpty()) {
             log.warn("Invalid content part: no media path part in request");
             result.add(new Violation(MessageManager.getMessage("violation.nofile", (String) content.getSessionAttribute(LOCALE))));

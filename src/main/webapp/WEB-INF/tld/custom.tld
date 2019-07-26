@@ -56,27 +56,8 @@
         </attribute>
     </tag>
     <tag>
-        <name>command-form</name>
-        <tag-class>by.platonov.music.tag.CommandFormTag</tag-class>
-        <attribute>
-            <name>commandValue</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>submitValue</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>sortOrder</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-    <tag>
-        <name>show-tracks</name>
-        <tag-class>by.platonov.music.tag.ShowTracksTag</tag-class>
+        <name>track-table</name>
+        <tag-class>by.platonov.music.tag.TrackTableTag</tag-class>
         <attribute>
             <name>tracks</name>
             <required>false</required>
@@ -84,6 +65,11 @@
         </attribute>
         <attribute>
             <name>commandValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>current</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -99,6 +85,11 @@
         </attribute>
         <attribute>
             <name>previousUnavailable</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>pages</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

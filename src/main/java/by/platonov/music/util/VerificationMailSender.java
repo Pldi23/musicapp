@@ -36,7 +36,7 @@ public class VerificationMailSender implements Callable<Boolean> {
         this.hash = hash;
     }
 
-     public boolean sendMail() throws VerificationMailException {
+     boolean sendMail() throws VerificationMailException {
         Properties properties = new Properties();
         String mailAddress;
         String password;

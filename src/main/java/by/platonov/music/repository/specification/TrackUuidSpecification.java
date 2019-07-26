@@ -1,6 +1,5 @@
 package by.platonov.music.repository.specification;
 
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

@@ -20,15 +20,30 @@
         <div class="col-8">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <ctg:command-form commandValue="sort-playlist-by-name" submitValue="button.sort.playlist.name"/>
+                    <form action="<c:url value="/controller"/>" method="post">
+                        <input type="hidden" name="command" value="sort-playlist-by-name">
+                        <input type="hidden" name="current" value="0">
+                        <input type="submit" name="submit" class="btn btn-outline-dark"
+                               value="<fmt:message key="button.sort.playlist.name"/>">
+                    </form>
                 </div>
                 <c:if test="${ sessionScope.user.admin eq true}">
                     <div class="btn-group" role="group" aria-label="Second group">
-                        <ctg:command-form commandValue="sort-playlist-by-id" submitValue="button.sort.playlist.id"/>
+                        <form action="<c:url value="/controller"/>" method="post">
+                            <input type="hidden" name="command" value="sort-playlist-by-id">
+                            <input type="hidden" name="current" value="0">
+                            <input type="submit" name="submit" class="btn btn-outline-dark"
+                                   value="<fmt:message key="button.sort.playlist.id"/>">
+                        </form>
                     </div>
                 </c:if>
                 <div class="btn-group" role="group" aria-label="Third group">
-                    <ctg:command-form commandValue="sort-playlist-by-length" submitValue="button.sort.playlist.length"/>
+                    <form action="<c:url value="/controller"/>" method="post">
+                        <input type="hidden" name="command" value="sort-playlist-by-length">
+                        <input type="hidden" name="current" value="0">
+                        <input type="submit" name="submit" class="btn btn-outline-dark"
+                               value="<fmt:message key="button.sort.playlist.length"/>">
+                    </form>
                 </div>
             </div>
             <c:if test="${ not empty requestScope.entities }">
@@ -41,7 +56,7 @@
                                 <td><c:out value="${ playlist.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
@@ -57,20 +72,23 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <c:if test="${ requestScope.nextunavailable eq 'false'}">
-                    <form action="<c:url value="/controller"/>" method="get">
-                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">
-                        <input type="hidden" name="direction" value="next">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="next">
-                    </form>
-                </c:if>
-                <c:if test="${ requestScope.previousunavailable eq 'false' }">
-                    <form action="<c:url value="/controller"/>" method="get">
-                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">
-                        <input type="hidden" name="direction" value="previous">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="previous">
-                    </form>
-                </c:if>
+                <c:import url="pagination-bar.jsp"/>
+<%--                <c:if test="${ requestScope.nextunavailable eq 'false'}">--%>
+<%--                    <form action="<c:url value="/controller"/>" method="post">--%>
+<%--                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">--%>
+<%--                        <input type="hidden" name="direction" value="next">--%>
+<%--                        <input type="hidden" name="current" value="${ requestScope.current }">--%>
+<%--                        <input type="submit" class="btn btn-outline-dark" name="submit" value="next">--%>
+<%--                    </form>--%>
+<%--                </c:if>--%>
+<%--                <c:if test="${ requestScope.previousunavailable eq 'false' }">--%>
+<%--                    <form action="<c:url value="/controller"/>" method="post">--%>
+<%--                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">--%>
+<%--                        <input type="hidden" name="direction" value="previous">--%>
+<%--                        <input type="hidden" name="current" value="${ requestScope.current }">--%>
+<%--                        <input type="submit" class="btn btn-outline-dark" name="submit" value="previous">--%>
+<%--                    </form>--%>
+<%--                </c:if>--%>
             </c:if>
         </div>
         <div class="col-2">

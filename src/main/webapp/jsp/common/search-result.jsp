@@ -41,7 +41,7 @@
                                 <c:out value="${ author.name }"/>
                             </c:forEach></td>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="track-detail">
                                     <input type="hidden" name="id" value="${ track.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">
@@ -85,7 +85,7 @@
                     <c:forEach var="musician" items="${ requestScope.musicians }" varStatus="status">
                         <tr>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ musician.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ musician.name }">
@@ -122,7 +122,7 @@
                     <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
                         <tr>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="get">
+                                <form action="<c:url value="/controller"/>" method="post">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">

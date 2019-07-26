@@ -28,7 +28,7 @@ public class DatabaseSetupExtension implements BeforeEachCallback, AfterEachCall
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        ConnectionPool.getInstance().tierDown();
+        ConnectionPool.getInstance().destroyPool();
         postgreSQLContainer.stop();
     }
 }

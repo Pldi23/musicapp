@@ -1,7 +1,8 @@
 package by.platonov.music.command;
 
-import static by.platonov.music.command.constant.RequestConstant.*;
+import static by.platonov.music.constant.RequestConstant.*;
 
+import by.platonov.music.command.impl.ErrorCommand;
 import lombok.extern.log4j.Log4j2;
 
 /**

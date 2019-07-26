@@ -18,8 +18,8 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
     private static final String AVOID_SCRIPT_FRAGMENTS_PATTERN = "<script>(.*?)</script>";
     private static final String AVOID_SCRIPT_TAG_PATTERN = "</script>";
     private static final String AVOID_END_SCRIPT_PATTERN = "<script(.*?)>";
-    private static final String AVOID_SRC_PATTERN = "src[\r\n]*=[\r\n]*\\\'(.*?)\\\'";
-    private static final String AVOID_SRC_QUOTES_PATTERN = "src[\r\n]*=[\r\n]*\\\"(.*?)\\\"";
+    private static final String AVOID_SRC_PATTERN = "src[\r\n]*=[\r\n]*\'(.*?)\'";
+    private static final String AVOID_SRC_QUOTES_PATTERN = "src[\r\n]*=[\r\n]*\"(.*?)\"";
     private static final String AVOID_EVAL_PATTERN = "eval\\((.*?)\\)";
     private static final String AVOID_EXPRESSION_PATTERN = "expression\\((.*?)\\)";
     private static final String AVOID_JAVASCRIPT_PATTERN = "javascript:";

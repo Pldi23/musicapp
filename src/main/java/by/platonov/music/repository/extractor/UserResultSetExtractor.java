@@ -2,10 +2,11 @@ package by.platonov.music.repository.extractor;
 
 import by.platonov.music.entity.User;
 
-import java.nio.file.Path;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import static by.platonov.music.repository.extractor.ExtractConstant.*;
 
 /**
  * @author dzmitryplatonov on 2019-06-13.
@@ -18,21 +19,21 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
         List<User> users = new ArrayList<>();
         Map<String, User> table = new LinkedHashMap<>();
         while (resultSet.next()) {
-            if (!table.containsKey(resultSet.getString("login"))) {
+            if (!table.containsKey(resultSet.getString(LOGIN))) {
                 User user = User.builder()
-                        .login(resultSet.getString("login"))
-                        .password(resultSet.getString("password"))
-                        .admin(resultSet.getBoolean("is_admin"))
-                        .firstname(resultSet.getString("first_name"))
-                        .lastname(resultSet.getString("last_name"))
-                        .email(resultSet.getString("e_mail"))
-                        .birthDate(resultSet.getDate("date_of_birth").toLocalDate())
-                        .gender(resultSet.getBoolean("gender") ? User.Gender.MALE : User.Gender.FEMALE)
-                        .registrationDate(resultSet.getTimestamp("created_at").toLocalDateTime().toLocalDate())
+                        .login(resultSet.getString(LOGIN))
+                        .password(resultSet.getString(PASSWORD))
+                        .admin(resultSet.getBoolean(ADMIN))
+                        .firstname(resultSet.getString(FIRSTNAME))
+                        .lastname(resultSet.getString(LASTNAME))
+                        .email(resultSet.getString(EMAIL))
+                        .birthDate(resultSet.getDate(DATE_OF_BIRTH).toLocalDate())
+                        .gender(resultSet.getBoolean(GENDER) ? User.Gender.MALE : User.Gender.FEMALE)
+                        .registrationDate(resultSet.getTimestamp(CREATED_AT).toLocalDateTime().toLocalDate())
                         .playlists(new HashSet<>())
-                        .active(resultSet.getBoolean("active_status"))
-                        .verificationUuid(resultSet.getString("verification_uuid"))
-                        .photoPath(resultSet.getString("photo_path"))
+                        .active(resultSet.getBoolean(ACTIVE_STATUS))
+                        .verificationUuid(resultSet.getString(VERIFICATION_UUID))
+                        .photoPath(resultSet.getString(PHOTO))
                         .build();
                 table.put(user.getLogin(), user);
             }

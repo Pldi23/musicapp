@@ -27,25 +27,25 @@
         <div class="col-8">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <form action="<c:url value="/controller"/>" method="get">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="show-all-tracks">
-                        <input type="hidden" name="offset" value="0">
+                        <input type="hidden" name="current" value="0">
                         <input type="submit" name="submit" value="<fmt:message key="button.showalltracks"/>"
                                class="btn btn-secondary">
                     </form>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="Second group">
-                    <form action="<c:url value="/controller"/>" method="get">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="show-all-playlists">
-                        <input type="hidden" name="offset" value="0">
+                        <input type="hidden" name="current" value="0">
                         <input type="submit" name="submit" value="<fmt:message key="button.showallplaylists"/>"
                                class="btn btn-secondary">
                     </form>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="Third group">
-                    <form action="<c:url value="/controller"/>" method="get">
+                    <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="show-all-musicians">
-                        <input type="hidden" name="offset" value="0">
+                        <input type="hidden" name="current" value="0">
                         <input type="submit" name="submit" value="<fmt:message key="button.showallmusicians"/>"
                                class="btn btn-secondary">
                     </form>

@@ -54,7 +54,7 @@ public class GenreRepository implements Repository<Genre> {
             lock.lock();
             try {
                 if (instance == null) {
-                    instance = new GenreRepository(TransactionHandler.getInstance(), new JdbcHelper());
+                    instance = new GenreRepository(new TransactionHandler(), new JdbcHelper());
                     create.set(true);
                 }
             } finally {
