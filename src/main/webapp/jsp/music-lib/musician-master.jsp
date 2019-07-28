@@ -40,12 +40,12 @@
                     <tbody>
                     <c:forEach var="musician" items="${ requestScope.entities }">
 
-                        <tr class="table-bg-light">
+                        <tr class="table-bg-light" >
                             <c:if test="${ sessionScope.user.admin eq true}">
                                 <td><c:out value="${ musician.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ musician.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ musician.name }">

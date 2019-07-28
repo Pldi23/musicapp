@@ -51,12 +51,22 @@
                 </div>
                 <div class="form-group">
                     <label for="inputBirthDate"><fmt:message key="label.enter.dateofbirth"/></label>
-                    <input type="date" name="birthdate" required="required" value="1970-01-01" min="1900-01-01"
+                    <input type="date" name="birthdate" required="required" value="2000-01-01" min="1900-01-01"
                            title="<fmt:message key="prescription.dateofbirth"/>" class="form-control"
                            id="inputBirthDate"/>
                     <small id="birthDateHelp" class="form-text text-muted"><fmt:message
                             key="prescription.dateofbirth"/></small>
                 </div>
+                <script>
+                    $(document).ready(function () {
+                        var today = new Date();
+                        var day = today.getDate() > 9 ? today.getDate() : "0" + today.getDate(); // format should be "DD" not "D" e.g 09
+                        var month = (today.getMonth() + 1) > 9 ? (today.getMonth() + 1) : "0" + (today.getMonth() + 1);
+                        var year = today.getFullYear();
+
+                        $("#inputBirthDate").attr('max', year + "-" + month + "-" + day);
+                    });
+                </script>
                 <div class="form-group">
                     <label for="inputGender"><fmt:message key="label.gender"/></label>
                     <select name="gender" id="inputGender" class="form-control">
@@ -99,6 +109,5 @@
     </div>
 </div>
 <c:import url="footer.jsp"/>
-<script src="../../maxdate.js"></script>
 </body>
 </html>

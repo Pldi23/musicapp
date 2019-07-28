@@ -1,6 +1,7 @@
 package by.platonov.music.service;
 
 import by.platonov.music.entity.*;
+import by.platonov.music.entity.filter.EntityFilter;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.*;
@@ -8,7 +9,6 @@ import by.platonov.music.repository.specification.*;
 import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,11 +27,9 @@ public class CommonService {
         return search(new EntityNameLimitOffsetSpecification(trackName, Integer.MAX_VALUE, 0), TrackRepository.getInstance());
     }
 
-    public List<Track> searchTrackByFilter(String trackname, String genreName, LocalDate fromDate, LocalDate toDate,
-                                           String singerName, int limit, long offset) throws ServiceException {
+    public List<Track> searchTrackByFilter(EntityFilter entityFilter, int limit, long offset) throws ServiceException {
         log.debug("searching tracks in track repository");
-        return tracksWithMusicians(search(new TrackFilterSpecification(trackname, genreName, fromDate, toDate,
-                singerName, limit, offset), TrackRepository.getInstance()));
+        return tracksWithMusicians(search(new TrackFilterSpecification(entityFilter, limit, offset), TrackRepository.getInstance()));
     }
 
     public List<Track> searchTracksByMusician(long musicianId) throws ServiceException {
@@ -108,7 +106,7 @@ public class CommonService {
     }
 
     public long countTracks() throws ServiceException {
-        return count(new IdIsNotNullSpecification(), TrackRepository.getInstance());
+        return count(new TrackIdIsNotNullSpecification(), TrackRepository.getInstance());
     }
 
     public long countMusicians() throws ServiceException {
@@ -162,7 +160,7 @@ public class CommonService {
         MusicianRepository musicianRepository = MusicianRepository.getInstance();
         Musician resultMusician;
         Musician musician = Musician.builder().name(musicianName).build();
-        SqlSpecification specification = new EntityNameSpecification(musicianName);
+        SqlSpecification specification = new MusicianNameSpecification(musicianName);
         List<Musician> musicians;
         try {
             musicians = musicianRepository.query(specification);

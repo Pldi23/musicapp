@@ -48,7 +48,7 @@
                                 </form>
                             </td>
                             <td>
-                                <audio controls>
+                                <audio controls preload="metadata">
                                     <source src="music/${track.uuid}" type="audio/mpeg">
                                 </audio>
                             </td>

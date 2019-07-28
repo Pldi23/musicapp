@@ -64,7 +64,7 @@ public class PrintTracksTag extends TagSupport {
                     }
                     out.write("</div>");
                     out.write("</td>");
-                    out.write("<td><audio controls><source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\"></audio></td>");
+                    out.write("<td><audio controls preload=\"metadata\"><source src=\"music/" + track.getUuid() + "\" type=\"audio/mpeg\"></audio></td>");
                     out.write("</tr>");
                 }
                 out.write("</tbody>");

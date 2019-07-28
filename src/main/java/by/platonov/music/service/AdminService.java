@@ -34,36 +34,42 @@ public class AdminService {
     }
 
     public boolean removeTrack(Track track) throws ServiceException {
+        log.debug("Removing track " + track);
         return remove(track, TrackRepository.getInstance());
     }
 
     public boolean updateTrack(Track track) throws ServiceException {
+        log.debug("updating track " + track);
         return update(track, TrackRepository.getInstance());
     }
 
     public boolean updateMusician(Musician musician) throws ServiceException {
+        log.debug("updating musician " + musician);
         return update(musician, MusicianRepository.getInstance());
     }
 
     public boolean updatePlaylist(Playlist playlist) throws ServiceException {
+        log.debug("updating playlist " + playlist);
         return update(playlist, PlaylistRepository.getInstance());
     }
 
     public boolean removePlaylist(Playlist playlist) throws ServiceException {
+        log.debug("Removing playlist " + playlist);
         return remove(playlist, PlaylistRepository.getInstance());
     }
 
     public boolean removeMusician(Musician musician) throws ServiceException {
+        log.debug("Removing musician " + musician);
         return remove(musician, MusicianRepository.getInstance());
     }
 
     public boolean removeGenre(Genre genre) throws ServiceException {
+        log.debug("Removing genre " + genre);
         return remove(genre, GenreRepository.getInstance());
     }
 
     private <T> boolean remove(T t, Repository<T> repository) throws ServiceException {
         try {
-            log.debug("Removing entity " + t);
             return repository.remove(t);
         } catch (RepositoryException e) {
             throw new ServiceException("repository provide exception for Admin service", e);

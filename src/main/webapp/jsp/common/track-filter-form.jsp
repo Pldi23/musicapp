@@ -3,11 +3,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var today = new Date();
+        var day=today.getDate()>9?today.getDate():"0"+today.getDate(); // format should be "DD" not "D" e.g 09
+        var month=(today.getMonth()+1)>9?(today.getMonth()+1):"0"+(today.getMonth()+1);
+        var year=today.getFullYear();
+
+        $("#releaseDateTo").attr('max', year + "-" + month + "-" + day);
+        $("#releaseDate").attr('max', year + "-" + month + "-" + day);
+    });
+</script>
 <html>
 <body>
 <form action="<c:url value="/controller"/>" method="post">
     <input type="hidden" name="command" value="filter-track">
-    <input type="hidden" name="offset" value="0">
+    <input type="hidden" name="current" value="0">
     <input type="hidden" name="order" value="marker">
     <div class="form-group">
         <label for="inputTrackname"><fmt:message key="label.filter.trackname"/></label>

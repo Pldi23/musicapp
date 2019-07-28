@@ -53,14 +53,12 @@
             <table class="table table-hover table-sm text-center" style="height: 100px;">
                 <thead>
                 <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Email</th>
-<%--                    <th scope="col">Gender</th>--%>
-<%--                    <th scope="col">Birth date</th>--%>
-                    <th scope="col">Registration date</th>
-                    <th scope="col">Playlists</th>
-                    <th scope="col">Status</th>
+                    <th scope="col"><fmt:message key="option.user"/></th>
+                    <th scope="col"><fmt:message key="label.role"/></th>
+                    <th scope="col"><fmt:message key="placeholder.email"/></th>
+                    <th scope="col"><fmt:message key="label.profile.registrationdate"/></th>
+                    <th scope="col"><fmt:message key="label.playlists"/></th>
+                    <th scope="col"><fmt:message key="label.status"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,21 +80,8 @@
                             </c:if>
                         </td class="align-middle">
                         <td class="align-middle">
-<%--                            <span class="badge badge-secondary"><c:out value="${ entity.email }"/></span>--%>
                             <span class="badge badge-secondary"><c:out value="${ entity.email }"/></span>
                         </td>
-<%--                        <td>--%>
-<%--                            <c:if test="${ entity.gender eq 'MALE' }">--%>
-<%--                                <span class="badge badge-secondary"><fmt:message key="option.male"/></span>--%>
-<%--                            </c:if>--%>
-<%--                            <c:if test="${ entity.gender eq 'FEMALE' }">--%>
-<%--                                <span class="badge badge-secondary"><fmt:message key="option.female"/></span>--%>
-<%--                            </c:if>--%>
-<%--                        </td>--%>
-<%--                        <td>--%>
-<%--                            <span class="badge badge-secondary">--%>
-<%--                                <c:out value="${ entity.birthDate }"/></span>--%>
-<%--                        </td>--%>
                         <td class="align-middle">
                             <span class="badge badge-secondary">
                                 <c:out value="${ entity.registrationDate }"/></span>
@@ -118,37 +103,112 @@
                 </tbody>
             </table>
             </div>
-            <c:if test="${ requestScope.nextunavailable eq 'false'}">
-                <form action="<c:url value="/controller"/>" method="post">
-                    <input type="hidden" name="command" value="${ requestScope.pageCommand }">
-                    <input type="hidden" name="direction" value="next">
-                    <input type="hidden" name="login" value="${ requestScope.login }">
-                    <input type="hidden" name="role" value="${ requestScope.role }">
-                    <input type="hidden" name="firstname" value="${ requestScope.firstname }">
-                    <input type="hidden" name="lastname" value="${ requestScope.lastname }">
-                    <input type="hidden" name="email" value="${ requestScope.email }">
-                    <input type="hidden" name="birthDateFrom" value="${ requestScope.birthDateFrom }">
-                    <input type="hidden" name="birthDateTo" value="${ requestScope.birthDateTo }">
-                    <input type="hidden" name="createdFrom" value="${ requestScope.createdFrom }">
-                    <input type="hidden" name="createdTo" value="${ requestScope.createdTo }">
-                    <input type="submit" class="btn btn-outline-dark" name="submit" value="next">
-                </form>
-            </c:if>
-            <c:if test="${ requestScope.previousunavailable eq 'false' }">
-                <form action="<c:url value="/controller"/>" method="post">
-                    <input type="hidden" name="command" value="${ requestScope.pageCommand }">
-                    <input type="hidden" name="direction" value="previous">
-                    <input type="hidden" name="login" value="${ requestScope.login }">
-                    <input type="hidden" name="role" value="${ requestScope.role }">
-                    <input type="hidden" name="firstname" value="${ requestScope.firstname }">
-                    <input type="hidden" name="lastname" value="${ requestScope.lastname }">
-                    <input type="hidden" name="email" value="${ requestScope.email }">
-                    <input type="hidden" name="birthDateFrom" value="${ requestScope.birthDateFrom }">
-                    <input type="hidden" name="birthDateTo" value="${ requestScope.birthDateTo }">
-                    <input type="hidden" name="createdFrom" value="${ requestScope.createdFrom }">
-                    <input type="hidden" name="createdTo" value="${ requestScope.createdTo }">
-                    <input type="submit" class="btn btn-outline-dark" name="submit" value="previous">
-                </form>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><c:if test="${ requestScope.previousunavailable eq 'false' }">
+                        <form action="<c:url value="/controller"/>" method="post">
+                            <input type="hidden" name="command" value="${ requestScope.pageCommand }">
+                            <input type="hidden" name="direction" value="previous">
+                            <input type="hidden" name="current" value="${ requestScope.current }">
+                            <c:if test="${ requestScope.pageCommand eq 'filter-user'}">
+                                <input type="hidden" name="login" value="${ requestScope.filter.login }">
+                                <input type="hidden" name="role" value="${ requestScope.filter.role }">
+                                <input type="hidden" name="firstname" value="${ requestScope.filter.firstname }">
+                                <input type="hidden" name="lastname" value="${ requestScope.filter.lastname }">
+                                <input type="hidden" name="email" value="${ requestScope.filter.email }">
+                                <input type="hidden" name="birthDateFrom"
+                                       value="${ requestScope.filter.birthdateFrom }">
+                                <input type="hidden" name="birthDateTo" value="${ requestScope.filter.birthdateTo }">
+                                <input type="hidden" name="createdFrom"
+                                       value="${ requestScope.filter.registrationFrom }">
+                                <input type="hidden" name="createdTo" value="${ requestScope.filter.regisrationTo }">
+                            </c:if>
+                            <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
+                        </form>
+                    </c:if></li>
+                    <li class="page-item">
+                        <c:if test="${ requestScope.nextunavailable eq 'false'}">
+                            <form action="<c:url value="/controller"/>" method="post">
+                                <input type="hidden" name="command" value="${ requestScope.pageCommand }">
+                                <input type="hidden" name="direction" value="next">
+                                <input type="hidden" name="current" value="${ requestScope.current }">
+                                <c:if test="${ requestScope.pageCommand eq 'filter-user'}">
+                                    <input type="hidden" name="login" value="${ requestScope.filter.login }">
+                                    <input type="hidden" name="role" value="${ requestScope.filter.role }">
+                                    <input type="hidden" name="firstname" value="${ requestScope.filter.firstname }">
+                                    <input type="hidden" name="lastname" value="${ requestScope.filter.lastname }">
+                                    <input type="hidden" name="email" value="${ requestScope.filter.email }">
+                                    <input type="hidden" name="birthDateFrom"
+                                           value="${ requestScope.filter.birthdateFrom }">
+                                    <input type="hidden" name="birthDateTo" value="${ requestScope.filter.birthdateTo }">
+                                    <input type="hidden" name="createdFrom"
+                                           value="${ requestScope.filter.registrationFrom }">
+                                    <input type="hidden" name="createdTo" value="${ requestScope.filter.regisrationTo }">
+                                </c:if>
+                                <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
+                            </form>
+                        </c:if>
+                    </li>
+                </ul>
+            </nav>
+            <c:if test="${ not empty requestScope.entities and not empty requestScope.size[1] }">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <c:forEach var="element" items="${ requestScope.size }" varStatus="loop">
+                            <c:choose>
+                                <c:when test="${ element eq requestScope.current }">
+                                    <li class="page-item active" aria-current="page">
+                                        <form action="<c:url value="/controller"/>" method="post">
+                                            <input type="hidden" name="command" value="${ requestScope.pageCommand }">
+                                            <input type="hidden" name="direction" value="direct">
+                                            <input type="hidden" name="current" value="${ element }">
+                                            <c:if test="${ requestScope.pageCommand eq 'filter-user'}">
+                                                <input type="hidden" name="login" value="${ requestScope.filter.login }">
+                                                <input type="hidden" name="role" value="${ requestScope.filter.role }">
+                                                <input type="hidden" name="firstname" value="${ requestScope.filter.firstname }">
+                                                <input type="hidden" name="lastname" value="${ requestScope.filter.lastname }">
+                                                <input type="hidden" name="email" value="${ requestScope.filter.email }">
+                                                <input type="hidden" name="birthDateFrom"
+                                                       value="${ requestScope.filter.birthdateFrom }">
+                                                <input type="hidden" name="birthDateTo" value="${ requestScope.filter.birthdateTo }">
+                                                <input type="hidden" name="createdFrom"
+                                                       value="${ requestScope.filter.registrationFrom }">
+                                                <input type="hidden" name="createdTo" value="${ requestScope.filter.regisrationTo }">
+                                            </c:if>
+                                            <input type="submit" class="page-link" name="submit"
+                                                   value="${ element }">
+                                        </form>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="page-item">
+                                        <form action="<c:url value="/controller"/>" method="post">
+                                            <input type="hidden" name="command" value="${ requestScope.pageCommand }">
+                                            <input type="hidden" name="direction" value="direct">
+                                            <input type="hidden" name="current" value="${ element }">
+                                            <c:if test="${ requestScope.pageCommand eq 'filter-user'}">
+                                                <input type="hidden" name="login" value="${ requestScope.filter.login }">
+                                                <input type="hidden" name="role" value="${ requestScope.filter.role }">
+                                                <input type="hidden" name="firstname" value="${ requestScope.filter.firstname }">
+                                                <input type="hidden" name="lastname" value="${ requestScope.filter.lastname }">
+                                                <input type="hidden" name="email" value="${ requestScope.filter.email }">
+                                                <input type="hidden" name="birthDateFrom"
+                                                       value="${ requestScope.filter.birthdateFrom }">
+                                                <input type="hidden" name="birthDateTo" value="${ requestScope.filter.birthdateTo }">
+                                                <input type="hidden" name="createdFrom"
+                                                       value="${ requestScope.filter.registrationFrom }">
+                                                <input type="hidden" name="createdTo" value="${ requestScope.filter.regisrationTo }">
+                                            </c:if>
+                                            <input type="submit" class="page-link" name="submit"
+                                                   value="${ element }">
+                                        </form>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </nav>
             </c:if>
         </div>
     </div>

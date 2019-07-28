@@ -31,7 +31,7 @@
             <h3><c:out value="${ requestScope.track.name }"/></h3>
         </div>
         <div class="col-5">
-            <audio controls>
+            <audio controls preload="metadata">
                 <source src="music/${ requestScope.track.uuid }" type="audio/mpeg">
             </audio>
         </div>

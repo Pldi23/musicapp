@@ -5,6 +5,24 @@
 <fmt:setBundle basename="pagecontent"/>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(function(){
+        $("audio").on("play", function() {
+            $("audio").not(this).each(function(index, audio) {
+                audio.pause();
+            });
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $("audio").on("ended", function () {
+            var nextId = parseInt(this.id) + 1;
+            $("audio")[nextId].play();
+        })
+    })
+</script>
 
 <div class="container w-100 bg-light fixed-top">
     <div class="row">
@@ -113,7 +131,7 @@
                         <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-user-library">
-                                <input type="hidden" name="offset" value="0">
+                                <input type="hidden" name="current" value="0">
                                 <input type="submit" name="submit" value="<fmt:message key="button.users.db"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>

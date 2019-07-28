@@ -4,10 +4,24 @@
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <html>
+<script>
+    $(document).ready(function () {
+        var today = new Date();
+        var day=today.getDate()>9?today.getDate():"0"+today.getDate(); // format should be "DD" not "D" e.g 09
+        var month=(today.getMonth()+1)>9?(today.getMonth()+1):"0"+(today.getMonth()+1);
+        var year=today.getFullYear();
+
+        $("#createdFrom").attr('max', year + "-" + month + "-" + day);
+        $("#createdTo").attr('max', year + "-" + month + "-" + day);
+        $("#birthDateFrom").attr('max', year + "-" + month + "-" + day);
+        $("#birthDateTo").attr('max', year + "-" + month + "-" + day);
+    });
+</script>
 <body>
 <form action="<c:url value="/controller"/>" method="post">
     <input type="hidden" name="command" value="filter-user">
     <input type="hidden" name="offset" value="0">
+    <input type="hidden" name="current" value="0">
     <input type="hidden" name="order" value="marker">
     <div class="form-group">
         <label for="inputLogin"><fmt:message key="label.filter.username"/></label>
@@ -19,8 +33,8 @@
         <label for="inputRole"><fmt:message key="label.filter.role"/></label>
         <select name="role" class="form-control" id="inputRole">
             <option selected="selected"></option>
-            <option value="admin"><fmt:message key="option.admin"/></option>
-            <option value="user"><fmt:message key="option.user"/></option>
+            <option value="true"><fmt:message key="option.admin"/></option>
+            <option value="false"><fmt:message key="option.user"/></option>
         </select>
     </div>
     <div class="form-group">

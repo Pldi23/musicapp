@@ -5,6 +5,8 @@
 <c:set var="page" value="/jsp/common/playlist.jsp" scope="request"/>
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <html>
 <head>
     <title>${ requestScope.playlist.name }</title>
@@ -41,8 +43,10 @@
         <div class="col-6">
             <ul class="list-inline">
                 <li class="list-inline-item"><h3><c:out value="${ requestScope.playlist.name }"/></h3></li>
-                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.duration"/> :: <c:out value="${ requestScope.length }"/></h5></li>
-                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.quantity"/> :: <c:out value="${ requestScope.size }"/></h5></li>
+                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.duration"/> :: <c:out
+                        value="${ requestScope.length }"/></h5></li>
+                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.quantity"/> :: <c:out
+                        value="${ requestScope.size }"/></h5></li>
             </ul>
         </div>
         <div class="col-2">
@@ -87,7 +91,7 @@
                 <c:forEach var="track" items="${ requestScope.playlist.tracks }" varStatus="status">
                     <tr>
                         <td>
-                            <audio controls>
+                            <audio id="${ status.index }" controls preload="metadata">
                                 <source src="music/${track.uuid}" type="audio/mpeg">
                             </audio>
                         </td>
@@ -122,7 +126,8 @@
                         </td>
                         <td>
                             <ctg:remove-track-from-playlist currentPlaylist="${ requestScope.playlist }"
-                                                            userPlaylists="${ sessionScope.user.playlists }" track="${ track }"/>
+                                                            userPlaylists="${ sessionScope.user.playlists }"
+                                                            track="${ track }"/>
                         </td>
                     </tr>
                 </c:forEach>

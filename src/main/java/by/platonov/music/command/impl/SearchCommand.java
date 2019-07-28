@@ -3,7 +3,6 @@ package by.platonov.music.command.impl;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.constant.PageConstant;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Playlist;
@@ -62,13 +61,13 @@ public class SearchCommand implements Command {
                 musicians = commonService.searchMusician(searchRequest, limit, offset);
                 playlists = commonService.searchPlaylist(searchRequest, limit, offset, user);
                 tracks = commonService.searchTrack(searchRequest, limit, offset);
-                if (content.getRequestParameters().containsKey("key-musicians")) {
+                if (content.getRequestParameters().containsKey(KEY_MUSICIAN)) {
                     attributes.put(MUSICIANS_ATTRIBUTE, musicians);
                     attributes.put(MUSICIAN_SIZE, musiciansSize);
-                } else if (content.getRequestParameters().containsKey("key-tracks")) {
+                } else if (content.getRequestParameters().containsKey(KEY_TRACK)) {
                     attributes.put(TRACKS, tracks);
                     attributes.put(TRACKS_SIZE, tracksSize);
-                } else if (content.getRequestParameters().containsKey("key-playlists")) {
+                } else if (content.getRequestParameters().containsKey(KEY_PLAYLIST)) {
                     attributes.put(PLAYLISTS, playlists);
                     attributes.put(PLAYLISTS_SIZE, playlistsSize);
                 } else {

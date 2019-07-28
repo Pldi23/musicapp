@@ -34,24 +34,5 @@ public class SortTrackGenreCommand implements Command {
         return handler.sorted(content, SORT_TRACK_GENRE_ORDER, PageConstant.SORT_GENRE_TRACK_LIBRARY_PAGE,
                 commonService::countTracks, commonService::sortedTracksGenre);
 
-
-//        boolean sortTrackGenreOrder = !content.getSessionAttributes().containsKey(SORT_TRACK_GENRE_ORDER) ||
-//                (boolean) content.getSessionAttribute(SORT_TRACK_GENRE_ORDER);
-//        List<Track> tracks;
-//        try {
-//            tracks = commonService.sortedTracksGenre(sortTrackGenreOrder);
-////            sortTrackGenreOrder = !sortTrackGenreOrder;
-//            for (Track track : tracks) {
-//                track.getSingers().addAll(commonService.getTrackSingers(track.getId()));
-//                track.getAuthors().addAll(commonService.getTrackAuthors(track.getId()));
-//            }
-//        } catch (ServiceException e) {
-//            log.error("command couldn't provide sorted tracklist", e);
-//            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
-//        }
-//        log.debug("command provide sorted track list: " + tracks);
-//        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_LIBRARY_PAGE,
-//                Map.of(TRACKS, tracks), Map.of(SORT_TRACK_GENRE_ORDER, sortTrackGenreOrder));
-//    }
     }
 }

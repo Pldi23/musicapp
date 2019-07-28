@@ -6,9 +6,3 @@
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <c:set var="pageCommand" value="show-all-tracks" scope="request"/>
 <c:import url="track-master.jsp"/>
-
-
-<%--            <ctg:track-table tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }"--%>
-<%--                             current="${ requestScope.current }" commandValue="show-all-tracks"--%>
-<%--                             nextUnavailable="${ requestScope.nextunavailable }"--%>
-<%--                             previousUnavailable="${ requestScope.previousunavailable }" pages="${ requestScope.size }"/>--%>

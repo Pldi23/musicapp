@@ -12,8 +12,8 @@ import java.sql.SQLException;
  */
 public class EntitySortedNameSpecification implements SqlSpecification {
 
-    private static final String ASCENDING_SPECIFICATION = "order by name limit ? offset ?;";
-    private static final String DESCENDING_SPECIFICATION = "order by name desc limit ? offset ?;";
+    private static final String ASCENDING_SPECIFICATION = "order by LOWER(name) limit ? offset ?;";
+    private static final String DESCENDING_SPECIFICATION = "order by LOWER(name) desc limit ? offset ?;";
 
     private boolean isAscending;
     private int limit;

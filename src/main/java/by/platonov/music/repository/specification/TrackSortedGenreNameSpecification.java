@@ -12,8 +12,8 @@ import java.sql.SQLException;
  */
 public class TrackSortedGenreNameSpecification implements SqlSpecification {
 
-    private static final String ASCENDING_SPECIFICATION = "order by genre_name limit ? offset ?;";
-    private static final String DESCENDING_SPECIFICATION = "order by genre_name desc limit ? offset ?;";
+    private static final String ASCENDING_SPECIFICATION = "order by LOWER(genre_name) limit ? offset ?;";
+    private static final String DESCENDING_SPECIFICATION = "order by LOWER(genre_name) desc limit ? offset ?;";
 
     private boolean isAscending;
     private int limit;

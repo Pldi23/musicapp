@@ -25,7 +25,7 @@
                                 <td><c:out value="${ track.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle">
                                     <input type="hidden" name="command" value="track-detail">
                                     <input type="hidden" name="id" value="${ track.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">
@@ -34,7 +34,7 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <c:forEach var="singer" items="${ track.singers }">
-                                        <form action="<c:url value="/controller"/>" method="post">
+                                        <form action="<c:url value="/controller"/>" method="post" class="align-middle">
                                             <input type="hidden" name="command" value="musician-detail">
                                             <input type="hidden" name="id" value="${ singer.id}">
                                             <input type="submit" class="btn btn-light btn-sm" name="submit"
@@ -47,7 +47,7 @@
                                 <span class="badge badge-info">${ track.genre.title }</span>
                             </td>
                             <td>
-                                <audio controls preload="metadata">
+                                <audio controls preload="metadata" >
                                     <source src="music/${ track.uuid }" type="audio/mpeg">
                                 </audio>
                             </td>
@@ -57,10 +57,6 @@
                 </table>
                 <c:import url="pagination-bar.jsp"/>
             </c:if>
-            <%--            <ctg:track-table tracks="${ requestScope.entities }" admin="${ sessionScope.user.admin }"--%>
-            <%--                             current="${ requestScope.current }" commandValue="show-all-tracks"--%>
-            <%--                             nextUnavailable="${ requestScope.nextunavailable }"--%>
-            <%--                             previousUnavailable="${ requestScope.previousunavailable }" pages="${ requestScope.size }"/>--%>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">

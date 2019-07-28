@@ -31,6 +31,7 @@ public class RequestConstant {
     public static final String TRACK = "track";
     public static final String MUSICIAN = "musician";
     public static final String PAGE = "page";
+    public static final String FILTER = "filter";
 
     public static final String LOCALE = "locale";
     public static final String ENTITY_TYPE = "entityType";
@@ -91,6 +92,9 @@ public class RequestConstant {
     public static final String PAGE_COMMAND = "pageCommand";
     public static final String FILTER_USER = "filter-user";
     public static final String USER_LIBRARY = "to-user-library";
+    public static final String KEY_MUSICIAN = "key-musicians";
+    public static final String KEY_TRACK = "key-tracks";
+    public static final String KEY_PLAYLIST = "key-playlists";
 
     public static final String PROCESS = "process";
     public static final String LASTPAGE = "lastPage";

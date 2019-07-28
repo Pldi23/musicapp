@@ -56,7 +56,7 @@
                                 <td><c:out value="${ playlist.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
@@ -73,22 +73,6 @@
                     </tbody>
                 </table>
                 <c:import url="pagination-bar.jsp"/>
-<%--                <c:if test="${ requestScope.nextunavailable eq 'false'}">--%>
-<%--                    <form action="<c:url value="/controller"/>" method="post">--%>
-<%--                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">--%>
-<%--                        <input type="hidden" name="direction" value="next">--%>
-<%--                        <input type="hidden" name="current" value="${ requestScope.current }">--%>
-<%--                        <input type="submit" class="btn btn-outline-dark" name="submit" value="next">--%>
-<%--                    </form>--%>
-<%--                </c:if>--%>
-<%--                <c:if test="${ requestScope.previousunavailable eq 'false' }">--%>
-<%--                    <form action="<c:url value="/controller"/>" method="post">--%>
-<%--                        <input type="hidden" name="command" value="${ requestScope.pageCommand }">--%>
-<%--                        <input type="hidden" name="direction" value="previous">--%>
-<%--                        <input type="hidden" name="current" value="${ requestScope.current }">--%>
-<%--                        <input type="submit" class="btn btn-outline-dark" name="submit" value="previous">--%>
-<%--                    </form>--%>
-<%--                </c:if>--%>
             </c:if>
         </div>
         <div class="col-2">

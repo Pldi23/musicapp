@@ -73,7 +73,7 @@
                             </form>
                         </td>
                         <td>
-                            <audio controls>
+                            <audio controls preload="metadata" id="${ status.index }">
                                 <source src="music/${track.uuid}" type="audio/mpeg">
                             </audio>
                         </td>

@@ -26,7 +26,6 @@ public class FilePartValidator extends AbstractValidator {
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();
-        if (content.getPart(RequestConstant.MEDIA_PATH).isPresent())
         if (content.getPart(RequestConstant.MEDIA_PATH).isEmpty()) {
             log.warn("Invalid content part: no media path part in request");
             result.add(new Violation(MessageManager.getMessage("violation.nofile", (String) content.getSessionAttribute(LOCALE))));

@@ -4,6 +4,7 @@
 <fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>
 <fmt:setBundle basename="pagecontent"/>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 
 <body>
@@ -14,7 +15,8 @@
                 <input type="hidden" name="command" value="${ requestScope.pageCommand }">
                 <input type="hidden" name="direction" value="previous">
                 <input type="hidden" name="current" value="${ requestScope.current }">
-                <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
+                <input type="submit" class="btn btn-outline-dark" name="submit"
+                       value="<fmt:message key="button.previous"/>">
             </form>
         </c:if></li>
         <li class="page-item">
@@ -23,7 +25,8 @@
                     <input type="hidden" name="command" value="${ requestScope.pageCommand }">
                     <input type="hidden" name="direction" value="next">
                     <input type="hidden" name="current" value="${ requestScope.current }">
-                    <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
+                    <input type="submit" class="btn btn-outline-dark" name="submit"
+                           value="<fmt:message key="button.next"/>">
                 </form>
             </c:if>
         </li>
@@ -31,6 +34,7 @@
 </nav>
 <nav aria-label="Page navigation example">
     <ul class="pagination">
+
         <c:forEach var="element" items="${ requestScope.size }" varStatus="loop">
             <c:choose>
                 <c:when test="${ element eq requestScope.current }">

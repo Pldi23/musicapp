@@ -23,7 +23,7 @@
 </div>
 <hr>
 <c:if test="${ sessionScope.user.admin eq true }">
-    <c:import url="../trash/navbar.jsp"/>
+    <c:import url="../music-lib/libbar.jsp"/>
     <hr/>
 </c:if>
 <div class="container-fluid bg-light">

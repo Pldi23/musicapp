@@ -2,6 +2,7 @@ package by.platonov.music.service;
 
 import by.platonov.music.entity.Playlist;
 import by.platonov.music.entity.User;
+import by.platonov.music.entity.filter.EntityFilter;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.repository.PlaylistRepository;
@@ -126,13 +127,10 @@ public class UserService {
         }
     }
 
-    public List<User> searchUserByFilter(String login, Boolean isAdmin, String firstname, String lastname,
-                                         String email,  LocalDate birthdateFrom, LocalDate birthdateTo,
-                                         LocalDate registrationFrom, LocalDate regisrationTo, int limit, long offset) throws ServiceException {
+    public List<User> searchUserByFilter(EntityFilter entityFilter, int limit, long offset) throws ServiceException {
 
         try {
-            return UserRepository.getInstance().query(new UserFilterSpecification(login, isAdmin, firstname, lastname, email,
-                    birthdateFrom, birthdateTo, registrationFrom, regisrationTo, limit, offset));
+            return UserRepository.getInstance().query(new UserFilterSpecification(entityFilter, limit, offset));
         } catch (RepositoryException e) {
             log.debug("could not search users by filter", e);
             throw new ServiceException(e);

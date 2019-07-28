@@ -29,60 +29,8 @@ import static by.platonov.music.constant.RequestConstant.*;
 @Log4j2
 public class CommandHandler<T> {
 
-//    public CommandResult sorte(RequestContent content, String sortOrderMarker, String page,
-//                                CountCommandExecutor countCommandExecutor, SortCommandExecutor<T> sortCommandExecutor) {
-//        List<T> entities;
-//        boolean sortOrder = !content.getSessionAttributes().containsKey(sortOrderMarker) ||
-//                (boolean) content.getSessionAttribute(sortOrderMarker);
-//        int limit = Integer.parseInt(ResourceBundle.getBundle("app").getString("app.list.limit"));
-//        boolean nextUnavailable = false;
-//        boolean previousUnavailable = false;
-//        boolean next = !content.getRequestParameters().containsKey(DIRECTION)
-//                || content.getRequestParameter(DIRECTION)[0].equals(NEXT);
-//        long offset;
-//
-//        try {
-//            long size = countCommandExecutor.count();
-//
-//            if (content.getRequestParameters().containsKey(OFFSET)) {
-//                offset = 0;
-//                previousUnavailable = true;
-//                nextUnavailable = size <= limit;
-//            } else {
-//                if (next) {
-//                    offset = (long) content.getSessionAttribute(NEXT_OFFSET);
-//                    if (offset + limit >= size) {
-//                        nextUnavailable = true;
-//                    }
-//                } else {
-//                    offset = (long) content.getSessionAttribute(PREVIOUS_OFFSET);
-//                    if (offset - limit < 0) {
-//                        previousUnavailable = true;
-//                    }
-//                }
-//            }
-//            entities = sortCommandExecutor.sort(sortOrder, limit, offset);
-//        } catch (ServiceException e) {
-//            log.error("command couldn't provide sorted tracklist", e);
-//            return new ErrorCommand(e).execute(content);
-//        }
-//        log.debug("command provide sorted track list: " + entities);
-//        Map<String, Object> attributes = new HashMap<>();
-//        attributes.put(ENTITIES, entities);
-//        attributes.put(PREVIOUS_UNAVAILABLE, previousUnavailable);
-//        attributes.put(NEXT_UNAVAILABLE, nextUnavailable);
-//
-//        if (page.contains(MUSICIAN)) {
-//            wrapWithStatistics(attributes, content);
-//        }
-//
-//        return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes,
-//                Map.of(sortOrderMarker, sortOrder, NEXT_OFFSET, offset + limit,
-//                        PREVIOUS_OFFSET, offset - limit));
-//
-//    }
-    public CommandResult sorted(RequestContent content, String sortOrderMarker, String page, CountCommandExecutor countCommandExecutor,
-                              SortCommandExecutor<T> sortCommandExecutor) {
+    public CommandResult sorted(RequestContent content, String sortOrderMarker, String page,
+                                CountCommandExecutor countCommandExecutor, SortCommandExecutor<T> sortCommandExecutor) {
 
         List<T> entities;
         int current = detectCurrentPage(content);
@@ -96,26 +44,120 @@ public class CommandHandler<T> {
         List<Integer> pages = new ArrayList<>();
         try {
             long size = countCommandExecutor.count();
-            pageQuantity = (int) (size / limit + 1);
+            pageQuantity = size % limit == 0 ? (int) size / limit : (int) (size / limit + 1);
             nextUnavailable = current == pageQuantity;
             for (int i = 1; i <= pageQuantity; i++) {
                 pages.add(i);
             }
             entities = sortCommandExecutor.sort(sortOrder, limit, offset);
         } catch (ServiceException e) {
+            log.error("can't provide entities list", e);
             return new ErrorCommand(e).execute(content);
         }
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put(ENTITIES, entities);
-        attributes.put(CURRENT, current);
-        attributes.put(PREVIOUS_UNAVAILABLE, previousUnavailable);
-        attributes.put(NEXT_UNAVAILABLE, nextUnavailable);
-        attributes.put(SIZE, pages);
+        putAttributes(attributes, entities, current, previousUnavailable, nextUnavailable, pages);
 
         if (page.contains(MUSICIAN)) {
             wrapWithStatistics(attributes, content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes);
+    }
+
+    private void wrapWithStatistics(Map<String, Object> attributes, RequestContent content) {
+        CommonService commonService = new CommonService();
+        if (attributes.containsKey(ENTITIES)) {
+            List<Musician> musicians = (List<Musician>) attributes.get(RequestConstant.ENTITIES);
+            Map<Long, String> genres = new HashMap<>(musicians.size());
+            Map<Long, Integer> tracksQuantity = new HashMap<>(musicians.size());
+            musicians.forEach(musician -> {
+                try {
+                    List<Track> tracks = commonService.searchTracksByMusician(musician.getId());
+                    tracksQuantity.put(musician.getId(), tracks.size());
+                    genres.put(musician.getId(), tracks.stream()
+                            .map(Track::getGenre)
+                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                            .entrySet()
+                            .stream()
+                            .max(Comparator.comparing(Map.Entry::getValue))
+                            .map(genreLongEntry -> genreLongEntry.getKey().getTitle())
+                            .orElse(""));
+                } catch (ServiceException e) {
+                    log.error("Can't provide statistic for musicians", e);
+                    new ErrorCommand(e).execute(content);
+                }
+            });
+            attributes.put(RequestConstant.TRACKS_SIZE, tracksQuantity);
+            attributes.put(RequestConstant.GENRE, genres);
+        }
+    }
+
+    public CommandResult filter(RequestContent content, String page,
+                                FilterCommandExecutor<T> filterCommandExecutor,
+                                Map<String, Object> filterAttributes) {
+
+        List<T> entities;
+        int current = detectCurrentPage(content);
+        int limit = Integer.parseInt(ResourceBundle.getBundle("app").getString("app.list.limit"));
+        long offset = detectOffset(current, limit);
+        boolean nextUnavailable;
+        boolean previousUnavailable = current == 1;
+        int pageQuantity;
+        List<Integer> pages = new ArrayList<>();
+
+        try {
+            long size = filterCommandExecutor.filter(Integer.MAX_VALUE, 0).size();
+            pageQuantity = size % limit == 0 ? (int) size / limit : (int) (size / limit + 1);
+            nextUnavailable = current == pageQuantity;
+            for (int i = 1; i <= pageQuantity; i++) {
+                pages.add(i);
+            }
+            entities = filterCommandExecutor.filter(limit, offset);
+
+        } catch (ServiceException e) {
+            log.error("command could't provide entities list", e);
+            return new ErrorCommand(e).execute(content);
+        }
+        Map<String, Object> attributes = new HashMap<>();
+        putAttributes(attributes, entities, current, previousUnavailable, nextUnavailable, pages);
+        attributes.putAll(filterAttributes);
+        log.debug("command provide entities: " + entities);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes);
+    }
+
+    private void putAttributes(Map<String, Object> attributes, List<T> entities, int current, boolean previousUnavailable,
+                               boolean nextUnavailable, List<Integer> pages) {
+        attributes.put(ENTITIES, entities);
+        attributes.put(CURRENT, current);
+        attributes.put(PREVIOUS_UNAVAILABLE, previousUnavailable);
+        attributes.put(NEXT_UNAVAILABLE, nextUnavailable);
+        attributes.put(SIZE, pages);
+    }
+
+    /**
+     * //1 = 0   //1 = 0
+     * //2 = 8   //2 = 5
+     * //3 = 16  //3 = 10
+     * //4 = 24  //4 = 15
+     * //5 = 32  //5 = 20
+     * //6 = 40  //6 = 25
+     */
+    private long detectOffset(int currentPage, int limit) {
+        return (long) (currentPage - 1) * limit;
+
+    }
+
+    private int detectCurrentPage(RequestContent content) {
+        int current = Integer.parseInt(content.getRequestParameter(CURRENT)[0]);
+        String direction = content.getRequestParameters().containsKey(DIRECTION) ?
+                content.getRequestParameter(DIRECTION)[0] : null;
+        if (direction == null) {
+            current = 1;
+        } else if (direction.equals(NEXT)) {
+            current++;
+        } else if (direction.equals(PREVIOUS)) {
+            current--;
+        }
+        return current;
     }
 
     public CommandResult transfer(RequestContent content, String page, TransferCommandExecutor<T> commandExecutor) {
@@ -151,9 +193,9 @@ public class CommandHandler<T> {
             User user = (User) content.getSessionAttribute(USER);
             updateCommandExecutor.update(user, parameter);
             try {
-                String locale = (String) content.getSessionAttribute(LOCALE);
-                result = userService.updateUser(user) ? MessageManager.getMessage("label.updated", locale) :
-                        MessageManager.getMessage("failed", locale);
+                result = userService.updateUser(user) ?
+                        MessageManager.getMessage("label.updated", (String) content.getSessionAttribute(LOCALE)) :
+                        MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE));
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
                         Map.of(PROCESS, result), Map.of(USER, user));
             } catch (ServiceException e) {
@@ -166,60 +208,5 @@ public class CommandHandler<T> {
         }
     }
 
-    private void wrapWithStatistics(Map<String, Object> attributes, RequestContent content) {
-        CommonService commonService = new CommonService();
-        if (attributes.containsKey(ENTITIES)) {
-            List<Musician> musicians = (List<Musician>) attributes.get(RequestConstant.ENTITIES);
-            Map<Long, String> genres = new HashMap<>(musicians.size());
-            Map<Long, Integer> tracksQuantity = new HashMap<>(musicians.size());
-            musicians.forEach(musician -> {
-                try {
-                    List<Track> tracks = commonService.searchTracksByMusician(musician.getId());
-                    tracksQuantity.put(musician.getId(), tracks.size());
-                    genres.put(musician.getId(), tracks.stream()
-                            .map(Track::getGenre)
-                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                            .entrySet()
-                            .stream()
-                            .max(Comparator.comparing(Map.Entry::getValue))
-                            .map(genreLongEntry -> genreLongEntry.getKey().getTitle())
-                            .orElse(""));
-                } catch (ServiceException e) {
-                    log.error("Can't provide statistic for musicians", e);
-                    new ErrorCommand(e).execute(content);
-                }
-            });
-            attributes.put(RequestConstant.TRACKS_SIZE, tracksQuantity);
-            attributes.put(RequestConstant.GENRE, genres);
-        }
-    }
-
-
-    /**
-     * //1 = 0   //1 = 0
-     * //2 = 8   //2 = 5
-     * //3 = 16  //3 = 10
-     * //4 = 24  //4 = 15
-     * //5 = 32  //5 = 20
-     * //6 = 40  //6 = 25
-     */
-    private long detectOffset(int currentPage, int limit) {
-        return (long) (currentPage - 1) * limit;
-
-    }
-
-    private int detectCurrentPage(RequestContent content) {
-        int current = Integer.parseInt(content.getRequestParameter(CURRENT)[0]);
-        String direction = content.getRequestParameters().containsKey(DIRECTION) ?
-                content.getRequestParameter(DIRECTION)[0] : null;
-        if (direction == null) {
-            current = 1;
-        } else if (direction.equals(NEXT)) {
-            current++;
-        } else if (direction.equals(PREVIOUS)) {
-            current--;
-        }
-        return current;
-    }
 
 }

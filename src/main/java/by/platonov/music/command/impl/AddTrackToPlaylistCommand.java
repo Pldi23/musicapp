@@ -36,8 +36,8 @@ public class AddTrackToPlaylistCommand implements Command {
 
         String trackId = content.getRequestParameter(ID)[0];
         String playlistId = content.getRequestParameter(PLAYLIST_ID)[0];
+        String locale = (String) content.getSessionAttribute(LOCALE);
         try {
-            String locale = (String) content.getSessionAttribute(LOCALE);
             List<Track> tracks = commonService.searchTrackById(trackId);
             if (tracks.isEmpty()) {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
