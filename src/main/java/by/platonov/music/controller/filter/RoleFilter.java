@@ -26,7 +26,7 @@ public class RoleFilter implements Filter {
     private String targetPagePath;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         targetPagePath = filterConfig.getServletContext().getContextPath() + filterConfig.getInitParameter("TARGET_PAGE_PATH");
     }
 
@@ -62,7 +62,7 @@ public class RoleFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        targetPagePath = null;
     }
 }
 

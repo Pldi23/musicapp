@@ -1,4 +1,4 @@
-package by.platonov.music.command;
+package by.platonov.music.command.handler;
 
 import by.platonov.music.exception.ServiceException;
 

@@ -44,7 +44,7 @@
             <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
         </div>
     </div>
 </div>

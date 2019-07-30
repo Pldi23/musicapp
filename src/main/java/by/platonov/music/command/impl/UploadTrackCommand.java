@@ -57,7 +57,8 @@ public class UploadTrackCommand implements Command {
                 new FilePartValidator(
                         new TrackNameValidator(
                                 new SingerValidator(
-                                        new ReleaseDateValidator(null)))).apply(content);
+                                        new AuthorValidator(
+                                                new ReleaseDateValidator(null))))).apply(content);
 
         if (violations.isEmpty()) {
             try {
@@ -73,22 +74,6 @@ public class UploadTrackCommand implements Command {
                 String genreTitle = content.getRequestParameter(GENRE)[0];
                 LocalDate releaseDate = LocalDate.parse(content.getRequestParameter(RELEASE_DATE)[0]);
 
-                Set<Musician> singers = new HashSet<>();
-                Set<Musician> authors = new HashSet<>();
-
-                String[] singerNames = content.getRequestParameter(SINGER);
-                for (String singerName : singerNames) {
-                    if (!singerName.isEmpty()) {
-                        singers.add(commonService.getOrAddMusician(singerName.trim()));
-                    }
-                }
-                String[] authorNames = content.getRequestParameter(AUTHOR);
-                for (String authorName : authorNames) {
-                    if (!authorName.isEmpty()) {
-                        authors.add(commonService.getOrAddMusician(authorName.trim()));
-                    }
-                }
-
                 Genre genre = commonService.getGenre(genreTitle);
                 HashGenerator generator = new HashGenerator();
                 File file = fileService.createFile(filePart, generator.generateHash());
@@ -96,8 +81,8 @@ public class UploadTrackCommand implements Command {
                         .uuid(file.getName())
                         .name(trackname)
                         .length(getAudioLength(file))
-                        .authors(authors)
-                        .singers(singers)
+                        .authors(buildMusicians(AUTHOR, content))
+                        .singers(buildMusicians(SINGER, content))
                         .releaseDate(releaseDate)
                         .genre(genre)
                         .build();
@@ -121,6 +106,17 @@ public class UploadTrackCommand implements Command {
     private long getAudioLength(File file) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException {
         AudioFile audioFile = AudioFileIO.read(file);
         return audioFile.getAudioHeader().getTrackLength();
+    }
+
+    private Set<Musician> buildMusicians(String requestParameter, RequestContent content) throws ServiceException {
+        Set<Musician> musicians = new HashSet<>();
+        String[] musicianNames = content.getRequestParameter(requestParameter);
+        for (String musicianName : musicianNames) {
+            if (!musicianName.isEmpty()) {
+                musicians.add(commonService.getOrAddMusician(musicianName.trim()));
+            }
+        }
+        return musicians;
     }
 }
 

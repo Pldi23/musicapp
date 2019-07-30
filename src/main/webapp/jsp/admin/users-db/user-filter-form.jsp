@@ -18,9 +18,8 @@
     });
 </script>
 <body>
-<form action="<c:url value="/controller"/>" method="post">
+<form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
     <input type="hidden" name="command" value="filter-user">
-    <input type="hidden" name="offset" value="0">
     <input type="hidden" name="current" value="0">
     <input type="hidden" name="order" value="marker">
     <div class="form-group">
@@ -28,6 +27,9 @@
         <input type="text" class="form-control" id="inputLogin" pattern=".{1,20}" value="${ requestScope.login }"
                name="login" placeholder="<fmt:message key="placeholder.filter.login"/>"
                title="<fmt:message key="violation.filter"/>">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="inputRole"><fmt:message key="label.filter.role"/></label>
@@ -43,6 +45,9 @@
                id="inputFirstName" value="${ requestScope.firstname }"
                placeholder="<fmt:message key="placeholder.firstname"/>"
                title="<fmt:message key="violation.filter"/>">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="inputLastName"><fmt:message key="label.profile.lastname"/></label>
@@ -50,29 +55,47 @@
                id="inputLastName" value="${ requestScope.lastname }"
                placeholder="<fmt:message key="placeholder.lastname"/>"
                title="<fmt:message key="violation.filter"/>">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="inputEmail"><fmt:message key="label.filter.email"/></label>
         <input id="inputEmail" class="form-control" type="text" name="email" pattern=".{1,20}"
                placeholder="<fmt:message key="placeholder.email"/>"
                title="<fmt:message key="violation.filter"/>">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.filter"/>
+        </div>
 
     </div>
     <div class="form-group">
         <label for="birthDateFrom"><fmt:message key="label.birthdate.from.to"/></label>
         <input type="date" class="form-control" id="birthDateFrom" name="birthDateFrom" value="${ requestScope.birthDateFrom }">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.release.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="birthDateTo"></label>
         <input type="date" class="form-control" id="birthDateTo" name="birthDateTo" value="${ requestScope.birthDateTo }">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.release.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="createdFrom"><fmt:message key="label.created.from.to"/></label>
         <input type="date" class="form-control" id="createdFrom" name="createdFrom" value="${ requestScope.createdFrom }">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.release.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <label for="createdTo"></label>
         <input type="date" class="form-control" id="createdTo" name="createdTo" value="${ requestScope.createdTo }">
+        <div class="invalid-feedback">
+            <fmt:message key="violation.release.filter"/>
+        </div>
     </div>
     <div class="form-group">
         <input type="submit" name="submit" class="btn btn-dark"

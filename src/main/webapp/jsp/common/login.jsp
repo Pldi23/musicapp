@@ -30,21 +30,28 @@
             <p class="text-warning">${ requestScope.validatorMessage }</p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <p class="text-warning">${requestScope.errorLoginPassMessage}</p>
-            <form action="<c:url value="/controller"/>" method="post">
+            <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
                 <div class="form-group">
                     <input type="hidden" name="command" value="login"/>
                     <label for="exampleInputEmail1"><fmt:message key="label.enter.login"/></label>
                     <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                            name="login"
                            pattern="^[(\w)-]{4,20}" required="" placeholder="<fmt:message key="placeholder.login"/>"
-                           title="<fmt:message key="prescription.login"/>"/>
+                           title="<fmt:message key="prescription.login"/>" />
+                    <div class="invalid-feedback">
+                        <fmt:message key="prescription.login"/>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1"><fmt:message key="label.enter.password"/></label>
                     <input type="password" class="form-control" id="exampleInputPassword1" name="password"
-                           pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required=""
+                           pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={};:><.,/?`~±§-])(?=[^\r\n\t\f\v]+$).{8,20}$"
+                           required=""
                            placeholder="<fmt:message key="placeholder.password"/>"
                            title="<fmt:message key="prescription.password"/>"/>
+                    <div class="invalid-feedback">
+                        <fmt:message key="prescription.password"/>
+                    </div>
 
                 </div>
                 <div class="form-group">
@@ -54,7 +61,7 @@
             </form>
         </div>
         <div class="col-4">
-            <img src="<c:url value="/resources/login-page-image.svg"/>" alt="music app"
+            <img src="<c:url value="/resources/primary-logo.svg"/>" alt="music app"
                  width="320" height="320">
         </div>
     </div>
@@ -63,5 +70,6 @@
 <fmt:message var="label" key="label.new.arrivals" scope="page"/>
 <ctg:print-tracks head="true" tracks="${ requestScope.tracks }" label="${ label }"/>
 <c:import url="footer.jsp"/>
+
 </body>
 </html>

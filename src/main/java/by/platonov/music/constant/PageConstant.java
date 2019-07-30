@@ -24,7 +24,7 @@ public class PageConstant {
     public static final String PLAYLIST_LIBRARY_PAGE = "/jsp/music-lib/playlist-all.jsp";
     public static final String PLAYLIST_PAGE = "/jsp/common/playlist.jsp";
     public static final String PLAYLIST_CREATE_PAGE = "/jsp/user/create-playlist.jsp";
-    public static final String REGISTR_ADMIN_PAGE = "/jsp/admin/users-db/add-admin.jsp";
+    public static final String REGISTER_ADMIN_PAGE = "/jsp/admin/users-db/add-admin.jsp";
     public static final String REMOVE_CONFIRMATION_PAGE = "/jsp/admin/remove-confirmation.jsp";
     public static final String PROFILE_PAGE = "/jsp/user/profile.jsp";
     public static final String SEARCH_PAGE = "/jsp/common/search-result.jsp";

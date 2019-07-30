@@ -29,8 +29,10 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-3">
-            <div class="img"><img src="music/${ sessionScope.user.photoPath }" alt="${ sessionScope.user.login }" class="rounded-circle"
-                                  width="200" height="200">
+            <div class="img">
+                <img src="music/${ sessionScope.user.photoPath }" alt="${ sessionScope.user.login }"
+                     class="rounded-circle"
+                     width="200" height="200">
             </div>
             <h4><c:out value="${ sessionScope.user.login }"/></h4>
             <h3><fmt:message key="profile.overview"/></h3>
@@ -40,79 +42,150 @@
             <p class="text-info">${ requestScope.process }</p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
 
-            <form action="<c:url value="/controller"/>" enctype="multipart/form-data" method="post">
+            <form action="<c:url value="/controller"/>" enctype="multipart/form-data" method="post"
+                  class="needs-validation" novalidate>
                 <label>
                     <fmt:message key="label.profile.photo"/>
-                    <input type="hidden" name="command" value="upload-img"/>
-                    <input type="file" name="imgpath" accept="image/jpeg"/>
-                    <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
+                <input type="hidden" name="command" value="upload-img"/>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <input type="submit" class="btn btn-dark" name="submit"
+                               value="<fmt:message key="button.update"/>">
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="form-control custom-file-input" name="imgpath"
+                               accept="image/jpeg" required id="inputGroupFile01"
+                               aria-describedby="inputGroupFileAddon01"/>
+                        <label class="custom-file-label" for="inputGroupFile01">
+                            <fmt:message key="label.file.choose"/>
+                        </label>
+                    </div>
+                    <script type="application/javascript">
+                        $('input[type="file"]').change(function (e) {
+                            var fileName = e.target.files[0].name;
+                            $('.custom-file-label').html(fileName);
+                        });
+                    </script>
+                </div>
             </form>
-            <form action="<c:url value="/controller"/>" method="post">
+            <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
+                <input type="hidden" name="command" value="update-firstname">
                 <label>
                     <fmt:message key="label.profile.firstname"/>
-                    <input type="hidden" name="command" value="update-firstname">
-                    <input type="text" name="firstname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ sessionScope.user.firstname }" required="required">
-                    <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="firstname" pattern="[A-Za-zА-Яа-яЁё]{2,30}"
+                           value="${ sessionScope.user.firstname }" required="required">
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-dark" name="submit"
+                               value="<fmt:message key="button.update"/>">
+                    </div>
+                    <div class="invalid-feedback">
+                        <fmt:message key="violation.firstname"/>
+                    </div>
+                </div>
             </form>
-            <form action="<c:url value="/controller"/>" method="post">
+            <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
+                <input type="hidden" name="command" value="update-lastname">
                 <label>
                     <fmt:message key="label.profile.lastname"/>
-                    <input type="hidden" name="command" value="update-lastname">
-                    <input type="text" name="lastname" pattern="[A-Za-zА-Яа-яЁё]{2,30}" value="${ sessionScope.user.lastname }" required="required">
-                    <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="lastname" pattern="[A-Za-zА-Яа-яЁё]{2,30}"
+                           value="${ sessionScope.user.lastname }" required="required">
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-dark" name="submit"
+                               value="<fmt:message key="button.update"/>">
+                    </div>
+                    <div class="invalid-feedback">
+                        <fmt:message key="violation.lastname"/>
+                    </div>
+                </div>
             </form>
-            <form action="<c:url value="/controller"/>" method="post">
-                <label>
-                    <fmt:message key="label.profile.gender"/>
-                    <input type="hidden" name="command" value="update-gender">
-                    <select name="gender">
-                        <option selected="selected">${ sessionScope.user.gender }</option>
-                        <option value="male"><fmt:message key="option.male"/></option>
-                        <option value="female"><fmt:message key="option.female"/></option>
-                    </select>
-                    <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
-                </label>
-            </form>
-            <form action="<c:url value="/controller"/>" method="post">
+            <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
                 <input type="hidden" name="command" value="update-birthdate">
                 <label>
                     <fmt:message key="label.profile.birthdate"/>
-                    <input type="date" name="birthdate" required="required" value="${ sessionScope.user.birthDate }">
-                    <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
                 </label>
+                <div class="input-group mb-3">
+                    <input type="date" id="datefield" class="form-control" name="birthdate" required="required"
+                           value="${ sessionScope.user.birthDate }">
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-dark" name="submit"
+                               value="<fmt:message key="button.update"/>">
+                    </div>
+                    <div class="invalid-feedback">
+                        <fmt:message key="violation.birthdate"/>
+                    </div>
+                </div>
+                <c:import url="../common/maxbirthdate.jsp"/>
+                <script>
+                    validateDateField("datefield");
+                </script>
+            </form>
+            <label style="text-align: right; margin-right: 15px; border-top-width: 15px">
+                <fmt:message key="label.profile.gender"/>
+            </label>
+            <form action="<c:url value="/controller"/>" method="post">
+                <input type="hidden" name="command" value="update-gender">
+                <select name="gender" class="selectpicker" data-container="body">
+                    <c:if test="${ sessionScope.user.gender eq 'MALE' }">
+                        <option selected="selected" value="male">
+                            <fmt:message key="option.male"/>
+                        </option>
+                        <option value="female"><fmt:message key="option.female"/></option>
+                    </c:if>
+                    <c:if test="${ sessionScope.user.gender eq 'FEMALE' }">
+                        <option selected="selected" value="female">
+                            <fmt:message key="option.female"/>
+                        </option>
+                        <option value="male"><fmt:message key="option.male"/></option>
+                    </c:if>
+                </select>
+                <input type="submit" class="btn btn-dark" name="submit" value="<fmt:message key="button.update"/>">
             </form>
             <hr/>
-            <form action="<c:url value="/controller"/>" method="post">
+            <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
                 <input type="hidden" name="command" value="change-password">
                 <div class="form-group w-25">
                     <div class="col-xs-1">
                         <label for="inputOldPass"></label>
                         <input type="password" id="inputOldPass" class="form-control" aria-describedby="oldPassHelp"
                                name="oldpassword"
-                               pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
+                               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={};:><.,/?`~±§-])(?=[^\r\n\t\f\v]+$).{8,20}$"
+                               required="">
                         <small id="oldPassHelp" class="form-text text-muted"><fmt:message
                                 key="label.profile.password.old"/></small>
+                        <div class="invalid-feedback">
+                            <fmt:message key="violation.password"/>
+                        </div>
                     </div>
                     <div class="col-xs-1">
                         <label for="inputNewPass"></label>
                         <input type="password" id="inputNewPass" class="form-control" aria-describedby="newPassHelp"
                                name="newpassword"
-                               pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
+                               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={};:><.,/?`~±§-])(?=[^\r\n\t\f\v]+$).{8,20}$"
+                               required="">
                         <small id="newPassHelp" class="form-text text-muted"><fmt:message
                                 key="label.profile.password.new"/>
                         </small>
+                        <div class="invalid-feedback">
+                            <fmt:message key="violation.password"/>
+                        </div>
                     </div>
                     <div class="col-xs-1">
                         <label for="inputRePass"></label>
                         <input type="password" id="inputRePass" class="form-control" aria-describedby="newRePassHelp"
                                name="newpasswordCheck"
-                               pattern="[A-Za-z0-9!@#$%^&*()_+={};:><.,/?`~±§-]{8,20}" required="">
+                               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={};:><.,/?`~±§-])(?=[^\r\n\t\f\v]+$).{8,20}$"
+                               required="">
                         <small id="newRePassHelp" class="form-text text-muted"><fmt:message
                                 key="label.profile.password.re"/>
                         </small>
+                        <div class="invalid-feedback">
+                            <fmt:message key="violation.password"/>
+                        </div>
                     </div>
                     <div class="col-xs-2">
                         <input type="submit" class="btn btn-dark" name="submit"

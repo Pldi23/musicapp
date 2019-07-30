@@ -51,8 +51,9 @@ public class UpdateTrackCommand implements Command {
         Set<Violation> violations =
                 new TrackNameValidator(
                         new SingerValidator(
-                                new GenreValidator(
-                                        new ReleaseDateValidator(null)))).apply(content);
+                                new AuthorValidator(
+                                        new GenreValidator(
+                                                new ReleaseDateValidator(null))))).apply(content);
 
         try {
             Track track = Track.builder()
@@ -95,7 +96,6 @@ public class UpdateTrackCommand implements Command {
         } catch (ServiceException | IOException | TagException | ReadOnlyFileException | CannotReadException
                 | InvalidAudioFrameException e) {
             log.error("command couldn't provide track for update", e);
-//            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
             return new ErrorCommand(e).execute(content);
         }
     }

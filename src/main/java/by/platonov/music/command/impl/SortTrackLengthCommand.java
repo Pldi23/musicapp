@@ -1,7 +1,7 @@
 package by.platonov.music.command.impl;
 
 import by.platonov.music.command.Command;
-import by.platonov.music.command.CommandHandler;
+import by.platonov.music.command.handler.CommandHandler;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
 import by.platonov.music.constant.PageConstant;

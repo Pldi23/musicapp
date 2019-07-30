@@ -21,9 +21,6 @@ import static org.mockito.Mockito.when;
  */
 class SingerValidatorTest {
 
-//    public static final String EXPECTED_VIOLATION_MESSAGE =
-//            "You should enter at least 1 singer, and his name should contain at least one symbol";
-
     private SingerValidator validator = new SingerValidator(null);
     private RequestContent content = mock(RequestContent.class);
 
@@ -41,7 +38,6 @@ class SingerValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "name1111111111111222222222222222222211111113333333331111333331111111111333333333111111333333331",})
     void applyNegative(String input) {
-//        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.SINGER, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.SINGER)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);

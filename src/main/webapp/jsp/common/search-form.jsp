@@ -8,13 +8,16 @@
     <title><fmt:message key="label.search"/></title>
 </head>
 <body>
-<form action="<c:url value="/controller"/>" method="post">
+<form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
     <input type="hidden" name="command" value="search"/>
     <input type="hidden" name="offset" value="0">
     <div class="form-group">
         <label for="inputSearch"><fmt:message key="label.search"/>:</label>
         <input type="text" class="form-control" id="inputSearch" name="searchrequest" required pattern=".{1,10}"
                placeholder="<fmt:message key="placeholder.search"/>"/>
+        <div class="invalid-feedback">
+            <fmt:message key="violation.search.request"/>
+        </div>
     </div>
     <div class="form-group">
         <input type="submit" name="submit" value="<fmt:message key="button.search"/>"

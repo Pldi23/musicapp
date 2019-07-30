@@ -3,7 +3,6 @@ package by.platonov.music.command.impl;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.constant.PageConstant;
 import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.exception.ServiceException;

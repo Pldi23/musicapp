@@ -3,7 +3,6 @@ package by.platonov.music.command.impl;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.constant.PageConstant;
 import by.platonov.music.constant.RequestConstant;
@@ -15,6 +14,7 @@ import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +56,9 @@ public class TrackDetailCommand implements Command {
             log.error("command couldn't provide track", e);
             return new ErrorCommand(e).execute(content);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
-                Map.of(RequestConstant.TRACK, track, RequestConstant.PLAYLISTS, playlists));
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(RequestConstant.TRACK, track);
+        attributes.put(RequestConstant.PLAYLISTS, playlists);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE, attributes);
     }
 }

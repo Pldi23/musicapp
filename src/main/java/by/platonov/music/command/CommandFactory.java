@@ -30,8 +30,6 @@ public class CommandFactory {
         } catch (IllegalArgumentException e) {
             log.error("Enum Command Type not present for " + commandName, e);
             return new ErrorCommand(e);
-//            return new ErrorCommand(MessageManager.getMessage("message.command.not.exist",
-//                    (String) content.getSessionAttribute(LOCALE)));
         }
     }
 }

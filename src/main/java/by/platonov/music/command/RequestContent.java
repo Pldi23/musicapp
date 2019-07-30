@@ -1,7 +1,6 @@
 package by.platonov.music.command;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
@@ -17,7 +16,6 @@ public class RequestContent {
     private Map<String, Object> requestAttributes;
     private Map<String, String[]> requestParameters;
     private Map<String, Object> sessionAttributes;
-//    private List<Cookie> cookies;
     private List<Part> requestParts;
     private String serverName;
     private int serverPort;
@@ -36,7 +34,6 @@ public class RequestContent {
         content.setServerName(request);
         content.setServerPort(request);
         content.setContextPath(request);
-//        content.setCookies(request);
         return content;
     }
 
@@ -82,20 +79,6 @@ public class RequestContent {
     private void setContextPath(HttpServletRequest request) {
         contextPath = request.getContextPath();
     }
-
-//    private void setCookies(HttpServletRequest request) {
-//        Cookie[] requestCookies = request.getCookies();
-//        cookies = new ArrayList<>();
-//        cookies.addAll(Arrays.asList(requestCookies));
-//    }
-//
-//    public List<Cookie> getCookies() {
-//        return cookies;
-//    }
-//
-//    public Optional<String> getCookieValue(String key) {
-//         return cookies.stream().filter(cookie -> cookie.getName().equals(key)).map(Cookie::getValue).findFirst();
-//    }
 
     public String getServerName() {
         return serverName;

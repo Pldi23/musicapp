@@ -7,6 +7,7 @@ import by.platonov.music.constant.PageConstant;
 import by.platonov.music.constant.RequestConstant;
 import lombok.EqualsAndHashCode;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +28,8 @@ public class ErrorCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE,
-                Map.of(RequestConstant.THROWABLE, throwable));
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(RequestConstant.THROWABLE, throwable);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ERROR_REDIRECT_PAGE, attributes);
     }
 }

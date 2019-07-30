@@ -56,7 +56,7 @@
                                 <td><c:out value="${ playlist.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post" class="align-middle">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle" style="padding-top: 15px">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
@@ -76,7 +76,7 @@
             </c:if>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
         </div>
     </div>
 </div>

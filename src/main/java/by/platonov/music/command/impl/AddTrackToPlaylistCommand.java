@@ -45,13 +45,13 @@ public class AddTrackToPlaylistCommand implements Command {
                                 MessageManager.getMessage("message.entity.not.available", locale)));
             }
             Track track = tracks.get(0);
-            return commonService.addTrackToPLaylist(trackId, playlistId) ?
-                    new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
-                            Map.of(PROCESS, MessageManager.getMessage("added", locale),
-                                    TRACK, track)) :
-                    new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.TRACK_PAGE,
-                            Map.of(PROCESS, MessageManager.getMessage("failed", locale),
-                                    TRACK, track));
+            String result = commonService.addTrackToPLaylist(trackId, playlistId) ?
+                    track.getName() + " " + MessageManager.getMessage("added", locale) :
+                    MessageManager.getMessage("failed", locale);
+            CommandResult commandResult = (CommandResult) content.getSessionAttribute(MOMENTO);
+            commandResult.getAttributes().put(PROCESS, result);
+            commandResult.getAttributes().put(TRACK, track);
+            return commandResult;
         } catch (ServiceException e) {
             log.error("command could't add track to playlist", e);
             return new ErrorCommand(e).execute(content);

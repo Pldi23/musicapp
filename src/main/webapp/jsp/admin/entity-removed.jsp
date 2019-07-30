@@ -16,7 +16,7 @@
             <p class="text-info">${ requestScope.process }</p>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
             <c:import url="../common/search-form.jsp"/>
         </div>
     </div>

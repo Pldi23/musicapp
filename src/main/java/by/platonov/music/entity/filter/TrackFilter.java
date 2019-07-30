@@ -13,7 +13,7 @@ import java.time.LocalDate;
  */
 @Data
 @Builder
-public class TrackFilter extends EntityFilter {
+public class TrackFilter implements EntityFilter {
 
     String trackName;
     String genreName;

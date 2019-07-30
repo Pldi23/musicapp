@@ -23,25 +23,6 @@
     </div>
 </div>
 <hr/>
-<div class="container w-100 bg-light">
-    <div class="row">
-        <div class="col-2">
-        </div>
-        <div class="col-8">
-            <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <form action="<c:url value="/controller"/>" method="get">
-                        <input type="hidden" name="command" value="to-register-admin">
-                        <input type="submit" name="submit" value="<fmt:message key="button.admin.new"/>"
-                               class="btn btn-secondary">
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-        </div>
-    </div>
-</div>
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">

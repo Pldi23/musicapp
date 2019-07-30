@@ -24,7 +24,7 @@
         </form>
     </div>
     <c:if test="${ sessionScope.user.admin eq true}">
-        <div class="btn-group" role="group" aria-label="Third group">
+        <div class="btn-group mr-2" role="group" aria-label="Third group">
             <form action="<c:url value="/controller"/>" method="post">
                 <input type="hidden" name="command" value="sort-track-by-id">
                 <input type="hidden" name="current" value="0">

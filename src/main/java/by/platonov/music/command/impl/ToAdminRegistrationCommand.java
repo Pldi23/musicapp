@@ -14,6 +14,6 @@ import by.platonov.music.constant.PageConstant;
 public class ToAdminRegistrationCommand implements Command {
     @Override
     public CommandResult execute(RequestContent content) {
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTR_ADMIN_PAGE);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.REGISTER_ADMIN_PAGE);
     }
 }

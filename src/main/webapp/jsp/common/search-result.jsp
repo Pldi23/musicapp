@@ -29,7 +29,8 @@
             <p class="text-warning"><c:out value="${ requestScope.process }"/></p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
             <h4><fmt:message key="label.search.result"/></h4>
-            <c:if test="${ not empty requestScope.tracks }"><fmt:message key="label.tracks"/>: ${ requestScope.trackssize } <fmt:message
+            <c:if test="${ not empty requestScope.tracks }"><fmt:message
+                    key="label.tracks"/>: ${ requestScope.trackssize } <fmt:message
                     key="label.found"/>
                 <table>
                     <c:forEach var="track" items="${ requestScope.tracks }" varStatus="status">
@@ -64,7 +65,8 @@
                         <input type="hidden" name="key-tracks" value="1">
                         <input type="hidden" name="direction" value="next">
                         <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
                 <c:if test="${ requestScope.previousoffset >= 0 }">
@@ -74,12 +76,14 @@
                         <input type="hidden" name="key-tracks" value="1">
                         <input type="hidden" name="direction" value="previous">
                         <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>
             </c:if>
             <br>
-            <c:if test="${ not empty requestScope.musicians }"><fmt:message key="label.musicians"/>: ${ requestScope.musicianssize } <fmt:message
+            <c:if test="${ not empty requestScope.musicians }"><fmt:message
+                    key="label.musicians"/>: ${ requestScope.musicianssize } <fmt:message
                     key="label.found"/>
                 <table>
                     <c:forEach var="musician" items="${ requestScope.musicians }" varStatus="status">
@@ -101,7 +105,8 @@
                         <input type="hidden" name="key-musicians" value="1">
                         <input type="hidden" name="direction" value="next">
                         <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
                 <c:if test="${ requestScope.previousoffset >= 0 }">
@@ -111,12 +116,14 @@
                         <input type="hidden" name="key-musicians" value="1">
                         <input type="hidden" name="direction" value="previous">
                         <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>
             </c:if>
             <br>
-            <c:if test="${ not empty requestScope.playlists }"><fmt:message key="label.playlists"/>: ${ requestScope.playlistssize } <fmt:message
+            <c:if test="${ not empty requestScope.playlists }"><fmt:message
+                    key="label.playlists"/>: ${ requestScope.playlistssize } <fmt:message
                     key="label.found"/>
                 <table>
                     <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
@@ -129,9 +136,11 @@
                                 </form>
                             </td>
                             <td><span class="badge badge-info">
-                                    <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/></span></td>
+                                    <fmt:message key="badge.duration"/>::<c:out
+                                    value="${ playlist.getTotalDuration() }"/></span></td>
                             <td><span class="badge badge-info">
-                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span></td>
+                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
+                            </td>
                             <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
                                 <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
                         </tr>
@@ -144,7 +153,8 @@
                         <input type="hidden" name="key-playlists" value="1">
                         <input type="hidden" name="direction" value="next">
                         <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.next"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.next"/>">
                     </form>
                 </c:if>
                 <c:if test="${ requestScope.previousoffset >= 0 }">
@@ -154,13 +164,16 @@
                         <input type="hidden" name="key-playlists" value="1">
                         <input type="hidden" name="direction" value="previous">
                         <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.previous"/>">
+                        <input type="submit" class="btn btn-outline-dark" name="submit"
+                               value="<fmt:message key="button.previous"/>">
                     </form>
                 </c:if>
             </c:if>
         </div>
         <div class="col-2">
-            <c:import url="search-form.jsp"/>
+            <c:if test="${ not empty sessionScope.user }">
+                <c:import url="search-form.jsp"/>
+            </c:if>
         </div>
     </div>
 </div>

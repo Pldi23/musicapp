@@ -47,7 +47,7 @@ public class RegistrationCommand implements Command {
                                                         new EmailValidator(
                                                                 new GenderValidator(null))))))).apply(content);
 
-        String page = isAdmin ? PageConstant.REGISTR_ADMIN_PAGE : PageConstant.REGISTRATION_PAGE;
+        String page = isAdmin ? PageConstant.REGISTER_ADMIN_PAGE : PageConstant.REGISTRATION_PAGE;
 
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];

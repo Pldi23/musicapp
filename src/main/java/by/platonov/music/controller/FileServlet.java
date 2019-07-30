@@ -1,6 +1,5 @@
 package by.platonov.music.controller;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ public class FileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String filename = URLDecoder.decode(request.getPathInfo().substring(1), StandardCharsets.UTF_8);
         File file = new File(ResourceBundle.getBundle("app").getString("app.music.uploads"), filename);
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));

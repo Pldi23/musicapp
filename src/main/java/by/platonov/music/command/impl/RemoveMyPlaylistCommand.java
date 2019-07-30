@@ -37,7 +37,7 @@ public class RemoveMyPlaylistCommand implements Command {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);
         String locale = (String) content.getSessionAttribute(RequestConstant.LOCALE);
         List<Playlist> playlists;
-        Map<Playlist, List<String>> playlistWithStatistics = new HashMap();
+        Map<Playlist, List<String>> playlistWithStatistics = new HashMap<>();
         try {
             String result = commonService.removePlaylistFromUser(user, playlistId) ?
                     MessageManager.getMessage("removed", locale) : MessageManager.getMessage("failed", locale);

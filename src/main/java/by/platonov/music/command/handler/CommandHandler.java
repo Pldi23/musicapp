@@ -1,5 +1,7 @@
-package by.platonov.music.command;
+package by.platonov.music.command.handler;
 
+import by.platonov.music.command.CommandResult;
+import by.platonov.music.command.RequestContent;
 import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;

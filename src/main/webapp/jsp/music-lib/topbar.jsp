@@ -20,12 +20,11 @@
     </div>
 </div>
 <hr/>
-<div class="container w-100 bg-light">
-    <div class="row">
-        <div class="col-2">
-        </div>
-        <div class="col-8">
-            <div class="btn-toolbar" role="toolbar">
+<div class="container-fluid bg-light">
+    <div class="row justify-content-center">
+        <div class="center">
+        <div class="col-12">
+            <div class="btn-toolbar" role="toolbar" style="padding-top: 15px">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
                     <form action="<c:url value="/controller"/>" method="post">
                         <input type="hidden" name="command" value="show-all-tracks">
@@ -59,18 +58,8 @@
                         </form>
                     </div>
                 </c:if>
-                <c:if test="${ sessionScope.user.admin eq true }">
-                    <div class="btn-group mr-2" role="group" aria-label="Sixth group">
-                        <form action="<c:url value="/controller"/>" method="post">
-                            <input type="hidden" name="command" value="user-playlists">
-                            <input type="submit" name="submit" value="<fmt:message key="button.playlists.admin"/>"
-                                   class="btn btn-secondary">
-                        </form>
-                    </div>
-                </c:if>
             </div>
         </div>
-        <div class="col-2">
         </div>
     </div>
 </div>

@@ -37,7 +37,6 @@ public class RequestConstant {
     public static final String ENTITY_TYPE = "entityType";
     public static final String USER = "user";
     public static final String ROLE = "role";
-    public static final String ADMIN = "admin";
     public static final String ERROR = "error";
     public static final String CURRENT = "current";
     public static final String OFFSET = "offset";
@@ -49,7 +48,6 @@ public class RequestConstant {
     public static final String PLAYLIST_ID = "playlistid";
     public static final String TRACK_ID = "trackid";
     public static final String DIRECTION = "direction";
-    public static final String ORDER = "order";
     public static final String NEXT = "next";
     public static final String PLAYLIST = "playlist";
     public static final String ACCESS = "access";
@@ -67,16 +65,11 @@ public class RequestConstant {
     public static final String SORT_TRACK_LENGTH_ORDER = "sortTrackLengthOrder";
     public static final String SORT_MUSICIAN_ID_ORDER = "sortMusicianIdOrder";
     public static final String SORT_MUSICIAN_NAME_ORDER = "sortMusicianNameOrder";
-    public static final String SORT_GENRE_NAME_ORDER = "sortGenreNameOrder";
-    public static final String SORT_GENRE_ID_ORDER = "sortGenreIdOrder";
     public static final String SORT_PLAYLIST_ID_ORDER = "sortPlaylistIdOrder";
     public static final String SORT_PLAYLIST_NAME_ORDER = "sortPlaylistNameOrder";
     public static final String SORT_PLAYLIST_LENGTH_ORDER = "sortPlaylistLengthOrder";
-    public static final String PREVIOUS_PAGE = "previousPage";
-    public static final String CURRENT_PAGE = "currentPage";
     public static final String NO_ORDER = "noOrder";
     public static final String SEARCH_REQUEST = "searchrequest";
-    public static final String REMOVE_RESULT = "removeResult";
     public static final String ADD_RESULT = "addResult";
     public static final String UPDATE_RESULT = "updateResult";
     public static final String VALIDATOR_RESULT = "violations";
@@ -97,16 +90,10 @@ public class RequestConstant {
     public static final String KEY_PLAYLIST = "key-playlists";
 
     public static final String PROCESS = "process";
-    public static final String LASTPAGE = "lastPage";
-    public static final String REFERER = "referer";
+    public static final String MOMENTO = "momento";
     public static final String MUSICIANS_ATTRIBUTE = "musicians";
     public static final String TRACKS = "tracks";
     public static final String PLAYLISTS = "playlists";
     public static final String THROWABLE = "throwable";
-    public static final String USER_FIRST_NAME_ATTRIBUTE = "userFirstName";
-    public static final String ADMIN_FIRST_NAME_ATTRIBUTE = "adminFirstName";
     public static final String ERROR_LOGIN_PASS_ATTRIBUTE = "errorLoginPassMessage";
-    public static final String VALIDATOR_MESSAGE_ATTRIBUTE = "validatorMessage";
-
-
 }

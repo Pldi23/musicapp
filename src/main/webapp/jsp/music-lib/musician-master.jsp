@@ -16,7 +16,7 @@
         <div class="col-8">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <form action="<c:url value="/controller"/>" method="post">
+                    <form action="<c:url value="/controller"/>" method="post" style="padding-top: 15px">
                         <input type="hidden" name="command" value="sort-musician-by-name">
                         <input type="hidden" name="current" value="0">
                         <input type="submit" name="submit" class="btn btn-outline-dark"
@@ -24,8 +24,8 @@
                     </form>
                 </div>
                 <c:if test="${ sessionScope.user.admin eq true}">
-                    <div class="btn-group" role="group" aria-label="Second group">
-                        <form action="<c:url value="/controller"/>" method="post">
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <form action="<c:url value="/controller"/>" method="post" style="padding-top: 15px">
                             <input type="hidden" name="command" value="sort-musician-by-id">
                             <input type="hidden" name="current" value="0">
                             <input type="submit" name="submit" class="btn btn-outline-dark"
@@ -45,7 +45,7 @@
                                 <td><c:out value="${ musician.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post" class="align-middle">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle" style="padding-top: 15px">
                                     <input type="hidden" name="command" value="musician-detail">
                                     <input type="hidden" name="id" value="${ musician.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ musician.name }">
@@ -67,7 +67,7 @@
             </c:if>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
         </div>
     </div>
 </div>

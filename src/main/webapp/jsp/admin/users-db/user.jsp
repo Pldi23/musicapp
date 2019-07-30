@@ -26,7 +26,7 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-            <c:import url="user-filter-form.jsp"/>
+<%--            <c:import url="user-filter-form.jsp"/>--%>
         </div>
         <div class="col-8">
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>

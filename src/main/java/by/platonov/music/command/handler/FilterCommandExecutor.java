@@ -1,4 +1,4 @@
-package by.platonov.music.command;
+package by.platonov.music.command.handler;
 
 import by.platonov.music.exception.ServiceException;
 
@@ -11,6 +11,5 @@ import java.util.List;
  * @version 0.0.1
  */
 public interface FilterCommandExecutor<T> {
-
     List<T> filter(int limit, long offset) throws ServiceException;
 }

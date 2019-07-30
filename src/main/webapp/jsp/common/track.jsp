@@ -60,7 +60,6 @@
                     </select>
                     <input type="submit" class="btn btn-outline-dark" name="submit" value="<fmt:message key="button.add.to.playlist"/>">
                 </form>
-<%--                stars?--%>
             </c:if>
             <br>
             <span class="badge badge-secondary"><c:out value="${ requestScope.track.genre.title }"/></span>
@@ -126,7 +125,7 @@
             </c:if>
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<c:url value="/resources/login-page-image.svg"/>" alt="music app">
+            <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
         </div>
     </div>
 </div>

@@ -20,7 +20,7 @@ import static by.platonov.music.constant.RequestConstant.PROCESS;
  * @version 0.0.1
  */
 @Log4j2
-public class RemoveCancelCommand implements Command {
+public class RemoveCancelationCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContent content) {

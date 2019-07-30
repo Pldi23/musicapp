@@ -1,5 +1,6 @@
 package by.platonov.music.command;
 
+import by.platonov.music.command.handler.CommandHandler;
 import by.platonov.music.command.impl.*;
 import by.platonov.music.service.*;
 import by.platonov.music.service.FileService;
@@ -27,7 +28,7 @@ public enum CommandType {
     REGISTER(new RegistrationCommand(new UserService(), false)),
     REGISTER_ADMIN(new RegistrationCommand(new UserService(), true)),
     REMOVE(new RemoveTrackCommand(new AdminService(), new CommonService(), new FileService())),
-    REMOVE_CANCEL(new RemoveCancelCommand()),
+    REMOVE_CANCEL(new RemoveCancelationCommand()),
     REMOVE_MY_PLAYLIST(new RemoveMyPlaylistCommand(new CommonService())),
     REMOVE_TRACK_FROM_PLAYLIST(new RemoveTrackFromPlaylistCommand(new CommonService())),
     SEARCH(new SearchCommand(new CommonService())),
@@ -48,6 +49,7 @@ public enum CommandType {
     TO_CREATE_PLAYLIST(new ToCreatePlaylistCommand()),
     TO_LOGIN(new ToLoginCommand()),
     TO_LIBRARY(new ToLibraryCommand(new CommonService())),
+    TO_MAIN(new ToMainCommand(new CommonService())),
     TO_PROFILE(new ToProfileCommand()),
     TO_REGISTR(new ToRegistrationCommand()),
     TO_REGISTER_ADMIN(new ToAdminRegistrationCommand()),
