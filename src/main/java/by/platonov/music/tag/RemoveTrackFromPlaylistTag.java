@@ -42,12 +42,11 @@ public class RemoveTrackFromPlaylistTag extends TagSupport {
     public int doStartTag() throws JspException {
         if (userPlaylists != null && !userPlaylists.isEmpty() &&
                 userPlaylists.stream().anyMatch(playlist -> playlist.getId() == currentPlaylist.getId())) {
-            String locale = pageContext.getSession().getAttribute(LOCALE) != null ?
-                    (String) pageContext.getSession().getAttribute(LOCALE) : pageContext.getRequest().getLocale().toString();
+            String locale = (String) pageContext.getSession().getAttribute(LOCALE);
             String button = MessageManager.getMessage("button.remove.from.playlist", locale);
             JspWriter out = pageContext.getOut();
             try {
-                out.write("<td>\n" +
+                out.write("<td style=\"padding-top: 15px\">\n" +
                         "<form action=\"" + pageContext.getRequest().getServletContext().getContextPath() + "/controller\" method=\"post\">\n" +
                         "<input type=\"hidden\" name=\"command\" value=\"remove-track-from-playlist\">\n" +
                         "<input type=\"hidden\" name=\"playlistid\" value=\"" + currentPlaylist.getId() + "\">\n" +

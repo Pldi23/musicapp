@@ -46,7 +46,7 @@
                             <span class="badge badge-info">${ track.genre.title }</span>
                         </td>
                         <td>
-                            <audio controls preload="metadata" >
+                            <audio controls preload="metadata" onplay="setCookie('lastPlayed', '${ track.id }')">
                                 <source src="music/${ track.uuid }" type="audio/mpeg">
                             </audio>
                         </td>

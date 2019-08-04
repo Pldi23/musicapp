@@ -39,8 +39,6 @@ class FirstnameValidatorTest {
     @ValueSource(strings = {"C", "chu.", "D&MA", "пла#тонов", "пла3тонов", "fdulttpbrkvyjghcneawxioqwertyuiop",
             "чу?", " Дима", "Дима ", "Дима-", "-Дима", "", " ", "1234"})
     void applyNegative(String input) {
-//        String message = "First name must contain minimum 2 and maximum 30 letters";
-//        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of("firstname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.FIRSTNAME)).thenReturn(new String[]{input});
 

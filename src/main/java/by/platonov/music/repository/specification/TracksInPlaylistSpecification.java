@@ -13,7 +13,8 @@ import java.sql.SQLException;
 public class TracksInPlaylistSpecification implements SqlSpecification{
 
     private static final String SPECIFICATION =
-            "join playlist_track on track.id = playlist_track.track_id where playlist_track.playlist_id = ?";
+            "join playlist_track on track.id = playlist_track.track_id where playlist_track.playlist_id = ? " +
+                    "order by playlist_track.index;";
 
     private long playlistId;
 

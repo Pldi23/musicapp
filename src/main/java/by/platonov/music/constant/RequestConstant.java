@@ -32,7 +32,15 @@ public class RequestConstant {
     public static final String MUSICIAN = "musician";
     public static final String PAGE = "page";
     public static final String FILTER = "filter";
-
+    public static final String MOVE = "move";
+    public static final String INDEX = "index";
+    public static final String UP = "up";
+    public static final String DOWN = "down";
+    public static final String TOP = "top";
+    public static final String BOTTOM = "bottom";
+    public static final String SHUFFLE = "shuffle";
+    public static final String REVERSE = "reverse";
+    public static final String LAST_PLAYED = "lastPlayed";
     public static final String LOCALE = "locale";
     public static final String ENTITY_TYPE = "entityType";
     public static final String USER = "user";

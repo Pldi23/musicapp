@@ -67,8 +67,16 @@
     </div>
 </div>
 <hr>
-<fmt:message var="label" key="label.new.arrivals" scope="page"/>
-<ctg:print-tracks head="true" tracks="${ requestScope.tracks }" label="${ label }"/>
+<div class="container container-fluid bg-light">
+    <div class="row">
+        <div class="col-8">
+            <h3 class="text-info"><fmt:message key="label.new.arrivals"/></h3>
+            <c:import url="print-tracks.jsp"/>
+        </div>
+    </div>
+</div>
+<%--<fmt:message var="label" key="label.new.arrivals"/>--%>
+<%--<ctg:print-tracks head="true" tracks="${ requestScope.tracks }" label="${ label }"/>--%>
 <c:import url="footer.jsp"/>
 
 </body>

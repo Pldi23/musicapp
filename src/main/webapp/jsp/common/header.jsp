@@ -19,6 +19,8 @@
         crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<script src="https://kit.fontawesome.com/38d16960f7.js"></script>
+
 
 <script>
     $(function () {
@@ -57,6 +59,29 @@
         }, false);
     })();
 </script>
+<script type="text/javascript">
+    function setCookie(key, value) {
+        var current = getCookie('current');
+        if (typeof current == 'undefined' || current >= 10) {
+            current = 1;
+        }
+        var keyName = key + current++;
+        var expires = new Date();
+        expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+        document.cookie = 'current' + '=' + current + ';expires=' + expires.toUTCString();
+        document.cookie = keyName + '=' + value + ';expires=' + expires.toUTCString();
+    }
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+</script>
 <div class="container w-100 bg-light fixed-top">
     <div class="row text-middle">
         <div class="col-md-12">
@@ -64,7 +89,7 @@
                 <c:when test="${ requestScope.page eq '/jsp/common/registration.jsp' || requestScope.page eq '/jsp/common/verification.jsp'}">
                     <div class="buttons-wrapper d-flex float-md-right" style="height: 60px">
                         <a class="navbar-brand" href="#"
-                           style="margin-right: 10px; padding-top: 0px; padding-bottom: 0px">
+                           style="margin-right: 10px; padding-top: 0; padding-bottom: 0">
                             <form action="<c:url value="/controller"/>" method="get" class="navbar-brand">
                                 <input type="hidden" name="command" value="to-main">
                                 <img src="<c:url value="/resources/secondary-logo.svg"/>"
@@ -72,7 +97,7 @@
                                      width="55" height="55" onclick="submit()">
                             </form>
                         </a>
-                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px"><fmt:message key="label.registration.form"/></h4>
+                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0"><fmt:message key="label.registration.form"/></h4>
                         <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-login">
@@ -80,7 +105,7 @@
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0px; padding-right: 0px"
+                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0; padding-right: 0"
                               class="mr-3 nav-item nav-link form-inline needs-validation" novalidate>
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
@@ -101,7 +126,7 @@
                 <c:when test="${ requestScope.page eq '/jsp/common/login.jsp' }">
                     <div class="buttons-wrapper d-flex float-md-right" style="height: 60px">
                         <a class="navbar-brand" href="#"
-                           style="margin-right: 10px; padding-top: 0px; padding-bottom: 0px">
+                           style="margin-right: 10px; padding-top: 0; padding-bottom: 0">
                             <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="to-main">
                                 <img src="<c:url value="/resources/secondary-logo.svg"/>"
@@ -109,7 +134,7 @@
                                      width="55" height="55" onclick="submit()">
                             </form>
                         </a>
-                        <h3 class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px"><fmt:message key="label.login.sentence"/></h3>
+                        <h3 class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0"><fmt:message key="label.login.sentence"/></h3>
                         <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-registr"/>
@@ -117,7 +142,7 @@
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0px; padding-right: 0px"
+                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0; padding-right: 0"
                               class="mr-3 nav-item nav-link form-inline needs-validation" novalidate>
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
@@ -138,7 +163,7 @@
                 <c:when test="${ empty sessionScope.user }">
                     <div class="buttons-wrapper d-flex float-md-right" style="height: 60px">
                         <a class="navbar-brand" href="#"
-                           style="margin-right: 10px; padding-top: 0px; padding-bottom: 0px">
+                           style="margin-right: 10px; padding-top: 0; padding-bottom: 0">
 
                             <form action="<c:url value="/controller"/>" method="get" class="navbar-brand">
                                 <input type="hidden" name="command" value="to-main">
@@ -147,7 +172,7 @@
                                      width="55" height="55" onclick="submit()">
                             </form>
                         </a>
-                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px"><fmt:message key="label.hello"/></h4>
+                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0"><fmt:message key="label.hello"/></h4>
                         <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-login">
@@ -155,14 +180,15 @@
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-registr"/>
                                 <input type="submit" name="submit" value="<fmt:message key="button.registration"/> "
                                        class="form-control btn btn-secondary btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0px; padding-right: 0px"
+                        <form action="<c:url value="/controller"/>" method="post" style="padding-left: 0; padding-right: 0"
                               class="mr-3 nav-item nav-link form-inline needs-validation" novalidate>
                             <div class="form-group">
                                 <input type="hidden" name="command" value="search"/>
@@ -183,7 +209,7 @@
                 <c:when test="${ sessionScope.user.admin eq true}">
                     <div class="buttons-wrapper d-flex float-md-right" style="height: 60px">
                         <a class="navbar-brand" href="#"
-                           style="margin-right: 10px; padding-top: 0px; padding-bottom: 0px">
+                           style="margin-right: 10px; padding-top: 0; padding-bottom: 0">
                             <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="to-main">
                                 <img src="<c:url value="/resources/secondary-logo.svg"/>"
@@ -191,11 +217,11 @@
                                      width="55" height="55" onclick="submit()">
                             </form>
                         </a>
-                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">${ sessionScope.user.firstname }
+                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0">${ sessionScope.user.firstname }
                             <span
                                 class="badge badge-info "><fmt:message key="role.admin"/>
                             </span></h4>
-                        <div class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <div class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0">
                             <button class="dropdown-toggle mr-3 nav-link form-control btn btn-light btn-sm text-center"
                                     id="navbarDropdown" type="submit" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false"
@@ -217,28 +243,32 @@
                                 </form>
                             </div>
                         </div>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-library">
                                 <input type="submit" name="submit" value="<fmt:message key="button.library"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="user-playlists">
                                 <input type="submit" name="submit" value="<fmt:message key="button.playlists.my"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-profile">
                                 <input type="submit" name="submit" value="<fmt:message key="button.profile"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="logout">
                                 <input type="submit" name="submit" value="<fmt:message key="button.logout"/>"
@@ -250,7 +280,7 @@
                 <c:when test="${ sessionScope.user.admin eq false}">
                     <div class="buttons-wrapper d-flex float-md-right" style="height: 60px">
                         <a class="navbar-brand" href="#"
-                           style="margin-right: 10px; padding-top: 0px; padding-bottom: 0px">
+                           style="margin-right: 10px; padding-top: 0; padding-bottom: 0">
                             <form action="<c:url value="/controller"/>" method="get">
                                 <input type="hidden" name="command" value="to-main">
                                 <img src="<c:url value="/resources/secondary-logo.svg"/>"
@@ -258,7 +288,7 @@
                                      width="55" height="55" onclick="submit()">
                             </form>
                         </a>
-                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">${ sessionScope.user.firstname }, <span
+                        <h4 class="mr-3 nav-item nav-link" style="padding-left: 0; padding-right: 0">${ sessionScope.user.firstname }, <span
                                 class="badge badge-info"><fmt:message key="role.user"/></span></h4>
                         <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link">
                             <div class="form-group">
@@ -267,21 +297,24 @@
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="user-playlists">
                                 <input type="submit" name="submit" value="<fmt:message key="button.playlists.my"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="get" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="to-profile">
                                 <input type="submit" name="submit" value="<fmt:message key="button.profile"/>"
                                        class="form-control btn btn-light btn-sm">
                             </div>
                         </form>
-                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link" style="padding-left: 0px; padding-right: 0px">
+                        <form action="<c:url value="/controller"/>" method="post" class="mr-3 nav-item nav-link"
+                              style="padding-left: 0; padding-right: 0">
                             <div class="form-group">
                                 <input type="hidden" name="command" value="logout">
                                 <input type="submit" name="submit" value="<fmt:message key="button.logout"/>"

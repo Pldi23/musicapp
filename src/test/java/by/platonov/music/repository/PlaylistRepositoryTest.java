@@ -22,9 +22,9 @@ class PlaylistRepositoryTest {
 
     private PlaylistRepository repository = PlaylistRepository.getInstance();
 
-    private Playlist spring2019 = Playlist.builder().id(1).name("spring2019").tracks(new HashSet<>()).build();
-    private Playlist newyearMix = Playlist.builder().id(5).name("new year party mix").tracks(new HashSet<>()).build();
-    private Playlist newPlaylist = Playlist.builder().id(6).name("new playlist").tracks(new HashSet<>()).build();
+    private Playlist spring2019 = Playlist.builder().id(1).name("spring2019").tracks(new LinkedList<>()).build();
+    private Playlist newyearMix = Playlist.builder().id(5).name("new year party mix").tracks(new LinkedList<>()).build();
+    private Playlist newPlaylist = Playlist.builder().id(6).name("new playlist").tracks(new LinkedList<>()).build();
 
     @Test
     void addShouldBeTrue() throws RepositoryException {

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class PlaylistByTrackAndUserSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION = "join user_playlist up on playlist.id = up.playlist_id " +
-            "join playlist_track pt on playlist.id = pt.playlist_id " +
+//            "join playlist_track pt on playlist.id = pt.playlist_id " +
             "where up.user_login = ? and pt.track_id = ?";
 
     private long trackId;

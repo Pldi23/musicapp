@@ -21,7 +21,7 @@ public class Playlist extends Entity {
     private long id;
     private String name;
     private boolean personal;
-    private Set<Track> tracks;
+    private List<Track> tracks;
 
     public String getMostPopularGenre() {
        return tracks.stream()

@@ -73,7 +73,7 @@
                             </form>
                         </td>
                         <td>
-                            <audio controls preload="metadata" id="${ status.index }">
+                            <audio controls preload="metadata" id="${ status.index }" onplay="setCookie('lastPlayed', '${ track.id }')">
                                 <source src="music/${track.uuid}" type="audio/mpeg">
                             </audio>
                         </td>

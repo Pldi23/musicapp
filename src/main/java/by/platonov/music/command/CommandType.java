@@ -47,6 +47,7 @@ public enum CommandType {
     SORT_PLAYLIST_BY_ID(new SortPlaylistIdCommand(new CommonService(), new CommandHandler<>())),
     TO_ADMIN(new ToAdminCommand(new CommonService())),
     TO_CREATE_PLAYLIST(new ToCreatePlaylistCommand()),
+    TO_TRACKS_HISTORY(new ToTracksHistoryCommand(new CommonService())),
     TO_LOGIN(new ToLoginCommand()),
     TO_LIBRARY(new ToLibraryCommand(new CommonService())),
     TO_MAIN(new ToMainCommand(new CommonService())),
@@ -72,6 +73,7 @@ public enum CommandType {
     UPDATE_MUSICIAN(new UpdateMusicianCommand(new AdminService())),
     UPDATE_PLAYLIST(new UpdatePlaylistCommand(new AdminService(), new CommonService())),
     UPDATE_TRACK(new UpdateTrackCommand(new AdminService(), new CommonService())),
+    UPDATE_TRACKS_ORDER(new UpdateTracksOrderCommand(new CommonService(), new AdminService())),
     USER_DETAIL(new UserDetailCommand(new UserService())),
     USER_PLAYLISTS(new UserPlaylistsCommand(new CommonService()));
 

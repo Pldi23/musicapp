@@ -7,7 +7,7 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title><fmt:message key="label.welcome"/></title>
+    <title><fmt:message key="label.history"/></title>
 </head>
 <body>
 <div class="container-fluid bg-light">
@@ -27,10 +27,10 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-4">
-            <h3><fmt:message key="label.welcome"/></h3>
+<%--            <h3><fmt:message key="label.welcome"/></h3>--%>
         </div>
         <div class="col-8">
-            <h3><fmt:message key="label.suggestions"/></h3>
+            <h3><fmt:message key="label.history"/></h3>
         </div>
     </div>
 </div>
@@ -41,13 +41,14 @@
             <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <c:import url="../common/print-tracks.jsp"/>
-<%--            <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>--%>
+            <c:if test="${ empty requestScope.tracks }">
+                <h4 class="alert-heading"><fmt:message key="label.empty.cookies"/></h4>
+            </c:if>
+<%--            <c:import url="../common/print-tracks.jsp"/>--%>
+            <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
-            <c:import url="../common/search-form.jsp"/>
-            <c:import url="history-form.jsp"/>
         </div>
     </div>
 </div>

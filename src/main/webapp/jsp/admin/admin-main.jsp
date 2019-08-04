@@ -39,11 +39,13 @@
             <c:import url="../common/track-filter-form.jsp"/>
         </div>
         <div class="col-8">
-            <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>
+            <c:import url="../common/print-tracks.jsp"/>
+<%--            <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>--%>
         </div>
         <div class="col-2">
             <img class="img-fluid" src="<c:url value="/resources/primary-logo.svg"/>" alt="music app">
             <c:import url="../common/search-form.jsp"/>
+            <c:import url="../user/history-form.jsp"/>
         </div>
     </div>
 </div>

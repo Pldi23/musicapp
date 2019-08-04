@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
  */
 class IdValidatorTest {
 
-//    private static final String EXPECTED_MESSAGE = "Id should be positive";
-
     private IdValidator validator = new IdValidator(null);
     private RequestContent content = mock(RequestContent.class);
 
@@ -41,7 +39,7 @@ class IdValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"-1","-101", "0"})
     void applyNegative(String input) {
-//        Locale.setDefault(new Locale("en_US"));
+
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.ID, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.ID)).thenReturn(new String[]{input});
 

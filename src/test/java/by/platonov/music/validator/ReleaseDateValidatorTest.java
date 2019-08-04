@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
  */
 class ReleaseDateValidatorTest {
 
-//    private static final String EXPECTED_MESSAGE = "Release date could not be in future";
-
 
     private ReleaseDateValidator validator = new ReleaseDateValidator(null);
     private RequestContent content = mock(RequestContent.class);
@@ -43,7 +41,6 @@ class ReleaseDateValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"2020-07-02", "2030-08-30"})
     void applyNegative(String input) {
-//        Locale.setDefault(new Locale("en_US"));
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.RELEASE_DATE, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.RELEASE_DATE)).thenReturn(new String[]{input});
 

@@ -38,7 +38,6 @@ class TrackNameValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "name.mp3", "name.audio"})
     void applyNegative(String input) {
-//        Locale.setDefault(new Locale("en", "US"));
         when(content.getRequestParameters()).thenReturn(Map.of("trackname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.TRACKNAME)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);

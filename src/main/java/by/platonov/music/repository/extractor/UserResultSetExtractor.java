@@ -30,7 +30,7 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
                         .birthDate(resultSet.getDate(DATE_OF_BIRTH).toLocalDate())
                         .gender(resultSet.getBoolean(GENDER) ? User.Gender.MALE : User.Gender.FEMALE)
                         .registrationDate(resultSet.getTimestamp(CREATED_AT).toLocalDateTime().toLocalDate())
-                        .playlists(new HashSet<>())
+                        .playlists(new LinkedHashSet<>())
                         .active(resultSet.getBoolean(ACTIVE_STATUS))
                         .verificationUuid(resultSet.getString(VERIFICATION_UUID))
                         .photoPath(resultSet.getString(PHOTO))

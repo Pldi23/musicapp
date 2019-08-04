@@ -38,8 +38,6 @@ class BirthDateValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"2016-07-02", "2013-08-30"})
     void applyNegative(String input) {
-//        Locale.setDefault(new Locale("en_US"));
-//        String message = "User of the application must be older then 6 years";
 
         when(content.getRequestParameters()).thenReturn(Map.of("birthdate", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{input});

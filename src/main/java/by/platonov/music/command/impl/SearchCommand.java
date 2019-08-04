@@ -57,9 +57,9 @@ public class SearchCommand implements Command {
             try {
                 musiciansSize = commonService.searchMusician(searchRequest, Integer.MAX_VALUE, 0).size();
                 tracksSize = commonService.searchTrack(searchRequest, Integer.MAX_VALUE, 0).size();
-                playlistsSize = commonService.searchPlaylist(searchRequest, Integer.MAX_VALUE, 0, user).size();
+                playlistsSize = commonService.searchPlaylistByName(searchRequest, Integer.MAX_VALUE, 0, user).size();
                 musicians = commonService.searchMusician(searchRequest, limit, offset);
-                playlists = commonService.searchPlaylist(searchRequest, limit, offset, user);
+                playlists = commonService.searchPlaylistByName(searchRequest, limit, offset, user);
                 tracks = commonService.searchTrack(searchRequest, limit, offset);
                 if (content.getRequestParameters().containsKey(KEY_MUSICIAN)) {
                     attributes.put(MUSICIANS_ATTRIBUTE, musicians);

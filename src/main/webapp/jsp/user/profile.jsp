@@ -39,7 +39,7 @@
         </div>
         <div class="col-8">
             <h3><fmt:message key="message.profile"/></h3>
-            <p class="text-info">${ requestScope.process }</p>
+            <p class="text-info"><c:out value="${ requestScope.process }"/></p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
 
             <form action="<c:url value="/controller"/>" enctype="multipart/form-data" method="post"

@@ -36,9 +36,10 @@ public class PlaylistRepository implements Repository<Playlist> {
     private static final String SQL_DELETE_PLAYLIST_USER_LINK = "DELETE FROM user_playlist WHERE playlist_id = ?";
     @Language("SQL")
     private static final String SQL_UPDATE_PLAYLIST = "UPDATE playlist SET name = ?, private = ? WHERE id = ?;";
+
     @Language("SQL")
     private static final String SQL_SELECT_PLAYLIST = "SELECT playlist.id as id, playlist.name as name, playlist.private " +
-            "FROM playlist ";
+            "FROM playlist LEFT JOIN playlist_track pt on playlist.id = pt.playlist_id ";
     @Language("SQL")
     private static final String SQL_COUNT = "SELECT COUNT(*) FROM playlist ";
 
@@ -84,7 +85,7 @@ public class PlaylistRepository implements Repository<Playlist> {
                     }));
                 }
                 log.debug(playlist + " added successfully");
-               return true;
+                return true;
             } else {
                 log.debug("Track id: " + playlist.getId() + " is already exists");
                 return false;
@@ -120,11 +121,10 @@ public class PlaylistRepository implements Repository<Playlist> {
                     jdbcHelper.execute(connection, SQL_INSERT_TRACK_PLAYLIST_LINK, playlist.getId(), ((preparedStatement, entity) -> {
                         preparedStatement.setLong(1, playlist.getId());
                         preparedStatement.setLong(2, track.getId());
-
                     }));
                 }
-                jdbcHelper.execute(connection, SQL_UPDATE_PLAYLIST, playlist, new SetPlaylistUpdateMapper());
                 log.debug(playlist + " updated");
+                jdbcHelper.execute(connection, SQL_UPDATE_PLAYLIST, playlist, new SetPlaylistUpdateMapper());
                 return true;
             } else {
                 log.debug("Track number: " + playlist.getId() + " was not found");

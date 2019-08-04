@@ -40,10 +40,12 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        Arrays.stream(request.getCookies()).forEach(cookie -> log.debug("in cookies. name: " + cookie.getName() + " value: " + cookie.getValue()));
         RequestContent content = RequestContent.createWithAttributes(request);
         content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
         content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
         content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
+
         CommandFactory commandFactory = CommandFactory.getInstance();
         Command command = commandFactory.getCommand(content);
         CommandResult commandResult = command.execute(content);

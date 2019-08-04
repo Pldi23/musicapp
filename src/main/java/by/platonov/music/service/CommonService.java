@@ -9,7 +9,7 @@ import by.platonov.music.repository.specification.*;
 import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -52,9 +52,10 @@ public class CommonService {
         return playlistsWithTracks(search(new PlaylistPublicLimitOffsetSpecification(limit, offset, isAdmin), PlaylistRepository.getInstance()));
     }
 
-    public List<Playlist> searchPlaylist(String playlistName, int limit, long offset, User user) throws ServiceException {
+    public List<Playlist> searchPlaylistByName(String playlistName, int limit, long offset, User user) throws ServiceException {
         log.debug("searching playlists in repository");
-        return search(new PlaylistByNameAndUserTypeLimitOffsetSpecification(playlistName, limit, offset, user), PlaylistRepository.getInstance());
+        return playlistsWithTracks(search(new PlaylistByNameAndUserTypeLimitOffsetSpecification(playlistName, limit,
+                offset, user), PlaylistRepository.getInstance()));
     }
 
     public List<Playlist> searchPlaylistsByTrack(long trackId) throws ServiceException {
@@ -205,7 +206,7 @@ public class CommonService {
 
     public boolean createPlaylist(User user, boolean isPersonal, String playlistName) throws ServiceException {
         try {
-            Playlist playlist = Playlist.builder().name(playlistName).tracks(new HashSet<>()).personal(isPersonal).build();
+            Playlist playlist = Playlist.builder().name(playlistName).tracks(new LinkedList<>()).personal(isPersonal).build();
             boolean additionResult = PlaylistRepository.getInstance().add(playlist);
             user.getPlaylists().add(playlist);
             boolean updatingResult = UserRepository.getInstance().update(user);

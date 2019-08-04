@@ -31,7 +31,7 @@
             <h3><c:out value="${ requestScope.track.name }"/></h3>
         </div>
         <div class="col-5">
-            <audio controls preload="metadata">
+            <audio controls preload="metadata" onplay="setCookie('lastPlayed', '${ requestScope.track.id }')">
                 <source src="music/${ requestScope.track.uuid }" type="audio/mpeg">
             </audio>
         </div>

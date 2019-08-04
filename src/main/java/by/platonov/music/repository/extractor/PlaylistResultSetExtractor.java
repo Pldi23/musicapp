@@ -23,7 +23,7 @@ public class PlaylistResultSetExtractor implements AbstractResultSetExtractor<Pl
                         .id(resultSet.getLong(ID))
                         .name(resultSet.getString(NAME))
                         .personal(resultSet.getBoolean(PRIVATE))
-                        .tracks(new HashSet<>())
+                        .tracks(new LinkedList<>())
                         .build();
                 table.put(playlist.getId(), playlist);
             }

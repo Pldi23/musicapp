@@ -62,15 +62,6 @@ class ValidatorChainTest {
         String lastname = " Platonov";
         String email = "p@mail";
 
-        String loginMessage = "Login must be minimum 4, maximum 20 symbols, and contain only " +
-                "latin letter, numbers, and punctuation symbols like '-' and '_'";
-        String passwordMessage = "Password must be minimum 8, maximum 20 symbols, and contain at" +
-                " least 1 number, 1 latin uppercase letter, 1 latin lowercase letter, 1 punctuation. Only latin letters " +
-                "available, spaces are unavailable";
-        String birthdateMessage = "User of the application must be older then 6 years";
-        String firstnameMessage = "First name must contain minimum 2 and maximum 30 letters";
-        String lastnameMessage = "Last name must contain minimum 2 and maximum 30 letters";
-        String emailMessage = "E-mail example johndoe@domainsample.com";
 
         when(content.getRequestParameters()).thenReturn(Map.of(
                 "login", new String[]{login},

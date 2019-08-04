@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class PlaylistIdSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "where playlist.id = ?;";
+    private static final String SPECIFICATION = "where playlist.id = ? order by pt.index;";
 
     private long id;
 

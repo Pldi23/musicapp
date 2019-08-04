@@ -37,6 +37,7 @@ public class PageConstant {
     public static final String SORT_NAME_PLAYLIST_LIBRARY_PAGE = "/jsp/music-lib/playlist-sortname.jsp";
     public static final String SORT_ID_PLAYLIST_LIBRARY_PAGE = "/jsp/music-lib/playlist-sortid.jsp";
     public static final String SORT_LENGTH_PLAYLIST_LIBRARY_PAGE = "/jsp/music-lib/playlist-sortlength.jsp";
+    public static final String TRACKS_HISTORY_PAGE = "/jsp/user/history.jsp";
     public static final String TRACK_PAGE = "/jsp/common/track.jsp";
     public static final String TRACK_LIBRARY_PAGE = "/jsp/music-lib/track-all.jsp";
     public static final String UPDATE_TRACK_PAGE = "/jsp/admin/update-track.jsp";

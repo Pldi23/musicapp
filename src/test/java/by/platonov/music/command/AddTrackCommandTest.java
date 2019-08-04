@@ -30,13 +30,9 @@ class AddTrackCommandTest {
     void execute() {
         RequestContent content = mock(RequestContent.class);
         Track track = Track.builder().id(7)
-//                .filePartBean(new FilePartBean(new File("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3")))
-//                .path(Path.of("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"))
                 .name("TestName").singers(new HashSet<>()).authors(new HashSet<>()).genre(Genre.builder().id(1)
                         .title("pop").build()).releaseDate(LocalDate.parse("1986-02-07"))
-//                .length(200)
                 .build();
-//        AddTrackCommand command = new AddTrackCommand(new TrackService(), new GenreService(), new MusicianService());
         when(content.getRequestParameter(RequestConstant.MEDIA_PATH))
                 .thenReturn(new String[]{"/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/music/avicii-tim.mp3"});
         when(content.getRequestParameter(RequestConstant.TRACKNAME))
@@ -44,7 +40,6 @@ class AddTrackCommandTest {
         when(content.getRequestParameter(RequestConstant.GENRE)).thenReturn(new String[]{"pop"});
         when(content.getRequestParameter(RequestConstant.RELEASE_DATE)).thenReturn(new String[]{"1986-02-07"});
         when(content.getRequestParameter(RequestConstant.LENGTH)).thenReturn(new String[]{"200"});
-//        CommandResult actual = command.execute(content);
         CommandResult expected = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ADMIN_PAGE,
                 Map.of("addresult", track + " successfully added"));
 //        assertEquals(expected, actual);
