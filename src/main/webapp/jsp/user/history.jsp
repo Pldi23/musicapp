@@ -44,7 +44,6 @@
             <c:if test="${ empty requestScope.tracks }">
                 <h4 class="alert-heading"><fmt:message key="label.empty.cookies"/></h4>
             </c:if>
-<%--            <c:import url="../common/print-tracks.jsp"/>--%>
             <ctg:print-tracks head="false" tracks="${ requestScope.tracks }"/>
         </div>
         <div class="col-2">
