@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ *
+ * Encapsulates common functionality across Command Layer
  *
  * @author Dzmitry Platonov on 2019-07-06.
  * @version 0.0.1
@@ -31,7 +32,16 @@ import static by.platonov.music.constant.RequestConstant.*;
 @Log4j2
 public class CommandHandler<T> {
 
-    public CommandResult sorted(RequestContent content, String sortOrderMarker, String page,
+    /**
+     * Service method for sorting
+     * @param content DTO containing all data received with HttpRequest
+     * @param sortOrderMarker
+     * @param targetPage target page for request forwarding after command is completed. @see|@link PageConstant
+     * @param countCommandExecutor instance of actual @CountCommandExecutor
+     * @param sortCommandExecutor instance of actual @SortCommandExecutor
+     * @return Result of command execution as @link(CommandResult)
+     */
+    public CommandResult sorted(RequestContent content, String sortOrderMarker, String targetPage,
                                 CountCommandExecutor countCommandExecutor, SortCommandExecutor<T> sortCommandExecutor) {
 
         List<T> entities;
@@ -59,10 +69,10 @@ public class CommandHandler<T> {
         Map<String, Object> attributes = new HashMap<>();
         putAttributes(attributes, entities, current, previousUnavailable, nextUnavailable, pages);
 
-        if (page.contains(MUSICIAN)) {
+        if (targetPage.contains(MUSICIAN)) {
             wrapWithStatistics(attributes, content);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, targetPage, attributes);
     }
 
     private void wrapWithStatistics(Map<String, Object> attributes, RequestContent content) {

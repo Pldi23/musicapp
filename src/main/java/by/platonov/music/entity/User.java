@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
+ * Representation of User
+ *
  * @author dzmitryplatonov on 2019-06-04.
  * @version 0.0.1
  */
@@ -33,6 +35,7 @@ public class User extends Entity{
     private String photoPath;
 
     /**
+     * representation of gender
      * @author dzmitryplatonov on 2019-06-05.
      * @version 0.0.1
      */
@@ -41,6 +44,10 @@ public class User extends Entity{
         MALE
     }
 
+    /**
+     *
+     * @return the number of playlists this user has
+     */
     public int getPlaylistsQuantity() {
         return playlists.size();
     }

@@ -8,6 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ *
+ * the class is responsible for conducting the transaction, getting and releasing connection from connection pool,
+ * handling autocommit, rollback and sql exceptions
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
  * <p>
@@ -17,6 +20,12 @@ import java.sql.SQLException;
 @Log4j2
 class TransactionHandler {
 
+    /**
+     * method that has the responsibility of running our transactions and rollback if something goes wrong.
+     * @param transaction method implementation
+     * @return transaction result
+     * @throws RepositoryException if sql-clause cannot be completed
+     */
     <T> T transactional(Transaction<T> transaction) throws RepositoryException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection;

@@ -37,6 +37,7 @@ class XssRequestWrapperTest {
         request = mock(HttpServletRequest.class);
         wrapper = new XssRequestWrapper(request);
         String actual = wrapper.stripXSS(input);
+        System.out.println(actual);
         assertNotEquals(input, actual);
     }
 }

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select entity by name ignore case
  *
  * @author Dzmitry Platonov on 2019-06-28.
  * @version 0.0.1

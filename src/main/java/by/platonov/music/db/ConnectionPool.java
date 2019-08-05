@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ *
+ * pool of connections which can be used to interact with database
  * @author dzmitryplatonov on 2019-06-05.
  * @version 0.0.1
  */
@@ -28,6 +30,10 @@ public class ConnectionPool {
     private ConnectionPool() {
     }
 
+    /**
+     * double-check singleton
+     * @return an instance of the connection pool that is configured and ready for issuing and returning connections
+     */
     public static ConnectionPool getInstance() {
         if (!create.get()) {
             lock.lock();
@@ -70,16 +76,28 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * method provides a connection to interact with database
+     * @return connection which is ready for statement
+     * @throws InterruptedException if waiting of connection was interrupted
+     */
     public Connection getConnection() throws InterruptedException {
         log.trace("Connection taken");
         return connections.take();
     }
 
+    /**
+     * method returns connection to the pool after sql-execution
+     * @param connection connection to be released
+     */
     public void releaseConnection(Connection connection) {
         connections.add(connection);
         log.trace("Connection released, available connections: " + connections.size());
     }
 
+    /**
+     * method responsible for closing all connection from pool, de-registering drivers, and destroying connection pool object
+     */
     public void destroyPool() {
         if (create.get()) {
             lock.lock();

@@ -6,6 +6,8 @@ import by.platonov.music.repository.specification.SqlSpecification;
 import java.util.List;
 
 /**
+ * encapsulates common functionality interaction with database
+ *
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */

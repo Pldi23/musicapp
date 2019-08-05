@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select entities by whole name or it's part ignore case using limit and offset
  *
  * @author Dzmitry Platonov on 2019-06-25.
  * @version 0.0.1

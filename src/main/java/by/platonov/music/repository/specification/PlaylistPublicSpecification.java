@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
  *
- * returns all public playlists
+ * to select all public playlists
  * @author Dzmitry Platonov on 2019-07-19.
  * @version 0.0.1
  */

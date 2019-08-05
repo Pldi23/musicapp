@@ -5,8 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * select user's playlists which contains track
- * music-app
+ * to select user's playlists which contains track
  *
  * @author Dzmitry Platonov on 2019-07-17.
  * @version 0.0.1
@@ -14,7 +13,6 @@ import java.sql.SQLException;
 public class PlaylistByTrackAndUserSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION = "join user_playlist up on playlist.id = up.playlist_id " +
-//            "join playlist_track pt on playlist.id = pt.playlist_id " +
             "where up.user_login = ? and pt.track_id = ?";
 
     private long trackId;

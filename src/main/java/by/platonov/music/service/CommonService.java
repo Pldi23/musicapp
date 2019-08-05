@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * music-app
+ * encapsulates common-level business logic to provide needed data to command layer
  *
  * @author Dzmitry Platonov on 2019-07-04.
  * @version 0.0.1
@@ -22,78 +22,185 @@ import java.util.List;
 @EqualsAndHashCode
 public class CommonService {
 
+    /**
+     * method to search in {@link TrackRepository} for {@link Track} with required name
+     * @param trackName string name of the track
+     * @return list of one track if track with param name is found, and empty list if track with that name not exists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTrackByName(String trackName) throws ServiceException {
         log.debug("searching tracks in track repository");
         return search(new EntityNameLimitOffsetSpecification(trackName, Integer.MAX_VALUE, 0), TrackRepository.getInstance());
     }
 
+    /**
+     * to search in {@link TrackRepository} for list of {@link Track}s with
+     * required {@link by.platonov.music.entity.filter.TrackFilter} parameters
+     * @param entityFilter {@link by.platonov.music.entity.filter.TrackFilter}
+     * @param limit number of max needed tracks
+     * @param offset offset
+     * @return list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTrackByFilter(EntityFilter entityFilter, int limit, long offset) throws ServiceException {
         log.debug("searching tracks in track repository");
         return tracksWithMusicians(search(new TrackFilterSpecification(entityFilter, limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to search in {@link TrackRepository} for list of {@link Track}s that performed by {@link Musician}
+     * @param musicianId unique id of the musician
+     * @return list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTracksByMusician(long musicianId) throws ServiceException {
         log.debug("searching for tracks for musician id: " + musicianId);
         return search(new TracksByMusicianSpecification(musicianId), TrackRepository.getInstance());
     }
 
+    /**
+     * to search in {@link TrackRepository} for list of all {@link Track}s
+     * @param limit number of max needed tracks
+     * @param offset offset
+     * @return list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTracks(int limit, long offset) throws ServiceException {
         log.debug("searching for tracks in limit: " + limit + " and offset: " + offset);
         return tracksWithMusicians(search(new TrackUuidIsNotNullSpecification(limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to search in {@link MusicianRepository} for list of {@link Musician}s
+     * @param limit number of max needed musicians
+     * @param offset offset
+     * @return list of musicians
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Musician> searchMusicians(int limit, long offset) throws ServiceException {
         log.debug("searching for musicians in limit: " + limit + " and offset: " + offset);
         return search(new EntityIdNotNullLimitOffsetSpecification(limit, offset), MusicianRepository.getInstance());
     }
 
+    /**
+     * to search in {@link PlaylistRepository} for list of {@link Playlist}s depending on user role
+     * @param limit number of max needed playlists
+     * @param offset offset
+     * @param isAdmin user role
+     * @return list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylists(int limit, long offset, boolean isAdmin) throws ServiceException {
         log.debug("searching for playlists in limit: " + limit + " and offset: " + offset);
         return playlistsWithTracks(search(new PlaylistPublicLimitOffsetSpecification(limit, offset, isAdmin), PlaylistRepository.getInstance()));
     }
 
+    /**
+     * to search in {@link PlaylistRepository} for list of {@link Playlist}s by name, depending on user role
+     * @return list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylistByName(String playlistName, int limit, long offset, User user) throws ServiceException {
         log.debug("searching playlists in repository");
         return playlistsWithTracks(search(new PlaylistByNameAndUserTypeLimitOffsetSpecification(playlistName, limit,
                 offset, user), PlaylistRepository.getInstance()));
     }
 
+    /**
+     * to search in {@link PlaylistRepository} for playlist that contains track
+     * @param trackId id of required track
+     * @return list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylistsByTrack(long trackId) throws ServiceException {
         log.debug("searching all playlists which contains track id:" + trackId);
         return search(new PlaylistsWithTrackSpecification(trackId), PlaylistRepository.getInstance());
     }
 
+    /**
+     * to search in {@link MusicianRepository} for list of {@link Musician}s by search request
+     * @param searchRequest string-request param
+     * @param limit number of max needed musicians
+     * @param offset offset
+     * @return list of musicians
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Musician> searchMusician(String searchRequest, int limit, long offset) throws ServiceException {
         log.debug("searching musicians in repository");
         return search(new EntityNameLimitOffsetSpecification(searchRequest, limit, offset), MusicianRepository.getInstance());
     }
 
+    /**
+     * to search in {@link TrackRepository} for list of {@link Track}s by search request
+     * @param searchRequest string request param
+     * @param limit number of max needed tracks
+     * @param offset offset
+     * @return list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTrack(String searchRequest, int limit, long offset) throws ServiceException {
         log.debug("searching musicians in repository");
         return search(new EntityNameLimitOffsetSpecification(searchRequest, limit, offset), TrackRepository.getInstance());
     }
 
+    /**
+     * to search in {@link PlaylistRepository} for playlist that user has
+     * @param user user
+     * @return list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchUserPlaylists(User user) throws ServiceException {
         return playlistsWithTracks(search(new PlaylistOwnedByUserSpecification(user.getLogin()), PlaylistRepository.getInstance()));
     }
 
+    /**
+     * method to search in {@link TrackRepository} for {@link Track} with required id
+     * @param id track id
+     * @return list of one track if track with param id is found, and empty list if track with that id not exists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> searchTrackById(String id) throws ServiceException {
         log.debug("searching track by id in trackRepository");
         return tracksWithMusicians(search(new TrackIdSpecification(Long.parseLong(id)), TrackRepository.getInstance()));
     }
 
+    /**
+     * method to search in {@link MusicianRepository} for {@link Musician} with required id
+     * @param id musician id
+     * @return list of one musician if musician with param id is found, and empty list if musician with that id not exists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Musician> searchMusicianById(String id) throws ServiceException {
         return search(new MusicianIdSpecification(Long.parseLong(id)), MusicianRepository.getInstance());
     }
 
+    /**
+     * method to search in {@link GenreRepository} for {@link Genre} with required id
+     * @param id genre id
+     * @return list of one genre if genre with param id is found, and empty list if genre with that id not exists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Genre> searchGenreById(String id) throws ServiceException {
         return search(new GenreIdSpecification(Long.parseLong(id)), GenreRepository.getInstance());
     }
 
+    /**
+     * method to search in {@link PlaylistRepository} for {@link Playlist} by required id
+     * @param id playlist id
+     * @return list of one playlist if playlist with param id is found, and empty list if playlists with that id not exists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylistById(String id) throws ServiceException {
         return search(new PlaylistIdSpecification(Long.parseLong(id)), PlaylistRepository.getInstance());
     }
 
+    /**
+     * method to search in {@link PlaylistRepository} for {@link Playlist} with songs by required id.
+     * @param id playlist id
+     * @return list of one playlist if playlist with param id is found, and empty list if playlists with that id not exists
+     * received playlists contain songs
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylistByIdWithTracks(String id) throws ServiceException {
         List<Playlist> playlists = searchPlaylistById(id);
         for (Playlist playlist : playlists) {
@@ -102,61 +209,161 @@ public class CommonService {
         return playlists;
     }
 
+    /**
+     * method to search in {@link PlaylistRepository} for {@link Playlist} by user and track id
+     * @param trackId track id
+     * @param user user
+     * @return list of playlist
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> searchPlaylistsByTrackAndUser(long trackId, User user) throws ServiceException {
         return search(new PlaylistByTrackAndUserSpecification(trackId, user.getLogin()), PlaylistRepository.getInstance());
     }
 
+    /**
+     * to count total quantity of tracks
+     * @return total quantity of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public long countTracks() throws ServiceException {
         return count(new TrackIdIsNotNullSpecification(), TrackRepository.getInstance());
     }
 
+    /**
+     * to count total quantity of musicians in repository
+     * @return total quantity of musicians
+     * @throws ServiceException if repository throws Repository exception
+     */
     public long countMusicians() throws ServiceException {
         return count(new IdIsNotNullSpecification(), MusicianRepository.getInstance());
     }
 
+    /**
+     * to count total quantity of playlists
+     * @return total quantity of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public long countPlaylists(boolean isAdmin) throws ServiceException {
         return count(new PlaylistPublicLimitOffsetSpecification(Integer.MAX_VALUE, 0, isAdmin), PlaylistRepository.getInstance());
     }
 
+    /**
+     * to receive list of tracks sorted by id
+     * @param isAscending sort order
+     * @param limit number of needed tracks
+     * @param offset offset
+     * @return sorted list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> sortedTracksId(boolean isAscending, int limit, long offset) throws ServiceException {
         return tracksWithMusicians(search(new TrackSortedIdSpecification(isAscending, limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to receive list of tracks sorted by name
+     * @param isAscending sort order
+     * @param limit number of needed tracks
+     * @param offset offset
+     * @return sorted list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> sortedTracksName(boolean isAscending, int limit, long offset) throws ServiceException {
         return tracksWithMusicians(search(new EntitySortedNameSpecification(isAscending, limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to receive list of tracks sorted by genre title
+     * @param isAscending sort order
+     * @param limit number of needed tracks
+     * @param offset offset
+     * @return sorted list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> sortedTracksGenre(boolean isAscending, int limit, long offset) throws ServiceException {
         return tracksWithMusicians(search(new TrackSortedGenreNameSpecification(isAscending, limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to receive list of tracks sorted by track length(duration)
+     * @param isAscending sort order
+     * @param limit number of needed tracks
+     * @param offset offset
+     * @return sorted list of tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> sortedTracksLength(boolean isAscending, int limit, long offset) throws ServiceException {
         return tracksWithMusicians(search(new TrackSortedLengthSpecification(isAscending, limit, offset), TrackRepository.getInstance()));
     }
 
+    /**
+     * to receive list of musicians sorted by id
+     * @param isAscending sort order
+     * @param limit number of needed musicians
+     * @param offset offset
+     * @return sorted list of musicians
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Musician> sortedMusiciansId(boolean isAscending, int limit, long offset) throws ServiceException {
         return search(new EntitySortedIdSpecification(isAscending, limit, offset), MusicianRepository.getInstance());
     }
 
+    /**
+     * to receive list of musicians sorted by name
+     * @param isAscending sort order
+     * @param limit number of needed musicians
+     * @param offset offset
+     * @return sorted list of musicians
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Musician> sortedMusiciansName(boolean isAscending, int limit, long offset) throws ServiceException {
         return search(new EntitySortedNameSpecification(isAscending, limit, offset), MusicianRepository.getInstance());
     }
 
+    /**
+     * to receive list of playlists sorted by id
+     * @param isAscending sort order
+     * @param limit number of needed playlists
+     * @param offset offset
+     * @return sorted list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> sortedPlaylistsId(boolean isAscending, int limit, long offset) throws ServiceException {
         return playlistsWithTracks(search(new EntitySortedIdSpecification(isAscending, limit, offset),
                 PlaylistRepository.getInstance()));
     }
 
+    /**
+     * to receive list of playlists sorted by name
+     * @param isAscending sort order
+     * @param limit number of needed playlists
+     * @param offset offset
+     * @return sorted list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> sortedPlaylistsName(boolean isAscending, int limit, long offset, boolean isAdmin) throws ServiceException {
         return playlistsWithTracks(search(new PlaylistSortedNameSpecification(isAscending, limit, offset, isAdmin),
                 PlaylistRepository.getInstance()));
     }
 
+    /**
+     * to receive list of playlists sorted by length (total tracks duration)
+     * @param isAscending sort order
+     * @param limit number of needed playlists
+     * @param offset offset
+     * @return sorted list of playlists
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Playlist> sortedPlaylistLength(boolean isAscending, int limit, long offset, boolean isAdmin) throws ServiceException {
         return playlistsWithTracks(search(new PlaylistSortedLengthSpecification(isAscending, limit, offset, isAdmin),
                 PlaylistRepository.getInstance()));
     }
 
+    /**
+     * to get musician from {@link MusicianRepository} by name, or if it is not exist, add entity to repository and get it thereafter
+     * @param musicianName name
+     * @return musician
+     * @throws ServiceException if repository throws Repository exception
+     */
     public Musician getOrAddMusician(String musicianName) throws ServiceException {
         MusicianRepository musicianRepository = MusicianRepository.getInstance();
         Musician resultMusician;
@@ -180,6 +387,12 @@ public class CommonService {
         }
     }
 
+    /**
+     * to get {@link Genre} from {@link GenreRepository} by title
+     * @param genreTitle title
+     * @return genre
+     * @throws ServiceException if repository throws Repository exception
+     */
     public Genre getGenre(String genreTitle) throws ServiceException {
         GenreRepository genreRepository = GenreRepository.getInstance();
         Genre genre = Genre.builder().title(genreTitle).build();
@@ -194,16 +407,34 @@ public class CommonService {
         }
     }
 
+    /**
+     * to get ten random tracks
+     * @return list of ten tracks chosen randomly
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> getRandomTen() throws ServiceException {
         log.debug("getting 10 random tracks");
         return tracksWithMusicians(search(new TrackRandomSpecification(), TrackRepository.getInstance()));
     }
 
+    /**
+     * to get last ten tracks that was added to {@link TrackRepository}
+     * @return list of ten tracks
+     * @throws ServiceException if repository throws Repository exception
+     */
     public List<Track> getTracksLastAdded() throws ServiceException {
         log.debug("getting 10 tracks last added");
         return tracksWithMusicians(search(new TracksLastAddedSpecification(), TrackRepository.getInstance()));
     }
 
+    /**
+     * to create a {@link Playlist}
+     * @param user user that wants to create a playlist
+     * @param isPersonal if user want it to be private or not( if user is not admin isPersonal automatically sets to true)
+     * @param playlistName name of playlist
+     * @return true if playlist was created and false if not
+     * @throws ServiceException if repository throws Repository exception
+     */
     public boolean createPlaylist(User user, boolean isPersonal, String playlistName) throws ServiceException {
         try {
             Playlist playlist = Playlist.builder().name(playlistName).tracks(new LinkedList<>()).personal(isPersonal).build();
@@ -217,6 +448,13 @@ public class CommonService {
         }
     }
 
+    /**
+     * to add {@link Track} to {@link Playlist}
+     * @param trackId id of the track that is wanted to add
+     * @param playlistId id of the playlist you want to add the track to
+     * @return true if operation completed and false if not
+     * @throws ServiceException if repository throws Repository exception
+     */
     public boolean addTrackToPLaylist(String trackId, String playlistId) throws ServiceException {
         try {
             Track track = TrackRepository.getInstance().query(new TrackIdSpecification(Long.parseLong(trackId))).get(0);
@@ -232,6 +470,13 @@ public class CommonService {
         }
     }
 
+    /**
+     * to remove track from playlist
+     * @param trackId id of the track that is wanted to remove
+     * @param playlistId id of the playlist you want to remove the track from
+     * @return true if operation completed and false if not
+     * @throws ServiceException if repository throws Repository exception
+     */
     public boolean removeTrackFromPlaylist(String trackId, String playlistId) throws ServiceException {
         boolean result = true;
         try {
@@ -247,6 +492,13 @@ public class CommonService {
         return result;
     }
 
+    /**
+     * to remove {@link Playlist} from {@link User}
+     * @param user id of the user which is playlist owner
+     * @param playlistId id of the playlist that you want to remove
+     * @return true if operation completed and false if not
+     * @throws ServiceException if repository throws Repository exception
+     */
     public boolean removePlaylistFromUser(User user, String playlistId) throws ServiceException {
         user.getPlaylists().removeIf(playlist -> playlist.getId() == Long.parseLong(playlistId));
         try {
@@ -257,11 +509,23 @@ public class CommonService {
         }
     }
 
+    /**
+     * to count playlist time-duration
+     * @param playlist playlist
+     * @return formatted string of calculated time value
+     * @throws ServiceException if repository throws Repository exception
+     */
     public String countPlaylistLength(Playlist playlist) throws ServiceException {
         playlist.getTracks().addAll(getPlaylistTracks(playlist.getId()));
         return playlist.getTotalDuration();
     }
 
+    /**
+     * to count playlist quantity of tracks
+     * @param playlist playlist being reviewed
+     * @return string representation of counted value
+     * @throws ServiceException if repository throws Repository exception
+     */
     public String countPlaylistSize(Playlist playlist) throws ServiceException {
         return String.valueOf(getPlaylistTracks(playlist.getId()).size());
     }

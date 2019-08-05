@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * music-app
+ * Message provider for view-layer
  *
  * @author Dzmitry Platonov on 2019-07-04.
  * @version 0.0.1
@@ -20,6 +20,12 @@ public class MessageManager {
     private MessageManager() {
     }
 
+    /**
+     * provides a message from content bundle
+     * @param key is the name of message in bundle
+     * @param locale locale string (need to be taken from session)
+     * @return string-message
+     */
     public static String getMessage(String key, String locale) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(CONTENT, formatLocale(locale));
         return resourceBundle.getString(key);

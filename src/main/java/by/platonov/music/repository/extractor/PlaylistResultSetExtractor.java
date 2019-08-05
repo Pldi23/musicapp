@@ -9,6 +9,8 @@ import java.util.*;
 import static by.platonov.music.repository.extractor.ExtractConstant.*;
 
 /**
+ * to disassemble result set to list of {@link Playlist}
+ *
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */

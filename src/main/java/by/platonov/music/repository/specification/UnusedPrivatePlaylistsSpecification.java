@@ -5,14 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * to select all tracks
- *
- * @author Dzmitry Platonov on 2019-07-27.
+ * to select all private playlists without user
+ * @author Dzmitry Platonov on 2019-08-05.
  * @version 0.0.1
  */
-public class TrackIdIsNotNullSpecification implements SqlSpecification {
+public class UnusedPrivatePlaylistsSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "where track.id IS NOT NULL;";
+    private static final String SPECIFICATION =
+            " left join user_playlist up on playlist.id = up.playlist_id\n" +
+            " where private = true and user_login is null;";
 
     @Override
     public PreparedStatement toPreparedStatement(Connection connection, String parentSql) throws SQLException {

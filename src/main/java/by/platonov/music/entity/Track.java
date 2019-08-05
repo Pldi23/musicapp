@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
+ * Representation of Track
+ *
  * @author dzmitryplatonov on 2019-06-04.
  * @version 0.0.1
  */

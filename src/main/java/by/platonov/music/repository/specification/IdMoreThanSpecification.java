@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select entity by id more than specified
  *
  * @author Dzmitry Platonov on 2019-06-26.
  * @version 0.0.1

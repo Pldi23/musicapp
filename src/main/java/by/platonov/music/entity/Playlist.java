@@ -10,6 +10,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * Representation of playlist
+ *
  * @author dzmitryplatonov on 2019-06-04.
  * @version 0.0.1
  */
@@ -23,6 +25,9 @@ public class Playlist extends Entity {
     private boolean personal;
     private List<Track> tracks;
 
+    /**
+     * @return the most popular genre of songs of this playlist
+     */
     public String getMostPopularGenre() {
        return tracks.stream()
                 .map(Track::getGenre)
@@ -34,6 +39,9 @@ public class Playlist extends Entity {
                 .orElse("");
     }
 
+    /**
+     * @return the total duration of playlist in necessary string format
+     */
     public String getTotalDuration() {
         long duration = tracks.stream().mapToLong(Track::getLength).sum();
         long hours = TimeUnit.SECONDS.toHours(duration);
@@ -43,6 +51,9 @@ public class Playlist extends Entity {
         return String.format("%02d:%02d:%02d", hours, minutes, duration);
     }
 
+    /**
+     * @return the number of tracks in playlist
+     */
     public int getSize() {
         return tracks.size();
     }

@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select users by filter
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1

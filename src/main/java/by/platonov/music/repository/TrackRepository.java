@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * a class that interacts with the database and accumulates in itself all methods to add/update/remove or receive
+ * {@link Track} from application db
  * @author dzmitryplatonov on 2019-06-07.
  * @version 0.0.1
  */

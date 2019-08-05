@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * to select users who did not confirm registration during one day period
  * @author dzmitryplatonov on 2019-06-22.
  * @version 0.0.1
  */

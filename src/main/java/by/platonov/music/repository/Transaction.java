@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * interface represents what we want to run in one transaction
+ *
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
  *

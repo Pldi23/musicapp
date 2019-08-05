@@ -5,6 +5,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.util.UUID;
 
 /**
+ * Util class to generate unique random hash-code
+ *
  * @author dzmitryplatonov on 2019-06-21.
  * @version 0.0.1
  */

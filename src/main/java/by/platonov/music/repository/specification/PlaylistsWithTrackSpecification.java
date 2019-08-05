@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select all playlists containing track with specified id
  *
  * @author Dzmitry Platonov on 2019-07-13.
  * @version 0.0.1

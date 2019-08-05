@@ -1,7 +1,6 @@
 package by.platonov.music.exception;
 
 /**
- * music-app
  *
  * @author Dzmitry Platonov on 2019-07-12.
  * @version 0.0.1

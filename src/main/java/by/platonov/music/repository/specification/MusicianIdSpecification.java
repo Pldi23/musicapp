@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * to select musician by id
+ *
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */

@@ -10,6 +10,8 @@ import by.platonov.music.repository.*;
 import by.platonov.music.repository.specification.*;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
+
 /**
  * music-app
  *
@@ -66,6 +68,18 @@ public class AdminService {
     public boolean removeGenre(Genre genre) throws ServiceException {
         log.debug("Removing genre " + genre);
         return remove(genre, GenreRepository.getInstance());
+    }
+
+    public void removeUnusedPlaylists() throws ServiceException {
+        try {
+            List<Playlist> playlists = PlaylistRepository.getInstance().query(new UnusedPrivatePlaylistsSpecification());
+            for (Playlist playlist : playlists) {
+                PlaylistRepository.getInstance().remove(playlist);
+                log.debug(playlist + " removed");
+            }
+        } catch (RepositoryException e) {
+            throw new ServiceException(e);
+        }
     }
 
     private <T> boolean remove(T t, Repository<T> repository) throws ServiceException {

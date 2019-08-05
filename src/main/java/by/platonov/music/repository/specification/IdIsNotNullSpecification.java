@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * to select all entities from repository
+ *
  * @author dzmitryplatonov on 2019-06-10.
  * @version 0.0.1
  */

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * sets playlist's fields to prepared statement which insert {@link Playlist} to db
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */

@@ -14,7 +14,7 @@
     </session-config>
     <context-param>
         <param-name>interval</param-name>
-        <param-value>10</param-value> <!-- minutes -->
+        <param-value>120</param-value> <!-- minutes -->
     </context-param>
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>

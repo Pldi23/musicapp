@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * sets track fields to prepared statement which insert {@link Track} to db
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */

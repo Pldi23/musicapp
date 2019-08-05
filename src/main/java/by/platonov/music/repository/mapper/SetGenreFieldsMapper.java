@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * sets genre's title to prepared statement which insert {@link Genre} into db
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */

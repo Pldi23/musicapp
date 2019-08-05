@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -44,6 +46,13 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
+    public Map<String, String[]> getParameterMap() {
+        Map<String, String[]> parameters = new HashMap<>();
+        super.getParameterMap().forEach((key, value) -> parameters.put(stripXSS(key), getParameterValues(key)));
+        return parameters;
+    }
+
+    @Override
     public String[] getParameterValues(String parameter) {
         String[] values = super.getParameterValues(parameter);
 
@@ -62,7 +71,6 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String getParameter(String parameter) {
-
         String value = super.getParameter(parameter);
         return stripXSS(value);
     }
@@ -74,10 +82,8 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
         return stripXSS(value);
     }
 
-
-
     String stripXSS(String value) {
-
+        log.debug("stripping: " + value);
         if (value != null) {
             // Avoid null characters
             value = value.replaceAll("\0", "");
@@ -87,6 +93,7 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
                 value = scriptPattern.matcher(value).replaceAll("");
             }
         }
+        log.debug("after strip: " + value);
         return value;
     }
 }

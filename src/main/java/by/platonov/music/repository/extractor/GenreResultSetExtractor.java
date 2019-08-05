@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * to disassemble result set to list of {@link Genre}
+ *
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */

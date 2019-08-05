@@ -11,6 +11,9 @@ import java.util.Properties;
 import java.util.concurrent.Callable;
 
 /**
+ * Util thread-class to construct and send verification e-mail to currently registered user
+ * used by {@link by.platonov.music.command.impl.RegistrationCommand}
+ *
  * @author dzmitryplatonov on 2019-06-20.
  * @version 0.0.1
  */

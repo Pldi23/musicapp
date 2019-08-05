@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * to select all authors of the track with specified id
+ *
  * @author dzmitryplatonov on 2019-06-14.
  * @version 0.0.1
  */

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select last 10 added tracks from track repository
  *
  * @author Dzmitry Platonov on 2019-07-19.
  * @version 0.0.1

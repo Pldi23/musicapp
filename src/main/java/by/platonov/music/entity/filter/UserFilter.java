@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
- * music-app
+ * User filter parameters
  *
  * @author Dzmitry Platonov on 2019-07-26.
  * @version 0.0.1

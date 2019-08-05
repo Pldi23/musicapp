@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select tracks from track repository by uuid
  *
  * @author Dzmitry Platonov on 2019-06-29.
  * @version 0.0.1

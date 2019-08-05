@@ -1,6 +1,7 @@
 package by.platonov.music.controller.listener;
 
 import by.platonov.music.exception.ServiceException;
+import by.platonov.music.service.AdminService;
 import by.platonov.music.service.UserService;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,12 +29,15 @@ public class InactiveUserListener implements ServletContextListener {
         ServletContext context = servletContextEvent.getServletContext();
         String interval = context.getInitParameter("interval");
         scheduledExecutorService.schedule(() -> {
-            UserService service = new UserService();
+            UserService userService = new UserService();
+            AdminService adminService = new AdminService();
             try {
                 log.info("trying to find and remove inactive users");
-                service.removeNotActiveUser();
+                userService.removeNotActiveUser();
+                log.info("trying to find and remove unused private playlists");
+                adminService.removeUnusedPlaylists();
             } catch (ServiceException e) {
-                log.error("Could not remove inactive users", e);
+                log.error("Could not remove inactive/unused entities", e);
             }
         }, Integer.parseInt(interval), TimeUnit.MINUTES);
     }
@@ -41,6 +45,6 @@ public class InactiveUserListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         scheduledExecutorService.shutdown();
-        log.info("listener destroyed");
+        log.debug("listener destroyed");
     }
 }

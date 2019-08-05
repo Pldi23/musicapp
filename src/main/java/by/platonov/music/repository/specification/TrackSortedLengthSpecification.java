@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select tracks sorted by length (duration)
  *
  * @author Dzmitry Platonov on 2019-07-08.
  * @version 0.0.1

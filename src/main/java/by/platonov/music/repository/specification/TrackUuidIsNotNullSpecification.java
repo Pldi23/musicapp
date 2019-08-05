@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select all tracks using limit and offset
  *
  * @author Dzmitry Platonov on 2019-07-05.
  * @version 0.0.1

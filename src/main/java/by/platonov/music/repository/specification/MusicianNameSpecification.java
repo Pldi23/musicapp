@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select musician from musician repository by name
  *
  * @author Dzmitry Platonov on 2019-07-26.
  * @version 0.0.1

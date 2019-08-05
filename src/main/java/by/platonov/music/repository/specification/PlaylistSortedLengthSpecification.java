@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select playlists sorted by total duration of tracks
  *
  * @author Dzmitry Platonov on 2019-07-08.
  * @version 0.0.1

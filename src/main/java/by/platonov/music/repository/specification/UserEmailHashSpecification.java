@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ *
+ * to select users by their e-mail and verification uuid
  * @author dzmitryplatonov on 2019-06-21.
  * @version 0.0.1
  */

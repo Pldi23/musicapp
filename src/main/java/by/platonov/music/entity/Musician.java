@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * Representation of Singers and Authors
+ *
  * @author dzmitryplatonov on 2019-06-05.
  * @version 0.0.1
  */

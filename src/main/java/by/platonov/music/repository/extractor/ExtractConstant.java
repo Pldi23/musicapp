@@ -1,7 +1,7 @@
 package by.platonov.music.repository.extractor;
 
 /**
- * music-app
+ * constants used to disassemble the result set (column names from tables from the database)
  *
  * @author Dzmitry Platonov on 2019-07-25.
  * @version 0.0.1

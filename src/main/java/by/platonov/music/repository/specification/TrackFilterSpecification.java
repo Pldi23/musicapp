@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select tracks by filter parameters
  *
  * @author Dzmitry Platonov on 2019-07-11.
  * @version 0.0.1

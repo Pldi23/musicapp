@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * to select user from user repository by his login
  * @author dzmitryplatonov on 2019-06-08.
  * @version 0.0.1
  */

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * sets musician's fields to prepared statement which update {@link Musician} in db
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */

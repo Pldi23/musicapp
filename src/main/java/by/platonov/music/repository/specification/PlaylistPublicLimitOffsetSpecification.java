@@ -5,8 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
- * returns public playlists from repository by limit and offset
+ * to select all public playlists from playlist repository by limit and offset
  * @author Dzmitry Platonov on 2019-07-19.
  * @version 0.0.1
  */

@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import java.util.ResourceBundle;
 
 /**
+ * Database configurator, class is responsible for reading database settings from properties and making it available
+ * for connection pool
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */

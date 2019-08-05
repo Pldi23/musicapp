@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * music-app
+ * to select tracks sorted by id
  *
  * @author Dzmitry Platonov on 2019-07-05.
  * @version 0.0.1
