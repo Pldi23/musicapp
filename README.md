@@ -7,7 +7,8 @@ The project represents music-library with oportunity for users to aggregate trac
 Application use-cases.
 Possible roles and their specialities:
 
-- User (Registered user of application)
+- User (Registered user of application): 
+  - gets 3 months free-trial, afterwards that he must pay to renew his subscription
   - listen to the music,
   - search/filter music,
   - use library to easily navigate throw tracks, musicians and playlists 
