@@ -5,7 +5,7 @@ import by.platonov.music.exception.ServiceException;
 import java.util.List;
 
 /**
- * music-app
+ * interface represents what entity and by what criteria we want to filter
  *
  * @author Dzmitry Platonov on 2019-07-26.
  * @version 0.0.1

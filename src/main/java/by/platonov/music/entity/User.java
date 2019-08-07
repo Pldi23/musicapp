@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Deque;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +36,9 @@ public class User extends Entity{
     private boolean active;
     private String verificationUuid;
     private String photoPath;
+
+    private LocalDateTime paidPeriod;
+    private Set<Payment> payments;
 
     /**
      * representation of gender

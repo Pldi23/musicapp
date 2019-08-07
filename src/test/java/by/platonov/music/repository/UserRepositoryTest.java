@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDate;
+import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,25 +28,28 @@ class UserRepositoryTest {
     private UserRepository repository = UserRepository.getInstance();
     private User newUser = User.builder().login("pldi6").password("pldi6").admin(true).firstname("Dima").lastname("Plat")
             .gender(User.Gender.MALE).email("pl@pl.ru").birthDate(LocalDate.of(1986, 7, 2))
-            .playlists(new HashSet<>()).registrationDate(LocalDate.now())
+            .playlists(new LinkedHashSet<>()).registrationDate(LocalDate.now())
             .active(false)
             .verificationUuid(null)
+            .payments(new LinkedHashSet<>())
             .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
     private User updatedUser = User.builder().login("pldi4").password("Ronaldo").admin(false).firstname("Cristiano")
             .lastname("Ronaldo").email("Ronaldo@gmail.com").gender(User.Gender.MALE)
             .registrationDate(LocalDate.now())
-            .birthDate(LocalDate.of(1985, 6, 1)).playlists(new HashSet<>())
+            .birthDate(LocalDate.of(1985, 6, 1)).playlists(new LinkedHashSet<>())
             .active(false)
             .verificationUuid(null)
+            .payments(new LinkedHashSet<>())
             .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
     private User selectedUser = User.builder().login("pldi3").password("qwerty").admin(false).firstname("Zinedin")
             .lastname("Zidane").email("pldi@mail.ru").gender(User.Gender.MALE)
             .registrationDate(LocalDate.now())
-            .birthDate(LocalDate.of(1975, 10, 10)).playlists(new HashSet<>())
+            .birthDate(LocalDate.of(1975, 10, 10)).playlists(new LinkedHashSet<>())
             .active(false)
             .verificationUuid("1")
+            .payments(new LinkedHashSet<>())
             .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
             .build();
 

@@ -13,7 +13,7 @@ import static by.platonov.music.constant.RequestConstant.*;
 
 
 /**
- * music-app
+ * to sort {@link Track} by {@link by.platonov.music.entity.Genre} title
  *
  * @author Dzmitry Platonov on 2019-07-05.
  * @version 0.0.1
@@ -29,6 +29,13 @@ public class SortTrackGenreCommand implements Command {
         this.handler = handler;
     }
 
+
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.SORT_GENRE_TRACK_LIBRARY_PAGE
+     * with sorted list of tracks
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         return handler.sorted(content, SORT_TRACK_GENRE_ORDER, PageConstant.SORT_GENRE_TRACK_LIBRARY_PAGE,

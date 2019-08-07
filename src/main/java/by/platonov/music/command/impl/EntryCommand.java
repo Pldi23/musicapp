@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import java.util.Map;
 
 /**
- * music-app
+ * to transfer data to entry page
  *
  * @author Dzmitry Platonov on 2019-07-19.
  * @version 0.0.1
@@ -26,6 +26,13 @@ public class EntryCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.LOGIN_PAGE with list of tracks in attributes
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         try {

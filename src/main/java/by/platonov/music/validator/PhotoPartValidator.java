@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.IMG_PATH request parameter
  *
  * @author Dzmitry Platonov on 2019-07-15.
  * @version 0.0.1
@@ -23,6 +23,10 @@ public class PhotoPartValidator extends AbstractValidator {
         super(next);
     }
 
+    /**
+     * @param content type should be "image/jpeg"
+     * @return empty set if no violations detected, and violation.file message if violation found
+     */
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();

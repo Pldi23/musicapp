@@ -17,7 +17,6 @@ import by.platonov.music.service.CommonService;
 import by.platonov.music.service.FileService;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +41,13 @@ public class RemoveTrackCommand implements Command {
         this.fileService = fileService;
     }
 
+    /**
+     * to remove {@link Track} from application
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.ENTITY_REMOVED_PAGE with result-message
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String locale = (String) content.getSessionAttribute(LOCALE);
@@ -51,13 +57,20 @@ public class RemoveTrackCommand implements Command {
                             Map.of(PROCESS, MessageManager.getMessage("removed", locale)))
                     : new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
                     Map.of(PROCESS, MessageManager.getMessage("message.already.removed", locale)));
-        } catch (ServiceException | IOException | EntityParameterNotFoundException e) {
+        } catch (ServiceException | EntityParameterNotFoundException e) {
             log.error("command could not remove track", e);
             return new ErrorCommand(e).execute(content);
         }
     }
 
-    private boolean removeEntity(RequestContent content) throws ServiceException, IOException, EntityParameterNotFoundException {
+    /**
+     * helper method to remove {@link by.platonov.music.entity.Entity} depending on it's type
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return true if object was removed successfully and false if not
+     * @throws ServiceException when {@link by.platonov.music.repository.Repository} throws repository exception
+     * @throws EntityParameterNotFoundException when entity parameter not found in request
+     */
+    private boolean removeEntity(RequestContent content) throws ServiceException, EntityParameterNotFoundException {
         boolean result;
         String entityType = content.getRequestParameter(RequestConstant.ENTITY_TYPE)[0];
         String id = content.getRequestParameter(ID)[0];

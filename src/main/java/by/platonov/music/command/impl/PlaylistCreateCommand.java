@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * music-app
+ * to create {@link Playlist}
  *
  * @author Dzmitry Platonov on 2019-07-14.
  * @version 0.0.1
@@ -33,6 +33,14 @@ public class PlaylistCreateCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with violations if it was found
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with message failed/added
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
@@ -69,7 +77,7 @@ public class PlaylistCreateCommand implements Command {
                 playlists = commonService.searchUserPlaylists(user);
             } catch (ServiceException e) {
                 log.error("command can't add playlist ", e);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, PageConstant.ERROR_REDIRECT_PAGE);
+                return new ErrorCommand(e).execute(content);
             }
             commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_PLAYLISTS_PAGE,
                     Map.of(RequestConstant.VALIDATOR_RESULT, violations, RequestConstant.PLAYLISTS, playlists));

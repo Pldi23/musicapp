@@ -5,6 +5,7 @@ import by.platonov.music.command.RequestContent;
 import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.entity.Musician;
 import by.platonov.music.entity.Track;
+import by.platonov.music.entity.filter.EntityFilter;
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.constant.PageConstant;
 import by.platonov.music.constant.RequestConstant;
@@ -35,11 +36,11 @@ public class CommandHandler<T> {
     /**
      * Service method for sorting
      * @param content DTO containing all data received with HttpRequest
-     * @param sortOrderMarker
-     * @param targetPage target page for request forwarding after command is completed. @see|@link PageConstant
-     * @param countCommandExecutor instance of actual @CountCommandExecutor
-     * @param sortCommandExecutor instance of actual @SortCommandExecutor
-     * @return Result of command execution as @link(CommandResult)
+     * @param sortOrderMarker request parameter of order //currently not implemented
+     * @param targetPage target page for request forwarding after command is completed. {@link PageConstant}
+     * @param countCommandExecutor instance of actual {@link CountCommandExecutor}
+     * @param sortCommandExecutor instance of actual {@link SortCommandExecutor}
+     * @return Result of command execution as {@link CommandResult}
      */
     public CommandResult sorted(RequestContent content, String sortOrderMarker, String targetPage,
                                 CountCommandExecutor countCommandExecutor, SortCommandExecutor<T> sortCommandExecutor) {
@@ -49,16 +50,16 @@ public class CommandHandler<T> {
         int limit = Integer.parseInt(ResourceBundle.getBundle("app").getString("app.list.limit"));
         long offset = detectOffset(current, limit);
         boolean sortOrder = !content.getSessionAttributes().containsKey(sortOrderMarker) ||
-                (boolean) content.getSessionAttribute(sortOrderMarker);
+                (boolean) content.getSessionAttribute(sortOrderMarker); //currently not implemented
         boolean nextUnavailable;
-        boolean previousUnavailable = current == 1;
+        boolean previousUnavailable = current == 1; //non previous page available if current page number is 1
         int pageQuantity;
         List<Integer> pages = new ArrayList<>();
         try {
             long size = countCommandExecutor.count();
-            pageQuantity = size % limit == 0 ? (int) size / limit : (int) (size / limit + 1);
-            nextUnavailable = current == pageQuantity;
-            for (int i = 1; i <= pageQuantity; i++) {
+            pageQuantity = size % limit == 0 ? (int) size / limit : (int) (size / limit + 1); //total number of pages
+            nextUnavailable = current == pageQuantity; // non next page available if current page is equal to last page
+            for (int i = 1; i <= pageQuantity; i++) { // fill in the list with page numbers to design the pagination form
                 pages.add(i);
             }
             entities = sortCommandExecutor.sort(sortOrder, limit, offset);
@@ -75,6 +76,11 @@ public class CommandHandler<T> {
         return new CommandResult(CommandResult.ResponseType.FORWARD, targetPage, attributes);
     }
 
+    /**
+     * helper method to add to {@link RequestContent} attributes with musicians favorite genre and number of tracks in repository
+     * @param attributes requestAttributes to fill
+     * @param content DTO containing all data received with HttpRequest
+     */
     private void wrapWithStatistics(Map<String, Object> attributes, RequestContent content) {
         CommonService commonService = new CommonService();
         if (attributes.containsKey(ENTITIES)) {
@@ -103,6 +109,14 @@ public class CommandHandler<T> {
         }
     }
 
+    /**
+     * Service method for filtering entities
+     * @param content DTO containing all data received with HttpRequest
+     * @param page target page for request forwarding after command is completed. {@link PageConstant}
+     * @param filterCommandExecutor instance of actual {@link FilterCommandExecutor}
+     * @param filterAttributes to build instance of subclass {@link EntityFilter}
+     * @return Result of command execution as {@link CommandResult}
+     */
     public CommandResult filter(RequestContent content, String page,
                                 FilterCommandExecutor<T> filterCommandExecutor,
                                 Map<String, Object> filterAttributes) {
@@ -136,6 +150,15 @@ public class CommandHandler<T> {
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, attributes);
     }
 
+    /**
+     * helper method to add attributes
+     * @param attributes to fill
+     * @param entities list of entities
+     * @param current page number
+     * @param previousUnavailable is unavailable
+     * @param nextUnavailable is unavailable
+     * @param pages list of pages
+     */
     private void putAttributes(Map<String, Object> attributes, List<T> entities, int current, boolean previousUnavailable,
                                boolean nextUnavailable, List<Integer> pages) {
         attributes.put(ENTITIES, entities);
@@ -146,18 +169,20 @@ public class CommandHandler<T> {
     }
 
     /**
-     * //1 = 0   //1 = 0
-     * //2 = 8   //2 = 5
-     * //3 = 16  //3 = 10
-     * //4 = 24  //4 = 15
-     * //5 = 32  //5 = 20
-     * //6 = 40  //6 = 25
+     * helper method to determine the offset
+     * @param currentPage number
+     * @param limit application pagination page limit
+     * @return offset
      */
     private long detectOffset(int currentPage, int limit) {
         return (long) (currentPage - 1) * limit;
-
     }
 
+    /**
+     * helper method to detect number of current page
+     * @param content DTO containing all data received with HttpRequest
+     * @return page number
+     */
     private int detectCurrentPage(RequestContent content) {
         int current = Integer.parseInt(content.getRequestParameter(CURRENT)[0]);
         String direction = content.getRequestParameters().containsKey(DIRECTION) ?
@@ -172,6 +197,13 @@ public class CommandHandler<T> {
         return current;
     }
 
+    /**
+     * Service method for transfer parameters
+     * @param content DTO containing all data received with HttpRequest
+     * @param page target page for request forwarding after command is completed. {@link PageConstant}
+     * @param commandExecutor instance of actual {@link TransferCommandExecutor}
+     * @return Result of command execution as {@link CommandResult}
+     */
     public CommandResult transfer(RequestContent content, String page, TransferCommandExecutor<T> commandExecutor) {
         String parameterValue = content.getRequestParameter(ID)[0];
         String entityType = content.getRequestParameters().containsKey(ENTITY_TYPE) ?
@@ -195,6 +227,15 @@ public class CommandHandler<T> {
         return new CommandResult(CommandResult.ResponseType.FORWARD, page, Map.of(ENTITY, t, ENTITY_TYPE, entityType));
     }
 
+    /**
+     * service method to update user
+     * @param userService instance of {@link UserService}
+     * @param content DTO containing all data received with HttpRequest
+     * @param updatedParameter value of input parameter
+     * @param validator instance of actual input parameter {@link AbstractValidator}
+     * @param updateCommandExecutor instance of actual {@link UpdateCommandExecutor}
+     * @return Result of command execution as {@link CommandResult}
+     */
     public CommandResult update(UserService userService, RequestContent content, String updatedParameter,
                                 AbstractValidator validator, UpdateCommandExecutor updateCommandExecutor) {
         Set<Violation> violations = validator.apply(content);

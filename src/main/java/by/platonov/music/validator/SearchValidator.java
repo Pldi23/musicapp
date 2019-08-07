@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.SEARCH_REQUEST request parameter
  *
  * @author Dzmitry Platonov on 2019-07-18.
  * @version 0.0.1
@@ -19,6 +19,9 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class SearchValidator extends AbstractValidator{
 
+    /**
+     * 1-10 symbols
+     */
     private static final String SEARCH_REGEX_PATTERN = ".{1,10}";
 
     public SearchValidator(ParameterValidator next) {

@@ -16,7 +16,7 @@ import java.util.Map;
 import static by.platonov.music.constant.RequestConstant.TRACKS;
 
 /**
- * music-app
+ * to provide tracks to {@link PageConstant}.ADMIN_PAGE
  *
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1
@@ -30,6 +30,13 @@ public class QueryCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.ADMIN_PAGE with list of tracks in attributes
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String query = content.getRequestParameter(RequestConstant.SEARCH_REQUEST)[0];

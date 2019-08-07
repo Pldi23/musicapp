@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * music-app
+ * filter used to prevent xss attacks
  *
  * @author Dzmitry Platonov on 2019-07-10.
  * @version 0.0.1

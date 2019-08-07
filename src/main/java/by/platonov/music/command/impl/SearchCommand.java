@@ -19,7 +19,7 @@ import static by.platonov.music.constant.RequestConstant.*;
 import java.util.*;
 
 /**
- * music-app
+ * to search for {@link Track}s, {@link Playlist}s, {@link Musician}s
  *
  * @author Dzmitry Platonov on 2019-06-25.
  * @version 0.0.1
@@ -33,6 +33,14 @@ public class SearchCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.SEARCH_PAGE with violations if it was found
+     * forward to {@link PageConstant}.SEARCH_PAGE with required entities in attributes if execution success
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 
@@ -89,7 +97,6 @@ public class SearchCommand implements Command {
 
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE, attributes);
         } else {
-
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.SEARCH_PAGE,
                     Map.of(VALIDATOR_RESULT, violations));
         }

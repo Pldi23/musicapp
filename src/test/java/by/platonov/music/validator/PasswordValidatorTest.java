@@ -43,7 +43,7 @@ class PasswordValidatorTest {
         when(content.getRequestParameter(RequestConstant.PASSWORD)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.password", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.password", "ru_RU")));
 
         assertEquals(expected, actual);
     }

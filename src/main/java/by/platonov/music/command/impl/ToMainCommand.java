@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import java.util.Map;
 
 /**
- * music-app
+ * forwards to user's "main" page after clicking on application icon in navigation bar
  *
  * @author Dzmitry Platonov on 2019-07-30.
  * @version 0.0.1
@@ -27,6 +27,15 @@ public class ToMainCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.LOGIN_PAGE if user is guest
+     * forward to {@link PageConstant}.ADMIN_PAGE if user is admin
+     * forward to {@link PageConstant}.MAIN_PAGE if user is regular registered user
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);

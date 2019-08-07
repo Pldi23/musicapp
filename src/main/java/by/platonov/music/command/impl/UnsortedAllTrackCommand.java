@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to show all {@link Track} from application database
  *
  * @author Dzmitry Platonov on 2019-07-05.
  * @version 0.0.1
@@ -28,6 +28,12 @@ public class UnsortedAllTrackCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.TRACK_LIBRARY_PAGE
+     * with list of tracks
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         return handler.sorted(content, NO_ORDER, PageConstant.TRACK_LIBRARY_PAGE,

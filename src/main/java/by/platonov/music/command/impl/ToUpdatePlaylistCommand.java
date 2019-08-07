@@ -9,7 +9,7 @@ import by.platonov.music.entity.Playlist;
 import by.platonov.music.service.CommonService;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.UPDATE_PLAYLIST_PAGE using {@link CommandHandler}
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1

@@ -7,6 +7,17 @@
 <html>
 <head>
     <title><c:out value="${ requestScope.entity.login }"/></title>
+    <style type="text/css">
+        .my-custom-scrollbar {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid bg-light">
@@ -26,7 +37,6 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-2">
-<%--            <c:import url="user-filter-form.jsp"/>--%>
         </div>
         <div class="col-8">
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
@@ -41,17 +51,17 @@
                         value="${ requestScope.entity.firstname } ${ requestScope.entity.lastname }"/></p>
                 <p class="lead">
                     <c:if test="${ requestScope.entity.admin eq true }">
-                        <span class="badge badge-secondary"><fmt:message key="role.admin"/></span>
+                    <span class="badge badge-secondary"><fmt:message key="role.admin"/></span>
                     </c:if>
                     <c:if test="${ requestScope.entity.admin eq false }">
-                        <span class="badge badge-secondary"><fmt:message key="role.user"/></span>
+                    <span class="badge badge-secondary"><fmt:message key="role.user"/></span>
                     </c:if>
                     <span class="badge badge-secondary"><c:out value="${ requestScope.entity.email }"/></span>
                     <c:if test="${ requestScope.entity.gender eq 'MALE' }">
-                        <span class="badge badge-secondary"><fmt:message key="option.male"/></span>
+                    <span class="badge badge-secondary"><fmt:message key="option.male"/></span>
                     </c:if>
                     <c:if test="${ requestScope.entity.gender eq 'FEMALE' }">
-                        <span class="badge badge-secondary"><fmt:message key="option.female"/></span>
+                    <span class="badge badge-secondary"><fmt:message key="option.female"/></span>
                     </c:if>
                     <span class="badge badge-secondary"><fmt:message key="label.profile.birthdate"/>::<c:out
                             value="${ requestScope.entity.birthDate }"/></span>
@@ -60,11 +70,17 @@
                     <span class="badge badge-secondary"><fmt:message key="label.playlists.total"/>::
                                 <c:out value="${ requestScope.entity.getPlaylistsQuantity() }"/></span>
                     <c:if test="${ requestScope.entity.active eq true }">
-                        <span class="badge badge-success"><fmt:message key="status.active"/></span>
+                    <span class="badge badge-success"><fmt:message key="status.active"/></span>
                     </c:if>
                     <c:if test="${ requestScope.entity.active eq false }">
-                        <span class="badge badge-warning"><fmt:message key="status.nonactive"/></span>
+                    <span class="badge badge-warning"><fmt:message key="status.nonactive"/></span>
                     </c:if>
+                    <fmt:parseDate value="${ sessionScope.user.paidPeriod }" pattern="yyyy-MM-dd" var="parsedDate"
+                                   type="date"/>
+                    <fmt:formatDate value="${ parsedDate }" var="newParsedDate" type="date" pattern="dd.MM.yyyy"/>
+                <div class="alert alert-info" role="alert">
+                    <span><fmt:message key="label.paid.period"/>: ${ newParsedDate }</span>
+                </div>
                 </p>
                 <hr class="my-4">
                 <c:if test="${ not empty requestScope.entity.playlists }">
@@ -80,19 +96,60 @@
                                     <form action="<c:url value="/controller"/>" method="post">
                                         <input type="hidden" name="command" value="playlist-detail">
                                         <input type="hidden" name="id" value="${ playlist.id }">
-                                        <input type="submit" class="btn btn-outline-secondary" name="submit" value="${ playlist.name }">
+                                        <input type="submit" class="btn btn-outline-secondary" name="submit"
+                                               value="${ playlist.name }">
                                     </form>
                                 </td>
                                 <td><span class="badge badge-info">
-                                    <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/></span></td>
+                                    <fmt:message key="badge.duration"/>::<c:out
+                                        value="${ playlist.getTotalDuration() }"/></span></td>
                                 <td><span class="badge badge-info">
-                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span></td>
+                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
+                                </td>
                                 <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
                                 <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                </c:if>
+                <c:if test="${ not empty requestScope.entity.payments }">
+                    <fmt:message key="label.payments"/>
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table-bordered table-striped mb-0" style="">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><fmt:message key="table.amount"/></th>
+                                <th scope="col"><fmt:message key="table.card"/></th>
+                                <th scope="col"><fmt:message key="table.date"/></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="payment" items="${ requestScope.entity.payments }">
+                                <tr class="table-bg-light">
+                                    <td>
+                                        <c:out value="${ payment.id}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${ payment.amount }"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${ payment.cardNumber}"/>
+                                    </td>
+                                    <td>
+                                        <fmt:parseDate value="${ payment.dateTime }" pattern="yyyy-MM-dd"
+                                                       var="parsedDate"
+                                                       type="date"/>
+                                        <fmt:formatDate value="${ parsedDate }" var="newParsedDate" type="date"
+                                                        pattern="dd.MM.yyyy"/>
+                                        <c:out value="${ newParsedDate }"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </c:if>
             </div>
         </div>

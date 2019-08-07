@@ -19,7 +19,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to change {@link User}'s password
  *
  * @author Dzmitry Platonov on 2019-07-15.
  * @version 0.0.1
@@ -33,6 +33,16 @@ public class ChangePasswordCommand implements Command {
         this.userService = userService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.PROFILE_PAGE with violations if it was found
+     * forward to {@link PageConstant}.PROFILE_PAGE with login.failed-message if entered password incorrect
+     * forward to {@link PageConstant}.PROFILE_PAGE with message.password.equals if entered password is not equal to re-entered password
+     * forward to {@link PageConstant}.PROFILE_PAGE with label.updated-message if command was executed successfully
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 

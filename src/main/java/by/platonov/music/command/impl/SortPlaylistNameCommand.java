@@ -12,7 +12,7 @@ import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * music-app
+ * to sort {@link Playlist} by name
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1
@@ -28,6 +28,12 @@ public class SortPlaylistNameCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.SORT_NAME_PLAYLIST_LIBRARY_PAGE
+     * with sorted list of playlists
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);

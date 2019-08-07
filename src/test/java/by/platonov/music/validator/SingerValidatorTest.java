@@ -41,7 +41,7 @@ class SingerValidatorTest {
         when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.SINGER, new String[]{input}));
         when(content.getRequestParameter(RequestConstant.SINGER)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.singer", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.singer", "ru_RU")));
 
         assertEquals(expected, actual);
     }

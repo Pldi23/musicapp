@@ -12,7 +12,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate date parameter from request before filter command
  *
  * @author Dzmitry Platonov on 2019-07-18.
  * @version 0.0.1

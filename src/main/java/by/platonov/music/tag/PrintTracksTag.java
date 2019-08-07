@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * music-app
+ * tag used to print list of tracks
  *
  * @author Dzmitry Platonov on 2019-07-13.
  * @version 0.0.1

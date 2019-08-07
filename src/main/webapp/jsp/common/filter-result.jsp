@@ -77,42 +77,6 @@
                 </c:forEach>
                 </tbody>
             </table>
-<%--            <nav aria-label="Page navigation example">--%>
-<%--                <ul class="pagination">--%>
-<%--                    <li class="page-item">--%>
-<%--                        <c:if test="${ requestScope.previousunavailable eq 'false' }">--%>
-<%--                            <form action="<c:url value="/controller"/>" method="post">--%>
-<%--                                <input type="hidden" name="command" value="filter-track">--%>
-<%--                                <input type="hidden" name="direction" value="previous">--%>
-<%--                                <input type="hidden" name="current" value="${ requestScope.current }">--%>
-<%--                                <input type="hidden" name="trackname" value="${ requestScope.filter.trackName }">--%>
-<%--                                <input type="hidden" name="singer" value="${ requestScope.filter.singerName }">--%>
-<%--                                <input type="hidden" name="genre" value="${ requestScope.filter.genreName }">--%>
-<%--                                <input type="hidden" name="releaseFrom" value="${ requestScope.filter.fromDate }">--%>
-<%--                                <input type="hidden" name="releaseTo" value="${ requestScope.filter.toDate }">--%>
-<%--                                <input type="submit" class="btn btn-outline-dark" name="submit"--%>
-<%--                                       value="<fmt:message key="button.previous"/>">--%>
-<%--                            </form>--%>
-<%--                        </c:if>--%>
-<%--                    </li>--%>
-<%--                    <li class="page-item">--%>
-<%--                        <c:if test="${ requestScope.nextunavailable eq 'false'}">--%>
-<%--                            <form action="<c:url value="/controller"/>" method="post">--%>
-<%--                                <input type="hidden" name="command" value="filter-track">--%>
-<%--                                <input type="hidden" name="direction" value="next">--%>
-<%--                                <input type="hidden" name="current" value="${ requestScope.current }">--%>
-<%--                                <input type="hidden" name="trackname" value="${ requestScope.filter.trackName }">--%>
-<%--                                <input type="hidden" name="singer" value="${ requestScope.filter.singerName }">--%>
-<%--                                <input type="hidden" name="genre" value="${ requestScope.filter.genreName }">--%>
-<%--                                <input type="hidden" name="releaseFrom" value="${ requestScope.filter.fromDate }">--%>
-<%--                                <input type="hidden" name="releaseTo" value="${ requestScope.filter.toDate }">--%>
-<%--                                <input type="submit" class="btn btn-outline-dark" name="submit"--%>
-<%--                                       value="<fmt:message key="button.next"/>">--%>
-<%--                            </form>--%>
-<%--                        </c:if>--%>
-<%--                    </li>--%>
-<%--                </ul>--%>
-<%--            </nav>--%>
             <c:if test="${ not empty requestScope.entities and not empty requestScope.size[1] }">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -211,27 +175,6 @@
                                         </li>
                                     </c:if>
                                 </c:when>
-<%--                                <c:otherwise>--%>
-<%--                                    <li class="page-item">--%>
-<%--                                        <form action="<c:url value="/controller"/>" method="post">--%>
-<%--                                            <input type="hidden" name="command" value="filter-track">--%>
-<%--                                            <input type="hidden" name="direction" value="direct">--%>
-<%--                                            <input type="hidden" name="current" value="${ element }">--%>
-<%--                                            <input type="hidden" name="trackname"--%>
-<%--                                                   value="${ requestScope.filter.trackName }">--%>
-<%--                                            <input type="hidden" name="singer"--%>
-<%--                                                   value="${ requestScope.filter.singerName }">--%>
-<%--                                            <input type="hidden" name="genre"--%>
-<%--                                                   value="${ requestScope.filter.genreName }">--%>
-<%--                                            <input type="hidden" name="releaseFrom"--%>
-<%--                                                   value="${ requestScope.filter.fromDate }">--%>
-<%--                                            <input type="hidden" name="releaseTo"--%>
-<%--                                                   value="${ requestScope.filter.toDate }">--%>
-<%--                                            <input type="submit" class="page-link" name="submit"--%>
-<%--                                                   value="${ element }">--%>
-<%--                                        </form>--%>
-<%--                                    </li>--%>
-<%--                                </c:otherwise>--%>
                             </c:choose>
                         </c:forEach>
                             <%--                        ---------%>

@@ -17,7 +17,7 @@ import java.util.Map;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to change {@link by.platonov.music.entity.Playlist} access level
  *
  * @author Dzmitry Platonov on 2019-07-20.
  * @version 0.0.1
@@ -33,6 +33,14 @@ public class ChangePlaylistAccessCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with updated-message if command was executed successfully
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with failed-message if command was failed
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String playlistId = content.getRequestParameter(RequestConstant.ID)[0];

@@ -5,7 +5,7 @@ import by.platonov.music.exception.ServiceException;
 import java.util.List;
 
 /**
- * music-app
+ * interface represents what entity and by what criteria we want to sort
  *
  * @author Dzmitry Platonov on 2019-07-06.
  * @version 0.0.1

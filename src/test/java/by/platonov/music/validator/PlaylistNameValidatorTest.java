@@ -44,7 +44,7 @@ class PlaylistNameValidatorTest {
         when(content.getRequestParameter(RequestConstant.NAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.playlist.name", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.playlist.name", "ru_RU")));
 
         assertEquals(expected, actual);
     }

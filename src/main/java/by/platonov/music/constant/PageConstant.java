@@ -1,6 +1,7 @@
 package by.platonov.music.constant;
 
 /**
+ * jsp pages and directories
  * @author dzmitryplatonov on 2019-06-21.
  * @version 0.0.1
  */
@@ -20,6 +21,9 @@ public class PageConstant {
     public static final String MUSICIAN_PAGE = "/jsp/common/musician.jsp";
     public static final String MUSICIAN_LIBRARY_PAGE = "/jsp/music-lib/musician-all.jsp";
     public static final String NOT_AUTHORIZED_PAGE = "/jsp/common/not-authorized.jsp";
+    public static final String PAYMENT_PAGE = "/jsp/user/payment.jsp";
+    public static final String PAYMENT_HISTORY_PAGE = "/jsp/user/payment-history.jsp";
+    public static final String PAYMENT_SUCCESSFUL_PAGE = "/jsp/user/payment-success.jsp";
     public static final String REGISTRATION_PAGE = "/jsp/common/registration.jsp";
     public static final String PLAYLIST_LIBRARY_PAGE = "/jsp/music-lib/playlist-all.jsp";
     public static final String PLAYLIST_PAGE = "/jsp/common/playlist.jsp";

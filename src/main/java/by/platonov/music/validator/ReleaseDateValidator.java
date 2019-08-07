@@ -13,7 +13,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.RELEASE_DATE request parameter
  *
  * @author Dzmitry Platonov on 2019-07-02.
  * @version 0.0.1
@@ -25,6 +25,12 @@ public class ReleaseDateValidator extends AbstractValidator {
         super(next);
     }
 
+    /**
+     * no release in future allowed
+     * @param content {@link RequestContent}
+     * @return empty set if no violations detected, and violation.incorrectrelease or violation.futurerelease message
+     * if violation found
+     */
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();

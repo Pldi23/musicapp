@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<fmt:setLocale value="${ not empty sessionScope.locale ? sessionScope.locale : pageContext.request.locale }"/>--%>
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <body>

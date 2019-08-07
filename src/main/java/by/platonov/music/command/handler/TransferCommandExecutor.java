@@ -5,7 +5,7 @@ import by.platonov.music.exception.ServiceException;
 import java.util.List;
 
 /**
- * music-app
+ * interface represents what parameter we want to transfer to another page
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1

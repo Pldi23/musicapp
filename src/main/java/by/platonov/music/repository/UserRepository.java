@@ -28,8 +28,8 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String SQL_INSERT_USER =
             "INSERT INTO application_user(login, password, is_admin, first_name, last_name, e_mail, gender, " +
-                    "date_of_birth, active_status, verification_uuid, photo_path) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    "date_of_birth, active_status, verification_uuid, photo_path, paid_period) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     @Language("SQL")
     private static final String SQL_INSERT_USER_PLAYLIST_LINK =
             "INSERT INTO user_playlist(user_login, playlist_id) VALUES (?, ?);";
@@ -51,7 +51,7 @@ public class UserRepository implements Repository<User> {
     @Language("SQL")
     private static final String SQL_SELECT_USER =
             "SELECT login, password, is_admin, first_name, last_name, e_mail, gender, date_of_birth, created_at, " +
-                    "active_status, verification_uuid, photo_path " +
+                    "active_status, verification_uuid, photo_path, paid_period " +
                     "FROM application_user ";
 
 

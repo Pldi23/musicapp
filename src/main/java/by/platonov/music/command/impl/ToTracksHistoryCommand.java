@@ -16,7 +16,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * music-app
+ * to forward to {@link PageConstant}.TRACKS_HISTORY_PAGE
+ * {@link javax.servlet.http.Cookie} used to analyze last 10 listened {@link Track}s
  *
  * @author Dzmitry Platonov on 2019-08-04.
  * @version 0.0.1
@@ -30,6 +31,13 @@ public class ToTracksHistoryCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.TRACKS_HISTORY_PAGE with
+     * 10 {@link Track}s from {@link javax.servlet.http.Cookie} located in attributes,
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         List<String> ids = content.getCookies().entrySet().stream()

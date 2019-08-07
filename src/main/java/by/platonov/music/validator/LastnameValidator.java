@@ -11,14 +11,17 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
+ * to validate {@link RequestConstant}.LASTNAME request parameter
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */
 @Log4j2
 public class LastnameValidator extends AbstractValidator {
 
+    /**
+     * 2-30 letters
+     */
     private static final String LASTNAME_REGEX_PATTERN = "^[^\\p{Punct}\\p{Blank}][\\p{L} '-]{0,28}[^\\p{Punct}\\p{Blank}]$";
-
 
     public LastnameValidator(ParameterValidator next) {
         super(next);

@@ -14,7 +14,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * tag to write remove-track form
  *
  * @author Dzmitry Platonov on 2019-07-18.
  * @version 0.0.1

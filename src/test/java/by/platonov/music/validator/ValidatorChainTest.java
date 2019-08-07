@@ -80,12 +80,12 @@ class ValidatorChainTest {
         Set<Violation> actual = new LoginValidator(new PasswordValidator(new BirthDateValidator(
                 new FirstnameValidator(new LastnameValidator(new EmailValidator(null)))))).apply(content);
 
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")),
-                new Violation(MessageManager.getMessage("violation.password", "en_US")),
-                new Violation(MessageManager.getMessage("violation.birthdate", "en_US")),
-                new Violation(MessageManager.getMessage("violation.firstname", "en_US")),
-                new Violation(MessageManager.getMessage("violation.lastname", "en_US")),
-                new Violation(MessageManager.getMessage("violation.email", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "ru_RU")),
+                new Violation(MessageManager.getMessage("violation.password", "ru_RU")),
+                new Violation(MessageManager.getMessage("violation.birthdate", "ru_RU")),
+                new Violation(MessageManager.getMessage("violation.firstname", "ru_RU")),
+                new Violation(MessageManager.getMessage("violation.lastname", "ru_RU")),
+                new Violation(MessageManager.getMessage("violation.email", "ru_RU")));
 
         assertEquals(expected, actual);
     }

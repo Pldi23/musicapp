@@ -11,12 +11,17 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
+ * to validate {@link RequestConstant}.PASSWORD request parameter
+ *
  * @author dzmitryplatonov on 2019-06-18.
  * @version 0.0.1
  */
 @Log4j2
 public class PasswordValidator extends AbstractValidator {
 
+    /**
+     * 8-20 symbols, at least 1 digit, 1 latin uppercase letter, 1 latin lowercase letter, 1 punctuation
+     */
     private static final String PASSWORD_REGEX_PATTERN = "^(?=.*\\d)(?=.*\\p{Lower})(?=.*\\p{Upper})(?=.*\\p{Punct})" +
             "(?=\\S+$).{8,20}$";
 

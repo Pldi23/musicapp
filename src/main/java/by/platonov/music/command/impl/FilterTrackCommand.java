@@ -21,7 +21,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to filter {@link Track}s
  *
  * @author Dzmitry Platonov on 2019-07-12.
  * @version 0.0.1
@@ -37,6 +37,13 @@ public class FilterTrackCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.FILTER_PAGE with violations if it was found
+     * forward to {@link PageConstant}.FILTER_PAGE with list of tracks
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 

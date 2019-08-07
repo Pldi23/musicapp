@@ -17,7 +17,7 @@ import java.util.Map;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to add {@link Track} to {@link by.platonov.music.entity.Playlist}
  *
  * @author Dzmitry Platonov on 2019-07-15.
  * @version 0.0.1
@@ -31,6 +31,14 @@ public class AddTrackToPlaylistCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to ENTITY_REMOVED_PAGE if required track not found
+     * forward to page from which the addition occurred if executes successfully
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 
@@ -48,7 +56,7 @@ public class AddTrackToPlaylistCommand implements Command {
             String result = commonService.addTrackToPLaylist(trackId, playlistId) ?
                     track.getName() + " " + MessageManager.getMessage("added", locale) :
                     MessageManager.getMessage("failed", locale);
-            CommandResult commandResult = (CommandResult) content.getSessionAttribute(MOMENTO);
+            CommandResult commandResult = (CommandResult) content.getSessionAttribute(BACKUP);
             commandResult.getAttributes().put(PROCESS, result);
             commandResult.getAttributes().put(TRACK, track);
             return commandResult;

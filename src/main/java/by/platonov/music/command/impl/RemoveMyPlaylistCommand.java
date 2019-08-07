@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * music-app
+ * to remove {@link Playlist} from User's playlist set
  *
  * @author Dzmitry Platonov on 2019-07-17.
  * @version 0.0.1
@@ -31,6 +31,13 @@ public class RemoveMyPlaylistCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with result message
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String playlistId = content.getRequestParameter(RequestConstant.ID)[0];

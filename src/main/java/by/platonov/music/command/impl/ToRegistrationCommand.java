@@ -6,6 +6,8 @@ import by.platonov.music.command.RequestContent;
 import by.platonov.music.constant.PageConstant;
 
 /**
+ * forwards to {@link PageConstant}.REGISTRATION_PAGE
+ *
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */

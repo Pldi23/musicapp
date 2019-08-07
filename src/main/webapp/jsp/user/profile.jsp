@@ -34,8 +34,28 @@
                      class="rounded-circle"
                      width="200" height="200">
             </div>
-            <h4><c:out value="${ sessionScope.user.login }"/></h4>
-            <h3><fmt:message key="profile.overview"/></h3>
+            <h4><fmt:message key="profile.overview"/></h4>
+            <h3><c:out value="${ sessionScope.user.login }"/></h3>
+            <c:if test="${ sessionScope.user.admin eq false }">
+                <fmt:parseDate value="${ sessionScope.user.paidPeriod }" pattern="yyyy-MM-dd" var="parsedDate"
+                               type="date"/>
+                <fmt:formatDate value="${ parsedDate }" var="newParsedDate" type="date" pattern="dd.MM.yyyy"/>
+                <div class="alert alert-info" role="alert">
+                    <span><fmt:message key="label.paid.period"/>: ${ newParsedDate }</span>
+                </div>
+                <form action="<c:url value="/controller"/>" method="get">
+                    <input type="hidden" name="command" value="to-payment">
+                    <input type="submit" class="btn btn-success" name="submit"
+                           value="<fmt:message key="button.extend"/>">
+                </form>
+                <form action="<c:url value="/controller"/>" method="get">
+                    <input type="hidden" name="command" value="payment-history">
+                    <input type="hidden" name="login" value="${ sessionScope.user.login }">
+                    <input type="submit" class="btn btn-info" name="submit"
+                           value="<fmt:message key="button.payment.history"/>">
+                </form>
+            </c:if>
+
         </div>
         <div class="col-8">
             <h3><fmt:message key="message.profile"/></h3>

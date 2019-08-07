@@ -13,7 +13,7 @@ import java.io.IOException;
 import static by.platonov.music.constant.PageConstant.INDEX_PAGE;
 
 /**
- * music-app
+ * filter is used to redirect users to index page when session timed out
  *
  * @author Dzmitry Platonov on 2019-07-31.
  * @version 0.0.1
@@ -34,9 +34,7 @@ public class SessionTimeOutFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if (request.getSession(false) == null || request.getSession().isNew()) {
-            log.info("session was timed out, user was redirected");
-            request.getSession(true);
+        if (request.getSession().isNew()) {
             response.sendRedirect(targetPagePath);
         } else {
             filterChain.doFilter(request, response);

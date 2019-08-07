@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * music-app
+ * wrapper class for request used to strip parameters if xss attack detected
  *
  * @author Dzmitry Platonov on 2019-07-10.
  * @version 0.0.1
@@ -83,17 +83,15 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
     }
 
     String stripXSS(String value) {
-        log.debug("stripping: " + value);
         if (value != null) {
-            // Avoid null characters
+            // to avoid null characters
             value = value.replaceAll("\0", "");
 
-            // Remove all sections that match a pattern
+            // to remove all sections that match a pattern
             for (Pattern scriptPattern : patterns){
                 value = scriptPattern.matcher(value).replaceAll("");
             }
         }
-        log.debug("after strip: " + value);
         return value;
     }
 }

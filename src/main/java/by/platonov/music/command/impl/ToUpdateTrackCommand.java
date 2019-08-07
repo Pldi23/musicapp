@@ -10,7 +10,7 @@ import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.UPDATE_TRACK_PAGE using {@link CommandHandler}
  *
  * @author Dzmitry Platonov on 2019-07-04.
  * @version 0.0.1

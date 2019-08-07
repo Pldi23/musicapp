@@ -45,7 +45,7 @@ class LoginValidatorTest {
         when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[] {input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "ru_RU")));
 
         assertEquals(expected, actual);
     }
@@ -55,7 +55,7 @@ class LoginValidatorTest {
         when(content.getRequestAttribute(RequestConstant.LOGIN)).thenReturn(null);
         Locale.setDefault(new Locale("en_US"));
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.login", "ru_RU")));
 
         assertEquals(expected, actual);
     }

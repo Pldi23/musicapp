@@ -9,7 +9,7 @@ import by.platonov.music.entity.Playlist;
 import by.platonov.music.service.CommonService;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.REMOVE_CONFIRMATION_PAGE
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1
@@ -24,6 +24,12 @@ public class ToRemovePlaylistCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that use {@link CommandHandler} to forward
+     * to {@link PageConstant}.REMOVE_CONFIRMATION_PAGE with playlist in attributes
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         return handler.transfer(content, PageConstant.REMOVE_CONFIRMATION_PAGE, commonService::searchPlaylistById);

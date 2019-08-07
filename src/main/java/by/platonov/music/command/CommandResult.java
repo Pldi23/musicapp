@@ -1,11 +1,14 @@
 package by.platonov.music.command;
 
+import by.platonov.music.constant.PageConstant;
 import lombok.EqualsAndHashCode;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Encapsulates Result of command execution.
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */
@@ -16,9 +19,24 @@ public class CommandResult {
         REDIRECT
     }
 
+    /**
+     * One of @ResponseType
+     */
     private ResponseType responseType;
+
+    /**
+     * target page location {@link PageConstant}
+     */
     private String page;
+
+    /**
+     * Encapsulates Request attributes
+     */
     private Map<String, Object> attributes;
+
+    /**
+     * Encapsulates Session attributes
+     */
     private Map<String, Object> sessionAttributes;
 
     public CommandResult(ResponseType responseType, String page, Map<String, Object> attributes, Map<String, Object> sessionAttributes) {

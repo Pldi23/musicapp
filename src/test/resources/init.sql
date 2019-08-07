@@ -74,6 +74,7 @@ CREATE TABLE public.playlist_track
 (
     playlist_id integer,
     track_id integer,
+    index bigint,
     CONSTRAINT foreign_key_playlist_id FOREIGN KEY (playlist_id)
         REFERENCES public.playlist (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -103,6 +104,7 @@ ALTER TABLE application_user ADD COLUMN created_at TIMESTAMP DEFAULT NOW();
 ALTER TABLE application_user ADD COLUMN active_status boolean DEFAULT false;
 ALTER TABLE application_user ADD COLUMN verification_uuid character varying(200);
 ALTER TABLE application_user add column photo_path character varying(200);
+ALTER TABLE application_user add column paid_period TIMESTAMP;
 
 --init user_playlist table
 CREATE TABLE public.user_playlist
@@ -118,6 +120,9 @@ CREATE TABLE public.user_playlist
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+
+--init payment table
+
 
 INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_uuid, photo_path)
 values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null, null),

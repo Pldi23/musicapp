@@ -27,9 +27,14 @@
 <div class="container container-fluid bg-light">
     <div class="row">
         <div class="col-8">
-            <p class="text-warning">${ requestScope.validatorMessage }</p>
+            <p class="text-warning"><c:out value="${ requestScope.validatorMessage }"/></p>
             <p class="text-warning"><ctg:violations violations="${ requestScope.violations }"/></p>
-            <p class="text-warning">${requestScope.errorLoginPassMessage}</p>
+            <p class="text-warning"><c:out value="${requestScope.errorLoginPassMessage}"/></p>
+            <c:if test="${ not empty requestScope.process }">
+                <div class="alert alert-info" role="alert">
+                    <span><c:out value="${ requestScope.process }"/></span>
+                </div>
+            </c:if>
             <form action="<c:url value="/controller"/>" method="post" class="needs-validation" novalidate>
                 <div class="form-group">
                     <input type="hidden" name="command" value="login"/>
@@ -75,9 +80,6 @@
         </div>
     </div>
 </div>
-<%--<fmt:message var="label" key="label.new.arrivals"/>--%>
-<%--<ctg:print-tracks head="true" tracks="${ requestScope.tracks }" label="${ label }"/>--%>
 <c:import url="footer.jsp"/>
-
 </body>
 </html>

@@ -10,7 +10,7 @@ import by.platonov.music.service.UserService;
 import by.platonov.music.validator.GenderValidator;
 
 /**
- * music-app
+ * to update {@link User}'s gender
  *
  * @author Dzmitry Platonov on 2019-07-16.
  * @version 0.0.1

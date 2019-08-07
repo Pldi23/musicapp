@@ -14,20 +14,22 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Listener using for removing users with unconfirmed email address
+ * Listener used to remove users with unconfirmed email address, and unused playlists
  * @author dzmitryplatonov on 2019-06-22.
  * @version 0.0.1
  */
 @Log4j2
 @WebListener
-public class InactiveUserListener implements ServletContextListener {
+public class ExpiredDataListener implements ServletContextListener {
+
+    private static final String INTERVAL = "interval";
 
     private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext context = servletContextEvent.getServletContext();
-        String interval = context.getInitParameter("interval");
+        String interval = context.getInitParameter(INTERVAL);
         scheduledExecutorService.schedule(() -> {
             UserService userService = new UserService();
             AdminService adminService = new AdminService();

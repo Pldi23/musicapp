@@ -107,17 +107,6 @@ public class CommonService {
     }
 
     /**
-     * to search in {@link PlaylistRepository} for playlist that contains track
-     * @param trackId id of required track
-     * @return list of playlists
-     * @throws ServiceException if repository throws Repository exception
-     */
-    public List<Playlist> searchPlaylistsByTrack(long trackId) throws ServiceException {
-        log.debug("searching all playlists which contains track id:" + trackId);
-        return search(new PlaylistsWithTrackSpecification(trackId), PlaylistRepository.getInstance());
-    }
-
-    /**
      * to search in {@link MusicianRepository} for list of {@link Musician}s by search request
      * @param searchRequest string-request param
      * @param limit number of max needed musicians
@@ -530,6 +519,12 @@ public class CommonService {
         return String.valueOf(getPlaylistTracks(playlist.getId()).size());
     }
 
+    /**
+     * helper method to get tracks with theirs singers and authors
+     * @param tracks list of tracks which is needed to be upgraded
+     * @return list of tracks with theirs singers and authors
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private List<Track> tracksWithMusicians(List<Track> tracks) throws ServiceException {
         for (Track track : tracks) {
             track.getSingers().addAll(getTrackSingers(track.getId()));
@@ -538,10 +533,22 @@ public class CommonService {
         return tracks;
     }
 
+    /**
+     * helper method to get list of tracks from required playlist
+     * @param playlistId id of {@link Playlist}
+     * @return list of tracks
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private List<Track> getPlaylistTracks(long playlistId) throws ServiceException {
         return tracksWithMusicians(search(new TracksInPlaylistSpecification(playlistId), TrackRepository.getInstance()));
     }
 
+    /**
+     * helper method for filling {@link Playlist} with {@link Track}s
+     * @param playlists list of playlists for filling
+     * @return list of playlists
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private List<Playlist> playlistsWithTracks(List<Playlist> playlists) throws ServiceException {
         for (Playlist playlist : playlists) {
             playlist.getTracks().addAll(getPlaylistTracks(playlist.getId()));
@@ -549,14 +556,35 @@ public class CommonService {
         return playlists;
     }
 
+    /**
+     * helper method to get list of singers by {@link Track} id
+     * @param trackId track id
+     * @return list of {@link Musician}s
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private List<Musician> getTrackSingers(long trackId) throws ServiceException {
         return search(new TrackSingersSpecification(trackId), MusicianRepository.getInstance());
     }
 
+    /**
+     * helper method to get list of authors by {@link Track} id
+     * @param trackId track id
+     * @return list of {@link Musician}s
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private List<Musician> getTrackAuthors(long trackId) throws ServiceException {
         return search(new TrackAuthorsSpecification(trackId), MusicianRepository.getInstance());
     }
 
+    /**
+     * helper method to search list of {@link Entity}s using {@link SqlSpecification} and {@link Repository}
+     * used to process {@link RepositoryException}
+     * @param specification {@link SqlSpecification} specifying search request
+     * @param repository implementation of {@link Repository} for example {@link TrackRepository}
+     * @param <T> type of {@link Entity}
+     * @return list of entities
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private <T> List<T> search(SqlSpecification specification, Repository<T> repository) throws ServiceException {
         try {
             return repository.query(specification);
@@ -565,6 +593,13 @@ public class CommonService {
         }
     }
 
+    /**
+     * helper method for processing {@link RepositoryException} during counting instances
+     * @param specification {@link SqlSpecification} specifying search request
+     * @param repository implementation of {@link Repository} for example {@link TrackRepository}
+     * @return list of entities
+     * @throws ServiceException if repository throws {@link RepositoryException}
+     */
     private long count(SqlSpecification specification, Repository repository) throws ServiceException {
         try {
             return repository.count(specification);

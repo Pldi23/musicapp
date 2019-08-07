@@ -28,8 +28,10 @@
                     <input type="submit" class="btn btn-outline-secondary" name="submit" value="<fmt:message key="button.to.site"/>">
                 </form>
             </c:if>
-            <fmt:message key="message.emailsent"/> ${ requestScope.email }.
-            <fmt:message key="message.verification"/>
+            <div class="alert alert-info" role="alert">
+                <span><fmt:message key="message.emailsent"/> ${ requestScope.email }.</span>
+                <span><fmt:message key="message.verification"/></span>
+            </div>
         </div>
     </div>
 </div>

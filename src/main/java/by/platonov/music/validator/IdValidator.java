@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.ID request parameter
  *
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1
@@ -23,6 +23,11 @@ public class IdValidator extends AbstractValidator {
         super(next);
     }
 
+    /**
+     * non-negative
+     * @param content to validate
+     * @return empty set if no violations detected, and violation.noid message if violation found
+     */
     @Override
     public Set<Violation> apply(RequestContent content) {
         Set<Violation> result = new HashSet<>();

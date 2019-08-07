@@ -12,7 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,13 +46,21 @@ class UserServiceTest {
         service.activate(email, hash);
         List<User> result = repository.query(new UserLoginSpecification("pldi4"));
         User actual = result.get(0);
-        User expected = User.builder().login("pldi4").password("qwerty").admin(false).firstname("Leo")
-                .lastname("Messi").email("messi@gmail.com").gender(User.Gender.MALE)
+        User expected = User.builder()
+                .login("pldi4")
+                .password("qwerty")
+                .admin(false)
+                .firstname("Leo")
+                .lastname("Messi")
+                .email("messi@gmail.com")
+                .gender(User.Gender.MALE)
                 .registrationDate(LocalDate.now())
-                .birthDate(LocalDate.of(1987, 1, 1)).playlists(new HashSet<>())
+                .birthDate(LocalDate.of(1987, 1, 1))
+                .playlists(new LinkedHashSet<>())
                 .active(true)
                 .verificationUuid(null)
                 .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
+                .payments(new LinkedHashSet<>())
                 .build();
         assertEquals(expected, actual);
     }

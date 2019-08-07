@@ -1,6 +1,7 @@
 package by.platonov.music.validator;
 
 import by.platonov.music.command.RequestContent;
+import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.message.MessageManager;
 import lombok.extern.log4j.Log4j2;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.AUTHOR request parameter
  *
  * @author Dzmitry Platonov on 2019-07-30.
  * @version 0.0.1
@@ -19,7 +20,13 @@ import static by.platonov.music.constant.RequestConstant.*;
 @Log4j2
 public class AuthorValidator extends AbstractValidator {
 
+    /**
+     * 1-30 symbols
+     */
     private static final String AUTHOR_REGEX_PATTERN = "(?U).{1,30}";
+    /**
+     * no more than 6 authors in request
+     */
     private static final int MAXIMUM_QUANTITY_AUTHORS = 6;
 
     public AuthorValidator(ParameterValidator next) {

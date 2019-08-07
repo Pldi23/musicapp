@@ -15,6 +15,7 @@ import java.io.IOException;
 import static by.platonov.music.constant.PageConstant.*;
 
 /**
+ * filter used to block non-authorized access from browser address line
  * @author dzmitryplatonov on 2019-06-23.
  * @version 0.0.1
  */
@@ -51,7 +52,7 @@ public class RoleFilter implements Filter {
     private boolean checkAccess(HttpServletRequest request, User user) {
         boolean result = true;
         String uri = request.getRequestURI();
-        if (user == null && uri.contains(ADMIN_DIRECTORY) || uri.contains(USER_DIRECTORY) || uri.contains(MUSIC_LIB_DIRECTORY)) {
+        if (user == null && (uri.contains(ADMIN_DIRECTORY) || uri.contains(USER_DIRECTORY) || uri.contains(MUSIC_LIB_DIRECTORY))) {
             result = false;
         }
         if(user != null && !user.isAdmin() && uri.contains(ADMIN_DIRECTORY)) {

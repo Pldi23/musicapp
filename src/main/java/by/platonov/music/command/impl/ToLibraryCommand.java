@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.LIBRARY_PAGE
  *
  * @author Dzmitry Platonov on 2019-07-04.
  * @version 0.0.1
@@ -29,6 +29,12 @@ public class ToLibraryCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.LIBRARY_PAGE
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         List<Track> lastAddedTracks;

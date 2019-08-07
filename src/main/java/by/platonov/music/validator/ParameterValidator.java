@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
+ * interface represents a function that accepts {@link RequestContent} and produces a set of {@link Violation} as a result
+ *
  * @author dzmitryplatonov on 2019-06-18.
  * @version 0.0.1
  */

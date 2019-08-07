@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * music-app
+ * to update {@link Musician}
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1
@@ -31,6 +31,14 @@ public class UpdateMusicianCommand implements Command {
         this.adminService = adminService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.UPDATE_MUSICIAN_PAGE with violations if it was found
+     * forward to {@link PageConstant}.UPDATE_MUSICIAN_PAGE with result message
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 

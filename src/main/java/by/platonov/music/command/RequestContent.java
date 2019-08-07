@@ -9,18 +9,51 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * the class encapsulates in itself all the data coming from the {@link HttpServletRequest}
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */
 public class RequestContent {
 
+    /**
+     * {@link HttpServletRequest} attributes data
+     */
     private Map<String, Object> requestAttributes;
+
+    /**
+     * {@link HttpServletRequest}  parameters data
+     */
     private Map<String, String[]> requestParameters;
+
+    /**
+     * {@link HttpSession} attributes data
+     */
     private Map<String, Object> sessionAttributes;
+
+    /**
+     * {@link Cookie} data
+     */
     private Map<String, String> cookies;
+
+    /**
+     * multipart {@link Part} data
+     */
     private List<Part> requestParts;
+
+    /**
+     * server name
+     */
     private String serverName;
+
+    /**
+     * server port
+     */
     private int serverPort;
+
+    /**
+     * context path
+     */
     private String contextPath;
 
     private RequestContent() {

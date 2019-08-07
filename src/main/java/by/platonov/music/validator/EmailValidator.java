@@ -11,12 +11,17 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
+ * to validate {@link RequestConstant}.EMAIL request parameter
+ *
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */
 @Log4j2
 public class EmailValidator extends AbstractValidator {
 
+    /**
+     * 1-30symbols @ 1-30symbols . 1-30symbols
+     */
     private static final String EMAIL_REGEX_PATTERN =
             "^[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}@(?=.*\\.)[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}." +
                     "[\\p{Alpha}\\p{Digit}\\p{Punct}]{1,30}[^.@]$";

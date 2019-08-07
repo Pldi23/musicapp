@@ -6,6 +6,7 @@ import static by.platonov.music.constant.PageConstant.*;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
+import by.platonov.music.constant.PageConstant;
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.exception.ServiceException;
 import by.platonov.music.service.CommonService;
@@ -21,6 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * to login {@link User} to application
+ *
  * @author dzmitryplatonov on 2019-06-18.
  * @version 0.0.1
  */
@@ -36,6 +39,16 @@ public class LoginCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.LOGIN_PAGE with violations if it was found
+     * forward to {@link PageConstant}.MAIN_PAGE if user is regular user
+     * forward to {@link PageConstant}.ADMIN_PAGE if user is admin
+     * forward to {@link PageConstant}.LOGIN_PAGE if login and password incorrect
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
@@ -48,7 +61,7 @@ public class LoginCommand implements Command {
             if (violations.isEmpty()) {
                 String login = content.getRequestParameter(LOGIN)[0];
                 String password = content.getRequestParameter(PASSWORD)[0];
-                List<User> users = userService.login(login);
+                List<User> users = userService.searchUserByLogin(login);
 
                 if (!users.isEmpty()
                         && SCryptUtil.check(password, users.get(0).getPassword())

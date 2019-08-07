@@ -10,13 +10,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * music-app
+ * tag to print validator violations
  *
  * @author Dzmitry Platonov on 2019-07-11.
  * @version 0.0.1
  */
 public class ViolationTag extends TagSupport {
 
+    /**
+     * set of violations
+     */
     private Set<Violation> violations;
 
     public void setViolations(Set<Violation> violations) {

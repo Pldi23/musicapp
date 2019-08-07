@@ -43,7 +43,7 @@ class BirthDateValidatorTest {
         when(content.getRequestParameter(RequestConstant.BIRTHDATE)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.birthdate", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.birthdate", "ru_RU")));
 
         assertEquals(expected, actual);
     }

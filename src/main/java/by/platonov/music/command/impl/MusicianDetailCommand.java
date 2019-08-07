@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static by.platonov.music.constant.RequestConstant.*;
 /**
- * music-app
+ * to view details about the {@link Musician}
  *
  * @author Dzmitry Platonov on 2019-07-13.
  * @version 0.0.1
@@ -33,6 +33,14 @@ public class MusicianDetailCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.ENTITY_REMOVED_PAGE if musician was not found
+     * forward to {@link PageConstant}.MUSICIAN_PAGE if musician was found
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String id = content.getRequestParameter(ID)[0];

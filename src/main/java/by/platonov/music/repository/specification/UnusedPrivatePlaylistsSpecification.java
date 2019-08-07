@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class UnusedPrivatePlaylistsSpecification implements SqlSpecification {
 
     private static final String SPECIFICATION =
-            " left join user_playlist up on playlist.id = up.playlist_id\n" +
+            " left join user_playlist up on playlist.id = up.playlist_id " +
             " where private = true and user_login is null;";
 
     @Override

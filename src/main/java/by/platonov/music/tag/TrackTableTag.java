@@ -13,19 +13,45 @@ import java.util.List;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to print a table from the list of tracks
  *
  * @author Dzmitry Platonov on 2019-07-11.
  * @version 0.0.1
  */
 public class TrackTableTag extends TagSupport {
 
+    /**
+     * tracks list
+     */
     private List<Track> tracks;
-    private String commandValue;//logic operation for example sort/filter/show all
+    /**
+     * command for logic operation for example logic operation like sort/filter/show all
+     */
+    private String commandValue;
+
+    /**
+     * request parameter of current page
+     */
     private int current;
+
+    /**
+     * is next page unavailable
+     */
     private boolean nextUnavailable;
+
+    /**
+     * is previous page unavailable
+     */
     private boolean previousUnavailable;
+
+    /**
+     * is user admin
+     */
     private boolean admin;
+
+    /**
+     * list of pages
+     */
     private List<Integer> pages;
 
     public void setAdmin(boolean admin) {

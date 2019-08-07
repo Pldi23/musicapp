@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 /**
- * music-app
+ * servlet used to upload media content to view
  *
  * @author Dzmitry Platonov on 2019-07-03.
  * @version 0.0.1

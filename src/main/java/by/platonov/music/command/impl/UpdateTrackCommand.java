@@ -29,7 +29,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to update {@link Track}
  *
  * @author Dzmitry Platonov on 2019-07-06.
  * @version 0.0.1
@@ -45,6 +45,14 @@ public class UpdateTrackCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.UPDATE_TRACK_PAGE with violations if it was found
+     * forward to {@link PageConstant}.UPDATE_TRACK_PAGE with result message
+     * executes {@link ErrorCommand} if {@link Exception} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 
@@ -100,6 +108,11 @@ public class UpdateTrackCommand implements Command {
         }
     }
 
+    /**
+     * helper method to get track length (duration)
+     * @param uuid of the required track
+     * @return long seconds
+     */
     private long getAudioLength(String uuid) throws IOException, TagException, ReadOnlyFileException,
             CannotReadException, InvalidAudioFrameException {
         AudioFile audioFile = AudioFileIO.read(new File(

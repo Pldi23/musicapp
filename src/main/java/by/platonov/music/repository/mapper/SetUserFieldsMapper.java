@@ -5,6 +5,7 @@ import by.platonov.music.entity.User;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * sets user's fields to prepared statement which insert {@link User} in db
@@ -26,5 +27,6 @@ public class SetUserFieldsMapper implements PreparedStatementMapper<User> {
         preparedStatement.setBoolean(9, user.isActive());
         preparedStatement.setString(10, user.getVerificationUuid());
         preparedStatement.setString(11, user.getPhotoPath());
+        preparedStatement.setTimestamp(12, Timestamp.valueOf(user.getPaidPeriod()));
     }
 }

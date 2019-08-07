@@ -18,7 +18,7 @@ import java.util.*;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to change {@link Track} order in {@link Playlist}
  *
  * @author Dzmitry Platonov on 2019-08-03.
  * @version 0.0.1
@@ -34,6 +34,14 @@ public class UpdateTracksOrderCommand implements Command {
         this.adminService = adminService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.ENTITY_REMOVED_PAGE if playlist was not found
+     * forward to {@link PageConstant}.PLAYLIST_PAGE with result message and required attributes
+     * executes {@link ErrorCommand} if {@link ServiceException} or {@link EntityParameterNotFoundException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String moveType = content.getRequestParameter(MOVE)[0];
@@ -62,6 +70,13 @@ public class UpdateTracksOrderCommand implements Command {
         }
     }
 
+    /**
+     * handles changes in track order
+     * @param tracks list of tracks to change
+     * @param moveType move type/direction
+     * @param trackIndex index of the required track
+     * @throws EntityParameterNotFoundException if parameter not found in request
+     */
     private void moveTracks(List<Track> tracks, String moveType, int trackIndex) throws EntityParameterNotFoundException {
         switch (moveType) {
             case DOWN:

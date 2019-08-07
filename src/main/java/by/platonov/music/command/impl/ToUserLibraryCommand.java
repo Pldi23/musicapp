@@ -14,7 +14,7 @@ import java.util.Map;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.USER_LIBRARY_PAGE using {@link CommandHandler} to filter users if needed
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1

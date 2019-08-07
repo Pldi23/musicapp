@@ -17,10 +17,13 @@ import com.lambdaworks.crypto.SCryptUtil;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.Executors;
 
 /**
+ * to register {@link User} in application
+ *
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */
@@ -35,6 +38,17 @@ public class RegistrationCommand implements Command {
         this.isAdmin = isAdmin;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.REGISTER_ADMIN_PAGE or REGISTRATION_PAGE according to user's role,
+     * with violations if it was found
+     * forward to {@link PageConstant}.VERIFICATION_PAGE if command was executed correctly
+     * forward to {@link PageConstant}.REGISTER_ADMIN_PAGE or REGISTRATION_PAGE according to user's role,
+     * with message-exists if user already exist
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;
@@ -76,6 +90,9 @@ public class RegistrationCommand implements Command {
                         .active(false)
                         .verificationUuid(hash)
                         .photoPath(ResourceBundle.getBundle("app").getString("default.ava"))
+                        .paidPeriod(isAdmin ? LocalDateTime.of(2050, 12, 31,12, 0) :
+                                LocalDateTime.now().plusMonths(Long.parseLong(ResourceBundle.getBundle("payment")
+                                        .getString("trial.period"))))
                         .build();
 
                 if (userService.register(user)) {

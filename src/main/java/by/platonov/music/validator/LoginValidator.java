@@ -11,12 +11,17 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
+ * to validate {@link RequestConstant}.LOGIN request parameter
+ *
  * @author dzmitryplatonov on 2019-06-18.
  * @version 0.0.1
  */
 @Log4j2
 public class LoginValidator extends AbstractValidator {
 
+    /**
+     * 4-20 word characters
+     */
     private static final String LOGIN_REGEX_PATTERN = "^[(\\w)-]{4,20}";
 
     public LoginValidator(ParameterValidator next) {

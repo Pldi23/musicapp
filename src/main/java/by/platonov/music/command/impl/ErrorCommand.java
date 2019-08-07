@@ -11,10 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * to forward {@link by.platonov.music.entity.User} to {@link PageConstant}.ERROR_REDIRECT_PAGE if some kind of
+ * {@link Exception} have been caught
  * @author dzmitryplatonov on 2019-06-23.
  * @version 0.0.1
  */
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "throwable")
 public class ErrorCommand implements Command {
 
     private Throwable throwable;
@@ -26,6 +28,12 @@ public class ErrorCommand implements Command {
     public ErrorCommand() {
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.ERROR_REDIRECT_PAGE with
+     * {@link Throwable} in attributes
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         Map<String, Object> attributes = new HashMap<>();

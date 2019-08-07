@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static by.platonov.music.constant.RequestConstant.*;
 /**
- * music-app
+ * to remove {@link by.platonov.music.entity.Track} from {@link Playlist}
  *
  * @author Dzmitry Platonov on 2019-07-15.
  * @version 0.0.1
@@ -29,6 +29,13 @@ public class RemoveTrackFromPlaylistCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.PLAYLIST_PAGE with result message
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String trackId = content.getRequestParameter(TRACK_ID)[0];

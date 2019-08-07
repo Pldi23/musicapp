@@ -3,7 +3,6 @@ package by.platonov.music.command.impl;
 import by.platonov.music.command.Command;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.command.impl.ErrorCommand;
 import by.platonov.music.constant.PageConstant;
 import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.exception.ServiceException;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * music-app
+ * to store application locale in {@link javax.servlet.http.HttpSession}
  *
  * @author Dzmitry Platonov on 2019-07-08.
  * @version 0.0.1
@@ -28,6 +27,11 @@ public class SetLocaleCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to the page from which the request came
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         String locale = content.getRequestParameter(RequestConstant.LOCALE)[0];

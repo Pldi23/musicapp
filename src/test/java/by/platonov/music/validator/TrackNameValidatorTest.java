@@ -41,7 +41,7 @@ class TrackNameValidatorTest {
         when(content.getRequestParameters()).thenReturn(Map.of("trackname", new String[]{input}));
         when(content.getRequestParameter(RequestConstant.TRACKNAME)).thenReturn(new String[]{input});
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.trackname", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.trackname", "ru_RU")));
 
         assertEquals(expected, actual);
     }

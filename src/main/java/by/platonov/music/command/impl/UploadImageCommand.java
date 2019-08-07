@@ -16,13 +16,12 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.http.Part;
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
 import static by.platonov.music.constant.RequestConstant.*;
 /**
- * music-app
+ * to upload image to application file storage
  *
  * @author Dzmitry Platonov on 2019-07-15.
  * @version 0.0.1
@@ -38,6 +37,14 @@ public class UploadImageCommand implements Command {
         this.fileService = fileService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.PROFILE_PAGE with violations if it was found
+     * forward to {@link PageConstant}.PROFILE_PAGE with result message if execution is complete
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 
@@ -56,7 +63,7 @@ public class UploadImageCommand implements Command {
                       MessageManager.getMessage("failed", locale);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PROFILE_PAGE,
                         Map.of(PROCESS, result), Map.of(USER, user));
-            } catch (IOException | ServiceException e) {
+            } catch (ServiceException e) {
                 log.error("couldn't upload file", e);
                 return new ErrorCommand(e).execute(content);
             }

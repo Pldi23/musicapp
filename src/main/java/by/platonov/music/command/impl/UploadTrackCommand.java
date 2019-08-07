@@ -32,7 +32,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to upload image to application file storage
  *
  * @author Dzmitry Platonov on 2019-07-01.
  * @version 0.0.1
@@ -50,6 +50,14 @@ public class UploadTrackCommand implements Command {
         this.fileService = fileService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.UPLOAD_TRACK_PAGE with violations if it was found
+     * forward to {@link PageConstant}.UPLOAD_TRACK_PAGE with result message after execution is complete
+     * executes {@link ErrorCommand} if {@link Exception} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 
@@ -103,6 +111,11 @@ public class UploadTrackCommand implements Command {
                 Map.of(VALIDATOR_RESULT, violations));
     }
 
+    /**
+     * helper method to get track length (duration)
+     * @param file audio file
+     * @return long seconds
+     */
     private long getAudioLength(File file) throws IOException, TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException {
         AudioFile audioFile = AudioFileIO.read(file);
         return audioFile.getAudioHeader().getTrackLength();

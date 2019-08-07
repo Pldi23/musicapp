@@ -12,7 +12,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.SINGER request parameter
  *
  * @author Dzmitry Platonov on 2019-07-02.
  * @version 0.0.1
@@ -20,7 +20,14 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class SingerValidator extends AbstractValidator {
 
+    /**
+     * 1-30 symbols
+     */
     private static final String SINGER_REGEX_PATTERN = "(?U).{1,30}";
+
+    /**
+     * no less than 1 authors in request
+     */
     private static final int MINIMUM_QUANTITY_SINGERS = 1;
 
     private boolean filter;

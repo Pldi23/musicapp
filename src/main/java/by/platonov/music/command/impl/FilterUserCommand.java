@@ -17,7 +17,7 @@ import java.util.*;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to filter {@link User}s
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1
@@ -33,6 +33,13 @@ public class FilterUserCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that
+     * forward to {@link PageConstant}.USER_LIBRARY_PAGE with violations if it was found
+     * forward to {@link PageConstant}.USER_LIBRARY_PAGE with list of users
+     */
     @Override
     public CommandResult execute(RequestContent content) {
 

@@ -44,7 +44,7 @@ class EmailValidatorTest {
         when(content.getRequestParameter(RequestConstant.EMAIL)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.email", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.email", "ru_RU")));
 
         assertEquals(expected, actual);
     }

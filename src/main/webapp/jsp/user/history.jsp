@@ -27,7 +27,6 @@
 <div class="container-fluid bg-light">
     <div class="row">
         <div class="col-4">
-<%--            <h3><fmt:message key="label.welcome"/></h3>--%>
         </div>
         <div class="col-8">
             <h3><fmt:message key="label.history"/></h3>

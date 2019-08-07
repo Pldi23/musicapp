@@ -44,7 +44,7 @@ class IdValidatorTest {
         when(content.getRequestParameter(RequestConstant.ID)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.id", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.id", "ru_RU")));
 
         assertEquals(expected, actual);
     }

@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.MUSICIAN request parameter
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1
@@ -19,6 +19,9 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class MusicianValidator extends AbstractValidator {
 
+    /**
+     * 1-30 symbols
+     */
     private static final String MUSICIAN_REGEX_PATTERN = "(?U).{1,30}";
 
     public MusicianValidator(ParameterValidator next) {

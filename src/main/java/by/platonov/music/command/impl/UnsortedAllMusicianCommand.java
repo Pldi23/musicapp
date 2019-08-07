@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 
 
 /**
- * music-app
+ * to show all {@link Musician} from application database
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1
@@ -28,6 +28,12 @@ public class UnsortedAllMusicianCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.MUSICIAN_LIBRARY_PAGE
+     * with list of musicians
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         return handler.sorted(content, RequestConstant.NO_ORDER, PageConstant.MUSICIAN_LIBRARY_PAGE,

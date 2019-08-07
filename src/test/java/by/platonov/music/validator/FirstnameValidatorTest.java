@@ -43,7 +43,7 @@ class FirstnameValidatorTest {
         when(content.getRequestParameter(RequestConstant.FIRSTNAME)).thenReturn(new String[]{input});
 
         Set<Violation> actual = validator.apply(content);
-        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.firstname", "en_US")));
+        Set<Violation> expected = Set.of(new Violation(MessageManager.getMessage("violation.firstname", "ru_RU")));
 
         assertEquals(expected, actual);
     }

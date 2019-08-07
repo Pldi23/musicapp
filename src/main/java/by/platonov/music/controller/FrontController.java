@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
+ * initial contact point for handling all requests
+ * implementation of Front Controller design pattern
+ *
  * @author dzmitryplatonov on 2019-06-06.
  * @version 0.0.1
  */
@@ -40,7 +43,6 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Arrays.stream(request.getCookies()).forEach(cookie -> log.debug("in cookies. name: " + cookie.getName() + " value: " + cookie.getValue()));
         RequestContent content = RequestContent.createWithAttributes(request);
         content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
         content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
@@ -52,10 +54,10 @@ public class FrontController extends HttpServlet {
 
         commandResult.getAttributes().forEach(request::setAttribute);
         commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-        request.getSession().setAttribute(RequestConstant.MOMENTO, commandResult);
+        request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
-            request.getSession().invalidate();
+            request.getSession().invalidate(); //we need to invalidate session if command is logout
         }
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {

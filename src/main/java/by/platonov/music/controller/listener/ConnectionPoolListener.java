@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
- * Listener using for initialising connections at the start of application
+ * Listener used for initialising connections at the start of application
  *
  * @author dzmitryplatonov on 2019-06-22.
  * @version 0.0.1

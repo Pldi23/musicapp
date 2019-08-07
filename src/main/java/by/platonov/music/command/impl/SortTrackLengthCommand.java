@@ -11,7 +11,7 @@ import by.platonov.music.service.CommonService;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * music-app
+ * to sort {@link Track} by duration
  *
  * @author Dzmitry Platonov on 2019-07-07.
  * @version 0.0.1
@@ -27,6 +27,12 @@ public class SortTrackLengthCommand implements Command {
         this.handler = handler;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that forward to {@link PageConstant}.SORT_LENGTH_TRACK_LIBRARY_PAGE
+     * with sorted list of tracks
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         return handler.sorted(content, RequestConstant.SORT_TRACK_LENGTH_ORDER, PageConstant.SORT_LENGTH_TRACK_LIBRARY_PAGE,

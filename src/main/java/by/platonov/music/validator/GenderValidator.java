@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.GENDER request parameter
  *
  * @author Dzmitry Platonov on 2019-07-16.
  * @version 0.0.1
@@ -19,8 +19,10 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class GenderValidator extends AbstractValidator {
 
+    /**
+     * male or female
+     */
     private static final String GENDER_REGEX_PATTERN = "(?i)male|female";
-
 
     public GenderValidator(ParameterValidator next) {
         super(next);

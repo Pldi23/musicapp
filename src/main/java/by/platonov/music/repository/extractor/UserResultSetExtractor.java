@@ -36,6 +36,8 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
                         .active(resultSet.getBoolean(ACTIVE_STATUS))
                         .verificationUuid(resultSet.getString(VERIFICATION_UUID))
                         .photoPath(resultSet.getString(PHOTO))
+                        .payments(new LinkedHashSet<>())
+                        .paidPeriod(resultSet.getTimestamp(PAID_PERIOD).toLocalDateTime())
                         .build();
                 table.put(user.getLogin(), user);
             }

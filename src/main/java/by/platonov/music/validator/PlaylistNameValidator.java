@@ -11,7 +11,7 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.NAME request parameter
  *
  * @author Dzmitry Platonov on 2019-07-14.
  * @version 0.0.1
@@ -19,6 +19,9 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class PlaylistNameValidator extends AbstractValidator {
 
+    /**
+     * 2-50 symbols
+     */
     private static final String PLAYLIST_NAME_REGEX_PATTERN = ".{2,50}";
 
     public PlaylistNameValidator(ParameterValidator next) {

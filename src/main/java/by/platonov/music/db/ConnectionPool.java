@@ -106,11 +106,11 @@ public class ConnectionPool {
                     connection.close();
                 }
                 instance = null;
-                Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
-                while (driverEnumeration.hasMoreElements()) {
-                    log.info("Deregistering driver");
-                    DriverManager.deregisterDriver(driverEnumeration.nextElement());
-                }
+//                Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
+//                while (driverEnumeration.hasMoreElements()) {
+//                    log.info("Deregistering driver");
+//                    DriverManager.deregisterDriver(driverEnumeration.nextElement());
+//                }
                 create.set(false);
             } catch (SQLException e) {
                 log.error("Exception during destroying connection pool", e);

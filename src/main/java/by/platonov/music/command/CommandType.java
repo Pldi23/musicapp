@@ -6,6 +6,8 @@ import by.platonov.music.service.*;
 import by.platonov.music.service.FileService;
 
 /**
+ * All types of application {@link Command}s
+ *
  * @author dzmitryplatonov on 2019-06-15.
  * @version 0.0.1
  */
@@ -22,6 +24,8 @@ public enum CommandType {
     LOGIN(new LoginCommand(new UserService(), new CommonService())),
     LOGOUT(new LogoutCommand()),
     MUSICIAN_DETAIL(new MusicianDetailCommand(new CommonService())),
+    PAY(new PayCommand(new UserService())),
+    PAYMENT_HISTORY(new ToPaymentHistoryCommand(new UserService())),
     PLAYLIST_DETAIL(new PlaylistDetailCommand(new CommonService())),
     PLAYLIST_CREATE(new PlaylistCreateCommand(new CommonService())),
     QUERY(new QueryCommand(new CommonService())),
@@ -51,6 +55,7 @@ public enum CommandType {
     TO_LOGIN(new ToLoginCommand()),
     TO_LIBRARY(new ToLibraryCommand(new CommonService())),
     TO_MAIN(new ToMainCommand(new CommonService())),
+    TO_PAYMENT(new ToPaymentCommand()),
     TO_PROFILE(new ToProfileCommand()),
     TO_REGISTR(new ToRegistrationCommand()),
     TO_REGISTER_ADMIN(new ToAdminRegistrationCommand()),

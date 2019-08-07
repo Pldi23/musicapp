@@ -13,12 +13,17 @@ import java.util.Set;
 import static by.platonov.music.constant.RequestConstant.LOCALE;
 
 /**
+ * to validate {@link RequestConstant}.BIRTHDATE request parameter
+ *
  * @author dzmitryplatonov on 2019-06-19.
  * @version 0.0.1
  */
 @Log4j2
 public class BirthDateValidator extends AbstractValidator {
 
+    /**
+     * minimum age allowed by app is 6
+     */
     private static final int MINIMUM_AGE_ALLOWED_BY_APPLICATION = 6;
 
     public BirthDateValidator(ParameterValidator next) {

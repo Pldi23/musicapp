@@ -22,7 +22,7 @@ class EntityNameSpecificationTest {
     @Test
     void toPreparedStatement() throws RepositoryException {
         Repository<Musician> repository = MusicianRepository.getInstance();
-        SqlSpecification specification = new EntityNameSpecification("Avici");
+        SqlSpecification specification = new MusicianNameSpecification("Avici");
         int actual = repository.query(specification).size();
         int expected = 1;
         assertEquals(expected, actual);

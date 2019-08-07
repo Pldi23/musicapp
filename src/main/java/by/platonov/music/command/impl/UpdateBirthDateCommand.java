@@ -4,6 +4,7 @@ import by.platonov.music.command.Command;
 import by.platonov.music.command.handler.CommandHandler;
 import by.platonov.music.command.CommandResult;
 import by.platonov.music.command.RequestContent;
+import by.platonov.music.entity.User;
 import by.platonov.music.service.UserService;
 import by.platonov.music.validator.BirthDateValidator;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to update {@link User}'s birth date
  *
  * @author Dzmitry Platonov on 2019-07-16.
  * @version 0.0.1

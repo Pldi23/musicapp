@@ -1,17 +1,17 @@
 package by.platonov.music.validator;
 
+import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.message.MessageManager;
 import by.platonov.music.command.RequestContent;
-import by.platonov.music.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.platonov.music.constant.RequestConstant.LOCALE;
+import static by.platonov.music.constant.RequestConstant.*;
 
 /**
- * music-app
+ * to validate {@link RequestConstant}.TRACKNAME request parameter
  *
  * @author Dzmitry Platonov on 2019-07-02.
  * @version 0.0.1
@@ -19,6 +19,9 @@ import static by.platonov.music.constant.RequestConstant.LOCALE;
 @Log4j2
 public class TrackNameValidator extends AbstractValidator {
 
+    /**
+     * 1-30 symbols, should not ends with file format
+     */
     private static final String TRACKNAME_REGEX_PATTERN = "(?U).{1,30}(?<!(.mp3)|(.wav)|(.audio)|(.format))$";
 
     private boolean filter;
@@ -39,17 +42,17 @@ public class TrackNameValidator extends AbstractValidator {
         Violation violation = new Violation(MessageManager.getMessage("violation.trackname", locale));
 
         if (filter) {
-            if (content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)
-                    && !content.getRequestParameter(RequestConstant.TRACKNAME)[0].isBlank()
-                    && !content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
+            if (content.getRequestParameters().containsKey(TRACKNAME)
+                    && !content.getRequestParameter(TRACKNAME)[0].isBlank()
+                    && !content.getRequestParameter(TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
                 log.warn("track name parameter not matched appropriate regex pattern");
                 result.add(violation);
             }
         } else {
-            if (!content.getRequestParameters().containsKey(RequestConstant.TRACKNAME)) {
+            if (!content.getRequestParameters().containsKey(TRACKNAME)) {
                 log.warn("No track name parameter found");
                 result.add(violation);
-            } else if (!content.getRequestParameter(RequestConstant.TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
+            } else if (!content.getRequestParameter(TRACKNAME)[0].matches(TRACKNAME_REGEX_PATTERN)) {
                 log.warn("track name parameter not matched appropriate regex pattern");
                 result.add(violation);
             }

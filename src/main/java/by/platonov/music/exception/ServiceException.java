@@ -1,6 +1,7 @@
 package by.platonov.music.exception;
 
 /**
+ * The exception will be thrown from service layer
  * @author dzmitryplatonov on 2019-06-24.
  * @version 0.0.1
  */

@@ -14,7 +14,7 @@ import java.util.Map;
 import static by.platonov.music.constant.RequestConstant.PROCESS;
 
 /**
- * music-app
+ * to cancel removing of entity
  *
  * @author Dzmitry Platonov on 2019-07-21.
  * @version 0.0.1
@@ -22,6 +22,12 @@ import static by.platonov.music.constant.RequestConstant.PROCESS;
 @Log4j2
 public class RemoveCancelationCommand implements Command {
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} which will execute the appropriate command
+     * forward to {@link PageConstant}.ENTITY_REMOVED_PAGE if entity was not found
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         CommandResult commandResult;

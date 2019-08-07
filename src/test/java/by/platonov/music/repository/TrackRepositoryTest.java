@@ -28,13 +28,18 @@ class TrackRepositoryTest {
             .releaseDate(LocalDate.of(2019, 1, 1))
             .length(180)
             .singers(new HashSet<>())
-            .authors(new HashSet<>()).build();
+            .createDate(LocalDate.now())
+            .authors(new HashSet<>())
+            .uuid("/users/dzmitryplatonov/Dropbox/music/avicii-tim.mp3")
+            .build();
 
     private Track trackDuet = Track.builder().id(6).name("Duet").genre(Genre.builder().id(3).title("rap").build())
             .releaseDate(LocalDate.of(2019, 1,6))
             .length(201)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
+            .createDate(LocalDate.now())
+            .uuid("")
             .build();
 
     private Track newTrackWithOldMusician = Track.builder().name("Oldcommer").genre(Genre.builder().id(1).title("pop").build())
@@ -42,6 +47,8 @@ class TrackRepositoryTest {
             .length(190)
             .singers(new HashSet<>())
             .authors(new HashSet<>())
+            .createDate(LocalDate.now())
+            .uuid("")
             .build();
 
     TrackRepositoryTest() {

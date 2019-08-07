@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * music-app
+ * to show {@link User}'s {@link Playlist}s
  *
  * @author Dzmitry Platonov on 2019-07-14.
  * @version 0.0.1
@@ -30,6 +30,13 @@ public class UserPlaylistsCommand implements Command {
         this.commonService = commonService;
     }
 
+    /**
+     *
+     * @param content DTO containing all data received with {@link javax.servlet.http.HttpServletRequest}
+     * @return instance of {@link CommandResult} that:
+     * forward to {@link PageConstant}.USER_PLAYLISTS_PAGE with list of playlists in attributes
+     * executes {@link ErrorCommand} if {@link ServiceException} was caught
+     */
     @Override
     public CommandResult execute(RequestContent content) {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);

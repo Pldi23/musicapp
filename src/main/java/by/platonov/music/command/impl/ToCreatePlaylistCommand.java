@@ -6,7 +6,7 @@ import by.platonov.music.command.RequestContent;
 import by.platonov.music.constant.PageConstant;
 
 /**
- * music-app
+ * forwards to {@link PageConstant}.PLAYLIST_CREATE_PAGE
  *
  * @author Dzmitry Platonov on 2019-07-14.
  * @version 0.0.1
