@@ -38,6 +38,7 @@ public class UnsortedAllPlaylistCommand implements Command {
     public CommandResult execute(RequestContent content) {
         User user = (User) content.getSessionAttribute(RequestConstant.USER);
         return handler.sorted(content, RequestConstant.NO_ORDER, PageConstant.PLAYLIST_LIBRARY_PAGE,
-                () -> commonService.countPlaylists(user.isAdmin()), (b, v, l) -> commonService.searchPlaylists(v, l, user.isAdmin()));
+                () -> commonService.countPlaylists(user.isAdmin()),
+                (sortOrder, limit, offset) -> commonService.searchPlaylists(limit, offset, user.isAdmin()));
     }
 }

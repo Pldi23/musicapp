@@ -9,11 +9,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * initial contact point for handling all requests
@@ -43,7 +41,8 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        RequestContent content = RequestContent.createWithAttributes(request);
+        RequestContent content = new RequestContent.Builder().fromRequest(request).build();
+
         content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
         content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
         content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
@@ -57,7 +56,7 @@ public class FrontController extends HttpServlet {
         request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
 
         if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
-            request.getSession().invalidate(); //we need to invalidate session if command is logout
+            request.getSession().invalidate(); //session need to be invalidated if command is logout
         }
 
         if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {

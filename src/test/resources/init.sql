@@ -123,13 +123,25 @@ CREATE TABLE public.user_playlist
 
 --init payment table
 
+CREATE TABLE payment
+(
+    id serial,
+    amount numeric,
+    card_number varchar(200),
+    user_login varchar(200),
+    created_at timestamp default now(),
+    constraint payment_pkey1 PRIMARY KEY (id),
+    constraint foreign_key_user_login foreign key (user_login) references application_user (login)
 
-INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_uuid, photo_path)
-values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null, null),
-    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null, null),
-    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null, null),
-    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'pldi@mail.ru', '1975-10-10', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png'),
-    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png');
+);
+
+
+INSERT into application_user ("login", "password", is_admin, first_name, last_name, "e_mail", date_of_birth, gender, active_status, verification_uuid, photo_path, paid_period)
+values ('pldi', 'qwerty', true, 'Dima', 'Platonov', 'pldi@mail.ru', '1986-07-02', true, false, null, null, '2030-01-01'),
+    ('pldi1', 'qwerty', false, 'Yuliya', 'Platonava', 'yuliya@icloud.com', '1986-10-08', false, false, null, null, '2030-01-01'),
+    ('pldi2', 'qwerty', false, 'Miroslav', 'Platonov', 'miroslav@icloud.com', '2016-01-24', true, false, null, null, '2030-01-01'),
+    ('pldi3', 'qwerty', false, 'Zinedin', 'Zidane', 'pldi@mail.ru', '1975-10-10', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png', '2030-01-01'),
+    ('pldi4', 'qwerty', false, 'Leo', 'Messi', 'messi@gmail.com', '1987-01-01', true, false, '1', '/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png', '2030-01-01');
 
 insert into playlist ("name") values ('spring2019'), ('summer2019'), ('authum2019'), ('winter2019'), ('new year party mix');
 insert into user_playlist (user_login, playlist_id) values ('pldi', 2), ('pldi4', 1), ('pldi3', 3), ('pldi2', 4), ('pldi1', 1), ('pldi1', 5);
@@ -152,3 +164,4 @@ values ('Avici'),
        ('Филипп Киркоров');
 insert into singer_track (track_id, singer_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 3), (6, 7);
 insert into author_track (track_id, author_id) values (2, 2), (1, 1), (4, 3), (3, 4), (5, 5), (6, 7), (6, 6);
+insert into payment (amount, card_number, user_login) VALUES (4.99, '0123456789123456', 'pldi');

@@ -15,10 +15,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
@@ -137,7 +135,7 @@ public class UserService {
      */
     public List<User> searchAllUsers(int limit, long offset) throws ServiceException {
         try {
-            List<User> users = UserRepository.getInstance().query(new UserAllLimitSpecification(limit, offset));
+            List<User> users = UserRepository.getInstance().query(new UserAllSpecification(limit, offset));
             for (User user : users) {
                 setUserWithPlaylists(user);
             }

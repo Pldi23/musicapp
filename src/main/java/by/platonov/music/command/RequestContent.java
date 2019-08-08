@@ -59,66 +59,107 @@ public class RequestContent {
     private RequestContent() {
     }
 
+    public static class Builder {
+        private RequestContent content;
 
-    public static RequestContent createWithAttributes(HttpServletRequest request) throws IOException, ServletException {
-        RequestContent content = new RequestContent();
-        content.setRequestAttributes(request);
-        content.setRequestParameters(request);
-        content.setSessionAttributes(request);
-        content.setRequestParts(request);
-        content.setServerName(request);
-        content.setServerPort(request);
-        content.setContextPath(request);
-        content.setCookies(request);
-        return content;
-    }
-
-    private void setRequestAttributes(HttpServletRequest request) {
-        requestAttributes = new HashMap<>();
-        Enumeration<String> requestAttributeNames = request.getAttributeNames();
-        while (requestAttributeNames.hasMoreElements()) {
-            String attributeName = requestAttributeNames.nextElement();
-            requestAttributes.put(attributeName, request.getAttribute(attributeName));
+        public Builder() {
+            content = new RequestContent();
         }
-    }
 
-    private void setRequestParameters(HttpServletRequest request) {
-        requestParameters = new HashMap<>();
-        requestParameters.putAll(request.getParameterMap());
-    }
-
-    private void setSessionAttributes(HttpServletRequest request) {
-        sessionAttributes = new HashMap<>();
-        HttpSession currentSession = request.getSession(true);
-        Enumeration<String> sessionAttributeNames = currentSession.getAttributeNames();
-        while (sessionAttributeNames.hasMoreElements()) {
-            String sessionAttributeName = sessionAttributeNames.nextElement();
-            sessionAttributes.put(sessionAttributeName, currentSession.getAttribute(sessionAttributeName));
+        public Builder withRequestAttributes(Map<String, Object> attributes) {
+            content.requestAttributes = attributes;
+            return this;
         }
-    }
 
-    private void setRequestParts(HttpServletRequest request) throws IOException, ServletException {
-        requestParts = new ArrayList<>();
-        if (request.getContentType() != null && request.getContentType().toLowerCase().contains("multipart/form-data")) {
-            requestParts.addAll(request.getParts());
+        public Builder withRequestParameters(Map<String, String[]> parameters) {
+            content.requestParameters = parameters;
+            return this;
         }
-    }
 
-    private void setCookies(HttpServletRequest request) {
-        cookies = new HashMap<>();
-        Arrays.stream(request.getCookies()).forEach(cookie -> cookies.put(cookie.getName(), cookie.getValue()));
-    }
+        public Builder withSessionAttributes(Map<String, Object> sessionAttrs) {
+            content.sessionAttributes = sessionAttrs;
+            return this;
+        }
 
-    private void setServerName(HttpServletRequest request) {
-        serverName = request.getServerName();
-    }
+        public Builder withRequestParts(List<Part> parts) {
+            content.requestParts = parts;
+            return this;
+        }
 
-    private void setServerPort(HttpServletRequest request) {
-        serverPort = request.getServerPort();
-    }
+        public Builder withCookies(Map<String, String> cookies) {
+            content.cookies = cookies;
+            return this;
+        }
 
-    private void setContextPath(HttpServletRequest request) {
-        contextPath = request.getContextPath();
+        public Builder withServerName(String serverName) {
+            content.serverName = serverName;
+            return this;
+        }
+
+        public Builder withServerPort(int serverPort) {
+            content.serverPort = serverPort;
+            return this;
+        }
+
+        public Builder withContextPath(String contextPath) {
+            content.contextPath = contextPath;
+            return this;
+        }
+
+        public Builder fromRequest(HttpServletRequest request) throws IOException, ServletException {
+            content.requestAttributes = transferRequestAttributes(request);
+            content.requestParameters = transferRequestParameters(request);
+            content.sessionAttributes = transferSessionAttributes(request);
+            content.requestParts = transferRequestParts(request);
+            content.cookies = transferCookies(request);
+            content.serverName = request.getServerName();
+            content.serverPort = request.getServerPort();
+            content.contextPath = request.getContextPath();
+            return this;
+        }
+
+        private static Map<String, Object> transferRequestAttributes(HttpServletRequest request) {
+            Map<String, Object> result = new HashMap<>();
+            Enumeration<String> requestAttributeNames = request.getAttributeNames();
+            while (requestAttributeNames.hasMoreElements()) {
+                String attributeName = requestAttributeNames.nextElement();
+                result.put(attributeName, request.getAttribute(attributeName));
+            }
+            return result;
+        }
+
+        private static Map<String, String[]> transferRequestParameters(HttpServletRequest request) {
+            return new HashMap<>(request.getParameterMap());
+        }
+
+        private static Map<String, Object> transferSessionAttributes(HttpServletRequest request) {
+            Map<String, Object> result = new HashMap<>();
+            HttpSession currentSession = request.getSession(true);
+            Enumeration<String> sessionAttributeNames = currentSession.getAttributeNames();
+            while (sessionAttributeNames.hasMoreElements()) {
+                String sessionAttributeName = sessionAttributeNames.nextElement();
+                result.put(sessionAttributeName, currentSession.getAttribute(sessionAttributeName));
+            }
+            return result;
+        }
+
+        private static List<Part> transferRequestParts(HttpServletRequest request) throws IOException, ServletException {
+            List<Part> result = new ArrayList<>();
+            if (request.getContentType() != null && request.getContentType().toLowerCase().contains("multipart/form-data")) {
+                result.addAll(request.getParts());
+            }
+            return result;
+        }
+
+        private static Map<String, String> transferCookies(HttpServletRequest request) {
+            Map<String, String> result = new HashMap<>();
+            Arrays.stream(request.getCookies()).forEach(cookie -> result.put(cookie.getName(), cookie.getValue()));
+            return result;
+        }
+
+        public RequestContent build() {
+            return content;
+        }
     }
 
     public String getServerName() {

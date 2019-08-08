@@ -2,6 +2,7 @@ package by.platonov.music.command;
 
 import by.platonov.music.constant.PageConstant;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @version 0.0.1
  */
 @EqualsAndHashCode
+@ToString
 public class CommandResult {
     public enum ResponseType {
         FORWARD,

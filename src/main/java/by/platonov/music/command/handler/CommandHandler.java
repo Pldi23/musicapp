@@ -57,12 +57,17 @@ public class CommandHandler<T> {
         List<Integer> pages = new ArrayList<>();
         try {
             long size = countCommandExecutor.count();
+
             pageQuantity = size % limit == 0 ? (int) size / limit : (int) (size / limit + 1); //total number of pages
-            nextUnavailable = current == pageQuantity; // non next page available if current page is equal to last page
+
             for (int i = 1; i <= pageQuantity; i++) { // fill in the list with page numbers to design the pagination form
                 pages.add(i);
             }
+
+            nextUnavailable = current == pageQuantity; // non next page available if current page is equal to last page
+
             entities = sortCommandExecutor.sort(sortOrder, limit, offset);
+            log.debug("entities : " + entities.size());
         } catch (ServiceException e) {
             log.error("can't provide entities list", e);
             return new ErrorCommand(e).execute(content);

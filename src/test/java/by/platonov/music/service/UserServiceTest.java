@@ -10,10 +10,8 @@ import by.platonov.music.repository.specification.UserLoginSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.ArrayDeque;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -30,21 +28,26 @@ class UserServiceTest {
 
     @Test
     void activatePositive() throws ServiceException {
+
         service = new UserService();
         String email = "messi@gmail.com";
         String hash = "1";
+
         boolean actual = service.activate(email, hash);
+
         assertTrue(actual);
     }
 
     @Test
     void activatePositiveUserShouldBeActive() throws RepositoryException, ServiceException {
+
         Repository<User> repository = UserRepository.getInstance();
         service = new UserService();
         String email = "messi@gmail.com";
         String hash = "1";
         service.activate(email, hash);
         List<User> result = repository.query(new UserLoginSpecification("pldi4"));
+
         User actual = result.get(0);
         User expected = User.builder()
                 .login("pldi4")
@@ -61,16 +64,21 @@ class UserServiceTest {
                 .verificationUuid(null)
                 .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
                 .payments(new LinkedHashSet<>())
+                .paidPeriod(LocalDateTime.of(2030,1,1,0,0))
                 .build();
+
         assertEquals(expected, actual);
     }
 
     @Test
     void activateNegative() throws ServiceException {
+
         service = new UserService();
         String email = "messi@gmail.com";
         String hash = "0";
+
         boolean actual = service.activate(email, hash);
+
         assertFalse(actual);
     }
 }

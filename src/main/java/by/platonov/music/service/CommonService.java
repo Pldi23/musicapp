@@ -228,7 +228,7 @@ public class CommonService {
     }
 
     /**
-     * to count total quantity of playlists
+     * to count total quantity of playlists by {@link SqlSpecification} instance
      * @return total quantity of playlists
      * @throws ServiceException if repository throws Repository exception
      */

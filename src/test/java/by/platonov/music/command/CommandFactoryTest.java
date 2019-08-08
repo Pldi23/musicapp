@@ -5,23 +5,34 @@ import by.platonov.music.command.impl.LoginCommand;
 import by.platonov.music.constant.RequestConstant;
 import by.platonov.music.service.CommonService;
 import by.platonov.music.service.UserService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class CommandFactoryTest {
 
-    private RequestContent content = mock(RequestContent.class);
+    private RequestContent content;
     private CommandFactory factory = CommandFactory.getInstance();
+
+    @BeforeEach
+    void setUp() {
+        Map<String, String[]> params = new HashMap<>();
+        params.put(RequestConstant.COMMAND, new String[]{RequestConstant.LOGIN});
+        content = new RequestContent.Builder().withRequestParameters(params).build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        content = null;
+    }
 
     @Test
     void getCommandWhenRequestLoginShouldReturnLoginCommand() {
-        when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{RequestConstant.LOGIN}));
-        when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{RequestConstant.LOGIN});
         Command actual = factory.getCommand(content);
         Command expected = new LoginCommand(new UserService(), new CommonService());
         assertEquals(expected, actual);
@@ -29,8 +40,7 @@ class CommandFactoryTest {
 
     @Test
     void getCommandWhenRequestDontHaveHiddenCommandShouldReturnErrorCommand() {
-        when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.LOGIN, new String[]{RequestConstant.LOGIN}));
-        when(content.getRequestParameter(RequestConstant.LOGIN)).thenReturn(new String[]{RequestConstant.LOGIN});
+        content.getRequestParameters().remove(RequestConstant.COMMAND);
         Command actual = factory.getCommand(content);
         Command expected = new ErrorCommand();
         assertEquals(expected, actual);
@@ -38,10 +48,8 @@ class CommandFactoryTest {
 
     @Test
     void getCommandWhenRequestParameterIllegalCommandShouldReturnErrorCommand() {
-        when(content.getRequestParameters()).thenReturn(Map.of(RequestConstant.COMMAND, new String[]{"log"}));
-        when(content.getRequestParameter(RequestConstant.COMMAND)).thenReturn(new String[]{"log"});
+        content.getRequestParameters().put(RequestConstant.COMMAND, new String[]{"log"});
         Command actual = factory.getCommand(content);
-//        Command expected = new ErrorCommand(MessageManager.getMessage("message.command.not.exist", "en_US"));
         Command expected = new ErrorCommand(new IllegalArgumentException());
         assertEquals(expected, actual);
     }

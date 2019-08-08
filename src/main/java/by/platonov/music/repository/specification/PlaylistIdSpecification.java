@@ -1,5 +1,7 @@
 package by.platonov.music.repository.specification;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,9 +12,10 @@ import java.sql.SQLException;
  * @author dzmitryplatonov on 2019-06-13.
  * @version 0.0.1
  */
+@Log4j2
 public class PlaylistIdSpecification implements SqlSpecification {
 
-    private static final String SPECIFICATION = "where playlist.id = ? order by pt.index;";
+    private static final String SPECIFICATION = "where playlist.id = ? ";
 
     private long id;
 

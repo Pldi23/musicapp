@@ -54,7 +54,6 @@ class ValidatorChainTest {
 
     @Test
     void testApplyNegative() {
-        Locale.setDefault(new Locale("en_US"));
         String login = "p";
         String password = "Password";
         String birthdate = "2016-02-07";

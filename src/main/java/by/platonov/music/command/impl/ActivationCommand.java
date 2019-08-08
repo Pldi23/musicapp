@@ -45,7 +45,7 @@ public class ActivationCommand implements Command {
             return service.activate(email, hash) ?
                     new CommandResult(CommandResult.ResponseType.FORWARD, INDEX_PAGE, Map.of(PROCESS,
                             MessageManager.getMessage("message.present", (String) content.getSessionAttribute(LOCALE)))) :
-                    new CommandResult(CommandResult.ResponseType.REDIRECT, ERROR_REDIRECT_PAGE);
+                    new CommandResult(CommandResult.ResponseType.FORWARD, ERROR_REDIRECT_PAGE);
         } catch (ServiceException e) {
             log.error("Service provide an exception for activation command ", e);
             return new ErrorCommand(e).execute(content);

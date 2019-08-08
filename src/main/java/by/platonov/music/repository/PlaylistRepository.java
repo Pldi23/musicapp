@@ -41,7 +41,8 @@ public class PlaylistRepository implements Repository<Playlist> {
 
     @Language("SQL")
     private static final String SQL_SELECT_PLAYLIST = "SELECT playlist.id as id, playlist.name as name, playlist.private " +
-            "FROM playlist LEFT JOIN playlist_track pt on playlist.id = pt.playlist_id ";
+            "FROM playlist ";
+
     @Language("SQL")
     private static final String SQL_COUNT = "SELECT COUNT(*) FROM playlist ";
 

@@ -1,14 +1,17 @@
 package by.platonov.music.repository.specification;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * to select all public playlists from playlist repository by limit and offset
+ * to select all playlists available to user depending on his role from playlist repository by limit and offset
  * @author Dzmitry Platonov on 2019-07-19.
  * @version 0.0.1
  */
+@Log4j2
 public class PlaylistPublicLimitOffsetSpecification implements SqlSpecification {
 
     private static final String USER_SPECIFICATION = "where playlist.private = false and playlist.id is not null limit ? offset ?;";

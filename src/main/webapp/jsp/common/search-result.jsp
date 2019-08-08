@@ -6,7 +6,19 @@
 <fmt:setBundle basename="pagecontent"/>
 <c:set var="page" value="/jsp/common/search-result.jsp" scope="request"/>
 <html>
-<head><title><fmt:message key="label.search.result"/></title></head>
+<head><title><fmt:message key="label.search.result"/></title>
+    <style type="text/css">
+        .my-custom-scrollbar {
+            position: relative;
+            height: 300px;
+            overflow: auto;
+        }
+
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+    </style>
+</head>
 <body>
 <div class="container-fluid bg-light">
     <div class="row">
@@ -32,142 +44,89 @@
             <c:if test="${ not empty requestScope.tracks }"><fmt:message
                     key="label.tracks"/>: ${ requestScope.trackssize } <fmt:message
                     key="label.found"/>
-                <table>
-                    <c:forEach var="track" items="${ requestScope.tracks }" varStatus="status">
-                        <tr>
-                            <td><c:forEach var="singer" items="${ track.singers }">
-                                <c:out value="${ singer.name }"/>
-                            </c:forEach></td>
-                            <td><c:forEach var="author" items="${ track.authors }">
-                                <c:out value="${ author.name }"/>
-                            </c:forEach></td>
-                            <td>
-                                <form action="<c:url value="/controller"/>" method="post">
-                                    <input type="hidden" name="command" value="track-detail">
-                                    <input type="hidden" name="id" value="${ track.id }">
-                                    <input type="submit" class="btn btn-light" name="submit" value="${ track.name }">
-                                </form>
-                            </td>
-                            <td>
-                                <audio controls preload="metadata" onplay="setCookie('lastPlayed', '${ track.id }')">
-                                    <source src="music/${track.uuid}" type="audio/mpeg">
-                                </audio>
-                            </td>
-                            <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
+                <br>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table>
+                        <c:forEach var="track" items="${ requestScope.tracks }" varStatus="status">
+                            <tr>
+                                <td><c:forEach var="singer" items="${ track.singers }">
+                                    <c:out value="${ singer.name }"/>
+                                </c:forEach></td>
+                                <td><c:forEach var="author" items="${ track.authors }">
+                                    <c:out value="${ author.name }"/>
+                                </c:forEach></td>
+                                <td>
+                                    <form action="<c:url value="/controller"/>" method="post">
+                                        <input type="hidden" name="command" value="track-detail">
+                                        <input type="hidden" name="id" value="${ track.id }">
+                                        <input type="submit" class="btn btn-light" name="submit"
+                                               value="${ track.name }">
+                                    </form>
+                                </td>
+                                <td>
+                                    <audio controls preload="metadata"
+                                           onplay="setCookie('lastPlayed', '${ track.id }')">
+                                        <source src="music/${track.uuid}" type="audio/mpeg">
+                                    </audio>
+                                </td>
+                                <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
                                 <c:out value="${ track.genre.title }"/></span></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <c:if test="${ requestScope.trackssize - requestScope.nextoffset > 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-tracks" value="1">
-                        <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.next"/>">
-                    </form>
-                </c:if>
-                <c:if test="${ requestScope.previousoffset >= 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-tracks" value="1">
-                        <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.previous"/>">
-                    </form>
-                </c:if>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
             </c:if>
             <br>
             <c:if test="${ not empty requestScope.musicians }"><fmt:message
                     key="label.musicians"/>: ${ requestScope.musicianssize } <fmt:message
                     key="label.found"/>
-                <table>
-                    <c:forEach var="musician" items="${ requestScope.musicians }" varStatus="status">
-                        <tr>
-                            <td>
-                                <form action="<c:url value="/controller"/>" method="post">
-                                    <input type="hidden" name="command" value="musician-detail">
-                                    <input type="hidden" name="id" value="${ musician.id }">
-                                    <input type="submit" class="btn btn-light" name="submit" value="${ musician.name }">
-                                </form>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <c:if test="${ requestScope.musicianssize - requestScope.nextoffset > 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-musicians" value="1">
-                        <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.next"/>">
-                    </form>
-                </c:if>
-                <c:if test="${ requestScope.previousoffset >= 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-musicians" value="1">
-                        <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.previous"/>">
-                    </form>
-                </c:if>
+                <br>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table>
+                        <c:forEach var="musician" items="${ requestScope.musicians }" varStatus="status">
+                            <tr>
+                                <td>
+                                    <form action="<c:url value="/controller"/>" method="post">
+                                        <input type="hidden" name="command" value="musician-detail">
+                                        <input type="hidden" name="id" value="${ musician.id }">
+                                        <input type="submit" class="btn btn-light" name="submit"
+                                               value="${ musician.name }">
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
             </c:if>
             <br>
             <c:if test="${ not empty requestScope.playlists }"><fmt:message
                     key="label.playlists"/>: ${ requestScope.playlistssize } <fmt:message
                     key="label.found"/>
-                <table>
-                    <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
-                        <tr>
-                            <td>
-                                <form action="<c:url value="/controller"/>" method="post">
-                                    <input type="hidden" name="command" value="playlist-detail">
-                                    <input type="hidden" name="id" value="${ playlist.id }">
-                                    <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
-                                </form>
-                            </td>
-                            <td><span class="badge badge-info">
+                <br>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table>
+                        <c:forEach var="playlist" items="${ requestScope.playlists }" varStatus="status">
+                            <tr>
+                                <td>
+                                    <form action="<c:url value="/controller"/>" method="post">
+                                        <input type="hidden" name="command" value="playlist-detail">
+                                        <input type="hidden" name="id" value="${ playlist.id }">
+                                        <input type="submit" class="btn btn-light" name="submit"
+                                               value="${ playlist.name }">
+                                    </form>
+                                </td>
+                                <td><span class="badge badge-info">
                                     <fmt:message key="badge.duration"/>::<c:out
-                                    value="${ playlist.getTotalDuration() }"/></span></td>
-                            <td><span class="badge badge-info">
+                                        value="${ playlist.getTotalDuration() }"/></span></td>
+                                <td><span class="badge badge-info">
                                 <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
-                            </td>
-                            <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
+                                </td>
+                                <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
                                 <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <c:if test="${ requestScope.playlistssize - requestScope.nextoffset > 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-playlists" value="1">
-                        <input type="hidden" name="direction" value="next">
-                        <input type="hidden" name="offset" value="${ requestScope.nextoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.next"/>">
-                    </form>
-                </c:if>
-                <c:if test="${ requestScope.previousoffset >= 0 }">
-                    <form action="<c:url value="/controller"/>" method="post">
-                        <input type="hidden" name="command" value="search">
-                        <input type="hidden" name="searchrequest" value="${ requestScope.searchrequest }">
-                        <input type="hidden" name="key-playlists" value="1">
-                        <input type="hidden" name="direction" value="previous">
-                        <input type="hidden" name="offset" value="${ requestScope.previousoffset }">
-                        <input type="submit" class="btn btn-outline-dark" name="submit"
-                               value="<fmt:message key="button.previous"/>">
-                    </form>
-                </c:if>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
             </c:if>
         </div>
         <div class="col-2">
