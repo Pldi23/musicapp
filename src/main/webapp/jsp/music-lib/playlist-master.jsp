@@ -56,18 +56,22 @@
                                 <td><c:out value="${ playlist.id }"/></td>
                             </c:if>
                             <td>
-                                <form action="<c:url value="/controller"/>" method="post" class="align-middle" style="padding-top: 15px">
+                                <form action="<c:url value="/controller"/>" method="post" class="align-middle"
+                                      style="padding-top: 15px">
                                     <input type="hidden" name="command" value="playlist-detail">
                                     <input type="hidden" name="id" value="${ playlist.id }">
                                     <input type="submit" class="btn btn-light" name="submit" value="${ playlist.name }">
                                 </form>
                             </td>
                             <td><span class="badge badge-info">
-                                    <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/></span></td>
+                                    <fmt:message key="badge.duration"/>::
+                                <ctg:duration playlist="${ playlist }"/>
+                            </span></td>
                             <td><span class="badge badge-info">
-                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span></td>
+                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
+                            </td>
                             <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
-                                <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
+                                <c:out value="${ playlist.getMostPopularGenreName() }"/></span></td>
                         </tr>
                     </c:forEach>
                     </tbody>

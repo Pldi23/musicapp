@@ -37,6 +37,15 @@
         </attribute>
     </tag>
     <tag>
+        <name>duration</name>
+        <tag-class>by.platonov.music.tag.PlaylistDurationTag</tag-class>
+        <attribute>
+            <name>playlist</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <name>print-tracks</name>
         <tag-class>by.platonov.music.tag.PrintTracksTag</tag-class>
         <attribute>

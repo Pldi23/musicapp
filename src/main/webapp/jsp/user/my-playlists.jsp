@@ -90,7 +90,7 @@
                             <form class="form-inline">
                                 <div class="form-group">
                                     <span class="badge badge-info">
-                                        <fmt:message key="badge.duration"/>::<c:out value="${ playlist.getTotalDuration() }"/>
+                                        <fmt:message key="badge.duration"/>::<ctg:duration playlist="${ playlist }"/>
                                     </span>
                                 </div>
                                 <div class="form-group">
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="form-group">
                                     <span class="badge badge-info">
-                                        <fmt:message key="badge.genre"/>::<c:out value="${ playlist.getMostPopularGenre() }"/></span>
+                                        <fmt:message key="badge.genre"/>::<c:out value="${ playlist.getMostPopularGenreName() }"/></span>
                                 </div>
                             </form>
                         </td>

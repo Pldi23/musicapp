@@ -499,17 +499,6 @@ public class CommonService {
     }
 
     /**
-     * to count playlist time-duration
-     * @param playlist playlist
-     * @return formatted string of calculated time value
-     * @throws ServiceException if repository throws Repository exception
-     */
-    public String countPlaylistLength(Playlist playlist) throws ServiceException {
-        playlist.getTracks().addAll(getPlaylistTracks(playlist.getId()));
-        return playlist.getTotalDuration();
-    }
-
-    /**
      * to count playlist quantity of tracks
      * @param playlist playlist being reviewed
      * @return string representation of counted value

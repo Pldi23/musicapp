@@ -76,6 +76,7 @@
                     </table>
                 </div>
             </c:if>
+            <hr>
             <br>
             <c:if test="${ not empty requestScope.musicians }"><fmt:message
                     key="label.musicians"/>: ${ requestScope.musicianssize } <fmt:message
@@ -98,6 +99,7 @@
                     </table>
                 </div>
             </c:if>
+            <hr>
             <br>
             <c:if test="${ not empty requestScope.playlists }"><fmt:message
                     key="label.playlists"/>: ${ requestScope.playlistssize } <fmt:message
@@ -116,13 +118,17 @@
                                     </form>
                                 </td>
                                 <td><span class="badge badge-info">
-                                    <fmt:message key="badge.duration"/>::<c:out
-                                        value="${ playlist.getTotalDuration() }"/></span></td>
-                                <td><span class="badge badge-info">
-                                <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
+                                    <fmt:message key="badge.duration"/>::
+                                    <ctg:duration playlist="${ playlist }"/>
+                                </span></td>
+                                <td>
+                                    <span class="badge badge-info">
+                                <fmt:message key="badge.quantity"/>::
+                                    <c:out value="${ playlist.getSize() }"/>
+                                </span>
                                 </td>
                                 <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
-                                <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
+                                <c:out value="${ playlist.getMostPopularGenreName() }"/></span></td>
                             </tr>
                         </c:forEach>
                     </table>

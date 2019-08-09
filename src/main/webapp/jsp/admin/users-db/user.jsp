@@ -101,8 +101,9 @@
                                     </form>
                                 </td>
                                 <td><span class="badge badge-info">
-                                    <fmt:message key="badge.duration"/>::<c:out
-                                        value="${ playlist.getTotalDuration() }"/></span></td>
+                                    <fmt:message key="badge.duration"/>::
+                                    <ctg:duration playlist="${ playlist }"/>
+                                </span></td>
                                 <td><span class="badge badge-info">
                                 <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
                                 </td>

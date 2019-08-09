@@ -40,10 +40,9 @@ public class PlaylistDetailCommand implements Command {
     public CommandResult execute(RequestContent content) {
         String playlistId = content.getRequestParameter(RequestConstant.ID)[0];
         Playlist playlist;
-        String length;
         String size;
         try {
-            List<Playlist> playlists = commonService.searchPlaylistById(playlistId);
+            List<Playlist> playlists = commonService.searchPlaylistByIdWithTracks(playlistId);
             if (playlists.isEmpty()) {
                 return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.ENTITY_REMOVED_PAGE,
                         Map.of(RequestConstant.PROCESS,
@@ -51,13 +50,12 @@ public class PlaylistDetailCommand implements Command {
                                         (String) content.getSessionAttribute(RequestConstant.LOCALE))));
             }
             playlist = playlists.get(0);
-            length = commonService.countPlaylistLength(playlist);
             size = commonService.countPlaylistSize(playlist);
         } catch (ServiceException e) {
             log.error("command could't provide playlist", e);
             return new ErrorCommand(e).execute(content);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
-                Map.of(RequestConstant.PLAYLIST, playlist, RequestConstant.LENGTH, length, RequestConstant.SIZE, size));
+                Map.of(RequestConstant.PLAYLIST, playlist, RequestConstant.SIZE, size));
     }
 }

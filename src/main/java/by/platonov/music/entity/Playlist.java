@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class Playlist extends Entity {
     /**
      * @return the most popular genre of songs of this playlist
      */
-    public String getMostPopularGenre() {
+    public String getMostPopularGenreName() {
        return tracks.stream()
                 .map(Track::getGenre)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
@@ -40,15 +39,11 @@ public class Playlist extends Entity {
     }
 
     /**
-     * @return the total duration of playlist in necessary string format
+     * @return the total duration of playlist
+     * to be formatted by {@link by.platonov.music.tag.PlaylistDurationTag}
      */
-    public String getTotalDuration() {
-        long duration = tracks.stream().mapToLong(Track::getLength).sum();
-        long hours = TimeUnit.SECONDS.toHours(duration);
-        duration -= TimeUnit.HOURS.toSeconds(hours);
-        long minutes = TimeUnit.SECONDS.toMinutes(duration);
-        duration -= TimeUnit.MINUTES.toSeconds(minutes);
-        return String.format("%02d:%02d:%02d", hours, minutes, duration);
+    public long getDuration() {
+        return tracks.stream().mapToLong(Track::getLength).sum();
     }
 
     /**

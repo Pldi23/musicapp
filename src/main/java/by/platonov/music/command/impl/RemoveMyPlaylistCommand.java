@@ -51,7 +51,7 @@ public class RemoveMyPlaylistCommand implements Command {
             playlists = commonService.searchUserPlaylists(user);
             for (Playlist playlist : playlists) {
                 playlistWithStatistics.put(playlist,
-                        List.of(commonService.countPlaylistLength(playlist), commonService.countPlaylistSize(playlist)));
+                        List.of(commonService.countPlaylistSize(playlist)));
             }
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.USER_PLAYLISTS_PAGE,
                     Map.of(RequestConstant.PROCESS, result, RequestConstant.PLAYLISTS, playlists,

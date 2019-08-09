@@ -44,11 +44,10 @@ public class RemoveTrackFromPlaylistCommand implements Command {
             String result = commonService.removeTrackFromPlaylist(trackId, playlistId) ?
                     MessageManager.getMessage("removed", (String) content.getSessionAttribute(LOCALE)) :
                     MessageManager.getMessage("failed", (String) content.getSessionAttribute(LOCALE));
-            Playlist playlist = commonService.searchPlaylistById(playlistId).get(0);
-            String length = commonService.countPlaylistLength(playlist);
+            Playlist playlist = commonService.searchPlaylistByIdWithTracks(playlistId).get(0);
             String size = commonService.countPlaylistSize(playlist);
                     return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
-                            Map.of(PLAYLIST, playlist, PROCESS, result, RequestConstant.LENGTH, length,
+                            Map.of(PLAYLIST, playlist, PROCESS, result,
                                     RequestConstant.SIZE, size));
         } catch (ServiceException e) {
             log.error("command could't add track to playlist", e);

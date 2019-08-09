@@ -45,8 +45,11 @@
         <div class="col-6">
             <ul class="list-inline">
                 <li class="list-inline-item"><h3><c:out value="${ requestScope.playlist.name }"/></h3></li>
-                <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.duration"/> :: <c:out
-                        value="${ requestScope.length }"/></h5></li>
+                <li class="list-inline-item">
+                    <h5 class="text-muted">
+                        <fmt:message key="badge.duration"/> :: <ctg:duration playlist="${ requestScope.playlist }"/>
+                    </h5>
+                </li>
                 <li class="list-inline-item"><h5 class="text-muted"><fmt:message key="badge.quantity"/> :: <c:out
                         value="${ requestScope.size }"/></h5></li>
             </ul>
@@ -127,7 +130,8 @@
                                 <input type="hidden" name="index" value="${ status.index }">
                                 <select class="selectpicker" data-container="body" onchange="submit()" data-width="fit"
                                         name="move">
-                                    <option selected="selected" data-content="<i class='fas fa-ellipsis-v'></i>"></option>
+                                    <option selected="selected"
+                                            data-content="<i class='fas fa-ellipsis-v'></i>"></option>
                                     <c:if test="${ status.index > 0 }">
                                         <option value="up"><fmt:message key="option.move.up"/></option>
                                     </c:if>
@@ -144,7 +148,8 @@
                             </form>
                         </td>
                         <td>
-                            <audio id="${ status.index }" controls preload="metadata" onplay="setCookie('lastPlayed', '${ track.id }')">
+                            <audio id="${ status.index }" controls preload="metadata"
+                                   onplay="setCookie('lastPlayed', '${ track.id }')">
                                 <source src="music/${track.uuid}" type="audio/mpeg">
                             </audio>
                         </td>

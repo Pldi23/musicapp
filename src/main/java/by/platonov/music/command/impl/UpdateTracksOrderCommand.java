@@ -62,7 +62,7 @@ public class UpdateTracksOrderCommand implements Command {
             String result = adminService.updatePlaylist(playlist) ? MessageManager.getMessage("updated", locale) :
                     MessageManager.getMessage("failed", locale);
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.PLAYLIST_PAGE,
-                    Map.of(PLAYLIST, commonService.searchPlaylistByIdWithTracks(playlistId).get(0), PROCESS, result, LENGTH, playlist.getTotalDuration(),
+                    Map.of(PLAYLIST, commonService.searchPlaylistByIdWithTracks(playlistId).get(0), PROCESS, result,
                             SIZE, playlist.getSize()));
         } catch (ServiceException | EntityParameterNotFoundException e) {
             log.error("can't provide playlist", e);

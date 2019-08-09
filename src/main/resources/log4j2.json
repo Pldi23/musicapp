@@ -35,7 +35,7 @@
           "onMatch": "ACCEPT",
           "onMismatch": "DENY"
         },
-        "level":"debug",
+        "level":"info",
         "appender-ref": [{
           "ref":"Console_1"
         },

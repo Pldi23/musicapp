@@ -30,40 +30,44 @@ public class FrontController extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         processRequest(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         processRequest(req, resp);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        RequestContent content = new RequestContent.Builder().fromRequest(request).build();
+        try {
+            RequestContent content = new RequestContent.Builder().fromRequest(request).build();
+            content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
+            content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
+            content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
 
-        content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
-        content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
-        content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
+            CommandFactory commandFactory = CommandFactory.getInstance();
+            Command command = commandFactory.getCommand(content);
+            CommandResult commandResult = command.execute(content);
 
-        CommandFactory commandFactory = CommandFactory.getInstance();
-        Command command = commandFactory.getCommand(content);
-        CommandResult commandResult = command.execute(content);
+            commandResult.getAttributes().forEach(request::setAttribute);
+            commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
+            request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
 
-        commandResult.getAttributes().forEach(request::setAttribute);
-        commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-        request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
+            if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
+                request.getSession().invalidate(); //session need to be invalidated if command is logout
+            }
 
-        if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
-            request.getSession().invalidate(); //session need to be invalidated if command is logout
+            if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
+                requestDispatcher.forward(request, response);
+            } else {
+                response.sendRedirect(request.getServletContext().getContextPath() + commandResult.getPage());
+            }
+        } catch (IOException | ServletException e) {
+            log.error("exception during request processing", e);
         }
 
-        if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
-            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
-            requestDispatcher.forward(request, response);
-        } else {
-            response.sendRedirect(request.getServletContext().getContextPath() + commandResult.getPage());
-        }
     }
 }
