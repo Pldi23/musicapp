@@ -11,7 +11,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.*;
 
 /**
  * initial entry point for handling all requests
@@ -43,9 +42,6 @@ public class FrontController extends HttpServlet {
 
 
         RequestContent content = new RequestContent.Builder().fromRequest(request).build();
-        content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
-        content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
-        content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
 
         CommandFactory commandFactory = CommandFactory.getInstance();
         Command command = commandFactory.getCommand(content);
