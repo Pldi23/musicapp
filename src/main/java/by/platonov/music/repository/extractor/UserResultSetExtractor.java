@@ -18,7 +18,7 @@ public class UserResultSetExtractor implements AbstractResultSetExtractor<User> 
 
     @Override
     public List<User> extract(ResultSet resultSet) throws SQLException {
-        List<User> users = new ArrayList<>();
+        List<User> users = new LinkedList<>();
         Map<String, User> table = new LinkedHashMap<>();
         while (resultSet.next()) {
             if (!table.containsKey(resultSet.getString(LOGIN))) {

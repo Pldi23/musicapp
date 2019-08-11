@@ -1,5 +1,7 @@
 package by.platonov.music.controller.filter;
 
+import by.platonov.music.command.CommandType;
+import by.platonov.music.constant.RequestConstant;
 import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.*;
@@ -34,7 +36,7 @@ public class SessionTimeOutFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if (request.getSession().isNew()) {
+        if (request.getSession().isNew() && !request.getParameter(RequestConstant.COMMAND).equalsIgnoreCase(CommandType.LOGIN.toString())) {
             response.sendRedirect(targetPagePath);
         } else {
             filterChain.doFilter(request, response);

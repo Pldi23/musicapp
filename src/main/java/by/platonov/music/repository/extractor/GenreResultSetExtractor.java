@@ -5,6 +5,7 @@ import by.platonov.music.entity.Genre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class GenreResultSetExtractor implements AbstractResultSetExtractor<Genre> {
     @Override
     public List<Genre> extract(ResultSet resultSet) throws SQLException {
-        List<Genre> result = new ArrayList<>();
+        List<Genre> result = new LinkedList<>();
             while (resultSet.next()) {
                 Genre genre = Genre.builder()
                         .id(resultSet.getLong(ExtractConstant.GENRE_ID))

@@ -52,7 +52,6 @@ public class FilterTrackCommand implements Command {
                         new SingerValidator(true,
                                 new FilterDateValidator(RELEASE_FROM, RELEASE_TO, null))).apply(content);
 
-        if (violations.isEmpty()) {
 
             EntityFilter entityFilter = TrackFilter.builder()
                     .trackName(content.getRequestParameter(TRACKNAME)[0])
@@ -64,6 +63,7 @@ public class FilterTrackCommand implements Command {
                     .singerName(content.getRequestParameter(SINGER)[0])
                     .build();
 
+        if (violations.isEmpty()) {
 
             return handler.filter(content, PageConstant.FILTER_PAGE,
                     (limit, offset) -> commonService.searchTrackByFilter(entityFilter, limit, offset),
@@ -71,7 +71,7 @@ public class FilterTrackCommand implements Command {
         } else {
             log.info("filter failed because of validator violation");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.FILTER_PAGE,
-                    Map.of(VALIDATOR_RESULT, violations));
+                    Map.of(VALIDATOR_RESULT, violations, FILTER, entityFilter));
         }
     }
 }

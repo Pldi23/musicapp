@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * initial contact point for handling all requests
+ * initial entry point for handling all requests
  * implementation of Front Controller design pattern
  *
  * @author dzmitryplatonov on 2019-06-06.
@@ -30,43 +30,40 @@ public class FrontController extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         processRequest(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         processRequest(req, resp);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        try {
-            RequestContent content = new RequestContent.Builder().fromRequest(request).build();
-            content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
-            content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
-            content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
 
-            CommandFactory commandFactory = CommandFactory.getInstance();
-            Command command = commandFactory.getCommand(content);
-            CommandResult commandResult = command.execute(content);
+        RequestContent content = new RequestContent.Builder().fromRequest(request).build();
+        content.getSessionAttributes().forEach((s, o) -> log.debug("in session. Key: " + s + " Value: " + o));
+        content.getRequestParameters().forEach((s, strings) -> log.debug("in params. key: " + s + " strings: " + Arrays.toString(strings)));
+        content.getRequestAttributes().forEach((s, strings) -> log.debug("in attrs. key: " + s + " strings: " + strings));
 
-            commandResult.getAttributes().forEach(request::setAttribute);
-            commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
-            request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
+        CommandFactory commandFactory = CommandFactory.getInstance();
+        Command command = commandFactory.getCommand(content);
+        CommandResult commandResult = command.execute(content);
 
-            if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
-                request.getSession().invalidate(); //session need to be invalidated if command is logout
-            }
+        commandResult.getAttributes().forEach(request::setAttribute);
+        commandResult.getSessionAttributes().forEach(request.getSession()::setAttribute);
+        request.getSession().setAttribute(RequestConstant.BACKUP, commandResult);
 
-            if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
-                requestDispatcher.forward(request, response);
-            } else {
-                response.sendRedirect(request.getServletContext().getContextPath() + commandResult.getPage());
-            }
-        } catch (IOException | ServletException e) {
-            log.error("exception during request processing", e);
+        if (command.getClass().isAssignableFrom(LogoutCommand.class)) {
+            request.getSession().invalidate(); //session need to be invalidated if command is logout
+        }
+
+        if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
+            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(commandResult.getPage());
+            requestDispatcher.forward(request, response);
+        } else {
+            response.sendRedirect(request.getServletContext().getContextPath() + commandResult.getPage());
         }
 
     }

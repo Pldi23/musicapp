@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

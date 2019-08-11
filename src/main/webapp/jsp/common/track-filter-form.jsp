@@ -24,26 +24,26 @@
     <div class="form-group">
         <label for="inputTrackname"><fmt:message key="label.filter.trackname"/></label>
         <input type="text" class="form-control" id="inputTrackname" pattern="(?U).{1,30}(?<!(.mp3)|(.wav)|(.audio)|(.format))$"
-               name="trackname" placeholder="<fmt:message key="placeholder.track.name"/>"/>
+               name="trackname" placeholder="<fmt:message key="placeholder.track.name"/>" value="${ requestScope.filter.trackName }"/>
         <div class="invalid-feedback">
             <fmt:message key="violation.trackname"/>
         </div>
     </div>
     <div class="form-group">
         <label for="inputSingername"><fmt:message key="label.filter.singername"/></label>
-        <input type="text" name="singer" pattern="(?U).{1,30}" class="form-control" id="inputSingername" value="${ requestScope.singer}"
+        <input type="text" name="singer" pattern="(?U).{1,30}" class="form-control" id="inputSingername" value="${ requestScope.filter.singerName}"
                placeholder="<fmt:message key="placeholder.singer"/>">
     </div>
     <div class="form-group">
         <label for="releaseDate"><fmt:message key="label.releasedate.from.to"/></label>
-        <input type="date" class="form-control" id="releaseDate" name="releaseFrom" value="${ requestScope.releaseFrom}">
+        <input type="date" class="form-control" id="releaseDate" name="releaseFrom" value="${ requestScope.filter.fromDate}">
         <div class="invalid-feedback">
             <fmt:message key="violation.release.filter"/>
         </div>
     </div>
     <div class="form-group">
         <label for="releaseDateTo"></label>
-        <input type="date" class="form-control" id="releaseDateTo" name="releaseTo" value="${requestScope.releaseTo}">
+        <input type="date" class="form-control" id="releaseDateTo" name="releaseTo" value="${requestScope.filter.toDate}">
         <div class="invalid-feedback">
             <fmt:message key="violation.release.filter"/>
         </div>

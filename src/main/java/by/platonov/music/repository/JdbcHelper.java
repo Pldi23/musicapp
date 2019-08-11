@@ -31,10 +31,10 @@ class JdbcHelper {
         }
     }
 
-    <T> boolean execute(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
+    <T> void execute(Connection connection, String sql, T entity, PreparedStatementMapper<T> preparedStatementMapper) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             preparedStatementMapper.map(statement, entity);
-            return statement.execute();
+            statement.execute();
         }
     }
 

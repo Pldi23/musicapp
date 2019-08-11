@@ -5,6 +5,7 @@ import by.platonov.music.entity.Musician;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class MusicianResultSetExtractor implements AbstractResultSetExtractor<Musician> {
     @Override
     public List<Musician> extract(ResultSet resultSet) throws SQLException {
-        List<Musician> result = new ArrayList<>();
+        List<Musician> result = new LinkedList<>();
         while (resultSet.next()) {
             Musician musician = Musician.builder()
                     .id(resultSet.getLong(ExtractConstant.ID))

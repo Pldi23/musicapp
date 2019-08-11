@@ -61,7 +61,7 @@ public class RegistrationCommand implements Command {
                                                         new EmailValidator(
                                                                 new GenderValidator(null))))))).apply(content);
 
-        String page = isAdmin ? PageConstant.REGISTER_ADMIN_PAGE : PageConstant.REGISTRATION_PAGE;
+        String targetPage = isAdmin ? PageConstant.REGISTER_ADMIN_PAGE : PageConstant.REGISTRATION_PAGE;
 
         if (violations.isEmpty()) {
             String login = content.getRequestParameter(LOGIN)[0];
@@ -102,7 +102,7 @@ public class RegistrationCommand implements Command {
                     commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, PageConstant.VERIFICATION_PAGE,
                             Map.of(HASH, user.getVerificationUuid(), EMAIL, user.getEmail()));
                 } else {
-                        commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, page,
+                        commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, targetPage,
                                 Map.of(PROCESS, MessageManager.getMessage("message.user",
                                         (String) content.getSessionAttribute(LOCALE)) + user.getLogin() + " " +
                                         MessageManager.getMessage("exist", (String) content.getSessionAttribute(LOCALE))));
@@ -114,7 +114,7 @@ public class RegistrationCommand implements Command {
             }
         } else {
             log.info("Registration failed because of validator violation");
-            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, page,
+            commandResult = new CommandResult(CommandResult.ResponseType.FORWARD, targetPage,
                     Map.of(VALIDATOR_RESULT, violations));
         }
         return commandResult;

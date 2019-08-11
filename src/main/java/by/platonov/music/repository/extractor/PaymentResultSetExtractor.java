@@ -5,6 +5,7 @@ import by.platonov.music.entity.Payment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class PaymentResultSetExtractor implements AbstractResultSetExtractor<Payment> {
     @Override
     public List<Payment> extract(ResultSet resultSet) throws SQLException {
-        List<Payment> result = new ArrayList<>();
+        List<Payment> result = new LinkedList<>();
         while (resultSet.next()) {
             Payment payment = Payment.builder()
                     .id(resultSet.getLong(ExtractConstant.ID))

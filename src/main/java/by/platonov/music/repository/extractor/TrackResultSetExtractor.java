@@ -18,7 +18,7 @@ import static by.platonov.music.repository.extractor.ExtractConstant.*;
 public class TrackResultSetExtractor implements AbstractResultSetExtractor<Track> {
     @Override
     public List<Track> extract(ResultSet resultSet) throws SQLException{
-        List<Track> tracks = new ArrayList<>();
+        List<Track> tracks = new LinkedList<>();
         Map<Long, Track> table = new LinkedHashMap<>();
         while (resultSet.next()) {
             if (!table.containsKey(resultSet.getLong(ID))) {
