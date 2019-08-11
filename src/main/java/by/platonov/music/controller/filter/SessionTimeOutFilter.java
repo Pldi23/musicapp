@@ -36,7 +36,9 @@ public class SessionTimeOutFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if (request.getSession().isNew() && !request.getParameter(RequestConstant.COMMAND).equalsIgnoreCase(CommandType.LOGIN.toString())) {
+        if (request.getSession().isNew()
+                && request.getParameterMap().containsKey(RequestConstant.COMMAND)
+                && !request.getParameter(RequestConstant.COMMAND).equalsIgnoreCase(CommandType.LOGIN.toString())) {
             response.sendRedirect(targetPagePath);
         } else {
             filterChain.doFilter(request, response);

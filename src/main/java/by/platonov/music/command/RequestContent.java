@@ -153,7 +153,10 @@ public class RequestContent {
 
         private static Map<String, String> transferCookies(HttpServletRequest request) {
             Map<String, String> result = new HashMap<>();
-            Arrays.stream(request.getCookies()).forEach(cookie -> result.put(cookie.getName(), cookie.getValue()));
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null && cookies.length != 0) {
+                Arrays.stream(cookies).forEach(cookie -> result.put(cookie.getName(), cookie.getValue()));
+            }
             return result;
         }
 

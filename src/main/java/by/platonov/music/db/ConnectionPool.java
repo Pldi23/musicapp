@@ -3,10 +3,8 @@ package by.platonov.music.db;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -106,11 +104,6 @@ public class ConnectionPool {
                     connection.close();
                 }
                 instance = null;
-//                Enumeration<Driver> driverEnumeration = DriverManager.getDrivers();
-//                while (driverEnumeration.hasMoreElements()) {
-//                    log.info("Deregistering driver");
-//                    DriverManager.deregisterDriver(driverEnumeration.nextElement());
-//                }
                 create.set(false);
             } catch (SQLException e) {
                 log.error("Exception during destroying connection pool", e);

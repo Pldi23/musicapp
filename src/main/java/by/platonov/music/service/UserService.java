@@ -176,7 +176,11 @@ public class UserService {
     public List<User> searchUserByFilter(@NonNull EntityFilter entityFilter, int limit, long offset) throws ServiceException {
 
         try {
-            return UserRepository.getInstance().query(new UserFilterSpecification(entityFilter, limit, offset));
+            List<User> users = UserRepository.getInstance().query(new UserFilterSpecification(entityFilter, limit, offset));
+            for (User user:users) {
+               setUserWithPlaylists(user);
+            }
+            return users;
         } catch (RepositoryException e) {
             log.error("could not search users by filter", e);
             throw new ServiceException(e);

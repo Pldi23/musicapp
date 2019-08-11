@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
  * @author Dzmitry Platonov on 2019-08-08.
  * @version 0.0.1
  */
-@ExtendWith(DatabaseSetupExtension.class)
 class ActivationCommandTest {
 
     private RequestContent content;

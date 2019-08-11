@@ -108,7 +108,7 @@
                                 <fmt:message key="badge.quantity"/>::<c:out value="${ playlist.getSize() }"/></span>
                                 </td>
                                 <td><span class="badge badge-info"><fmt:message key="label.filter.genre"/>::
-                                <c:out value="${ playlist.getMostPopularGenre() }"/></span></td>
+                                <c:out value="${ playlist.getMostPopularGenreName() }"/></span></td>
                             </tr>
                         </c:forEach>
                         </tbody>

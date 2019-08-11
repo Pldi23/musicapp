@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  *
  * the class is responsible for conducting the transaction, getting and releasing connection from connection pool,
- * handling autocommit, rollback and sql exceptions
+ * handling autocommit, rollback and exceptions
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
  * <p>

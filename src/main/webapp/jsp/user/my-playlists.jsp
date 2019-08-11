@@ -48,7 +48,7 @@
                 <hr>
             </c:if>
             <c:if test="${ sessionScope.user.admin eq true }">
-                <form action="<c:url value="/controller"/>" method="post" class="form-inline">
+                <form action="<c:url value="/controller"/>" method="post" class="form-inline needs-validation" novalidate>
                     <input type="hidden" name="command" value="playlist-create">
                     <label for="selectForm"><fmt:message key="label.access"/>::</label>
                     <select name="access" id="selectForm" class="form-control">

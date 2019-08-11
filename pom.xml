@@ -9,30 +9,38 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>music-app Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <name>music-app Webapp</name>
+  <url>http://13.58.68.235:8080/music-app</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>12</maven.compiler.source>
     <maven.compiler.target>12</maven.compiler.target>
-    <log4j.version>2.11.2</log4j.version>
+    <log4j.version>2.1${jstl.version}</log4j.version>
     <jackson.version>2.7.9</jackson.version>
     <junit.version>5.5.0-M1</junit.version>
     <testcontainers.version>1.11.3</testcontainers.version>
+    <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+    <lombok.version>1.18.8</lombok.version>
+    <scrypt.version>1.4.0</scrypt.version>
+    <commons-codec.version>1.12</commons-codec.version>
+    <javax.mail.version>1.6.2</javax.mail.version>
+    <jstl.version>1.2</jstl.version>
+    <standard.version>1.1.0</standard.version>
+    <jaudiotagger.version>2.0.3</jaudiotagger.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>9.1-901-1.jdbc4</version>
+      <version>${postgresql.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
+      <version>${javax.servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -101,61 +109,44 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.8</version>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>
     </dependency>
     <dependency>
       <groupId>com.lambdaworks</groupId>
       <artifactId>scrypt</artifactId>
-      <version>1.4.0</version>
+      <version>${scrypt.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.12</version>
+      <version>${commons-codec.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
-      <version>1.6.2</version>
+      <version>${javax.mail.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
     </dependency>
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
-      <version>1.1.0</version>
+      <version>${standard.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet.jsp.jstl</groupId>
       <artifactId>jstl-api</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
     </dependency>
     <dependency>
       <groupId>org</groupId>
       <artifactId>jaudiotagger</artifactId>
-      <version>2.0.3</version>
+      <version>${jaudiotagger.version}</version>
     </dependency>
-    <dependency>
-      <groupId>javazoom</groupId>
-      <artifactId>jlayer</artifactId>
-      <version>1.0.1</version>
-    </dependency>
-
-
   </dependencies>
 
   <build>
@@ -164,7 +155,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>${javax.servlet-api.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>

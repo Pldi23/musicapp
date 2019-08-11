@@ -41,12 +41,8 @@ public class RequestConstant {
     public static final String ID = "id";
     public static final String IMG_PATH = "imgpath";
     public static final String INDEX = "index";
-    public static final String KEY_MUSICIAN = "key-musicians";
-    public static final String KEY_PLAYLIST = "key-playlists";
-    public static final String KEY_TRACK = "key-tracks";
     public static final String LASTNAME = "lastname";
     public static final String LAST_PLAYED = "lastPlayed";
-    public static final String LENGTH = "length";
     public static final String LOCALE = "locale";
     public static final String LOGIN = "login";
     public static final String MEDIA_PATH = "mediapath";
@@ -56,10 +52,8 @@ public class RequestConstant {
     public static final String MUSICIAN_SIZE = "musicianssize";
     public static final String NAME = "name";
     public static final String NEXT = "next";
-    public static final String NEXT_OFFSET = "nextoffset";
     public static final String NEXT_UNAVAILABLE = "nextunavailable";
     public static final String NO_ORDER = "noOrder";
-    public static final String OFFSET = "offset";
     public static final String PAGE = "page";
     public static final String PAGE_COMMAND = "pageCommand";
     public static final String PASSWORD = "password";
@@ -72,7 +66,6 @@ public class RequestConstant {
     public static final String PLAYLISTS_SIZE = "playlistssize";
     public static final String PLAYLISTS_STATISTIC = "statistic";
     public static final String PREVIOUS = "previous";
-    public static final String PREVIOUS_OFFSET = "previousoffset";
     public static final String PREVIOUS_UNAVAILABLE = "previousunavailable";
     public static final String PROCESS = "process";
     public static final String REDIRECTED = "redirected";
