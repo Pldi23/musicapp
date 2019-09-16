@@ -1,6 +1,7 @@
 package by.platonov.music.repository;
 
 import by.platonov.music.db.DatabaseSetupExtension;
+import by.platonov.music.db.DbInMemoryH2SetupExtension;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.repository.specification.GenreIdSpecification;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author dzmitryplatonov on 2019-06-11.
  * @version 0.0.1
  */
-@ExtendWith(DatabaseSetupExtension.class)
+@ExtendWith(DbInMemoryH2SetupExtension.class)
 class GenreRepositoryTest {
 
     private GenreRepository repository = GenreRepository.getInstance();

@@ -23,7 +23,7 @@ public class DatabaseSetupExtension implements BeforeEachCallback, AfterEachCall
                 .withPassword(dbConfig.getPassword());
         postgreSQLContainer.start();
         dbConfig.setHost(postgreSQLContainer.getContainerIpAddress());
-        dbConfig.setPort(postgreSQLContainer.getMappedPort(5432));
+        dbConfig.setPort(String.valueOf(postgreSQLContainer.getMappedPort(5432)));
     }
 
     @Override

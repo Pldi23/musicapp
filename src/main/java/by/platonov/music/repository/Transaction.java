@@ -3,6 +3,7 @@ package by.platonov.music.repository;
 
 import by.platonov.music.exception.RepositoryException;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -15,6 +16,6 @@ import java.sql.SQLException;
  * execute-around method pattern
  * @link https://www.voxxed.com/2015/02/transactions-using-execute-around-methodpattern-and-lambdas/
  */
-interface Transaction<T> {
+public interface Transaction<T> {
     T execute(Connection connection) throws SQLException, RepositoryException;
 }

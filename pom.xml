@@ -10,7 +10,7 @@
   <packaging>war</packaging>
 
   <name>music-app Webapp</name>
-  <url>http://13.58.68.235:8080/music-app</url>
+<!--  <url>http://13.58.68.235:8080/music-app</url>-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +29,9 @@
     <jstl.version>1.2</jstl.version>
     <standard.version>1.1.0</standard.version>
     <jaudiotagger.version>2.0.3</jaudiotagger.version>
+    <h2database.version>1.4.187</h2database.version>
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
   </properties>
 
   <dependencies>
@@ -147,10 +150,28 @@
       <artifactId>jaudiotagger</artifactId>
       <version>${jaudiotagger.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>ru.yandex.qatools.embed</groupId>
+      <artifactId>postgresql-embedded</artifactId>
+      <version>2.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2database.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>music-app</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
@@ -205,7 +226,44 @@
             <password>s3cret</password>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-maven-plugin</artifactId>
+          <version>6.0.3</version>
+          <configuration>
+            <url>jdbc:postgresql://localhost:5432/music</url>
+            <user>postgres</user>
+            <password>password</password>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
+
+<!--  <profiles>-->
+<!--    <profile>-->
+<!--      <id>js-flyway</id>-->
+<!--      <activation>-->
+<!--        <activeByDefault>true</activeByDefault>-->
+<!--      </activation>-->
+<!--      <properties>-->
+        <!--common properties for database connection-->
+<!--        <db.driver>org.postgresql.Driver</db.driver>-->
+<!--        <db.url>jdbc:oracle:thin:@localhost:1521:XE</db.url>-->
+<!--        <db.username>js</db.username>-->
+<!--        <db.password>jsadmin</db.password>-->
+<!--        <db.schema>JS</db.schema>-->
+<!--        <db.adm.user>admin</db.adm.user>-->
+<!--        <db.adm.pass>123456</db.adm.pass>-->
+
+        <!-- Properties are prefixed with flyway. -->
+<!--        <flyway.user>${db.adm.user}</flyway.user>-->
+<!--        <flyway.password>${db.adm.pass}</flyway.password>-->
+<!--        <flyway.schemas>${db.schema}</flyway.schemas>-->
+<!--        <flyway.driver>${db.driver}</flyway.driver>-->
+<!--        <flyway.url>${db.url}</flyway.url>-->
+<!--        <flyway.locations>db/db/init/</flyway.locations>-->
+<!--      </properties>-->
+<!--    </profile>-->
+<!--  </profiles>-->
 </project>

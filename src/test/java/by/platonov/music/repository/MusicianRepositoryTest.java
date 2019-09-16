@@ -1,5 +1,6 @@
 package by.platonov.music.repository;
 
+import by.platonov.music.db.DbInMemoryH2SetupExtension;
 import by.platonov.music.exception.RepositoryException;
 import by.platonov.music.db.DatabaseSetupExtension;
 import by.platonov.music.entity.Musician;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author dzmitryplatonov on 2019-06-09.
  * @version 0.0.1
  */
-@ExtendWith(DatabaseSetupExtension.class)
+@ExtendWith(DbInMemoryH2SetupExtension.class)
 class MusicianRepositoryTest {
 
     private MusicianRepository repository = MusicianRepository.getInstance();

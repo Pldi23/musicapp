@@ -1,6 +1,7 @@
 package by.platonov.music.repository;
 
 import by.platonov.music.db.DatabaseSetupExtension;
+import by.platonov.music.db.DbInMemoryH2SetupExtension;
 import by.platonov.music.entity.Genre;
 import by.platonov.music.entity.Track;
 import by.platonov.music.exception.RepositoryException;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author dzmitryplatonov on 2019-06-07.
  * @version 0.0.1
  */
-@ExtendWith(DatabaseSetupExtension.class)
+@ExtendWith(DbInMemoryH2SetupExtension.class)
 class TrackRepositoryTest {
 
     private TrackRepository repository = TrackRepository.getInstance();

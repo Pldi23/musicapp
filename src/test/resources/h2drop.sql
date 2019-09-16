@@ -1,0 +1,10 @@
+DROP TABLE genre;
+DROP TABLE track;
+DROP TABLE musician;
+DROP TABLE singer_track;
+DROP TABLE author_track;
+DROP TABLE playlist;
+DROP TABLE playlist_track;
+DROP TABLE application_user;
+DROP TABLE user_playlist;
+DROP TABLE payment;

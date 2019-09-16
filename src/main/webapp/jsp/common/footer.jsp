@@ -11,6 +11,7 @@
     <div class="row">
         <div class="col-md-12">
             <fmt:message key="footer.copyright"/>
+            <fmt:message key="build.timestamp"/>
         </div>
     </div>
 </div>

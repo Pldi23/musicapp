@@ -11,9 +11,12 @@
     </welcome-file-list>
     <session-config>
         <session-timeout>120</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
     </session-config>
     <context-param>
-        <param-name>interval</param-name>
+        <param-name>interval</param-name> <!-- used to configure time interval of listener that remove trash-data from db  -->
         <param-value>120</param-value> <!-- minutes -->
     </context-param>
     <context-param>

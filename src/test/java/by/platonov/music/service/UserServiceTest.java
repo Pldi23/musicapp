@@ -9,6 +9,8 @@ import by.platonov.music.repository.UserRepository;
 import by.platonov.music.repository.specification.UserLoginSpecification;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +27,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
 
     private UserService service;
+
+    private User user = User.builder()
+            .login("pldi4")
+            .password("qwerty")
+            .admin(false)
+            .firstname("Leo")
+            .lastname("Messi")
+            .email("messi@gmail.com")
+            .gender(User.Gender.MALE)
+            .registrationDate(LocalDate.now())
+            .birthDate(LocalDate.of(1987, 1, 1))
+            .playlists(new LinkedHashSet<>())
+            .active(true)
+            .verificationUuid(null)
+            .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
+            .payments(new LinkedHashSet<>())
+            .paidPeriod(LocalDateTime.of(2030,1,1,0,0))
+            .build();
 
     @Test
     void activatePositive() throws ServiceException {
@@ -49,23 +69,7 @@ class UserServiceTest {
         List<User> result = repository.query(new UserLoginSpecification("pldi4"));
 
         User actual = result.get(0);
-        User expected = User.builder()
-                .login("pldi4")
-                .password("qwerty")
-                .admin(false)
-                .firstname("Leo")
-                .lastname("Messi")
-                .email("messi@gmail.com")
-                .gender(User.Gender.MALE)
-                .registrationDate(LocalDate.now())
-                .birthDate(LocalDate.of(1987, 1, 1))
-                .playlists(new LinkedHashSet<>())
-                .active(true)
-                .verificationUuid(null)
-                .photoPath("/usr/local/Cellar/tomcat/9.0.20/libexec/musicappfiles/photo/default_ava.png")
-                .payments(new LinkedHashSet<>())
-                .paidPeriod(LocalDateTime.of(2030,1,1,0,0))
-                .build();
+        User expected = user;
 
         assertEquals(expected, actual);
     }
@@ -81,4 +85,12 @@ class UserServiceTest {
 
         assertFalse(actual);
     }
+
+//    @Test
+//    void testRegisterPositive() throws ServiceException, RepositoryException {
+//        service = new UserService();
+//        UserRepository userRepository = Mockito.mock(UserRepository.class);
+//        Mockito.when(userRepository.add(user)).thenReturn(true).thenAnswer();
+//        assertTrue(service.register(user));
+//    }
 }

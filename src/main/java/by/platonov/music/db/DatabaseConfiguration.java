@@ -15,17 +15,17 @@ import java.util.ResourceBundle;
 @Data
 @AllArgsConstructor
 @Log4j2
-class DatabaseConfiguration {
+public class DatabaseConfiguration {
 
     private static final String DATABASE_PROPERTIES_PATH = "database";
     private static final String DB_HOST = "db.host";
     private static final String DB_USER = "db.user";
-    private static final String DB_PASSWORD = "db.password";
+    private static final String DB_PASS = "db.password";
     private static final String DB_POOLSIZE = "db.poolsize";
     private static final String DB_PORT = "db.port";
     private static final String DB_NAME = "db.name";
     private static final String DB_DRIVER = "db.driver";
-    private static final String JDBC_POSTGRE = "jdbc:postgresql://";
+    private static final String JDBC_POSTGRE = "db.jdbc";
 
     private static DatabaseConfiguration instance;
 
@@ -33,11 +33,12 @@ class DatabaseConfiguration {
     private String user;
     private String password;
     private int poolSize;
-    private int port;
+    private String port;
     private String dbName;
     private String dbDriver;
+    private String jdbc;
 
-    static DatabaseConfiguration getInstance() {
+    public static DatabaseConfiguration getInstance() {
         if (instance == null) {
             instance = init();
         }
@@ -48,16 +49,17 @@ class DatabaseConfiguration {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(DATABASE_PROPERTIES_PATH);
         String host = resourceBundle.getString(DB_HOST);
         String user = resourceBundle.getString(DB_USER);
-        String password = resourceBundle.getString(DB_PASSWORD);
+        String password = resourceBundle.getString(DB_PASS);
         int poolSize = Integer.parseInt(resourceBundle.getString(DB_POOLSIZE));
-        int port = Integer.parseInt(resourceBundle.getString(DB_PORT));
+        String port = resourceBundle.getString(DB_PORT);
         String dbName = resourceBundle.getString(DB_NAME);
         String dbDriver = resourceBundle.getString(DB_DRIVER);
+        String dbJdbc = resourceBundle.getString(JDBC_POSTGRE);
 
-        return new DatabaseConfiguration(host, user, password, poolSize, port, dbName, dbDriver);
+        return new DatabaseConfiguration(host, user, password, poolSize, port, dbName, dbDriver, dbJdbc);
     }
 
-    String getJdbcUrl() {
-        return JDBC_POSTGRE + host + ":" + port + "/" + dbName;
+    public String getJdbcUrl() {
+        return jdbc + host + ":" + port + "/" + dbName;
     }
 }

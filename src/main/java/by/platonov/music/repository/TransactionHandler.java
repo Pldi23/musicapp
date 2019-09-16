@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * @link https://www.voxxed.com/2015/02/transactions-using-execute-around-methodpattern-and-lambdas/
  */
 @Log4j2
-class TransactionHandler {
+public class TransactionHandler {
 
     /**
      * method that has the responsibility of running our transactions and rollback if something goes wrong.
@@ -26,7 +26,7 @@ class TransactionHandler {
      * @return transaction result
      * @throws RepositoryException if sql-clause cannot be completed
      */
-    <T> T transactional(Transaction<T> transaction) throws RepositoryException {
+    public <T> T transactional(Transaction<T> transaction) throws RepositoryException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection;
         try {
