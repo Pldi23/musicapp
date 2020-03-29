@@ -1,7 +1,22 @@
 # musicapp
-Web-Application http://13.58.68.235:8080/music-app/ 
+Web-Application url http://13.58.68.235:8080/music-app/ 
+Deployed to AWS EC-2 instance
 
-Open source, music-listening application, writing as a final project of EPAM trainig center Web-developvent course.
+Tehnologies stack:
+  - PostgreSQL
+  - Java 12,
+  - JDBC,
+  - JSP, Java EE, 
+  - Junit 5, Test Containers, 
+  - Bootstrap, Css, jQuery,
+  - Maven, 
+  - Apache Tomcat, 
+  - AWS, 
+  - Docker, 
+  - Design Patterns (MVC, Command, Repositoy/Specification, Chain of Responsibility and others)
+  
+
+Open source, music-listening application.
 The project represents music-library with oportunity for users to aggregate tracks in playlists. 
 
 Application use-cases.
