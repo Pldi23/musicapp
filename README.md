@@ -1,6 +1,6 @@
 # musicapp
 Web-Application url http://13.58.68.235:8080/music-app/ 
-Deployed to AWS EC-2 instance
+ - Deployed to AWS EC-2 instance
 
 Tehnologies stack:
   - PostgreSQL
@@ -11,7 +11,7 @@ Tehnologies stack:
   - Bootstrap, Css, jQuery,
   - Maven, 
   - Apache Tomcat, 
-  - AWS, 
+  - AWS (EC-2, RDS), 
   - Docker, 
   - Design Patterns (MVC, Command, Repositoy/Specification, Chain of Responsibility and others)
   
