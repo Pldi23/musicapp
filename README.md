@@ -15,7 +15,7 @@ Tehnologies stack:
   - Docker, 
   - Design Patterns (MVC, Command, Repositoy/Specification, Chain of Responsibility and others)
   
-
+# App description
 Open source, music-listening application.
 The project represents music-library with oportunity for users to aggregate tracks in playlists. 
 
